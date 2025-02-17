@@ -1,0 +1,271 @@
+<!-- Start Hero Section Here -->
+<div class="hero">
+    <div class="container-fluid p-5">
+        <div>
+            <div class="row justify-content-between">
+                <div class="col-lg-5">
+                    <div class="intro-excerpt">
+                        <h1>
+                            {{banner_info.banner_title}}
+                        </h1>
+                        <p class="mb-4">
+                            {{banner_info.banner_details}}
+                        </p>
+                        <p><a href="/user/shop" class="btn btn-secondary me-2">Shop
+                                Now</a>
+                            <a href="/user/service" class="btn btn-white-outline">Explore</a>
+                        </p>
+                    </div>
+                </div>
+                <div class="col-lg-7">
+                    <div class="hero-img-wrap">
+                        <img [src]="banner_image" class="img-fluid">
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<!-- End Hero Section -->
+
+<!-- Start Product Section -->
+<div class="product-section">
+    <div class="container-fluid p-5 text-center">
+        <div class="row">
+
+            <!-- Section Title and Details -->
+            <div class="col-md-12 col-lg-3 mb-5 mb-lg-0">
+                <h2 class="mb-4 section-title">
+                    {{ products[0].product_name }}
+                </h2>
+                <p class="mb-4">
+                    {{ products[0].product_details }}
+                </p>
+                <p><a href="/user/shop" class="btn">Explore</a></p>
+            </div>
+
+            <!-- Products Grid -->
+            <div class="col-12 col-md-4 col-lg-3 mb-5 mb-md-0" *ngFor="let product of products">
+                <a class="product-item" href="/user/shop">
+                    <img style="height: 320px; width: 300px;" [src]="product.firstImage" alt="image"
+                        class="img-fluid product-thumbnail bg-light" />
+                    <h3 class="product-title">{{ product.product_name }}</h3>
+                    <strong class="product-price">&#8377; {{ product.product_price }}</strong>
+
+                    <span class="icon-cross">
+                        <img src="images/cross.svg" alt="icon" class="img-fluid" />
+                    </span>
+                </a>
+            </div>
+
+        </div>
+    </div>
+</div>
+
+<!-- End Product Section -->
+
+<!-- Start Why Choose Us Section -->
+<div class="why-choose-section container-fluid p-5">
+    <div class="col-md-12">
+        <div class="row justify-content-between">
+            <div class="col-lg-6">
+                <h2 class="section-title">Why Choose Us</h2>
+                <p>
+                    {{about.heading}}
+                </p>
+
+                <div class="row my-5">
+                    <!-- <% for(var i=0; i<aboutpoint.length;i++) { %> -->
+                    <div class="col-6 col-md-6" *ngFor="let about_point of about_points let i = index">
+                        <div class="feature">
+                            <div class="icon">
+                                <img [src]="'http://localhost:1000/uploads/' + about_point.why_choose_points_img"
+                                    alt="Image" class="imf-fluid">
+                            </div>
+                            <h3>{{about_point.why_choose_points_name}}</h3>
+                            <p>{{about_point.why_choose_points_details}}</p>
+                        </div>
+                    </div>
+                    <!-- <% } %> -->
+
+                </div>
+            </div>
+
+            <div class="col-lg-5">
+                <div class="img-wrap">
+                    <img [src]="about_image" alt="Image" class="img-fluid">
+                </div>
+            </div>
+
+        </div>
+    </div>
+</div>
+<!-- End Why Choose Us Section -->
+
+<!-- Start We Help Section -->
+<div class="we-help-section">
+    <div class="container">
+        <div class="row justify-content-between">
+            <div class="col-lg-7 mb-5 mb-lg-0">
+                <div class="imgs-grid">
+                    <div class="grid grid-1"><img [src]="'http://localhost:1000/uploads/' + interior[0].first_image"
+                            alt="Untree.co"></div>
+                    <div class="grid grid-2"><img [src]="'http://localhost:1000/uploads/' + interior[0].second_image"
+                            alt="Untree.co"></div>
+                    <div class="grid grid-3"><img [src]="'http://localhost:1000/uploads/' + interior[0].third_image"
+                            alt="Untree.co"></div>
+                </div>
+            </div>
+            <div class="col-lg-5 ps-lg-5">
+                <h2 class="section-title mb-4">
+                    {{interior[0].heading}}
+                </h2>
+                <p>
+                    {{interior[0].interior_details}}
+                </p>
+
+                <ul class="list-unstyled custom-list my-4">
+                    <li>
+                        {{interior[0].first_key}}
+                    </li>
+                    <li>
+                        {{interior[0].second_key}}
+                    </li>
+                    <li>
+                        {{interior[0].third_key}}
+                    </li>
+                    <li>
+                        {{interior[0].forth_key}}
+                    </li>
+                </ul>
+                <p><a herf="/user/shop" class="btn">Explore</a></p>
+            </div>
+        </div>
+    </div>
+</div>
+<!-- End We Help Section -->
+
+<!-- Start Popular Product -->
+<div class="popular-product">
+    <div class="container">
+        <div class="row">
+            <!-- <% for(var i=0; i<products.length;i++) {%> -->
+            <!-- <% var sub_total=0; for(var i=0; i<products.length; i++) { sub_total=sub_total +
+                    (products[i].product_price * products[i].qty ); var imgs=products[i].product_image.split(",");
+                    var img="" ; for (var j=0; j<imgs.length;j++) { if(imgs[j] !='' ) { img=imgs[j]; break; } } %> -->
+            <div class="col-12 col-md-12 col-lg-4 mb-4 mb-lg-0 text-center" *ngFor="let product of products">
+                <div class="product-item-sm d-flex">
+                    <div class="thumbnail">
+                        <img [src]="product.firstImage" style="height: 120px; width: 120px;" alt="Image"
+                            class="img-fluid">
+                    </div>
+                    <div class="pt-3">
+                        <h3>
+                            {{product.product_name}}
+                        </h3>
+                        <p>
+                            {{product.product_details}}
+                        </p>
+                        <p><a href="/user/shop">Read More</a></p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<!-- End Popular Product -->
+
+<!-- Start Testimonial Slider -->
+<div class="container">
+    <div class="col-lg-7 mx-auto text-center mb-2">
+        <h2 class="section-title">Testimonials</h2>
+    </div>
+    <div id="carouselExample" class="carousel slide" data-bs-ride="carousel">
+        <!-- Indicators/Dots -->
+        <div class="carousel-indicators">
+            <button *ngFor="let slide of testimonial; let i = index" type="button" data-bs-target="#carouselExample"
+                [attr.data-bs-slide-to]="i" [class.active]="i === 0" [attr.aria-label]="'Slide ' + (i + 1)">
+            </button>
+        </div>
+
+        <!-- Carousel Items -->
+        <div class="carousel-inner">
+            <div *ngFor="let slide of testimonial; let i = index" class="carousel-item" [class.active]="i === 0">
+                <div class="row">
+                    <!-- First part: Image Section -->
+                    <div class="col-md-4 d-flex justify-content-center align-items-center">
+                        <img [src]="'http://localhost:1000/uploads/' + slide.customer_image" alt="Image" class="rounded-circle"
+                            style="width: 250px; height: 250px;">
+                    </div>
+
+                    <!-- Second part: Heading Section -->
+                    <div class="col-md-8 d-flex justify-content-center align-items-center">
+                        <div class="col-md-12">
+                            <h3 class="text-center text-dark">{{ slide.customer_name }}</h3>
+                        <h3 class="text-center">{{ slide.customer_position }}</h3>
+                        <p class="text-center">{{ slide.customer_massage }}</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Carousel Controls -->
+        <button class="carousel-control-prev" type="button" data-bs-target="#carouselExample" data-bs-slide="prev">
+            <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+            <span class="visually-hidden"></span>
+        </button>
+        <button class="carousel-control-next" type="button" data-bs-target="#carouselExample" data-bs-slide="next">
+            <span class="carousel-control-next-icon" aria-hidden="true"></span>
+            <span class="visually-hidden"></span>
+        </button>
+    </div>
+</div>
+
+<!-- END item -->
+<!-- End Testimonial Slider -->
+
+<!-- Start Blog Section -->
+<div class="blog-section">
+    <div class="container">
+        <div class="row mb-5">
+            <div class="col-md-6">
+                <h2 class="section-title">Recent Blog</h2>
+            </div>
+            <div class="col-md-6 text-start text-md-end">
+                <a href="/user/blog" class="more">View All Posts</a>
+            </div>
+        </div>
+
+        <div class="row">
+
+            <!-- <% for(var i=0; i<blog.length;i++) { %> -->
+            <div class="col-12 col-sm-6 col-md-4 mb-5" *ngFor="let blog of blogs; let i = index">
+                <div class="post-entry">
+                    <a href="#" class="post-thumbnail">
+                        <img style="height: 350px; width: 450px;"
+                            [src]="'http://localhost:1000/uploads/' + blog.blog_image" alt="Image" class="img-fluid">
+                    </a>
+                    <div class="post-content-entry">
+                        <h3><a href="#">{{blog.blog_title}}</a></h3>
+                        <div class="meta">
+                            <span>by <a href="#">{{blog.blog_post_by}}</a></span>
+                            <span>on <a href="#">{{blog.blog_post_date}}</a>,time
+                                <a href="">{{blog.blog_post_time}}</a>
+                            </span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <!-- <% } %> -->
+
+        </div>
+    </div>
+</div>
+
+
+
+
+
+
+

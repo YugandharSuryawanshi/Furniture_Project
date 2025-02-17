@@ -1,0 +1,152 @@
+/* Center the container and make the carousel responsive */
+.carousel {
+    max-width: 1100px;
+    margin: 0 auto;
+}
+
+
+/* Styling for carousel indicators (dots) */
+.carousel-indicators button {
+    height: 8px;
+    margin: 1px;
+    background-color: #f3ca17;
+}
+
+.carousel-indicators .active {
+    background-color: #ffffff;
+}
+
+/* Custom style for carousel controls (previous and next buttons) */
+.carousel-control-prev-icon,
+.carousel-control-next-icon {
+    filter: invert(1);
+}
+
+/* Button styling */
+.carousel-control-prev,
+.carousel-control-next {
+    height: 50px;
+    width: 50px;
+    border-radius: 50%;
+    text-align: center;
+    background-color: rgba(0, 0, 0, 0.5);
+}
+
+/* Center the buttons vertically */
+.carousel-control-prev,
+.carousel-control-next {
+    position: absolute;
+    top: 50%;
+    transform: translateY(-50%);
+}
+
+/* Control buttons for the left and right */
+.carousel-control-prev {
+    left: 10px;
+}
+
+.carousel-control-next {
+    right: 10px;
+}
+
+/* Responsive styles */
+@media (max-width: 768px) {
+    .carousel-inner img {
+        height: 400px;
+    }
+
+    .carousel-control-prev,
+    .carousel-control-next {
+        height: 40px;
+        width: 40px;
+    }
+
+    .carousel-indicators button {
+        height: 6px;
+    }
+}
+
+@media (max-width: 576px) {
+    .carousel-inner img {
+        height: 300px;
+    }
+
+    .carousel-control-prev,
+    .carousel-control-next {
+        height: 35px;
+        width: 35px;
+    }
+}
+
+
+
+
+
+/* Style for Cart Section */
+.cart-section {
+    padding: 60px 0;
+    background-color: #f9f9f9;
+}
+
+/* Cart Item Card Style */
+.cart-item {
+    border-radius: 8px;
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+    cursor: pointer;
+}
+
+.cart-item:hover {
+    transform: translateY(-10px);
+    box-shadow: 0 50px 30px rgba(0, 0, 0, 0.1);
+}
+
+/* Product Image Styling */
+.cart-item-img img {
+    width: 60%;
+    height: 200px;
+    object-fit: cover;
+    border-radius: 8px;
+}
+
+/* Product Title and Description */
+.product-title {
+    font-size: 1.1rem;
+    font-weight: 600;
+    color: #333;
+}
+
+.product-description {
+    font-size: 0.9rem;
+    color: #777;
+    height: 60px;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    line-height: 1.5;
+    margin-bottom: 15px;
+}
+
+/* Product Price Styling */
+.product-price {
+    font-size: 1.2rem;
+    font-weight: 700;
+    color: #333;
+}
+
+/* Button Styles */
+.btn-sm {
+    font-size: 0.9rem;
+}
+
+.cart-item .btn-success {
+    background-color: #28a745;
+    border-color: #28a745;
+}
+
+.cart-item .btn-outline-secondary {
+    color: #6c757d;
+    border-color: #6c757d;
+}
+
+.cart-item .btn-sm:hover {
+    opacity: 0.9;
+}

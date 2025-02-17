@@ -1,0 +1,29 @@
+/* Dropdown container (hidden by default) */
+.nav-group-items {
+  max-height: 0;
+  overflow: hidden;
+  transition: max-height 0.3s ease-out, opacity 0.3s ease-out;
+  opacity: 0;
+}
+
+/* Dropdown container when active (visible) */
+.nav-group.show .nav-group-items {
+  max-height: 500px; /* Adjust based on dropdown content */
+  opacity: 1;
+}
+
+/* Smooth toggle button rotation */
+.nav-group-toggle {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  cursor: pointer;
+}
+
+.nav-group-toggle svg {
+  transition: transform 0.3s ease;
+}
+
+.nav-group.show .nav-group-toggle svg {
+  transform: rotate(90deg);
+}

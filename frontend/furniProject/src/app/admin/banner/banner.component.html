@@ -1,0 +1,111 @@
+<!-- <div class="container">
+    <form (ngSubmit)="updateBanner()" enctype="multipart/form-data">
+        <div class="col-12 float-end">
+            <div class="container p-3 bg-light">
+                <div class="row">
+                    <div class="col-md-12 text-center">
+                        <h3>Manage Banner</h3><br>
+                    </div>
+
+                    <div class="col-md-6 mb-3">
+                        <label for="banner_title">Enter Title</label>
+                        <input type="text" name="banner_title" id="banner_title" [(ngModel)]="formData.banner_title"
+                            required class="form-control" />
+                        <div *ngIf="!formData.banner_title" class="text-danger">
+                            Title is required.
+                        </div>
+                    </div>
+
+                    <div class="col-md-6 mb-3">
+                        <label for="banner_details">Enter Details</label>
+                        <input type="text" name="banner_details" id="banner_details" [(ngModel)]="formData.banner_details"
+                            required #bannerDetails="ngModel" class="form-control" />
+                        <div *ngIf="!formData.banner_details" class="text-danger">
+                            Details are required.
+                        </div>
+                    </div>
+
+                    <div class="col-md-5 mb-3">
+                        <label for="banner_link">Shop Now Link</label>
+                        <input type="text" name="banner_link" id="banner_link" [(ngModel)]="formData.banner_link" required
+                            #bannerLink="ngModel" class="form-control" />
+                        <div *ngIf="!formData.banner_link" class="text-danger">
+                            Shop Now Link is required.
+                        </div>
+                    </div>
+
+                    <div class="col-md-4 mb-3">
+                        <label for="banner_image">Banner Image</label>
+                        <input type="file" name="banner_image" id="banner_image" (change)="onFileChange($event)"
+                            class="form-control" />
+                    </div>
+
+                    <div class="col-md-2 mb-3">
+                        <img *ngIf="selectedImagePreview || bannerImageUrl" [src]="selectedImagePreview || bannerImageUrl" alt="Preview" width="100%" />
+                    </div>
+
+                    <div class="col-md-12 mb-3 text-center">
+                        <button class="btn btn-primary" type="submit">Update Banner</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </form>
+</div>
+-->
+
+
+<div class="container">
+    <form (ngSubmit)="updateBanner()" enctype="multipart/form-data">
+        <div class="col-12 float-end">
+            <div class="container p-3 bg-light">
+                <div class="row">
+                    <div class="col-md-12 text-center">
+                        <h3>Manage Banner</h3><br>
+                    </div>
+
+                    <div class="col-md-6 mb-3">
+                        <label for="banner_title">Enter Title</label>
+                        <input type="text" name="banner_title" id="banner_title" [(ngModel)]="formData.banner_title"
+                            required class="form-control" />
+                        <div *ngIf="!formData.banner_title" class="text-danger">
+                            Title is required.
+                        </div>
+                    </div>
+
+                    <div class="col-md-6 mb-3">
+                        <label for="banner_details">Enter Details</label>
+                        <input type="text" name="banner_details" id="banner_details"
+                            [(ngModel)]="formData.banner_details" required class="form-control" />
+                        <div *ngIf="!formData.banner_details" class="text-danger">
+                            Details are required.
+                        </div>
+                    </div>
+
+                    <div class="col-md-5 mb-3">
+                        <label for="banner_link">Shop Now Link</label>
+                        <input type="text" name="banner_link" id="banner_link" [(ngModel)]="formData.banner_link"
+                            required class="form-control" />
+                        <div *ngIf="!formData.banner_link" class="text-danger">
+                            Shop Now Link is required.
+                        </div>
+                    </div>
+
+                    <div class="col-md-4 mb-3">
+                        <label for="banner_image">Banner Image</label>
+                        <input type="file" name="banner_image" id="banner_image" (change)="onFileChange($event)"
+                            class="form-control" />
+                    </div>
+
+                    <div class="col-md-2 mb-3">
+                        <img *ngIf="selectedImagePreview" [src]="selectedImagePreview" alt="Preview" width="100%" />
+                    </div>
+
+                    <div class="col-md-12 mb-3 text-center">
+                        <button class="btn btn-primary" type="submit">Update Banner</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </form>
+</div>

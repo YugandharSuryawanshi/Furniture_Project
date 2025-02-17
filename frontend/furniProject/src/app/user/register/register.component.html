@@ -1,0 +1,97 @@
+<body>
+    <div class="mb-5 container">
+        <div class="row justify-content-center">
+            <div class="col-md-12">
+                <div class="card shadow-sm">
+                    <div class="card-header bg-primary text-white text-center py-3">
+                        <h2 class="fw-bold">Register Now</h2>
+                        <p class="mb-0">Fill the form to create Account</p>
+                    </div>
+                    <div class="card-body p-4">
+                        <!-- Success Message -->
+                        <div *ngIf="successMessage" class="alert alert-success text-center" role="alert">
+                            {{ successMessage }}
+                        </div>
+
+                        <!-- Registration Form -->
+                        <form (ngSubmit)="register()" novalidate>
+                            <div class="col-md-12 justify-content-center">
+                                <div class="row">
+                                    <div class="col-md-6 mb-2">
+                                        <!-- Name Field -->
+                                        <label for="user_name" class="form-label">Full Name <span
+                                                class="text-danger">*</span></label>
+                                        <input type="text" class="form-control" id="user_name"
+                                            [(ngModel)]="formData.user_name" name="user_name" required
+                                            placeholder="Enter your name">
+                                        <div *ngIf="!formData.user_name && errorMessage" class="form-text text-danger">
+                                            Please enter your full name.
+                                        </div>
+                                    </div>
+
+                                    <div class="col-md-6 mb-2">
+                                        <label for="user_mobile" class="form-label">Mobile Number <span
+                                                class="text-danger">*</span></label>
+                                        <input type="text" class="form-control" id="user_mobile"
+                                            [(ngModel)]="formData.user_mobile" name="user_mobile" required
+                                            placeholder="Enter your mobile number">
+                                        <div *ngIf="!formData.user_mobile && errorMessage"
+                                            class="form-text text-danger">
+                                            Please provide a valid mobile number.
+                                        </div>
+                                    </div>
+
+                                    <div class="col-md-1"></div>
+
+                                    <div class="col-md-10 mb-2">
+                                        <label for="user_email" class="form-label">Email Address <span
+                                                class="text-danger">*</span></label>
+                                        <input type="email" class="form-control" id="user_email"
+                                            [(ngModel)]="formData.user_email" name="user_email" required
+                                            placeholder="Enter your email">
+                                        <div *ngIf="!formData.user_email && errorMessage" class="form-text text-danger">
+                                            A valid email is required.
+                                        </div>
+                                    </div>
+
+                                    <div class="col-md-6 mb-2">
+                                        <label for="user_password" class="form-label">Password <span
+                                                class="text-danger">*</span></label>
+                                        <input type="password" class="form-control" id="user_password"
+                                            [(ngModel)]="formData.user_password" name="user_password" required
+                                            placeholder="Enter your password">
+                                        <div *ngIf="!formData.user_password && errorMessage"
+                                            class="form-text text-danger">
+                                            Please enter a password.
+                                        </div>
+                                    </div>
+
+                                    <div class="col-md-6 mb-2">
+                                        <label for="confirmPassword" class="form-label">Confirm Password <span
+                                                class="text-danger">*</span></label>
+                                        <input type="password" class="form-control" id="confirmPassword"
+                                            [(ngModel)]="formData.confirmPassword" name="confirmPassword" required
+                                            placeholder="Confirm your password">
+                                        <div *ngIf="formData.user_name !== formData.confirmPassword && errorMessage"
+                                            class="form-text text-danger">
+                                            Passwords do not match.
+                                        </div>
+                                    </div>
+
+                                    <div class="col-md-12 mt-3 text-center justify-content-center">
+                                        <button type="submit" class="btn btn-primary">Register</button>
+                                    </div>
+                                </div>
+                            </div>
+                        </form>
+
+                        <div class="text-center mt-3 ">
+                            <span>Already have an account?</span>
+                            <a routerLink="/user/login" class="text-primary fw-bold">Login Here</a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</body>

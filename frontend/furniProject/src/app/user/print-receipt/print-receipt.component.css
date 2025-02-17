@@ -1,0 +1,43 @@
+.receipt-container {
+    max-width: 600px;
+    margin: auto;
+    background: #fff;
+    padding: 20px;
+    box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.1);
+    border-radius: 8px;
+}
+
+h2 {
+    font-weight: bold;
+}
+
+.table {
+    width: 100%;
+}
+
+hr {
+    border: 1px solid #494040;
+}
+
+/* Hide elements when printing  */
+@media print {
+    button {
+        display: none;
+    }
+
+    .receipt-container {
+        box-shadow: none;
+    }
+    .no-print {
+        display: none;
+    }
+    
+    body {
+        font-family: Arial, sans-serif;
+        font-size: 12pt;
+    }
+    
+    .container {
+        width: 100%;
+    }
+}

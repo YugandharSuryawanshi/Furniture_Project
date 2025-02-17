@@ -1,0 +1,110 @@
+    <link href="//maxcdn.bootstrapcdn.com/bootstrap/4.1.1/css/bootstrap.min.css" rel="stylesheet" id="bootstrap-css">
+    <script src="//maxcdn.bootstrapcdn.com/bootstrap/4.1.1/js/bootstrap.min.js"></script>
+    <script src="//cdnjs.cloudflare.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+
+    <style>
+        body {
+            background: -webkit-linear-gradient(left, #f3f569, #fc9700);
+        }
+
+        .emp-profile {
+            padding: 3%;
+            margin-top: 3%;
+            margin-bottom: 3%;
+            border-radius: 0.5rem;
+            background: #fff;
+        }
+
+        .profile-img {
+            text-align: center;
+        }
+
+        .profile-img img {
+            width: 70%;
+            height: 100%;
+        }
+
+        .profile-img .file {
+            position: relative;
+            overflow: hidden;
+            margin-top: -20%;
+            width: 70%;
+            border: none;
+            border-radius: 0;
+            font-size: 15px;
+            background: #212529b8;
+        }
+
+        .profile-img .file input {
+            position: absolute;
+            opacity: 0;
+            right: 0;
+            top: 0;
+        }
+
+        .profile-head h5 {
+            color: #333;
+        }
+    </style>
+
+
+<div class="container mt-5">
+    <div class="col-md-12 ">
+        <form #adminForm="ngForm" (ngSubmit)="updateProfile()" enctype="multipart/form-data">
+            <div class="row">
+                <!-- Profile Image Section -->
+                <div class="col-md-4 text-center">
+                    <div class="profile-img">
+                        <!-- <img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTKlIcH0Q1e2QDuzvM94CnN3vdzXrvebSHNeQ&s"
+                            alt="User Profile" class="img-fluid rounded-circle border" /> -->
+                            <img [src]="adminProfileUrl" alt="User Profile" class="img-fluid rounded-circle border" style="height: 250px; width: 250px;">
+                        <div class="file btn btn-primary mt-2">
+                            Change Photo
+                            <input type="file" id="admin_profile" (change)="onFileChange($event)" name="admin_profile" class="form-control" />
+                        </div>
+                    </div>
+                </div>
+                <!-- User Info Section -->
+                <div class="col-md-6">
+                    <div class="profile-head">
+                        <div class="form-group mb-3">
+                            <label for="admin_name">Name:</label>
+                            <input type="text" id="admin_name" name="admin_name" class="form-control"
+                                [(ngModel)]="adminProfile.admin_name" #admin_name="ngModel" />
+                        </div>
+                        <div class="form-group mb-3">
+                            <label for="admin_mobile">Mobile Number:</label>
+                            <input type="text" id="admin_mobile" name="admin_mobile" class="form-control"
+                                [(ngModel)]="adminProfile.admin_mobile" #admin_mobile="ngModel" />
+                        </div>
+                        <div class="form-group mb-3">
+                            <label for="admin_email">Email:</label>
+                            <input type="email" id="admin_email" name="admin_email" class="form-control"
+                                [(ngModel)]="adminProfile.admin_email" #admin_email="ngModel" />
+                        </div>
+                        <div class="form-group mb-3" id="hideDiv" *ngIf="isDivVisible">
+                            <label for="old_password">Old Password:</label>
+                            <input type="password" id="old_password" name="old_password" class="form-control"
+                                [(ngModel)]="adminProfile.old_password" #old_password="ngModel" required />
+                        </div>
+                        <div class="form-group mb-3" id="hideDiv" *ngIf="isDivVisible">
+                            <label for="new_password">New Password:</label>
+                            <input type="password" id="new_password" name="new_password" class="form-control"
+                                [(ngModel)]="adminProfile.new_password" #new_password="ngModel" required />
+                        </div>
+                    </div>
+                </div>
+                <!-- Action Buttons -->
+                <div class="col-md-2 text-center d-flex flex-column justify-content-center">
+                    <div *ngIf="successMessage" class="alert alert-success">{{ successMessage }}</div>
+                    <p class="text-danger" *ngIf="errorMessage">{{errorMessage}}</p>
+                    <button type="button" class="btn btn-success mb-2"  (click)="updateShow_hide()" *ngIf="isBtnVisible"><i class="fas fa-edit"></i> Update Profile</button>
+                    <button type="submit" class="btn btn-success mb-2" *ngIf="isDivVisible"><i class="fas fa-edit"></i> Update Profile</button>
+                    <button type="button" class="btn btn-danger mb-2" (click)="logout()"><i class="fas fa-sign-out-alt"></i> LogOut</button>
+                    <button type="button" class="btn btn-danger mb-2" (click)="deleteAccount()"><i class="fas fa-trash-alt"></i> Delete A/c</button>
+                </div>
+            </div>
+        </form>
+    </div>
+</div>
+    

@@ -1,0 +1,302 @@
+<!-- <div class="product-details">
+    <a routerLink="/user/cart" class="btn btn-primary">Add to Cart</a>
+    <a routerLink="/user/shop" class="btn btn-primary">Back to Shop</a>
+</div> -->
+
+<div class="container-fluid">
+    <div class="col-md-12">
+        <div class="row">
+
+            <!-- Main Image & Thumbnails -->
+            <div class="col-md-5 pl-4 position-relative mt-2">
+
+                <!-- Main Large Image -->
+                <div class="main-image-container">
+                    <a [href]="'http://localhost:1000/uploads/' + selectedImage" target="_blank">
+                        <img [src]="'http://localhost:1000/uploads/' + selectedImage" alt="Product Image"
+                            class="img-fluid big-image" (mousemove)="onMouseMove($event)" (mouseenter)="onMouseEnter()"
+                            (mouseleave)="onMouseLeave()">
+                    </a>
+                </div>
+
+                <!-- small Images (Scrollable) -->
+                <div class="thumbnail-images">
+                    <img *ngFor="let image of images" [src]="'http://localhost:1000/uploads/' + image"
+                        [class.active]="selectedImage === image" class="img-thumbnail small-image"
+                        (click)="changeImage(image)">
+                </div>
+
+            </div>
+
+            <!-- Product Details -->
+            <div class="col-md-6 mt-3" *ngIf="!showZoom">
+                <h1 class="text-dark">{{ product.product_name }}</h1>
+                <div class="row">
+                    <h5 class="text-success ml-2 mt-1">-{{ discount }}% off</h5>
+                    <h4 class="text-dark ml-2"> {{ product_price | currency: 'INR':true:'1.0-0' }} /-</h4>
+                </div>
+                <p> M.R.P. : <del> ₹{{ product.duplicate_price }} </del></p>
+                <div class="badge bg-primary">Trending</div>
+                <p>Inclusive of all taxes</p>
+                <p>Product Dimension : {{product.product_size}}</p>
+                <div class="row d-flex align-items-center">
+                    <div class="col-auto">Product Color:</div>
+                    <div class="col-auto"
+                        [ngStyle]="{ 'height':'18px', 'width':'50px', 'background-color': product.product_color, 'border': '1px solid #000' }">
+                    </div>
+                </div>
+                <p [innerHTML]="product_details"></p>
+                <div *ngIf="gotocart">
+                    <button routerLink="/user/cart" class="btn btn-warning">
+                        <i class="fas fa-shopping-cart"></i> Go to Cart
+                    </button>
+                </div>
+
+                <div *ngIf="!gotocart">
+                    <button (click)="addToCart(product.product_id)" class="btn btn-warning">
+                        <i class="fas fa-shopping-cart"></i> Add to Cart
+                    </button>
+                </div>
+            </div>
+
+            <!-- Zoom Preview Section (bg-warning div) -->
+            <div class="col-md-7 preview-container" *ngIf="isDesktop && showZoom">
+                <div class="zoom-preview" *ngIf="showZoom" [ngStyle]="{'background-image': 'url(http://localhost:1000/uploads/' + selectedImage + ')', 
+                    'background-position': backgroundPosX + ' ' + backgroundPosY}">
+                </div>
+            </div>
+
+        </div>
+    </div>
+</div>
+
+<div class="col-md-12 p-4 mb-5">
+    <div class="row">
+        <div class="col-md-6">
+            <h4 style="color: #C60;"> Product Information </h4>
+            <table class="table">
+                <tbody>
+                    <tr class="bg-light">
+                        <th class="bg-light p-3 w-25">Brand</th>
+                        <td class="bg-white p-3">{{product.product_brand}}</td>
+                    </tr>
+                    <tr class="bg-light">
+                        <th class="bg-light p-3 w-25">Product Weight</th>
+                        <td class="bg-white p-3">{{product.product_weight}}</td>
+                    </tr>
+                    <tr class="bg-light">
+                        <th class="bg-light p-3 w-25">Product Pattern</th>
+                        <td class="bg-white p-3">{{product.product_pattern}}</td>
+                    </tr>
+                    <tr class="bg-light">
+                        <th class="bg-light p-3 w-25">Product No. of Pieces</th>
+                        <td class="bg-white p-3">{{product.no_of_pieces}}</td>
+                    </tr>
+                    <tr class="bg-light">
+                        <th class="bg-light p-3 w-25">Product Material</th>
+                        <td class="bg-white p-3">{{product.product_material}}</td>
+                    </tr>
+                    <tr class="bg-light">
+                        <th class="bg-light p-3 w-25">Product Warranty</th>
+                        <td class="bg-white p-3">{{product.product_warranty}}</td>
+                    </tr>
+                    <tr class="bg-light">
+                        <th class="bg-light p-3 w-25">Product Origin</th>
+                        <td class="bg-white p-3">{{product.product_origin}}</td>
+                    </tr>
+                    <tr class="bg-light">
+                        <th class="bg-light p-3 w-25">Product Instruction</th>
+                        <td class="bg-white p-3">{{product.product_care_instructions}}</td>
+                    </tr>
+                    <tr class="bg-light">
+                        <th class="bg-light p-3 w-25">Product Details</th>
+                        <td class="bg-white p-3" [innerHTML]="additional_details"></td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+        <div class="col-md-6">
+            <h2 class="text-dark"> Details </h2>
+            <div class="image-collage">
+                <a [href]="'http://localhost:1000/uploads/' + images[0]" target="_blank">
+                    <img [src]="'http://localhost:1000/uploads/' + images[0]" class="small-img"
+                        data-fslightbox="mygalley" class="rounded-4" target="_blank" data-type="image">
+                </a>
+                <a [href]="'http://localhost:1000/uploads/' + images[1]" target="_blank">
+                    <img *ngIf="images[1]" [src]="'http://localhost:1000/uploads/' + images[1]" class="large-img">
+                </a>
+                <a [href]="'http://localhost:1000/uploads/' + images[2]" target="_blank">
+                    <img *ngIf="images[2]" [src]="'http://localhost:1000/uploads/' + images[2]" class="small-img">
+                </a>
+            </div>
+
+        </div>
+    </div>
+    <hr>
+    <div class="col-md-12 mb-5">
+        <div class="row">
+            <div class="col-md-4">
+                <h4>Customer reviews</h4>
+                <p class="ml-5">Rating:
+                    <span *ngFor="let star of [1,2,3,4,5]; let i = index">
+                        <i [ngClass]="i < rating ? 'fas fa-star text-warning' : 'far fa-star text-secondary'"></i>
+                    </span> 4 out of 5
+                </p>
+            </div>
+            <div class="col-md-6">
+
+                <h4> Add Review
+                    <button *ngIf="!check_is_login" routerLink="/user/login" class="btn btn-warning"> Login Now
+                    </button>
+                    <button *ngIf="check_is_login" (click)="showReviewForm()" class="btn btn-warning">
+                        <div *ngIf="!addReview">Add Review</div>
+                        <div *ngIf="addReview"><i class="fas fa-close"></i></div>
+                    </button>
+                </h4>
+
+                <div class="col-md-12">
+                    <div *ngIf="successMessage" class="alert alert-success alert-dismissible fade show mt-2"
+                        role="alert">
+                        <i class="fas fa-check-circle"></i> {{ successMessage }}
+                    </div>
+
+                    <!-- Error Message Alert -->
+                    <div *ngIf="errorMessage" class="alert alert-danger alert-dismissible fade show mt-2" role="alert">
+                        <i class="fas fa-exclamation-circle"></i> {{ errorMessage }}
+                    </div>
+                </div>
+
+                <div *ngIf="addReview">
+                    <div *ngIf="check_is_login">
+                        <form (ngSubmit)="saveReview()">
+                            <div class="col-md-12 bg-light">
+                                <div class="row">
+                                    <!-- Rating -->
+                                    <div class="col-md-6">
+                                        <label for="rating">Rating:</label>
+                                        <select class="form-control" id="rating" name="rating"
+                                            [(ngModel)]="formData.rating">
+                                            <option value="1">1</option>
+                                            <option value="2">2</option>
+                                            <option value="3">3</option>
+                                            <option value="4">4</option>
+                                            <option value="5">5</option>
+                                        </select>
+                                    </div>
+
+                                    <!-- Country -->
+                                    <div class="col-md-6">
+                                        <label for="country">Country:</label>
+                                        <input type="text" class="form-control" id="country" name="country"
+                                            [(ngModel)]="formData.country">
+                                    </div>
+
+                                    <!-- Heading -->
+                                    <div class="col-md-6">
+                                        <label for="heading">Heading:</label>
+                                        <input type="text" class="form-control" id="heading" name="heading"
+                                            [(ngModel)]="formData.heading">
+                                    </div>
+
+                                    <!-- Image Upload -->
+                                    <div class="col-md-6">
+                                        <label for="file">Images:</label>
+                                        <input type="file" class="form-control" name="review_img"
+                                            (change)="getImages($event)" multiple>
+                                    </div>
+
+                                    <!-- Comment -->
+                                    <div class="col-md-12">
+                                        <label for="comment">Comment:</label>
+                                        <textarea class="form-control" id="comment" rows="2" name="comment"
+                                            [(ngModel)]="formData.comment"></textarea>
+                                    </div>
+
+                                    <!-- Submit Button -->
+                                    <div class="col-md-12 text-center mt-3">
+                                        <button type="submit" class="btn btn-warning">Submit</button>
+                                    </div>
+                                </div>
+                            </div>
+                        </form>
+
+                    </div>
+                </div>
+
+
+                <!-- Start Review  Section -->
+                <h4>Top Reviews</h4>
+
+                <div *ngIf="topReviewsDisplay">
+                    <div *ngFor="let review of topReviews" class="review-container p-3 border rounded mb-3">
+                        <!-- User Profile -->
+                        <div class="d-flex align-items-center mb-2">
+                            <img [src]="'http://localhost:1000/uploads/' + review.user_profile" alt="User Profile"
+                                class="rounded-circle border" style="height: 40px; width: 40px; margin-right: 10px;">
+                            <strong>{{ review.user_name }}</strong>
+                        </div>
+
+                        <!-- Star Ratings -->
+                        <div class="mb-1">
+                            <span *ngFor="let star of [1,2,3,4,5]">
+                                <i
+                                    [ngClass]="star <= review.rating ? 'fas fa-star text-warning' : 'far fa-star text-secondary'"></i>
+                            </span>
+                        </div>
+
+                        <b class="text-dark">{{ review.heading }}</b>
+                        <p class="text-muted">Reviewed in {{ review.country }} on {{ review.created_at |
+                            date:'mediumDate'
+                            }}</p>
+
+                        <p>{{ review.comment }}</p>
+                        <div *ngIf="review.reviewImages.length > 0" class="review-images d-flex flex-wrap">
+                            <img *ngFor="let img of review.reviewImages" [src]="'http://localhost:1000/uploads/' + img"
+                                class="img-thumbnail m-1" alt="Review Image" width="100">
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-12">
+                    <b *ngIf="topReviewsDisplay">
+                        <button (click)="showAllReviews()" class="text-primary btn-white-outline"> <b
+                                *ngIf="topReviewsDisplay">See more reviews..</b></button>
+                    </b>
+                    <div *ngIf="!topReviewsDisplay">
+                        <button (click)="showAllReviews()" class="text-primary btn-white-outline"> <b>See Top
+                                reviews..</b></button>
+
+                        <div *ngFor="let review of allReviews" class="review-container p-3 border rounded mb-3">
+                            <!-- User Profile -->
+                            <div class="d-flex align-items-center mb-2">
+                                <img [src]="'http://localhost:1000/uploads/' + review.user_profile" alt="User Profile"
+                                    class="rounded-circle border"
+                                    style="height: 40px; width: 40px; margin-right: 10px;">
+                                <strong>{{ review.user_name }}</strong>
+                            </div>
+
+                            <!-- Star Ratings -->
+                            <div class="mb-1">
+                                <span *ngFor="let star of [1,2,3,4,5]">
+                                    <i
+                                        [ngClass]="star <= review.rating ? 'fas fa-star text-warning' : 'far fa-star text-secondary'"></i>
+                                </span>
+                            </div>
+
+                            <b class="text-dark">{{ review.heading }}</b>
+                            <p class="text-muted">Reviewed in {{ review.country }} on {{ review.created_at |
+                                date:'mediumDate'
+                                }}</p>
+
+                            <p>{{ review.comment }}</p>
+                            <div *ngIf="review.reviewImages.length > 0" class="review-images d-flex flex-wrap">
+                                <img *ngFor="let img of review.reviewImages"
+                                    [src]="'http://localhost:1000/uploads/' + img" class="img-thumbnail m-1"
+                                    alt="Review Image" width="100">
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

@@ -1,0 +1,186 @@
+
+
+<!-- Start Hero Section -->
+<div class="hero">
+    <div class="container">
+        <div class="row justify-content-between">
+            <div class="col-lg-5">
+                <div class="intro-excerpt">
+                    <h1> Checkout</h1>
+                </div>
+            </div>
+            <div class="col-lg-7"></div>
+        </div>
+    </div>
+</div>
+<!-- End Hero Section -->
+
+
+<div class="untree_co-section">
+    <form [formGroup]="checkoutForm" (ngSubmit)="placeOrder()">
+        <div class="container">
+            <div class="row">
+                <div class="col-md-6 mb-5 mb-md-0">
+                    <h2 class="h3 mb-3 text-black">🏠 Billing Details</h2>
+                    <div class="p-3 p-lg-5 border bg-white">
+                        <div class="form-group">
+                            <label for="c_country" class="text-black">Country <span class="text-danger">*</span></label>
+                            <select id="c_country" class="form-control" formControlName="c_country">
+                                <option value="" disabled selected>Select a country</option>
+                                <option value="India">India</option>
+                                <option value="Bangladesh">Bangladesh</option>
+                                <option value="USA">USA</option>
+                                <option value="Canada">Canada</option>
+                                <option value="UK">UK</option>
+                                <option value="Australia">Australia</option>
+                                <option value="Japan">Japan</option>
+                            </select>
+                        </div>
+                        
+                        <div class="form-group row">
+                            <div class="col-md-6">
+                                <label class="text-black">First Name <span class="text-danger">*</span></label>
+                                <input type="text" class="form-control" formControlName="c_fname" placeholder="First Name...">
+                            </div>
+                            <div class="col-md-6">
+                                <label class="text-black">Last Name <span class="text-danger">*</span></label>
+                                <input type="text" class="form-control" formControlName="c_lname" placeholder="Last Name...">
+                            </div>
+                        </div>
+
+                        <div class="form-group">
+                            <label class="text-black">Address <span class="text-danger">*</span></label>
+                            <input type="text" class="form-control" formControlName="c_address" placeholder="Street address">
+                        </div>
+
+                        <div class="form-group mt-3">
+                            <input type="text" class="form-control" formControlName="c_area" placeholder="Apartment, suite, unit etc. (optional)">
+                        </div>
+
+                        <div class="form-group row">
+                            <div class="col-md-6">
+                                <label class="text-black">State <span class="text-danger">*</span></label>
+                                <input type="text" class="form-control" formControlName="c_state" placeholder="State...">
+                            </div>
+                            <div class="col-md-6">
+                                <label class="text-black">Postal / Zip Code <span class="text-danger">*</span></label>
+                                <input type="text" class="form-control" formControlName="c_postal_zip" placeholder="Pin Code...">
+                            </div>
+                        </div>
+
+                        <div class="form-group row">
+                            <div class="col-md-6">
+                                <label class="text-black">Email Address <span class="text-danger">*</span></label>
+                                <input type="email" class="form-control" formControlName="c_email" placeholder="Email">
+                            </div>
+                            <div class="col-md-6">
+                                <label class="text-black">Phone <span class="text-danger">*</span></label>
+                                <input type="tel" class="form-control" formControlName="c_phone" placeholder="Phone Number">
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="col-md-6">
+                    <h2 class="h3 mb-3 text-black"> 🛒 Your Order</h2>
+                    <div class="p-3 p-lg-5 border bg-white">
+                        <table class="table">
+                            <thead>
+                                <tr>
+                                    <th>Product</th>
+                                    <th>Total</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr *ngFor="let item of cartProducts">
+                                    <td>
+                                        <div class="col-md-12">
+                                            <div class="row">
+                                                <div class="col-md-10">
+                                                    {{ item.product_name }}
+                                                </div>
+                                                <div class="col-md-1">
+                                                    <strong>x</strong>
+                                                </div>
+                                                <div class="col-md-1">
+                                                    {{ item.qty }}
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </td>
+                                    <td>&#8377; {{ item.product_price * item.qty }}</td>
+                                </tr>
+                                <tr>
+                                    <td class="text-black font-weight-bold">Cart Subtotal</td>
+                                    <td class="text-black">&#8377; {{ subtotal }}</td>
+                                </tr>
+                                <tr>
+                                    <td class="text-black font-weight-bold">GST (12%)</td>
+                                    <td class="text-black">&#8377; {{ gst }}</td>
+                                </tr>
+                                <tr>
+                                    <td class="text-black font-weight-bold">Discount (20%)</td>
+                                    <td class="text-black">&#8377; {{ discount }}</td>
+                                </tr>
+                                <tr>
+                                    <td class="text-black font-weight-bold">Order Total</td>
+                                    <td class="text-black font-weight-bold mr-1">&#8377; {{ total }}/- <span class="ml-1"></span></td>
+                                </tr>
+                            </tbody>
+                        </table>
+
+                        <div class="form-group">
+                            <label class="d-block fw-bold mb-3">Select Payment Method:</label>
+                        
+                            <div class="row">
+                                <div class="col-md-6">
+                                    <label class="payment-card p-4 rounded shadow-sm d-flex align-items-center" [class.active]="checkoutForm.get('payment_mode')?.value === 'cod'">
+                                        <input type="radio" formControlName="payment_mode" value="cod" class="d-none">
+                                        <i class="fas fa-money-bill-wave fa-2x text-success me-3"></i>
+                                        <div>
+                                            <h6 class="fw-bold mb-0">Cash On Delivery</h6>
+                                            <small class="text-muted">Pay when you receive the product.</small>
+                                        </div>
+                                        <span class="checkmark"><i class="fas fa-check-circle"></i></span>
+                                    </label>
+                                </div>
+                        
+                                <div class="col-md-6">
+                                    <label class="payment-card p-4 rounded shadow-sm d-flex align-items-center" [class.active]="checkoutForm.get('payment_mode')?.value === 'online'">
+                                        <input type="radio" formControlName="payment_mode" value="online" class="d-none">
+                                        <i class="fas fa-credit-card fa-2x text-primary me-3"></i>
+                                        <div>
+                                            <h6 class="fw-bold mb-0">Online Payment</h6>
+                                            <small class="text-muted">Pay via Credit Card, UPI, or Net Banking.</small>
+                                        </div>
+                                        <span class="checkmark"><i class="fas fa-check-circle"></i></span>
+                                    </label>
+                                </div>
+                            </div>
+                        </div>
+                        
+
+                        <div class="form-group">
+                            <div class="col-md-12">
+                                <div class="row">
+                                    <div class="col-md-4">
+                                        <button class="btn btn-danger btn-lg btn-block" type="submit">
+                                            <i class="fas fa-shopping-bag me-2"></i>Place Order
+                                        </button>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </form>
+</div>
+
+
+
+
+
+
+

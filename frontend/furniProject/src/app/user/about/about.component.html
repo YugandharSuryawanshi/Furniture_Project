@@ -1,0 +1,147 @@
+<!-- Start Hero Section -->
+<div class="hero">
+    <div class="container">
+        <div class="row justify-content-between">
+            <div class="col-lg-5">
+                <div class="intro-excerpt">
+                    <h1>About Us</h1>
+                    <p class="mb-4">
+                        {{about.heading}}
+                    </p>
+                    <p>
+                        <a routerLink='/user/shop' class="btn btn-secondary me-2">Shop Now</a>
+                        <a (click)="showmsg()" class="btn btn-white-outline">Explore</a>
+                    </p>
+                </div>
+            </div>
+            <div class="col-lg-7">
+                <div class="hero-img-wrap">
+                    <img src="images/couch.png" class="img-fluid">
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<!-- End Hero Section -->
+
+
+<!-- Start Why Choose Us Section -->
+<div class="why-choose-section container-fluid p-5">
+    <div class="col-md-12">
+        <div class="row justify-content-between">
+            <div class="col-lg-6">
+                <h2 class="section-title">Why Choose Us</h2>
+                <p>
+                    {{about.heading}}
+                </p>
+
+                <div class="row my-5">
+                    <!-- <% for(var i=0; i<aboutpoint.length;i++) { %> -->
+                    <div class="col-6 col-md-6" *ngFor="let about_point of about_points let i = index">
+                        <div class="feature">
+                            <div class="icon">
+                                <img [src]="'http://localhost:1000/uploads/' + about_point.why_choose_points_img"
+                                    alt="Image" class="imf-fluid">
+                            </div>
+                            <h3>{{about_point.why_choose_points_name}}</h3>
+                            <p>{{about_point.why_choose_points_details}}</p>
+                        </div>
+                    </div>
+                    <!-- <% } %> -->
+
+                </div>
+            </div>
+
+            <div class="col-lg-5">
+                <div class="img-wrap">
+                    <img [src]="about_image" alt="Image" class="img-fluid">
+                </div>
+            </div>
+
+        </div>
+    </div>
+</div>
+<!-- End Why Choose Us Section -->
+
+<!-- Start Team Section -->
+<div class="untree_co-section">
+    <div class="container">
+
+        <div class="row mb-5">
+            <div class="col-lg-5 mx-auto text-center">
+                <h2 class="section-title">Our Team</h2>
+            </div>
+        </div>
+
+        <div class="row">
+            <!-- Start Column 1 -->
+            <div class="col-12 col-md-6 col-lg-3 mt-3 mb-5 mb-md-0" *ngFor="let member of team">
+                <img [src]="'http://localhost:1000/uploads/' + member.member_image" class="img-fluid mb-5"
+                    style="height: 400px;">
+                <h3><a routerLink="#">{{ member.member_name }}</a></h3>
+                <span class="d-block position mb-4">{{ member.member_position }}</span>
+                <p>{{ member.member_details }}</p>
+                <p class="mb-0"><a routerLink="" class="more dark">Learn More <span class="icon-arrow_forward"></span></a>
+                </p>
+            </div>
+            <!-- End Column 1 -->
+        </div>
+    </div>
+</div>
+<!-- End Team Section -->
+
+
+<!-- Start Testimonial Slider -->
+<div class="container">
+    <div class="col-lg-7 mx-auto text-center mb-2">
+        <h2 class="section-title">Testimonials</h2>
+    </div>
+    <div id="carouselExample" class="carousel slide" data-bs-ride="carousel">
+        <!-- Indicators/Dots -->
+        <div class="carousel-indicators">
+            <button *ngFor="let slide of testimonial; let i = index" type="button" data-bs-target="#carouselExample"
+                [attr.data-bs-slide-to]="i" [class.active]="i === 0" [attr.aria-label]="'Slide ' + (i + 1)">
+            </button>
+        </div>
+
+        <!-- Carousel Items -->
+        <div class="carousel-inner">
+            <div *ngFor="let slide of testimonial; let i = index" class="carousel-item" [class.active]="i === 0">
+                <div class="row">
+                    <!-- First part: Image Section -->
+                    <div class="col-md-4 d-flex justify-content-center align-items-center">
+                        <img [src]="'http://localhost:1000/uploads/' + slide.customer_image" alt="Image"
+                            class="rounded-circle" style="width: 250px; height: 250px;">
+                    </div>
+
+                    <!-- Second part: Heading Section -->
+                    <div class="col-md-8 d-flex justify-content-center align-items-center">
+                        <div class="col-md-12">
+                            <h3 class="text-center text-dark">{{ slide.customer_name }}</h3>
+                            <h3 class="text-center">{{ slide.customer_position }}</h3>
+                            <p class="text-center">{{ slide.customer_massage }}</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Carousel Controls -->
+        <button class="carousel-control-prev" type="button" data-bs-target="#carouselExample" data-bs-slide="prev">
+            <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+            <span class="visually-hidden"></span>
+        </button>
+        <button class="carousel-control-next" type="button" data-bs-target="#carouselExample" data-bs-slide="next">
+            <span class="carousel-control-next-icon" aria-hidden="true"></span>
+            <span class="visually-hidden"></span>
+        </button>
+    </div>
+</div>
+
+<!-- END item -->
+<!-- End Testimonial Slider -->
+
+
+
+<br><br><br><br><br>
+<br><br><br><br><br>

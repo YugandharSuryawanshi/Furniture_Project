@@ -1,0 +1,121 @@
+
+<div class="container mt-4">
+    <h3 class="mb-4">🛍️ My Orders</h3>
+    <div class="col-md-12 text-center" *ngIf="orders.length == 0">
+        <h3>Your Order History are Empty</h3>
+        <h4>
+            <a routerLink="/user/shop">
+                <button class="btn btn-warning">Order Now</button>
+            </a>
+        </h4>
+    </div>
+    <div class="row">
+        <div class="col-md-4 mb-1 mt-2" *ngFor="let order of orders; let i = index;">
+            <div class="card shadow border">
+                <div class="card-header text-dark fw-bold text-center py-2" [ngStyle]="{
+                            'background-color': order.order_status === 'Confirmed' ? 'green' :
+                                                order.order_status === 'Pending' ? 'orange' :
+                                                order.order_status === 'Delivered' ? 'hotpink' :
+                                                order.order_status === 'Rejected' ?'red' :
+                                                order.order_status === 'Cancelled' ? 'yellow' : 'hotpink'
+                        }">
+                    {{ order.order_status }} Order
+                    <span *ngIf="order.order_status !== 'Delivered'">
+                        <a class="float-end" [routerLink]="['/user/print_receipt/',order.order_id]" style="text-decoration: none;">
+                            <button class="btn btn-success btn-sm fw-bold">
+                                <i class="fas fa-receipt"></i> Get Receipt
+                            </button>
+                        </a>
+                    </span>
+                </div>
+
+                <div class="card-body">
+
+                    <div class="p-2">
+                        <strong>#FURNI{{ i + 1 }}</strong>
+                        <span class="float-end">{{ order.order_date | date:'dd/MM/yyyy' }}</span><br>
+                        <strong class="text-success">&#8377;{{ order.total_amt | number: '1.0-0' }}</strong>
+                        <span class="float-end">Payment: {{ order.payment_status }}</span>
+                    </div>
+
+                    <div class="d-flex justify-content-between mt-3">
+                        <button class="btn btn-warning btn-sm"
+                            (click)="openTrackingModal(order.order_id, order.order_status)">
+                            <i class="fas fa-truck"></i> Track Order
+                        </button>
+                        <span *ngIf="order.order_status !=='Delivered'">
+                            <button *ngIf="order.order_status === 'Pending' || order.order_status === 'Confirmed'"
+                            class="btn btn-danger btn-sm" (click)="cancelOrder(order.order_id)">
+                            <i class="fas fa-times"></i> Cancel Order
+                        </button>
+                        </span>
+                        <span *ngIf="order.order_status === 'Delivered'">
+                            <a [routerLink]="['/user/print_receipt/',order.order_id]" style="text-decoration: none;">
+                                <button class="btn btn-success btn-sm" disabled>Print Receipt</button>
+                            </a>
+                        </span>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+
+<!-- Order Tracking Model shown -->
+<div class="tracking-modal" *ngIf="showTracking">
+    <div class="tracking-content">
+        <button class="close-btn" (click)="closeTrackingModal()">❌</button>
+        <h4 class="text-center mb-4">📦 Order Tracking</h4>
+
+        <div class="tracking-steps">
+            <div *ngFor="let step of trackingSteps" class="tracking-step"
+                [class.active]="trackingProgress >= step.progress">
+                <div class="step-icon">
+                    <i [class]="step.icon"></i>
+                </div>
+                <p>{{ step.label }}</p>
+            </div>
+        </div>
+
+        <!-- Progress Bar -->
+        <div class="progress-container">
+            <div class="progress-path"></div>
+            <div class="progress-filled" [style.width]="trackingProgress + '%'"></div>
+            <div class="progress-marker" [style.left]="trackingProgress + '%'">
+                <i class="fas fa-truck-moving"></i>
+            </div>
+        </div>
+
+        <p class="text-center mt-3 tracking-status">Your Order current Status <b>{{ trackingStatus }}</b></p>
+
+    </div>
+</div>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<br><br><br><br><br><br><br><br><br><br>

@@ -1,0 +1,48 @@
+<div class="container-fluid">
+    <div class="col-md-12 bg-light p-3">
+        <form (submit)="saveBlog()" enctype="multipart/form-data">
+            <div class="row text-center ">
+                <div class="col-md-11 mt-2 mb-1">
+                    <h3 class="fw-bold p-2">Blog</h3>
+                </div>
+                <div class="col-md-1">
+                    <button class="btn btn-danger mb-2" routerLink="/admin/blog_list"><i class="fa fa-list fw-bold"></i> Blog List</button>
+                </div>
+                <div class="col-md-4 mb-4">
+                    Enter Blog Title
+                    <input type="text" class="text-center form-control" name="blog_title" [(ngModel)]="formData.blog_title">
+                </div>
+                <div class="col-md-4 mb-4">
+                    Enter Blog Date
+                    <input type="date" class="text-center form-control" name="blog_post_date" [(ngModel)]="formData.blog_post_date">
+                </div>
+                <div class="col-md-4 mb-4">
+                    Enter Blog Time
+                    <input type="time" class="text-center form-control" name="blog_post_time" [(ngModel)]="formData.blog_post_time">
+                </div>
+                <div class="col-md-4 mb-4">
+                    Enter Blog Post By
+                    <input type="text" class="text-center form-control" name="blog_post_by" [(ngModel)]="formData.blog_post_by">
+                </div>
+                <div class="col-md-4 mb-4">
+                    Enter Blog Post By Position
+                    <input type="text" class="text-center form-control" name="blog_post_by_position"  class="form-control" [(ngModel)]="formData.blog_post_by_position">
+                </div>
+                <div class="col-md-4 mb-4">
+                    Enter Blog Image
+                    <input type="file" class="text-center form-control" name="blog_image" (change)="getImage($event)">
+                </div>
+                <div class="col-md-12 mb-4">
+                    <button class="btn btn-warning">Add Blog</button>
+                </div>
+            </div>
+        </form>
+    </div>
+</div>
+<!-- Success and Error Messages -->
+<div *ngIf="successMessage" class="alert alert-success mt-3">
+    {{ successMessage }}
+</div>
+<div *ngIf="errorMessage" class="alert alert-danger mt-3">
+    {{ errorMessage }}
+</div>

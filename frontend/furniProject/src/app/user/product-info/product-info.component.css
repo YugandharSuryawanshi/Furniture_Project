@@ -1,0 +1,93 @@
+/* Thumbnail Images (Horizontal Scroll) */
+.thumbnail-images {
+    display: flex;
+    flex-direction: row;
+    gap: 10px;
+    max-width: 100%;
+    overflow-x: auto;
+    overflow-y: hidden;
+    padding: 10px 0;
+    scrollbar-width: thin;
+}
+
+.thumbnail-images img {
+    width: 60px;
+    height: 60px;
+    object-fit: cover;
+    border: 2px solid transparent;
+    cursor: pointer;
+    transition: border-color 0.3s;
+}
+
+.thumbnail-images img.active {
+    border-color: #ff8000;
+}
+
+.thumbnail-images img:hover {
+    border-color: #007bff;
+}
+
+/* Main Image */
+.main-image-container {
+    position: relative;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.big-image {
+    max-width: 100%;
+    height: auto;
+    border: 2px solid #ccc;
+    border-radius: 8px;
+}
+
+/* Zoom Preview Section */
+.preview-container {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    height: 510px; /* Set height for preview */
+    border-radius: 8px;
+}
+
+/* Zoom Preview (Inside bg-warning div) */
+.zoom-preview {
+    width: 100%; /* Adjust as needed */
+    height: 500px; /* Adjust as needed */
+    border: 2px;
+    border-radius: 8px;
+    background-size: 350%;
+    background-repeat: no-repeat;
+}
+
+/* Hide Zoom Preview on Mobile */
+@media screen and (max-width: 768px) {
+    .preview-container {
+        display: none;
+    }
+}
+
+
+
+.image-collage {
+    display: grid;
+    grid-template-columns: 1fr 2fr 1fr; /* Middle image is twice the size */
+    gap: 10px;
+    width: 100%;
+}
+
+.image-collage img {
+    width: 100%;
+    height: auto;
+    object-fit: cover;
+    border-radius: 10px;
+}
+
+.small-img {
+    height: 150px; /* Smaller images */
+}
+
+.large-img {
+    height: 300px; /* Bigger middle image */
+}

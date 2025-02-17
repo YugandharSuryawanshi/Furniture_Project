@@ -1,0 +1,30 @@
+# Node.js dependencies (Angular)
+node_modules/
+package-lock.json
+npm-debug.log
+
+# Angular build files
+.angular/
+dist/
+
+# IDE/Editor-specific files
+.vscode/
+.idea/
+
+# OS-specific files
+.DS_Store
+Thumbs.db
+
+# TypeScript compiler and test files
+*.tsbuildinfo
+*.tsconfig.tsbuildinfo
+
+# Logs
+logs/
+*.log
+
+# Environment files (if any)
+src/environments/*.ts
+
+# Temporary files
+tmp/

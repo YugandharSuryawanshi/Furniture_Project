@@ -1,0 +1,28 @@
+# Node.js dependencies
+node_modules/
+package-lock.json
+npm-debug.log
+
+# Logs
+logs/
+*.log
+debug.log
+error.log
+
+# Environment files (sensitive data like database credentials)
+.env
+
+# Temporary files
+tmp/
+*.bak
+
+# Operating system files
+.DS_Store
+Thumbs.db
+
+# IDE/Editor-specific files
+.vscode/
+.idea/
+
+# Other files to ignore (if any)
+*.log

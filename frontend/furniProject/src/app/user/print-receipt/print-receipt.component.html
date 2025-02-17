@@ -1,0 +1,124 @@
+
+
+<div class="container mt-4">
+    <div class="card shadow-lg">
+        <div class="card-header">
+            <div class="row">
+                <div class="col-8">
+                    <h3>Invoice #{{ orderDetails.order_id }}</h3>
+                </div>
+                <div class="col-4 text-right">
+                    <strong>Order Status:</strong> {{ orderDetails.order_status }} <br>
+                    <span *ngIf="!orderDetails.transaction_id">
+                        <strong>Payment Mode : </strong> {{orderDetails.payment_mode}}  <br>
+                    </span>
+                    <strong *ngIf="orderDetails.transaction_id"> Transaction ID : </strong> {{orderDetails.transaction_id}}
+                </div>
+            </div>
+            <div>
+                <strong>{{ orderDetails.order_date | date:'dd/MM/yyyy HH:mm' }}</strong>
+            </div>
+        </div>
+        
+        <div class="card-body" *ngIf="orderDetails">
+            <div class="row mb-4">
+                <div class="col-sm-8">
+                    <h6 class="mb-3">From:</h6>
+                    <strong>FurniStore Pvt. Ltd.</strong>
+                    <div>Chhtrapati Shivaji Nagar</div>
+                    <div>Pune - 411012, India</div>
+                    <div>Email: supportfurnistore&#64;gmail.com</div>
+                    <div>Phone: +91 93590 87XXX</div>
+                </div>
+                
+                <div class="col-sm-4">
+                    <h6 class="mb-3">To:</h6>
+                    <strong>{{ orderDetails.c_fname }} {{ orderDetails.c_lname }}</strong>
+                    <div>{{ orderDetails.c_address }}</div>
+                    <div>{{ orderDetails.c_state }} - {{ orderDetails.c_postal_zip }}</div>
+                    <div>Email: {{ orderDetails.c_email_address }}</div>
+                    <div>Phone: {{ orderDetails.c_phone }}</div>
+                </div>
+            </div>
+            
+            <div class="table-responsive-sm">
+                <table class="table table-striped">
+                    <thead>
+                        <tr>
+                            <th>Sr.no</th>
+                            <th>Item</th>
+                            <th>Price</th>
+                            <th>Qty</th>
+                            <th>Total</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr *ngFor="let item of orderDetails.items; let i = index">
+                            <td>{{ i + 1 }}</td>
+                            <td>{{ item.product_name }}</td>
+                            <td>&#8377;{{ item.product_price }}</td>
+                            <td>{{ item.product_qty }}</td>
+                            <td>&#8377;{{ item.product_qty * item.product_price }}</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+            
+            <div class="row">
+                <div class=" mt-2 col-lg-4 col-sm-5">
+                    <div>Payment Status: {{ orderDetails.payment_status }}</div>
+                    <div>Shipping Method: Free Shipping</div>
+                    
+                </div>
+                <div class="mt-2 col-lg-4 col-sm-5 ms-auto">
+                    <table class="table">
+                        <tbody>
+                            <tr>
+                                <td><strong>Subtotal</strong></td>
+                                <td>&#8377; {{ subtotal | number:'1.0-0' }}</td>
+                            </tr>
+                            <tr>
+                                <td><strong>GST (12%)</strong></td>
+                                <td>&#8377; {{ gst | number:'1.0-0' }}</td>
+                            </tr>
+                            <tr>
+                                <td><strong>Discount (20%)</strong></td>
+                                <td>&#8377; {{ discount | number:'1.0-0' }}</td>
+                            </tr>
+                            <tr>
+                                <td><strong>Total</strong></td>
+                                <td><strong>&#8377; {{ total_amt | number:'1.0-0' }} /-</strong></td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+            
+            <div class="text-center mt-4">
+                <button class="btn btn-primary no-print" (click)="printReceipt()">🖨️ Print Receipt</button>
+            </div>
+
+            <div class="text-center mt-4">
+                <small>Return Policy | Terms & Conditions | Follow us on Social Media</small><br>
+            </div>
+            <small class="float-end">Thank you For Visiting Our Website.. </small>
+        </div>
+    </div>
+</div>
+
+
+
+<br><br><br><br><br><br><br><br><br>
+
+
+
+
+
+
+
+
+
+
+
+
+

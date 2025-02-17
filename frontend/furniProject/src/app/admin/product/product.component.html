@@ -1,0 +1,157 @@
+<form (ngSubmit)="saveProduct()">
+    <div class="container-fluid p-4 bg-light">
+        <h2 class="text-center fw-bold mb-3" style="color: black;">Add New Product</h2>
+        <div class="row">
+            <div class="col-md-3 mb-3">
+                <label for="productType">Select Type</label>
+                <select name="product_type_id" class="form-control" required [(ngModel)]="formData.product_type_id">
+                    <option value="" disabled selected>Select Type</option>
+                    <option *ngFor="let type of productTypes" [value]="type.product_type_id">
+                        {{ type.product_type_name }}
+                    </option>
+                </select>
+            </div>
+
+            <!-- Product Name -->
+            <div class="col-md-3 mb-3">
+                <label for="productName">Product Name</label>
+                <input type="text" name="product_name" class="form-control" required [(ngModel)]="formData.product_name"  />
+            </div>
+
+            <!-- Product Price -->
+            <div class="col-md-3 mb-3">
+                <label for="productPrice">Product Price</label>
+                <input type="number" name="product_price" class="form-control" required [(ngModel)]="formData.product_price"  />
+            </div>
+
+            <!-- Duplicate Price -->
+            <div class="col-md-3 mb-3">
+                <label for="duplicatePrice">Duplicate Price</label>
+                <input type="number" name="duplicate_price" class="form-control" required [(ngModel)]="formData.duplicate_price"  />
+            </div>
+
+            <!-- Product Images -->
+            <div class="col-md-3 mb-3">
+                <label for="productImages">Product Images</label>
+                <input type="file" multiple name="product_images" class="form-control"
+                    (change)="onImageSelect($event)" />
+            </div>
+
+            <!-- Product Size -->
+            <div class="col-md-3 mb-3">
+                <label for="productSize">Product Size</label>
+                <input type="text" name="product_size" class="form-control" required [(ngModel)]="formData.product_size"  />
+            </div>
+
+            <!-- Product Color -->
+            <div class="col-md-3 mb-3">
+                <label for="productColor">Product Color</label>
+                <input type="color" name="product_color" class="form-control" [(ngModel)]="formData.product_color" />
+            </div>
+
+            <!-- Product Label -->
+            <div class="col-md-3 mb-3">
+                <label for="productLabel">Product Label</label>
+                <input type="text" name="product_lable" class="form-control" required [(ngModel)]="formData.product_lable"  />
+            </div>
+
+            <!-- Product Details -->
+            <div class="col-md-12 mb-3">
+                <label for="productDetails">Product Details</label>
+                <textarea name="product_details" rows="auto" class="form-control" required [(ngModel)]="formData.product_details" ></textarea>
+            </div>
+
+            <div class="col-md-12 mb-1">
+                <h6 class="text-center fw-bold" style="color: black; letter-spacing: 4px; font-size: 18px;">*Additional Information*</h6>
+            </div>
+
+            <div class="col-md-3 mb-3">
+                <label for="product_brand">Product Brand</label>
+                <input type="text" name="product_brand" class="form-control" [(ngModel)]="formData.product_brand" required  />
+            </div>
+
+            <div class="col-md-3 mb-3">
+                <label for="product_weight">Product Weight <span style="font-size: 11px;">(mention like G , Kg)</span> </label>
+                <input type="text" name="product_weight" class="form-control" [(ngModel)]="formData.product_weight" required  />
+            </div>
+
+            <div class="col-md-3 mb-3">
+                <label for="product_pattern">Product Pattern</label>
+                <input type="text" name="product_pattern" class="form-control" [(ngModel)]="formData.product_pattern" required  />
+            </div>
+
+            <div class="col-md-3 mb-3">
+                <label for="no_of_pieces">Product No of Pieces</label>
+                <input type="number" name="no_of_pieces" class="form-control" [(ngModel)]="formData.no_of_pieces" required  />
+            </div>
+
+            <div class="col-md-3 mb-3">
+                <label for="product_origin">Product Origin</label>
+                <select name="product_origin" class="form-control" [(ngModel)]="formData.product_origin" required>
+                    <option value="" disabled>Select Origin</option>
+                    <option value="India">India</option>
+                    <option value="United States">United States</option>
+                    <option value="Canada">Canada</option>
+                    <option value="United Kingdom">United Kingdom</option>
+                    <option value="Australia">Australia</option>
+                    <option value="Germany">Germany</option>
+                    <option value="France">France</option>
+                    <option value="Japan">Japan</option>
+                    <option value="China">China</option>
+                    <option value="Brazil">Brazil</option>
+                    <option value="South Africa">South Africa</option>
+                    <option value="Italy">Italy</option>
+                    <option value="Spain">Spain</option>
+                    <option value="Mexico">Mexico</option>
+                    <option value="Russia">Russia</option>
+                </select>
+            </div>
+            
+
+            <div class="col-md-4 mb-3">
+                <label for="product_material">Product Material</label>
+                <input type="text" name="product_material" class="form-control" [(ngModel)]="formData.product_material" required  />
+            </div>
+
+            <div class="col-md-5 mb-3">
+                <label for="product_warranty">Product Warranty <span style="font-size: 11px;">(mention in Months , Year)</span></label>
+                <input type="text" name="product_warranty" class="form-control" [(ngModel)]="formData.product_warranty" required  />
+            </div>
+
+            <div class="col-md-6 mb-3">
+                <label for="product_care_instructions">Product Instructions <span style="font-size: 11px;">(mention like How to use/care)</span></label>
+                <input type="text" name="product_care_instructions" class="form-control" [(ngModel)]="formData.product_care_instructions" required  />
+            </div>
+
+            <div class="col-md-6 mb-3">
+                <label for="additional_details">Additional Details about product</label>
+                <textarea name="additional_details" class="form-control" [(ngModel)]="formData.additional_details" required ></textarea>
+            </div>
+
+            <!-- Submit Button -->
+            <div class="col-md-12 mb-3 text-center">
+                <button type="submit" class="btn btn-warning">Save Product</button>
+            </div>
+        </div>
+    </div>
+</form>
+
+
+<!-- Preview Selected Images -->
+<div *ngIf="selectedImagePreviews.length > 0" class="mt-3">
+    <h5>Image Previews:</h5>
+    <div class="row">
+        <div *ngFor="let preview of selectedImagePreviews" class="col-md-3 mb-3">
+            <img [src]="preview" alt="Selected Image" class="img-thumbnail" style="max-width: 100%;" />
+        </div>
+    </div>
+</div>
+
+<!-- Display Success and Error Messages -->
+<div *ngIf="successMessage" class="alert alert-success mt-3">
+    {{ successMessage }}
+</div>
+<div *ngIf="errorMessage" class="alert alert-danger mt-3">
+    {{ errorMessage }}
+</div>
+

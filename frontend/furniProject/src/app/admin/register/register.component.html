@@ -1,0 +1,57 @@
+
+<div class="wrapper d-flex flex-column min-vh-100 bg-light">
+
+
+<div class="container">
+    <div class="row justify-content-center">
+        <div class="col-md-6">
+            <h1 class="text-center mb-3">Registration Form</h1>
+            <div class="border shadow p-4">
+                <form  (ngSubmit)="register()" class="p-2">
+                    <div class="form-group">
+                        <label for="admin_name">User Name:</label>
+                        <input  class="form-control" id="admin_name" [(ngModel)]="admin_name" name="admin_name" required />
+                    </div>
+
+                    <div class="form-group">
+                        <label for="admin_mobile">Mobile No:</label>
+                        <input  class="form-control" id="admin_mobile" [(ngModel)]="admin_mobile" name="admin_mobile" required />
+                    </div>
+
+                    <div class="form-group">
+                        <label for="admin_email">User Email:</label>
+                        <input  class="form-control" id="admin_email" [(ngModel)]="admin_email" name="admin_email" required />
+                    </div>
+
+                    <div class="form-group">
+                        <label for="admin_password">Enter Password:</label>
+                        <input type="password" class="form-control" id="admin_password" [(ngModel)]="admin_password" name="admin_password" required  />
+                    </div>
+
+                    <div class="form-group">
+                        <label for="confirmPassword">Enter Confirm Password:</label>
+                        <input type="password" id="confirmPassword" class="form-control" [(ngModel)]="confirmPassword" name="confirmPassword" required />
+                    </div>
+
+                    <div class="form-group">
+                        <label for="secret_key">Enter Secret Key :</label><span>(Given By Owner)</span>
+                        <input type="password" id="secret_key" class="form-control" [(ngModel)]="secret_key" name="secret_key" required />
+                    </div>
+
+                    <div class="d-flex justify-content-between align-items-center mt-4">
+                        <p style="color: red;" *ngIf="errorMessage" class="error">{{ errorMessage }}</p>
+                        <br>
+                        <button type="submit" class="btn btn-warning">Register Now</button>
+                        <div class="d-flex justify-content-around align-items-center mb-4">
+                            <div class="form-check">
+                                <label class="form-check-label"> Already Registered? </label>
+                                <a routerLink="/admin/login"> Login Now </a>
+                            </div>
+                        </div>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+</div>

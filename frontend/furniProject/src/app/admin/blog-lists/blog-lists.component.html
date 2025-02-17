@@ -1,0 +1,104 @@
+<div class="container-fluid bg-white p-4" *ngIf="showList">
+    <div class="row">
+        <div class="col-md-12 text-center mb-3">
+        </div>
+        <div class="col-md-12">
+            <div class="table-responsive">
+                <table class="table table-bordered table-striped table-hover align-middle text-center">
+                    <thead class="table-dark">
+                        <tr>
+                            <th> Action </th>
+                            <th> Sr. No. </th>
+                            <th> Blog Title </th>
+                            <th> Post By </th>
+                            <th> Position </th>
+                            <th> Image </th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr *ngFor="let data of blogs; let i = index">
+                            <td>
+                                <button (click)="get_One_Blog(data.blog_id)"
+                                    class="btn btn-warning btn-sm m-1" title="Edit">
+                                    <i class="fa fa-pencil text-white"></i>
+                                </button>
+                                <button (click)="deleteBlog(data.blog_id)"
+                                    class="btn btn-danger btn-sm m-1" title="Delete">
+                                    <i class="fa fa-trash text-white"></i>
+                                </button>
+                            </td>
+                            <td>{{ i + 1 }}</td>
+                            <td>{{ data.blog_title }}</td>
+                            <td>
+                                {{data.blog_post_by}}
+                            </td>
+                            <td>{{ data.blog_post_by_position }}</td>
+                            <td>
+                                <img [src]="'http://localhost:1000/uploads/' + data.blog_image"
+                                    alt="Customer Image" class="img-thumbnail"
+                                    style="max-width: 100%; max-height: 100px;" />
+                            </td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+
+<div class="container-fluid" *ngIf="showUpdate">
+    <div class="col-md-12 bg-light p-3">
+        <button class="float-end btn btn-danger text-white fw-bold" (click)="changeView()"><i class="fa fa-times"></i> Cancel </button>
+        <form (submit)="updateBlog()" enctype="multipart/form-data">
+            <div class="row text-center ">
+                <div class="col-md-12 mt-2 mb-3">
+                    <h3 class="fw-bold">Update Blog</h3>
+                </div>
+                <input type="text" class="text-center form-control" name="blog_id" [(ngModel)]="formData.blog_id" style="display: none;">
+                <div class="col-md-4 mb-4">
+                    Enter Blog Title
+                    <input type="text" class="text-center form-control" name="blog_title" [(ngModel)]="formData.blog_title">
+                </div>
+                <div class="col-md-4 mb-4">
+                    Enter Blog Date
+                    <input type="date" class="text-center form-control" name="blog_post_date" [(ngModel)]="formData.blog_post_date">
+                </div>
+                <div class="col-md-4 mb-4">
+                    Enter Blog Time
+                    <input type="time" class="text-center form-control" name="blog_post_time" [(ngModel)]="formData.blog_post_time">
+                </div>
+                <div class="col-md-4 mb-4">
+                    Enter Blog Post By
+                    <input type="text" class="text-center form-control" name="blog_post_by" [(ngModel)]="formData.blog_post_by">
+                </div>
+                <div class="col-md-4 mb-4">
+                    Enter Blog Post By Position
+                    <input type="text" class="text-center form-control" name="blog_post_by_position"  class="form-control" [(ngModel)]="formData.blog_post_by_position">
+                </div>
+                <div class="col-md-4 mb-4">
+                    Enter Blog Image
+                    <input type="file" class="text-center form-control" name="blog_image" (change)="getImage($event)">
+                </div>
+                <div class="col-md-12 mb-4">
+                    <button class="btn btn-warning fw-bold">update Blog</button>
+                </div>
+            </div>
+        </form>
+    </div>
+</div>
+    <img *ngIf="!showList" [src]="'http://localhost:1000/uploads/' + blogImg"
+                                    alt="Customer Image" class="img-thumbnail"
+                                    style="height: 300px; width: 300px;"/>
+<!-- Success and Error Messages -->
+<div *ngIf="successMessage" class="alert alert-success mt-3">
+    {{ successMessage }}
+</div>
+<div *ngIf="errorMessage" class="alert alert-danger mt-3">
+    {{ errorMessage }}
+</div>
+
+
+
+

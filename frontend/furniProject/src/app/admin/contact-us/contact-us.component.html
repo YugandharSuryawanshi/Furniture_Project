@@ -1,0 +1,40 @@
+
+<div class="container-fluid bg-white p-4">
+    <div class="row">
+        <div class="col-md-12 text-center mb-3">
+        </div>
+        <div class="col-md-12">
+            <div class="table-responsive">
+                <table class="table table-bordered table-striped table-hover align-middle text-center">
+                    <thead class="table-dark">
+                        <tr>
+                            <th> Action </th>
+                            <th> Sr. No. </th>
+                            <th>First Name</th>
+                            <th>Last Name</th>
+                            <th>Gmail</th>
+                            <th>Message</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr *ngFor="let data of contacts; let i = index">
+                            <td>
+                                <button (click)="deleteContact(data.contact_id)" class="btn btn-danger btn-sm m-1"
+                                    title="Delete">
+                                    <i class="fa fa-trash text-white"></i>
+                                </button>
+                            </td>
+                            <td>{{ i + 1 }}</td>
+                            <td>{{ data.member_name }}</td>
+                            <td>
+                                {{data.member_position}}
+                            </td>
+                            <td>{{ data.member_details }}</td>
+                            <td>{{ data.member_details }}</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+</div>

@@ -1,0 +1,15 @@
+<div *ngIf="!isAdminRoute">
+  <!-- Global Navbar -->
+<app-user-navbar></app-user-navbar>
+  <router-outlet></router-outlet>
+  <app-user-footer></app-user-footer>
+</div>
+
+<!-- Admin Section (No Navbar/Footer) -->
+<div *ngIf="isAdminRoute">
+  <app-admin-navbar></app-admin-navbar>
+  <!-- <router-outlet></router-outlet> -->
+  <!-- Router Outlet is added in navbar Becouse of design issue  -->
+  <!-- Toggle then design are not performing as responsive -->
+  <app-admin-footer></app-admin-footer>
+</div>

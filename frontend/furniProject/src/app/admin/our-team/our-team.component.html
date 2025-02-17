@@ -1,0 +1,146 @@
+<div class="container-fluid bg-light py-3">
+    <div class="row align-items-center">
+        <div class="col-md-10 text-center">
+            <h2 *ngIf="addMember" class="mb-0 fw-bold">Add Member</h2>
+            <h2 *ngIf="showList" class="mb-0 fw-bold">Team Members</h2>
+            <h2 *ngIf="updateMember" class="mb-0 fw-bold">Update Member</h2>
+        </div>
+        <div class="col-md-2 text-end">
+            <button class="btn btn-danger fw-bold text-white me-2 mt-2" (click)="list()"><i class="fa fa-list"></i> List</button>
+            <button class="btn btn-danger fw-bold text-white mt-2" (click)="add()"><i class="fa fa-user-plus"></i> Member</button>
+        </div>
+    </div>
+</div>
+
+<hr>
+<!-- Success and Error Messages -->
+<div *ngIf="successMessage" class="alert alert-success mt-3">
+    {{ successMessage }}
+</div>
+<div *ngIf="errorMessage" class="alert alert-danger mt-3">
+    {{ errorMessage }}
+</div>
+
+<div class="container-fluid bg-light pt-4" *ngIf="addMember">
+    <div class="col-md-12">
+        <form (submit)="saveMember()" enctype="multipart/form-data">
+            <div class="row text-center justify-content-center">
+                <div class="col-md-4 mb-4">
+                    Enter Member Name
+                    <input type="text" class="text-center form-control" name="member_name"
+                        [(ngModel)]="formData.member_name">
+                </div>
+                <div class="col-md-4 mb-4">
+                    Enter Member Position
+                    <input type="text" class="text-center form-control" name="member_position"
+                        [(ngModel)]="formData.member_position">
+                </div>
+                <div class="col-md-4 mb-4">
+                    Select Member Image
+                    <input type="file" class="text-center form-control" name="member_image"
+                        (change)="selectImage($event)">
+                </div>
+                <div class="col-md-10 mb-4">
+                    Enter Member Details
+                    <input type="text" class="text-center form-control" name="member_details"
+                        [(ngModel)]="formData.member_details">
+                </div>
+                <div class="col-md-12 mb-4">
+                    <button class="btn btn-warning">Add Member</button>
+                </div>
+            </div>
+        </form>
+    </div>
+</div>
+
+
+
+<div class="container-fluid bg-white p-4" *ngIf="showList">
+    <div class="row">
+        <div class="col-md-12 text-center mb-3">
+        </div>
+        <div class="col-md-12">
+            <div class="table-responsive">
+                <table class="table table-bordered table-striped table-hover align-middle text-center">
+                    <thead class="table-dark">
+                        <tr>
+                            <th> Action </th>
+                            <th> Sr. No. </th>
+                            <th> Name </th>
+                            <th> Position </th>
+                            <th> Details </th>
+                            <th> Image </th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr *ngFor="let data of members; let i = index">
+                            <td>
+                                <button (click)="get_single_member(data.member_id)" class="btn btn-warning btn-sm m-1"
+                                    title="Edit">
+                                    <i class="fa fa-pencil text-white"></i>
+                                </button>
+                                <button (click)="deleteMember(data.member_id)" class="btn btn-danger btn-sm m-1"
+                                    title="Delete">
+                                    <i class="fa fa-trash text-white"></i>
+                                </button>
+                            </td>
+                            <td>{{ i + 1 }}</td>
+                            <td>{{ data.member_name }}</td>
+                            <td>
+                                {{data.member_position}}
+                            </td>
+                            <td>{{ data.member_details }}</td>
+                            <td>
+                                <img [src]="'http://localhost:1000/uploads/' + data.member_image" alt="Customer Image"
+                                    class="img-thumbnail" style="max-width: 100%; max-height: 100px;" />
+                            </td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+
+
+<!-- Update Section Start Here -->
+<div class="container-fluid bg-light pt-4" *ngIf="updateMember">
+    <div class="col-md-12 pt-2">
+        <button class="float-end btn btn-danger text-white fw-bold" (click)="changeView()"><i class="fa fa-times"></i> Cancel </button>
+        <form (submit)="update_Member()" enctype="multipart/form-data">
+            <div class="row text-center justify-content-center">
+                <input type="text" name="member_id" [(ngModel)]="formData.member_id" style="display: none;">
+                <div class="col-md-4 mb-4">
+                    Enter Member Name
+                    <input type="text" class="text-center form-control" name="member_name"
+                        [(ngModel)]="formData.member_name">
+                </div>
+                <div class="col-md-4 mb-4">
+                    Enter Member Position
+                    <input type="text" class="text-center form-control" name="member_position"
+                        [(ngModel)]="formData.member_position">
+                </div>
+                <div class="col-md-4 mb-4">
+                    Select Member Image
+                    <input type="file" class="text-center form-control" name="member_image"
+                        (change)="selectImage($event)">
+                </div>
+                <div class="col-md-8 mb-4">
+                    Enter Member Details
+                    <input type="text" class="text-center form-control" name="member_details"
+                        [(ngModel)]="formData.member_details">
+                </div>
+                <div class="col-md-4" *ngIf="singleImage">
+                    current Image
+                    <img [src]="'http://localhost:1000/uploads/' + singleImage" alt="Customer Image"
+    class="img-thumbnail" style="width: 300px; max-height: 150px;" />
+                </div>
+                <div class="col-md-12 mb-4">
+                    <button class="btn btn-warning">Update Member</button>
+                </div>
+            </div>
+        </form>
+    </div>
+</div>

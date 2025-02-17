@@ -1,0 +1,57 @@
+<form (submit)="updateWhyChooseUs()" enctype="multipart/form-data">
+    <div class="container-fluid p-3 bg-light text-center">
+        <div class="row">
+            <div class="col-md-12 text-center mb-3">
+                <h3>Update Why Choose Us</h3>
+            </div>
+            <div class="col-md-2"></div>
+            <div class="col-md-4 mb-3">
+                <label>Enter Heading</label>
+                <input type="text" name="heading" [(ngModel)]="formData.heading" class="form-control" required />
+            </div>
+            <div class="col-md-4 mb-3">
+                <label>Select Image</label>
+                <input type="file" name="why_choose_img" (change)="OnFileSelected($event)" class="form-control" />
+            </div>
+            <div class="col-md-2"></div>
+            <div class="col-md-12 mt-3">
+                <button class="btn btn-warning">Update</button>
+            </div>
+        </div>
+    </div>
+</form>
+<div class="col-md-12 mt-3">
+    <span class="text-success">{{ successMessage }}</span>
+    <span class="text-danger">{{ errorMessage }}</span>
+</div>
+
+<hr>
+
+<div class="container-fluid bg-white p-4">
+    <div class="row">
+        <div class="col-md-12">
+            <div class="table-responsive">
+                <table class="table table-bordered table-striped table-hover align-middle text-center">
+                    <thead class="table-dark">
+                        <tr>
+                            <th>Heading</th>
+                            <th>Customer Image</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td style="font-weight: bold;">{{ heading }}</td>
+                            <td>
+                                <img [src]="'http://localhost:1000/uploads/' + image"
+                                    alt="Customer Image" class="img-thumbnail"
+                                    style="max-width: 350px; max-height: 350px;" />
+                            </td>
+                            
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+</div>
+

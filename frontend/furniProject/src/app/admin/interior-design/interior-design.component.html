@@ -1,0 +1,88 @@
+<form (submit)="onSubmit()" enctype="multipart/form-data">
+    <div class="container-fluid p-3 bg-light text-center">
+        <div class="row">
+            <div class="col-md-12 text-center mb-3">
+                <h3 class="fw-bold">Update Modern Interior Design</h3>
+            </div>
+            <div class="col-md-6 mb-3">
+                Heading
+                <input type="text" name="heading" [(ngModel)]="formData.heading" class="form-control" />
+            </div>
+            <div class="col-md-6 mb-3">
+                Details
+                <input type="text" name="interior_details" [(ngModel)]="formData.interior_details"
+                    class="form-control" />
+            </div>
+            <div class="col-md-3 mb-3">
+                First Key
+                <input type="text" name="first_key" [(ngModel)]="formData.first_key" class="form-control" />
+            </div>
+            <div class="col-md-3 mb-3">
+                Second Key
+                <input type="text" name="second_key" [(ngModel)]="formData.second_key" class="form-control" />
+            </div>
+            <div class="col-md-3 mb-3">
+                Third Key
+                <input type="text" name="third_key" [(ngModel)]="formData.third_key" class="form-control" />
+            </div>
+            <div class="col-md-3 mb-3">
+                Forth Key
+                <input type="text" name="forth_key" [(ngModel)]="formData.forth_key" class="form-control" />
+            </div>
+            <div class="col-md-4 mb-3">
+                Select First Image
+                <input type="file" name="first_image" (change)="onFileSelected($event, 'first_image')"
+                    class="form-control" />
+            </div>
+            <div class="col-md-4 mb-3">
+                Select Second Image
+                <input type="file" name="second_image" (change)="onFileSelected($event, 'second_image')"
+                    class="form-control" />
+            </div>
+            <div class="col-md-4 mb-3">
+                Select Third Image
+                <input type="file" name="third_image" (change)="onFileSelected($event, 'third_image')"
+                    class="form-control" />
+            </div>
+            <div class="col-md-12 mb-2 text-center">
+                <button class="btn btn-primary mt-3">Update Design</button>
+            </div>
+        </div>
+    </div>
+</form>
+
+
+<div class="container">
+    <div class="row text-center">
+        <!-- First Image -->
+        <div class="col-md-4">
+            <img *ngIf="formData.first_image" [src]="'http://localhost:1000/uploads/' + formData.first_image"
+                alt="First Image" class="img-fluid img-thumbnail" style="max-height: 300px; object-fit: cover;" />
+        </div>
+        <!-- Second Image -->
+        <div class="col-md-4">
+            <img *ngIf="formData.second_image" [src]="'http://localhost:1000/uploads/' + formData.second_image"
+                alt="Second Image" class="img-fluid img-thumbnail" style="max-height: 300px; object-fit: cover;" />
+        </div>
+        <!-- Third Image -->
+        <div class="col-md-4">
+            <img *ngIf="formData.third_image" [src]="'http://localhost:1000/uploads/' + formData.third_image"
+                alt="Third Image" class="img-fluid img-thumbnail" style="max-height: 300px; object-fit: cover;" />
+        </div>
+    </div>
+</div>
+
+
+
+
+
+
+
+
+<!-- Success and Error Messages -->
+<div *ngIf="successMessage" class="alert alert-success mt-3">
+    {{ successMessage }}
+</div>
+<div *ngIf="errorMessage" class="alert alert-danger mt-3">
+    {{ errorMessage }}
+</div>
