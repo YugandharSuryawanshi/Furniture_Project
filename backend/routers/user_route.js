@@ -116,7 +116,6 @@ router.post('/userLogout', authenticateToken, (req, res) => {
     console.log('Logout successful', userToken + ' ' + req.user.user_email);
     res.status(200).json({ message: 'Logged out successfully' });
     blacklist.add(userToken); // Add the token to the blacklist after logout
-    jwt.destroy(userToken); // Destroy the JWT session after logout
     console.log('User logged out:', req.user.user_email);
 
 });
