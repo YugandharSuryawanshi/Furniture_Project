@@ -1,67 +1,67 @@
 {
-  "hash": "9035d4ba",
+  "hash": "595196e6",
   "configHash": "d38adfc8",
-  "lockfileHash": "55c7efc4",
-  "browserHash": "5f6ded1a",
+  "lockfileHash": "0a04828b",
+  "browserHash": "bd93f54c",
   "optimized": {
     "@angular/common": {
       "src": "../../../../../../node_modules/@angular/common/fesm2022/common.mjs",
       "file": "@angular_common.js",
-      "fileHash": "fee7ba80",
+      "fileHash": "853bfe45",
       "needsInterop": false
     },
     "@angular/common/http": {
       "src": "../../../../../../node_modules/@angular/common/fesm2022/http.mjs",
       "file": "@angular_common_http.js",
-      "fileHash": "255c94ac",
+      "fileHash": "ec92d0f2",
       "needsInterop": false
     },
     "@angular/core": {
       "src": "../../../../../../node_modules/@angular/core/fesm2022/core.mjs",
       "file": "@angular_core.js",
-      "fileHash": "3146638e",
+      "fileHash": "24a84131",
       "needsInterop": false
     },
     "@angular/forms": {
       "src": "../../../../../../node_modules/@angular/forms/fesm2022/forms.mjs",
       "file": "@angular_forms.js",
-      "fileHash": "cff9a224",
+      "fileHash": "e113ce50",
       "needsInterop": false
     },
     "@angular/platform-browser": {
       "src": "../../../../../../node_modules/@angular/platform-browser/fesm2022/platform-browser.mjs",
       "file": "@angular_platform-browser.js",
-      "fileHash": "e3521726",
-      "needsInterop": false
-    },
-    "@angular/router": {
-      "src": "../../../../../../node_modules/@angular/router/fesm2022/router.mjs",
-      "file": "@angular_router.js",
-      "fileHash": "23985440",
-      "needsInterop": false
-    },
-    "@coreui/coreui": {
-      "src": "../../../../../../node_modules/@coreui/coreui/dist/js/coreui.esm.js",
-      "file": "@coreui_coreui.js",
-      "fileHash": "6f957c06",
-      "needsInterop": false
-    },
-    "rxjs": {
-      "src": "../../../../../../node_modules/rxjs/dist/esm5/index.js",
-      "file": "rxjs.js",
-      "fileHash": "b095f222",
-      "needsInterop": false
-    },
-    "ngx-toastr": {
-      "src": "../../../../../../node_modules/ngx-toastr/fesm2022/ngx-toastr.mjs",
-      "file": "ngx-toastr.js",
-      "fileHash": "ed18d854",
+      "fileHash": "72a01198",
       "needsInterop": false
     },
     "@angular/platform-browser/animations": {
       "src": "../../../../../../node_modules/@angular/platform-browser/fesm2022/animations.mjs",
       "file": "@angular_platform-browser_animations.js",
-      "fileHash": "37ddd667",
+      "fileHash": "0163d57a",
+      "needsInterop": false
+    },
+    "@angular/router": {
+      "src": "../../../../../../node_modules/@angular/router/fesm2022/router.mjs",
+      "file": "@angular_router.js",
+      "fileHash": "a826b580",
+      "needsInterop": false
+    },
+    "@coreui/coreui": {
+      "src": "../../../../../../node_modules/@coreui/coreui/dist/js/coreui.esm.js",
+      "file": "@coreui_coreui.js",
+      "fileHash": "d57559da",
+      "needsInterop": false
+    },
+    "ngx-toastr": {
+      "src": "../../../../../../node_modules/ngx-toastr/fesm2022/ngx-toastr.mjs",
+      "file": "ngx-toastr.js",
+      "fileHash": "ec609bc8",
+      "needsInterop": false
+    },
+    "rxjs": {
+      "src": "../../../../../../node_modules/rxjs/dist/esm5/index.js",
+      "file": "rxjs.js",
+      "fileHash": "a6acc7ec",
       "needsInterop": false
     }
   },

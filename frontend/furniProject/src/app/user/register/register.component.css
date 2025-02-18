@@ -1,5 +1,5 @@
 body {
-    background: url('../../../../../../Images_For_Upload_Purpose/temp_img.avif') no-repeat center center fixed;
+    background: url('../../../../public/images/temp_img.avif') no-repeat center center fixed;
     /* Set the image as the background */
     background-size: cover;
     height: 100vh;
