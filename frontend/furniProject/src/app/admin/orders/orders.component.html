@@ -1,0 +1,83 @@
+<div class="container mt-4">
+    <!-- Heading & Status Filter Buttons -->
+    <div class="col-md-12">
+        <div class="row">
+            <div class="col-md-3 text-center">
+                <h2 class="fw-bold">Furni Orders</h2>
+            </div>
+            <div class="col-md-9 d-flex flex-wrap gap-2 justify-content-md-end">
+                <button class="status-btn btn btn-outline-primary px-3" [class.active]="selectedStatus === 'All'" (click)="setStatus('All')">All Status</button>
+                <button class="status-btn btn btn-outline-warning px-3" [class.active]="selectedStatus === 'Pending'" (click)="setStatus('Pending')">Pending</button>
+                <button class="status-btn btn btn-outline-info px-3" [class.active]="selectedStatus === 'Confirmed'" (click)="setStatus('Confirmed')">Confirmed</button>
+                <button class="status-btn btn btn-outline-success px-3" [class.active]="selectedStatus === 'Delivered'" (click)="setStatus('Delivered')">Delivered</button>
+                <button class="status-btn btn btn-outline-danger px-3" [class.active]="selectedStatus === 'Cancelled'" (click)="setStatus('Cancelled')">Cancelled</button>
+            </div>
+        </div>
+    </div><br>
+
+    <!-- Search Bar & Date Filter -->
+    <div class="row">
+        <div class="col-md-6">
+            <input type="text" class="form-control" placeholder="🔍 Search Order" [(ngModel)]="searchQuery" (input)="applyFilters()">
+        </div>
+        <div class="col-md-3 float-end">
+            <select class="form-select float-end" [(ngModel)]="selectedDateFilter" (change)="applyFilters()">
+                <option>Every</option>
+                <option>Today</option>
+                <option>Last 7 Days</option>
+                <option>Last 30 Days</option>
+            </select>
+        </div>
+    </div>
+
+    <!-- Orders Table (Fully Responsive) -->
+    <div class="table-responsive mt-3">
+        <table class="table table-striped text-center align-middle">
+            <thead class="table-light mb-2">
+                <tr>
+                    <th>Order ID</th>
+                    <th style="width: 25%;">Products</th>
+                    <th>Customer</th>
+                    <th>Address</th>
+                    <th>Date</th>
+                    <th>Amount</th>
+                    <th>Status</th>
+                    <th>Action</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr *ngFor="let order of filteredOrders" style="border-bottom: 2px groove black;">
+                    <td>#FS{{ order.order_id }}</td>
+                    <td>
+                        <ul class="list-unstyled mb-1">
+                            <li *ngFor="let product of order.products.split(', '); let i=index;" class="text-start">
+                                <i class="fas fa-cube text-primary"></i> {{  i + 1  }}.  {{ product }}
+                            </li>
+                        </ul>
+                    </td>
+                    <td>{{ order.c_fname }} {{ order.c_lname }}</td>
+                    <td>{{ order.c_address }}<br> {{ order.c_state }} - {{ order.c_postal_zip }}</td>
+                    <td>{{ order.order_date | date:'dd-MM-yyyy' }}</td>
+                    <td>&#8377; {{ order.total_amt | number:'1.0-0' }}</td>
+
+                    <td>
+                        <span class="badge" [ngClass]="{
+                            'bg-success': order.order_status === 'Delivered',
+                            'bg-warning': order.order_status === 'Pending',
+                            'bg-info': order.order_status === 'Confirmed',
+                            'bg-danger': order.order_status === 'Cancelled'
+                        }">
+                            {{ order.order_status }}
+                        </span>
+                    </td>
+                    <td>
+                        <button class="btn btn-sm btn-warning" [routerLink]="'/admin/update-order/' + order.order_id">
+                            <i class="fas fa-eye"></i> View
+                        </button>
+                    </td>
+                </tr>
+                <br>
+            </tbody>
+        </table>
+    </div>
+</div>

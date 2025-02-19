@@ -24,9 +24,6 @@ function authenticateToken(req, res, next) {
         // Attach the decoded admin payload to the request object
         req.admin = admin;
 
-        // Use JSON.stringify to log the actual content of the object
-        console.log('Access From adminToken Data IS :', JSON.stringify(req.admin, null, 2));
-
         next();
     });
 }
@@ -37,7 +34,6 @@ router.post('/adminRegister', async (req, res) => {
 
     try {
         const hashedPassword = await bcrypt.hash(admin_password, 10);
-        console.log('Hashed password Created: ' + hashedPassword);
 
         const sql = `INSERT INTO admins (admin_name, admin_mobile, admin_email, admin_password) VALUES (?, ?, ?, ?)`;
         const data = await exe(sql, [admin_name, admin_mobile, admin_email, hashedPassword]);
@@ -66,15 +62,12 @@ router.post('/adminLogin', async (req, res) => {
         const admin = results[0];
         const isPasswordValid = await bcrypt.compare(admin_password, admin.admin_password);
 
-        console.log('Check Is Password Valid: ' + isPasswordValid);
-
         if (!isPasswordValid) return res.status(401).send('Invalid admin_email or password');
 
         const adminToken = jwt.sign({ id: admin.admin_id, admin_email: admin.admin_email }, config.adminJwtSecret, { expiresIn: config.adminJwtExpire });
 
         // Send response and log the adminToken correctly
         res.send({ message: 'Login successful', adminToken });
-        console.log('Successfully logged in', adminToken); // Use adminToken here
     } catch (err) {
         console.error(err);
         return res.status(500).send('Database error');
@@ -87,7 +80,6 @@ router.get('/adminProtected', authenticateToken, (req, res) => {
         message: 'Access granted to protected route',
         admin: req.admin, // Token's decoded admin payload
     });
-    console.log('Protected route accessed by:', req.admin.admin_email);
 });
 
 // 4. Logout admin
@@ -95,7 +87,6 @@ router.post('/adminLogout', authenticateToken, (req, res) => {
     const adminToken = req.headers['authorization']?.split(' ')[1];
     blacklist.add(adminToken); // Add the token to the blacklist
     res.json({ message: 'Logout successful' });
-    console.log('Admin logged out successfully');
 });
 
 // 5. Fetch admin Details from admins table
@@ -104,7 +95,6 @@ router.get("/admin_details", authenticateToken, async (req, res) => {
         const sql = `SELECT * FROM admins WHERE admin_id = '${req.admin.id}'`;
         const admin_details = await exe(sql)
         res.status(200).json({ success: true, admin: admin_details[0] });
-        console.log("Fetched admin details:", admin_details[0]);
     } catch (error) {
         console.error("Error fetching admin details:", error);
         res.status(500).json({ success: false, message: "An error occurred while fetching the admin details." });
@@ -129,7 +119,6 @@ router.post('/update_admin', authenticateToken, async (req, res) => {
         return res.status(400).send({ success: false, message: 'Old password is incorrect' });
     }
 
-
     const hashedPassword = await bcrypt.hash(admin_password, 10);
 
     let admin_profile = null;
@@ -138,7 +127,6 @@ router.post('/update_admin', authenticateToken, async (req, res) => {
         const uploadedProfile = req.files.admin_profile.name;
         admin_profile = new Date().getTime() + uploadedProfile;
         req.files.admin_profile.mv("public/uploads/" + admin_profile);
-        console.log('Uploaded profile Is ', admin_profile);
     }
 
     if (admin_profile) {
@@ -148,7 +136,6 @@ router.post('/update_admin', authenticateToken, async (req, res) => {
                 console.error(err);
                 return res.status(500).send({ success: false, message: 'An error occurred while updating the admin profile.' });
             }
-            console.log('Admin profile updated successfully');
             return res.status(200).send({ success: true, message: 'Admin profile updated successfully' });
         })
     }
@@ -178,7 +165,6 @@ router.delete('/delete_admin', authenticateToken, async (req, res) => {
             return res.status(404).send({ success: false, message: 'Admin not found' });
         }
         res.status(200).send({ success: true, message: 'Admin account deleted successfully' });
-        console.log('Admin account deleted successfully', admin_id);
     }
     catch (err) {
         console.error('Error deleting admin account:', err);
@@ -222,7 +208,6 @@ router.put('/update_user/:id', async (req, res) => {
         const { user_name, user_email, user_mobile, user_password } = req.body;
 
         const hashedPassword = await bcrypt.hash(user_password, 10);
-        console.log('Hashed password Created : ' + hashedPassword);
 
         const sql = 'UPDATE users SET user_name =?, user_email =?, user_mobile =? , user_password =? WHERE user_id =?';
         const result = await exe(sql, [user_name, user_email, user_mobile, hashedPassword, userId]);
@@ -307,7 +292,6 @@ router.delete('/delete_user/:id', async (req, res) => {
 router.put("/save_banner", async (req, res) => {
     try {
         const { banner_title, banner_details, banner_link } = req.body;
-        console.log(banner_title, banner_details, banner_link);
 
         if (!req.files || !req.files.banner_image) {
             return res.status(400).json({ success: false, message: 'No file uploaded' });
@@ -335,7 +319,6 @@ router.put("/save_banner", async (req, res) => {
         res.json({ success: true, message: 'Banner updated successfully!', data: data });
     } catch (error) {
         console.log(error);
-
     }
 })
 
@@ -345,7 +328,6 @@ router.get("/manage_banner", async (req, res) => {
         const banner_info = await exe("SELECT * FROM banner");
         if (banner_info && banner_info.length > 0) {
             res.status(200).json({ success: true, banner: banner_info[0] });
-            console.log("Fetched banner info:", banner_info[0]);
         } else {
             res.status(404).json({ success: false, message: "No banner data found" });
         }
@@ -362,7 +344,6 @@ router.post("/save_product_type", async (req, res) => {
         const sql = `INSERT INTO product_type(product_type_name) VALUES('${product_type_name}')`;
         try {
             const data = await exe(sql);
-            console.log("Data:", data);
             res.status(200).json({ success: true, message: 'Product type added successfully' });
         } catch (err) {
             console.error('Error inserting product type:', err);
@@ -381,13 +362,11 @@ router.get('/one_product_type/:id', async (req, res) => {
         const product_type = await exe(sql, [product_type_id]);
         if (product_type && product_type.length > 0) {
             res.status(200).json({ success: true, product_type: product_type[0] });
-            console.log('Fetched product type:', product_type[0]);
         }
         else {
             res.status(404).json({ success: false, message: 'Product type not found.' });
         }
     }
-    console.log('Came product is with connect to url is :- ' + product_type_id);
 })
 
 // Fetch / get all product types
@@ -396,7 +375,6 @@ router.get('/product_types', async (req, res) => {
         const product_types = await exe('SELECT * FROM product_type');
         if (product_types && product_types.length > 0) {
             res.status(200).json({ success: true, product_types });
-            console.log('Fetched product types:', product_types);
         } else {
             res.status(404).json({ success: false, message: 'No product types found.' });
         }
@@ -410,8 +388,6 @@ router.get('/product_types', async (req, res) => {
 router.put('/edit_product_type/:id', async (req, res) => {
     const product_type_id = req.params.id;
     const { product_type_name } = req.body;
-    console.log(product_type_name);
-    console.log(product_type_id);
     try {
         const sql = `UPDATE product_type SET product_type_name = '${product_type_name}' WHERE product_type_id = '${product_type_id}'`;
         const result = await exe(sql);
@@ -563,7 +539,7 @@ router.put('/product_update/:id', async (req, res) => {
                 var file_name = fn;
             }
         }
-        
+
         d.product_details = d.product_details.replace(/'/g, "`"); // replace globally
         d.additional_details = d.additional_details.replace(/'/g, "`"); // replace globally
 
@@ -625,7 +601,6 @@ router.delete('/product_delete/:id', async (req, res) => {
             if (fs.existsSync(filePath)) {
                 try {
                     fs.unlinkSync(filePath); // Delete the image
-                    console.log(`Deleted: ${filePath}`);
                 } catch (err) {
                     console.error(`Error deleting file ${filePath}:`, err.message);
                 }
@@ -741,7 +716,7 @@ router.delete('/product_delete/:id', async (req, res) => {
 //     }
 // });
 
-//
+// Update Interior
 router.put('/update_interior', async (req, res) => {
     try {
         // Extract form data
@@ -809,7 +784,6 @@ router.put('/update_interior', async (req, res) => {
                 console.error("Error updating data:", err.message);
                 return res.status(500).json({ success: false, message: "Error updating data in the table" });
             }
-            console.log("Data updated successfully:", result);
             return res.status(200).json({ success: true, message: "Data updated successfully!" });
         });
 
@@ -828,7 +802,6 @@ router.get('/interior_data', async (req, res) => {
                 console.error("Error fetching data:", err.message);
                 return res.status(500).json({ success: false, message: "Error fetching data from the table" });
             }
-            console.log("Data fetched successfully:", result);
             return res.status(200).json({ success: true, data: result[0] });
         });
     } catch (err) {
@@ -1022,7 +995,7 @@ router.post('/save_why_choose_us_point', (req, res) => {
                 }
 
                 const sql = `INSERT INTO why_choose_points (why_choose_points_img, why_choose_points_name, why_choose_points_details) 
-                          VALUES ('${file_name}', '${d.why_choose_points_name}', '${d.why_choose_points_details}')`;
+                        VALUES ('${file_name}', '${d.why_choose_points_name}', '${d.why_choose_points_details}')`;
                 exe(sql, (err, result) => {
                     if (err) {
                         return res.status(500).json({ success: false, message: "Error saving data in the table" });
@@ -1347,6 +1320,35 @@ router.delete('/delete_team_member/:id', async (req, res) => {
         }
         res.status(200).json({ success: true, message: "Team Member deleted successfully!" });
     } catch (err) {
+        res.status(500).json({ success: false, message: "Internal Server Error", error: err.message });
+    }
+});
+
+// Get all Orders
+router.get('/get_orders', async (req, res) => {
+    try {
+        const sql = `
+            SELECT o.order_id, o.order_status, o.order_date, o.payment_status,
+            o.c_fname, o.c_lname, o.c_address, o.c_state, o.c_postal_zip, o.c_phone, o.transaction_id,
+            GROUP_CONCAT(p.product_name SEPARATOR ', ') AS products,
+            SUM(p.product_qty * p.product_price) AS total_amount
+            FROM order_tbl o
+            JOIN order_products p ON o.order_id = p.order_id
+            GROUP BY o.order_id
+            ORDER BY o.order_date DESC;
+        `;
+
+        const data = await exe(sql);
+        console.log(data);
+        
+
+        if (data.length > 0) {
+            res.status(200).json({ success: true, data });
+        } else {
+            res.status(404).json({ success: false, message: "No orders found" });
+        }
+    } catch (err) {
+        console.error("Error fetching orders: ", err);
         res.status(500).json({ success: false, message: "Internal Server Error", error: err.message });
     }
 });
