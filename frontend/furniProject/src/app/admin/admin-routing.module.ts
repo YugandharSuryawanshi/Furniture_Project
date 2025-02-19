@@ -19,6 +19,8 @@ import { WhyChooseUsPointsComponent } from './why-choose-us-points/why-choose-us
 import { WhyChooseUsComponent } from './why-choose-us/why-choose-us.component';
 import { SettingComponent } from './setting/setting.component';
 import { AuthGuard } from '../auth.guard';
+import { OrdersComponent } from './orders/orders.component';
+import { UpdateOrderComponent } from './update-order/update-order.component';
 
 const routes: Routes = [
   { path: 'login', component: AdminLoginComponent }, // Allow login without authentication
@@ -40,6 +42,8 @@ const routes: Routes = [
   { path: 'our_team', component: OurTeamComponent, canActivate: [AuthGuard], data: { role: 'admin' , requiresLogin: true } },
   { path: 'contact_us', component: ContactUsComponent, canActivate: [AuthGuard], data: { role: 'admin' , requiresLogin: true } },
   { path: 'setting', component: SettingComponent, canActivate: [AuthGuard], data: { role: 'admin' , requiresLogin: true } },
+  { path: 'orders', component: OrdersComponent, canActivate: [AuthGuard], data: { role: 'admin' , requiresLogin: true }  },
+  { path: 'update-order/:id', component: UpdateOrderComponent, canActivate: [AuthGuard], data: { role: 'admin' , requiresLogin: true }  },
 ];
 
 @NgModule({

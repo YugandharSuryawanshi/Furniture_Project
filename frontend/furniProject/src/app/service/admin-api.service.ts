@@ -58,12 +58,6 @@ export class AdminApiService {
 
   // Check if the admin is logged in
   isAdminLoggedIn(): boolean {
-    // const token = localStorage.getItem(this.tokenKey);
-    // console.log("Is logged in: ", token);
-    // return !!token; // Return true if token exists
-
-
-    //Added Last for changes
 
     return !!localStorage.getItem(this.tokenKey);
   }
@@ -72,22 +66,18 @@ export class AdminApiService {
   adminLogout(){
     if (confirm('Are you sure!! You want to logout?')) {
       const token = this.getToken();
-      console.log('Is logged out: ',token);
       const headers = new HttpHeaders().set('Authorization', `Bearer ${token}`);
-      console.log('logout headers: ',headers);
       
       this.http.post('http://localhost:1000/admin/adminLogout', {}, { headers }).subscribe({
         next: () => {
           this.clearToken();
           //This line we have to remove after last..........
           localStorage.removeItem(this.tokenKey); // Remove token from localStorage
-          alert('You have been logged out successfully.');
           this.router.navigate(['/admin/login']); // Redirect to login page
         },
         error: (err) => {
           this.clearToken();
           localStorage.removeItem(this.tokenKey); // Remove token from localStorage
-          alert('An error occurred during logout.');
           this.router.navigate(['/admin/login']); // Redirect to login page
         }
       });
@@ -177,8 +167,6 @@ export class AdminApiService {
 
   // Update Banner
   updateBanner(formData: FormData): Observable<any> {
-    console.log('AdminApi.service File Came FormData is Like : '+ formData);
-    
     return this.http.put('http://localhost:1000/admin/save_banner', formData);
   }
 
@@ -260,12 +248,6 @@ export class AdminApiService {
   {
     return this.http.get(`http://localhost:1000/admin/interior_data`);
   }
-
-  //Save interior
-  // saveInterior(interior_data : FormData)
-  // {
-  //   return this.http.post(`http://localhost:1000/admin/save_interior`, interior_data );
-  // }
 
   //Update interior
   updateInterior(interior_data : FormData)
@@ -395,6 +377,12 @@ export class AdminApiService {
   // Delete Team Member
   deleteTeamMember(id: any) {
     return this.http.delete(`http://localhost:1000/admin/delete_team_member/${id}`);
+  }
+
+  // Get Order Details
+  getOrders()
+  {
+    return this.http.get(`http://localhost:1000/admin/get_orders`);
   }
 
 

@@ -86,7 +86,6 @@ router.post('/login', (req, res) => {
                 { id: user.user_id, user_email: user.user_email },
                 config.userJwtSecret, { expiresIn: config.userJwtExpire }
             );
-            console.log('In Login Route Token generated:', userToken);
             return res.json({ message: 'Login successful', userToken });
         } catch (error) {
             console.error(error);
@@ -97,10 +96,6 @@ router.post('/login', (req, res) => {
 
 // Protected route example (requires authentication)
 router.get('/userProtected', authenticateToken, (req, res) => {
-
-    console.log('Protected Route Accessed BY: ' + user);
-    console.log('Protected Route Response: ' + res);
-
     res.json({
         message: 'Access granted to protected route',
         user: req.user, // Token's decoded user payload
@@ -110,10 +105,8 @@ router.get('/userProtected', authenticateToken, (req, res) => {
 // Logout User
 router.post('/userLogout', authenticateToken, (req, res) => {
     const userToken = req.headers['authorization']?.split(' ')[1];
-    console.log('Camed for logged out user route token :' + userToken);
 
     blacklist.add(userToken);
-    console.log('Logout successful', userToken + ' ' + req.user.user_email);
     res.status(200).json({ message: 'Logged out successfully' });
     blacklist.add(userToken); // Add the token to the blacklist after logout
     console.log('User logged out:', req.user.user_email);
