@@ -19,9 +19,9 @@ export class CheckoutComponent implements OnInit {
   checkoutForm: FormGroup;
   cartProducts: any[] = [];
   subtotal: number = 0;
-  discount: number = 0;
-  gst: number = 0;
-  total: number = 0;
+  totalGST: number = 0;
+  totalDiscount: number = 0;
+  finalTotal: number = 0;
 
   constructor(
     private userApi: UserApiService,
@@ -60,9 +60,8 @@ export class CheckoutComponent implements OnInit {
             c_email: res.user.user_email,
             c_address: res.user.user_address
           });
-          console.log('User Info:', res);
         } else {
-          this.toastr.error('Failed to fetch user details');
+          this.toastr.error('Failed to fetch user details', 'Error', { disableTimeOut: false, progressBar: true, closeButton: true });
         }
       });
   }
@@ -78,44 +77,54 @@ export class CheckoutComponent implements OnInit {
   }
 
   calculateTotals() {
-    this.subtotal = this.cartProducts.reduce((acc, item) => acc + (item.product_price * item.qty), 0);
-  
-    this.gst = Math.ceil(this.subtotal * 0.12); // GST applied on the full subtotal (before discount)
-  
-    this.discount = Math.round(this.subtotal * 0.2); // 20% discount applied after GST calculation
-  
-    this.total = Math.ceil(this.subtotal + this.gst - this.discount); //Final total
-  }
+    this.subtotal = 0;
+    this.totalGST = 0;
+    this.totalDiscount = 0;
+
+    this.cartProducts.forEach(item => {
+        const productTotal = item.product_price * item.qty; // Subtotal for each product
+        const gstAmount = (productTotal * item.gst_percentage) / 100; // GST on this product
+        const discountAmount = (productTotal * item.discount_percentage) / 100; // Discount on this product
+
+        this.subtotal += productTotal;
+        this.totalGST += gstAmount;
+        this.totalDiscount += discountAmount;
+    });
+
+    // Final Total Payable Amount IS
+    this.finalTotal = (this.subtotal + this.totalGST) - this.totalDiscount;
+}
+
 
   placeOrder() {
     const token = localStorage.getItem('userToken');
     if (!token) {
-      this.toastr.error("You must be logged in to place an order.", 'error', { disableTimeOut: false, closeButton: true });
+      this.toastr.error("You must be logged in to place an order.", 'error', { disableTimeOut: false, progressBar:true , closeButton: true });
       this.router.navigate(['/user/login']);
       return;
     }
 
     // Single Form Validation Check
     if (!this.checkoutForm.valid) {
-      this.toastr.error('Please fill in all required fields.', 'error', { disableTimeOut: false, closeButton: true });
+      this.toastr.error('Please fill in all required fields.', 'error', { disableTimeOut: false, progressBar:true , closeButton: true });
       return;
     }
 
     const orderData = {
       ...this.checkoutForm.value,
       cartProducts: this.cartProducts,
-      totalAmount: this.total
+      totalAmount: this.finalTotal
     };
 
     if (orderData.payment_mode === 'cod') {
       this.paymentService.placeCODOrder(orderData).subscribe(
         (res: any) => {
           if (res.status === 'success') {
-            this.toastr.success('Order placed successfully!', "Success", {disableTimeOut: false , closeButton: true});
+            this.toastr.success('Order placed successfully!', "Success", {disableTimeOut: false , progressBar:true , closeButton: true});
             this.clearCart();
             this.router.navigate(['/user/orders']);
           } else {
-            this.toastr.error('Failed to place order. Try again.', 'error', {disableTimeOut: false, closeButton: true});
+            this.toastr.error('Failed to place order. Try again.', 'error', {disableTimeOut: false, progressBar:true , closeButton: true});
           }
         });
     } else {
@@ -147,22 +156,22 @@ export class CheckoutComponent implements OnInit {
     const orderData = {
       ...this.checkoutForm.value,
       cartProducts: this.cartProducts,
-      totalAmount: this.total
+      totalAmount: this.finalTotal
     };
 
     this.paymentService.verifyPayment({ ...paymentData, orderDetails: orderData }).subscribe(
       (res: any) => {
         if (res.success) {
-          this.toastr.success(res.message || 'Payment successful! Order placed.', "Success", { disableTimeOut: false, closeButton: true });
+          this.toastr.success(res.message || 'Payment successful! Order placed.', "Success", { disableTimeOut: false, progressBar:true, closeButton: true });
           this.clearCart();  // Call clearCart after payment success
           this.router.navigate(['/user/orders']);
         } else {
-          this.toastr.error('Payment verification failed.', 'error', {disableTimeOut: false, closeButton: true});
+          this.toastr.error('Payment verification failed.', 'error', {disableTimeOut: false, progressBar:true, closeButton: true});
         }
       },
       (error) => {
         console.error(" Error verifying payment:", error);
-        this.toastr.error('Something went wrong with payment verification.', 'error', { disableTimeOut: false , closeButton: true });
+        this.toastr.error('Something went wrong with payment verification.', 'error', { disableTimeOut: false ,progressBar:true ,  closeButton: true });
       }
     );
 }
@@ -174,7 +183,7 @@ export class CheckoutComponent implements OnInit {
         this.getCartProducts();
       }
       else {
-        this.toastr.error('Failed to clear cart. Try again.');
+        this.toastr.error('Failed to clear cart. Try again.', 'error', { disableTimeOut: false, progressBar:true, closeButton: true });
       }
     });
   }
