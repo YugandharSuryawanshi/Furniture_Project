@@ -1,4 +1,4 @@
-git# Furniture Project
+# Furniture Project
 <br>
 <h3>Welcome! <br> This is My E-commerce Furniture Website <br> </h3>
 <br>
