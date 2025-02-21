@@ -14,16 +14,16 @@ import { ToastrService } from 'ngx-toastr';
 })
 export class OrdersComponent implements OnInit {
 
-  orders: any[] = [];
-  filteredOrders: any[] = [];
-  selectedStatus: string = 'All';
-  searchQuery: string = '';
-  selectedDateFilter: string = 'Every';
+    orders: any[] = [];
+    filteredOrders: any[] = [];
+    selectedStatus: string = 'All';
+    searchQuery: string = '';
+    selectedDateFilter: string = 'Every';
 
-  orderDetails: any = null;
-  subtotal: number = 0;
-  gst: number = 0;
-  discount: number = 0;
+    orderDetails: any = null;
+    subtotal: number = 0;
+    gst: number = 0;
+    discount: number = 0;
 
   constructor(private adminApi: AdminApiService, private toastr: ToastrService, private router: Router) {}
 

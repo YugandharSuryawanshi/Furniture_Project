@@ -110,22 +110,25 @@
                                     </td>
                                     <td>&#8377; {{ item.product_price * item.qty }}</td>
                                 </tr>
+                                
                                 <tr>
                                     <td class="text-black font-weight-bold">Cart Subtotal</td>
-                                    <td class="text-black">&#8377; {{ subtotal }}</td>
+                                    <td class="text-black">&#8377; {{ subtotal.toFixed(2) }}</td>
                                 </tr>
                                 <tr>
-                                    <td class="text-black font-weight-bold">GST (12%)</td>
-                                    <td class="text-black">&#8377; {{ gst }}</td>
+                                    <td class="text-black font-weight-bold">GST</td>
+                                    <td class="text-black">&#8377; {{ totalGST.toFixed(2) }}</td>
                                 </tr>
                                 <tr>
-                                    <td class="text-black font-weight-bold">Discount (20%)</td>
-                                    <td class="text-black">&#8377; {{ discount }}</td>
+                                    <td class="text-black font-weight-bold">Discount</td>
+                                    <td class="text-black">&#8377; {{ totalDiscount.toFixed(2) }}</td>
                                 </tr>
                                 <tr>
-                                    <td class="text-black font-weight-bold">Order Total</td>
-                                    <td class="text-black font-weight-bold mr-1">&#8377; {{ total }}/- <span class="ml-1"></span></td>
+                                    <td class="text-black font-weight-bold">Final Total</td>
+                                    <td class="text-black font-weight-bold">&#8377; {{ finalTotal.toFixed(2) }}</td>
                                 </tr>
+                                
+                                
                             </tbody>
                         </table>
 
