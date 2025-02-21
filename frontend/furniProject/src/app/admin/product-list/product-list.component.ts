@@ -1,8 +1,9 @@
 import { CommonModule } from '@angular/common';
-import { Component } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { RouterModule } from '@angular/router';
 import { AdminApiService } from '../../service/admin-api.service';
+import { ToastrService } from 'ngx-toastr';
 
 @Component({
   selector: 'app-product-list',
@@ -11,9 +12,9 @@ import { AdminApiService } from '../../service/admin-api.service';
   templateUrl: './product-list.component.html',
   styleUrl: './product-list.component.css'
 })
-export class ProductListComponent {
+export class ProductListComponent implements OnInit {
 
-  constructor(public adminApi: AdminApiService) {}
+  constructor(public adminApi: AdminApiService, private toastr:ToastrService) { }
 
   display: boolean = true;
   displayUpdateForm: boolean = false;
@@ -22,8 +23,6 @@ export class ProductListComponent {
   searchStr: string = '';
   selectedImages: File[] = [];
   selectedImagePreviews: string[] = [];
-  successMessage: string = '';
-  errorMessage: string = '';
   productColor: string = '#000000';
   productTypes: any = [];
   productImages: string[] = [];
@@ -38,7 +37,6 @@ export class ProductListComponent {
   getProducts() {
     this.adminApi.getProducts().subscribe((res: any) => {
       this.products = res.products;
-      console.log(this.products);
     });
   }
 
@@ -72,9 +70,9 @@ export class ProductListComponent {
         this.formData = { ...res.single_product };
         const imagesString = res.images[0];
         this.productImages = imagesString.split(',').map((image: string) => this.basePath + image.trim());
-        console.log('Existing Product Images:', this.productImages);
       } else {
         console.error('Product not found');
+        this.toastr.error('Product not found', 'Error', { disableTimeOut: false, progressBar: true, closeButton: true, });
       }
     });
   }
@@ -94,8 +92,6 @@ export class ProductListComponent {
         };
         reader.readAsDataURL(file);
       });
-
-      console.log('Selected Images:', this.selectedImages);
     }
   }
 
@@ -119,6 +115,8 @@ export class ProductListComponent {
     product_warranty: '',
     product_care_instructions: '',
     additional_details: '',
+    gst_percentage: '',
+    discount_percentage: '',
   };
 
   updateProduct() {
@@ -141,6 +139,8 @@ export class ProductListComponent {
     formData.append('product_warranty', this.formData.product_warranty);
     formData.append('product_care_instructions', this.formData.product_care_instructions);
     formData.append('additional_details', this.formData.additional_details);
+    formData.append('gst_percentage', this.formData.gst_percentage);
+    formData.append('discount_percentage', this.formData.discount_percentage);
 
     if (this.selectedImages) {
       this.selectedImages.forEach((image: File) => {
@@ -150,18 +150,14 @@ export class ProductListComponent {
 
     this.adminApi.updateProduct(this.formData.product_id, formData).subscribe((res: any) => {
       if (res.success) {
-        this.successMessage = 'Product updated successfully!';
+        this.toastr.success('Product updated successfully!', 'Success', { disableTimeOut: false, progressBar: true, closeButton: true, });
         this.display = true;
         this.displayUpdateForm = false;
         this.getProducts();
         this.selectedImages = [];
       } else {
-        this.errorMessage = res.message;
+        this.toastr.error('Getting Error', 'Error', { disableTimeOut: false, progressBar: true, closeButton: true, });
       }
-      setTimeout(() => {
-        this.successMessage = '';
-        this.errorMessage = '';
-      }, 5000);
     });
   }
 
@@ -169,17 +165,13 @@ export class ProductListComponent {
     if (confirm('Are you sure you want to delete this product?')) {
       this.adminApi.deleteProduct(product_id).subscribe((res: any) => {
         if (res.success) {
-          this.successMessage = 'Product deleted successfully!';
+          this.toastr.success('Product deleted successfully!', 'Success', { disableTimeOut: false, progressBar: true, closeButton: true, });
           this.getProducts();
         } else {
-          this.errorMessage = 'Failed to delete product';
+          this.toastr.error('Failed to delete product', 'Error', { disableTimeOut: false, progressBar: true, closeButton: true, });
         }
       });
     }
-    setTimeout(() => {
-      this.successMessage = '';
-      this.errorMessage = '';
-    }, 5000);
   }
 
 

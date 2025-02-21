@@ -159,7 +159,7 @@
                     <input type="number" name="no_of_pieces" class="form-control" [(ngModel)]="formData.no_of_pieces" required  />
                 </div>
     
-                <div class="col-md-3 mb-3">
+                <div class="col-md-2 mb-3">
                     <label for="product_origin">Product Origin</label>
                     <select name="product_origin" class="form-control" [(ngModel)]="formData.product_origin" required>
                         <option value="" disabled>Select Origin</option>
@@ -182,14 +182,24 @@
                 </div>
                 
     
-                <div class="col-md-4 mb-3">
+                <div class="col-md-3 mb-3">
                     <label for="product_material">Product Material</label>
                     <input type="text" name="product_material" class="form-control" [(ngModel)]="formData.product_material" required  />
                 </div>
     
-                <div class="col-md-5 mb-3">
+                <div class="col-md-3 mb-3">
                     <label for="product_warranty">Product Warranty <span style="font-size: 11px;">(mention in Months , Year)</span></label>
                     <input type="text" name="product_warranty" class="form-control" [(ngModel)]="formData.product_warranty" required  />
+                </div>
+    
+                <div class="col-md-2 mb-3">
+                    <label for="gst_percentage">Product GST <span style="font-size: 11px;">(Enter In %)</span> </label>
+                    <input type="number" name="gst_percentage" class="form-control" [(ngModel)]="formData.gst_percentage" required  />
+                </div>
+    
+                <div class="col-md-2 mb-3">
+                    <label for="discount_percentage">Product Discount <span style="font-size: 11px;">(Enter in %)</span></label>
+                    <input type="number" name="discount_percentage" class="form-control" [(ngModel)]="formData.discount_percentage" required  />
                 </div>
     
                 <div class="col-md-6 mb-3">
@@ -229,12 +239,4 @@
             </div>
         </div>
     </div>
-</div>
-
-<!-- Success and Error Messages -->
-<div *ngIf="successMessage" class="alert alert-success mt-3">
-    {{ successMessage }}
-</div>
-<div *ngIf="errorMessage" class="alert alert-danger mt-3">
-    {{ errorMessage }}
 </div>

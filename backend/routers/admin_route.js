@@ -437,20 +437,21 @@ router.post("/save_product", async (req, res) => {
         }
 
         const d = req.body;
+        
         d.product_details = d.product_details.replace(/'/g, "`"); // replace globally
         d.additional_details = d.additional_details.replace(/'/g, "`"); // replace globally
 
-        const sql = `INSERT INTO product (product_type_id, product_name, product_price,
-                    duplicate_price, product_size, product_color, product_lable, product_details,
-                    product_image, product_brand, product_weight,no_of_pieces,product_pattern,
-                    product_origin,product_material,product_warranty,product_care_instructions,
-                    additional_details)
-            VALUES ('${d.product_type_id}', '${d.product_name}', '${d.product_price}',
-                '${d.duplicate_price}', '${d.product_size}', '${d.product_color}',
-                '${d.product_lable}', '${d.product_details}', '${file_name}', '${d.product_brand}',
-                '${d.product_weight}', '${d.no_of_pieces}', '${d.product_pattern}', '${d.product_origin}',
-                '${d.product_material}', '${d.product_warranty}', '${d.product_care_instructions}',
-                '${d.additional_details}')`;
+        const sql = `INSERT INTO product (
+            product_type_id, product_name, product_price, duplicate_price, product_size,
+            product_color, product_lable, product_details, product_image, product_brand,
+            product_weight, no_of_pieces, product_pattern, product_origin, product_material,
+            product_warranty, product_care_instructions, additional_details, gst_percentage, discount_percentage)
+    VALUES ('${d.product_type_id}', '${d.product_name}', '${d.product_price}', '${d.duplicate_price}',
+        '${d.product_size}', '${d.product_color}', '${d.product_lable}', '${d.product_details}',
+        '${file_name}', '${d.product_brand}', '${d.product_weight}', '${d.no_of_pieces}',
+        '${d.product_pattern}', '${d.product_origin}', '${d.product_material}',
+        '${d.product_warranty}', '${d.product_care_instructions}', '${d.additional_details}',
+        '${d.gst_percentage}', '${d.discount_percentage}')`;
 
         const data = await exe(sql);
 
@@ -523,6 +524,7 @@ router.get('/single_product/:id', async (req, res) => {
 router.put('/product_update/:id', async (req, res) => {
     const d = req.body;
     const product_id = req.params.id;
+    
     try {
         let file_names = [];
         if (req.files && req.files.product_image) {
@@ -561,7 +563,9 @@ router.put('/product_update/:id', async (req, res) => {
                 product_material = '${d.product_material}',
                 product_warranty = '${d.product_warranty}',
                 product_care_instructions = '${d.product_care_instructions}',
-                additional_details = '${d.additional_details}'
+                additional_details = '${d.additional_details}',
+                gst_percentage = '${d.gst_percentage}',
+                discount_percentage = '${d.discount_percentage}'
             WHERE product_id = '${product_id}'`;
 
         const data = await exe(sql);
@@ -1367,3 +1371,4 @@ router.get('/get_orders', async (req, res) => {
 
 
 export { router as adminRoute };
+

@@ -23,10 +23,6 @@ export class PrintReceiptComponent {
 
   orderId: number = 0;
   orderDetails: any = null;
-  subtotal: number = 0;
-  gst: number = 0;
-  discount: number = 0;
-  total_amt: number = 0;
   userDetails: any;
 
   ngOnInit(): void {
@@ -37,7 +33,7 @@ export class PrintReceiptComponent {
       this.getOrderReceipt();
     } else {
       console.error("Invalid Order ID");
-      this.toastr.error('Invalid Order ID', 'Error', {disableTimeOut: false , closeButton: true});
+      this.toastr.error('Invalid Order ID', 'Error', {disableTimeOut: false , progressBar:true  , closeButton: true});
     }
   }
 
@@ -46,33 +42,17 @@ export class PrintReceiptComponent {
       (res: any) => {
         if (res.success) {
           this.orderDetails = res.order
+          console.log(this.orderDetails);
           
-          this.calculateTotals();
         }
       },
       (error) => {
         console.error('Error fetching receipt:', error);
-        this.toastr.error('Error fetching receipt', 'Error', { disableTimeOut: false, closeButton: true });
+        this.toastr.error('Error fetching receipt', 'Error', { disableTimeOut: false , progressBar:true , closeButton: true });
       }
     );
   }
 
-  calculateTotals() {
-  
-    //Correctly calculate subtotal by summing (price * quantity) for all products in the order
-    this.subtotal = this.orderDetails.items.reduce((sum: number, item: any) => {
-      return sum + (item.product_price * item.product_qty);
-    }, 0);
-
-    //Apply 12% GST on subtotal
-    this.gst = this.subtotal * 0.12;
-  
-    // 20% Discount on subtotal
-    this.discount = this.subtotal * 0.20;
-    
-    // total amount
-    this.total_amt = Math.round(this.subtotal + (this.gst - this.discount));
-  }
 
   printReceipt() {
     this.hideHeaderFooter();
