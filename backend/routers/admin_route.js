@@ -721,6 +721,7 @@ router.delete('/product_delete/:id', async (req, res) => {
 // });
 
 // Update Interior
+
 router.put('/update_interior', async (req, res) => {
     try {
         // Extract form data
@@ -1332,8 +1333,10 @@ router.delete('/delete_team_member/:id', async (req, res) => {
 router.get('/get_orders', async (req, res) => {
     try {
         const sql = `
-            SELECT o.order_id, o.order_status, o.order_date, o.payment_status,
+            SELECT
+            o.order_id, o.user_id, o.order_status, o.order_date, o.payment_status, o.payment_mode,
             o.c_fname, o.c_lname, o.c_address, o.c_state, o.c_postal_zip, o.c_phone, o.transaction_id,
+            o.total_amount, o.total_gst, o.total_discount, o.final_total,
             GROUP_CONCAT(p.product_name SEPARATOR ', ') AS products,
             SUM(p.product_qty * p.product_price) AS total_amount
             FROM order_tbl o

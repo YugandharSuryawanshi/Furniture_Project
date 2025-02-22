@@ -14,92 +14,119 @@ import { ToastrService } from 'ngx-toastr';
 })
 export class OrdersComponent implements OnInit {
 
-    orders: any[] = [];
-    filteredOrders: any[] = [];
-    selectedStatus: string = 'All';
-    searchQuery: string = '';
-    selectedDateFilter: string = 'Every';
+  orders: any[] = [];
+  filteredOrders: any[] = [];
+  selectedStatus: string = 'All';
+  searchQuery: string = '';
+  selectedDateFilter: string = 'Every';
 
-    orderDetails: any = null;
-    subtotal: number = 0;
-    gst: number = 0;
-    discount: number = 0;
+  // Summary Counters
+  total_orders: number = 0;
+  total_pending: number = 0;
+  total_revenue: number = 0;
+  total_cancelled: number = 0;
+  total_delivered: number = 0;
 
-  constructor(private adminApi: AdminApiService, private toastr: ToastrService, private router: Router) {}
+  // Order Details (For Modal)
+  orderDetails: any = null;
+  subtotal: number = 0;
+  gst: number = 0;
+  discount: number = 0;
+
+  constructor(private adminApi: AdminApiService, private toastr: ToastrService, private router: Router) { }
 
   ngOnInit(): void {
     this.fetchOrders();
   }
 
-
   fetchOrders() {
     this.adminApi.getOrders().subscribe((res: any) => {
       if (res.success) {
-        this.orders = res.data.map((order: any) => {
-          order.total_amt = this.calculateTotal(order.total_amount);  // Store total in each order
-          return order;
+        this.orders = res.data;
+
+        // Reset all variable before calculations
+        this.total_orders = this.orders.length;
+        this.total_pending = 0;
+        this.total_revenue = 0;
+        this.total_cancelled = 0;
+        this.total_delivered = 0;
+
+        // calculate totals
+        this.orders.forEach(order => {
+          this.total_revenue += parseFloat(order.final_total) || 0;
+
+          // Count order statuses
+          if (order.order_status === 'Pending') this.total_pending++;
+          if (order.order_status === 'Cancelled') this.total_cancelled++;
+          if (order.order_status === 'Delivered') this.total_delivered++;
         });
+
         this.applyFilters();
 
       } else {
-        this.toastr.error('No orders found', 'Error');
+        this.toastr.error('No orders found', 'Error', { progressBar : true, closeButton: true, disableTimeOut: false});
       }
     }, error => {
       console.error("Error fetching orders:", error);
-      this.toastr.error('Error fetching orders', 'Error');
+      this.toastr.error('Error fetching orders', 'Error', { progressBar : true, closeButton: true, disableTimeOut: false});
     });
-}
-
-
-
-  calculateTotal(subtotal: number): number {
-    if (!subtotal) return 0;
-
-    const gst = subtotal * 0.12;   // 12% GST
-    const discount = subtotal * 0.20;  // 20% Discount
-    return Math.round(subtotal + gst - discount);
-}
+  }
 
   setStatus(status: string) {
     this.selectedStatus = status;
-    this.applyFilters();
+    this.filterOrders();
+}
+
+applyFilters() {
+  this.filterOrders();
+  this.searchOrders();
+}
+
+filterOrders() {
+  if (!this.orders || this.orders.length === 0) {
+      this.filteredOrders = [];
+      return;
   }
 
-  applyFilters() {
-    this.filteredOrders = this.orders.filter(order => {
-      // Convert search query to lowercase for case-insensitive search
-      const searchLower = this.searchQuery.toLowerCase();
-      
-      // Check if any field matches the search query
-      const statusMatch = (this.selectedStatus === 'All' || order.order_status === this.selectedStatus);
-      const productMatch = order.products?.toLowerCase().includes(searchLower);
-      const firstNameMatch = order.c_fname?.toLowerCase().includes(searchLower);
-      const lastNameMatch = order.c_lname?.toLowerCase().includes(searchLower);
-      const orderIdMatch = order.order_id?.toString().includes(searchLower);  // Convert number to string
+  this.filteredOrders = this.orders.filter(order => {
+      const statusMatch = this.selectedStatus === 'All' || order.order_status === this.selectedStatus;
 
-      // Combine all search conditions
-      const searchMatch = this.searchQuery === '' || productMatch || firstNameMatch || lastNameMatch || orderIdMatch;
-
-      // Date Filtering Logic
-      const today = new Date();
       const orderDate = new Date(order.order_date);
+      const today = new Date();
       let dateFilterMatch = true;
 
       if (this.selectedDateFilter === 'Today') {
-        dateFilterMatch = orderDate.toDateString() === today.toDateString();
+          dateFilterMatch = orderDate.toDateString() === today.toDateString();
       } else if (this.selectedDateFilter === 'Last 7 Days') {
-        const sevenDaysAgo = new Date();
-        sevenDaysAgo.setDate(today.getDate() - 7);
-        dateFilterMatch = orderDate >= sevenDaysAgo;
+          const sevenDaysAgo = new Date();
+          sevenDaysAgo.setDate(today.getDate() - 7);
+          dateFilterMatch = orderDate >= sevenDaysAgo;
       } else if (this.selectedDateFilter === 'Last 30 Days') {
-        const thirtyDaysAgo = new Date();
-        thirtyDaysAgo.setDate(today.getDate() - 30);
-        dateFilterMatch = orderDate >= thirtyDaysAgo;
+          const thirtyDaysAgo = new Date();
+          thirtyDaysAgo.setDate(today.getDate() - 30);
+          dateFilterMatch = orderDate >= thirtyDaysAgo;
       }
 
-      return statusMatch && searchMatch && dateFilterMatch;
-    });
+      return statusMatch && dateFilterMatch;
+  });
 }
+
+// Function to search orders by Order ID, Customer Name, or Products
+searchOrders() {
+  const searchLower = this.searchQuery?.toLowerCase() || '';
+  if (!searchLower) return;
+
+  this.filteredOrders = this.filteredOrders.filter(order =>
+      order.products?.toLowerCase().includes(searchLower) ||
+      order.c_fname?.toLowerCase().includes(searchLower) ||
+      order.c_lname?.toLowerCase().includes(searchLower) ||
+      order.order_id?.toString().includes(searchLower)  // Convert Order ID to string
+  );
+}
+
+
+
+  
 
 
 
