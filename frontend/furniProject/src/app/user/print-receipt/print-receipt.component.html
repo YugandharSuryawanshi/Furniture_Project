@@ -75,19 +75,19 @@
                         <tbody>
                             <tr>
                                 <td><strong>Subtotal</strong></td>
-                                <td>&#8377; {{ orderDetails.total_amount | number:'1.0-0' }}</td>
+                                <td>&#8377; {{ orderDetails.total_amount | number:'1.2-2' }}</td>
                             </tr>
                             <tr>
                                 <td><strong>GST </strong></td>
-                                <td>&#8377; {{ orderDetails.total_gst | number:'1.0-0' }}</td>
+                                <td>&#8377; {{ orderDetails.total_gst | number:'1.2-2' }}</td>
                             </tr>
                             <tr>
                                 <td><strong>Discount</strong></td>
-                                <td>&#8377; {{ orderDetails.total_discount | number:'1.0-0' }}</td>
+                                <td>&#8377; {{ orderDetails.total_discount | number:'1.2-2' }}</td>
                             </tr>
                             <tr>
                                 <td><strong>Total</strong></td>
-                                <td><strong>&#8377; {{ orderDetails.final_total | number:'1.0-0' }} /-</strong></td>
+                                <td><strong>&#8377; {{ orderDetails.final_total | number:'1.2-2' }} /-</strong></td>
                             </tr>
                         </tbody>
                     </table>
