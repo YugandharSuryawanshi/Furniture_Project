@@ -1,4 +1,5 @@
 import bcrypt from 'bcryptjs';
+import crypto from 'crypto';
 import express from 'express';
 import jwt from 'jsonwebtoken';
 import Razorpay from 'razorpay';
@@ -528,64 +529,6 @@ router.post('/create_order', authenticateToken, async (req, res) => {
 });
 
 // ONLINE Payment Gateway order Save
-// router.post('/verify_payment', authenticateToken, async (req, res) => {
-//     try {
-//         const { razorpay_order_id, razorpay_payment_id, razorpay_signature, orderDetails } = req.body;
-//         const userId = req.user.id;
-
-//         if (!orderDetails || !razorpay_payment_id || !orderDetails.cartProducts || orderDetails.cartProducts.length === 0) {
-//             console.error(" Missing order details or empty cart:", req.body);
-//             return res.status(400).json({ success: false, message: 'Missing order details or empty cart' });
-//         }
-
-//         // Here Verify Razorpay Signature
-//         const hmac = crypto.createHmac('sha256', config.razorpayKeySecret); // our Razorpay secret key
-//         hmac.update(razorpay_order_id + "|" + razorpay_payment_id);
-//         const generatedSignature = hmac.digest('hex');
-
-//         if (generatedSignature !== razorpay_signature) {
-//             console.error(" Payment verification failed. Signatures do not match.");
-//             return res.status(400).json({ success: false, message: 'Payment verification failed' });
-//         }
-
-//         // Insert Order data into `order_tbl`
-//         const orderSql = `INSERT INTO order_tbl
-//             (user_id, country, c_fname, c_lname, c_address, c_area, c_state, c_postal_zip, c_email_address, c_phone, payment_mode,
-//             order_date, order_status, order_dispatch_date, order_delivered_date, order_cancel_date, order_reject_date, payment_status,
-//             transaction_id, payment_date) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, NOW(), ?, ?, ?, ?, ?, ?, ?, ?)`;
-
-//         const orderValues = [
-//             userId, orderDetails.c_country, orderDetails.c_fname, orderDetails.c_lname, orderDetails.c_address, orderDetails.c_area,
-//             orderDetails.c_state, orderDetails.c_postal_zip, orderDetails.c_email, orderDetails.c_phone, "online", "Confirmed",
-//             null, null, null, null, "Paid", razorpay_payment_id, new Date()
-//         ];
-
-//         // const orderResult = await exe(orderSql, orderValues);
-//         const orderId = orderResult.insertId; // here orderId is store due to add in order_products table
-
-//         // Insert Ordered Products into `order_products` table for print in orders
-//         const productSql = `INSERT INTO order_products (order_id, user_id, product_id, product_name, product_qty, product_price, product_details)
-//                             VALUES (?, ?, ?, ?, ?, ?, ?)`;
-
-//         for (let product of orderDetails.cartProducts) {
-//             const productValues = [orderId, userId, product.product_id, product.product_name, product.qty, product.product_price, product.product_details];
-//             // await exe(productSql, productValues);
-//             // console.log(` Product Inserted: ${product.product_name} (Qty: ${product.qty})`);
-//         }
-
-//         // Send Success Response
-//         console.log('Payment Verified & Order Stored Successfully');
-//         res.status(200).json({ success: true, message: 'Order placed successfully!' });
-
-//     } catch (error) {
-//         console.error(' Error verifying payment:', error);
-//         res.status(500).json({ success: false, message: 'Error verifying payment Failed' });
-//     }
-// });
-
-// const crypto = require('crypto'); // ✅ Fix crypto import
-import crypto from 'crypto';
-
 router.post('/verify_payment', authenticateToken, async (req, res) => {
     try {
         const { razorpay_order_id, razorpay_payment_id, razorpay_signature, orderDetails } = req.body;
@@ -689,120 +632,7 @@ router.post('/verify_payment', authenticateToken, async (req, res) => {
     }
 });
 
-
-
-
-
 // COD Order save details
-// router.post('/place_cod_order', authenticateToken, async (req, res) => {
-//     try {
-//         const { c_country, c_fname, c_lname, c_address, c_area, c_state, c_postal_zip, c_email, c_phone, cartProducts } = req.body;
-//         const userId = req.user.id;
-//         var data = req.body;
-
-//         const orderSql = ` INSERT INTO order_tbl ( user_id , country , c_fname , c_lname , c_address , c_area , c_state , c_postal_zip ,
-//             c_email_address , c_phone , payment_mode , order_status , payment_status , order_date )
-//             VALUES ( ? , ? , ? , ? , ? , ? , ? , ? , ? , ? , 'cod' , 'Pending' , 'Pending' , NOW() )`;
-
-//         const orderValues = [
-//             userId, c_country, c_fname, c_lname, c_address, c_area, c_state, c_postal_zip, c_email, c_phone
-//         ];
-
-//         const orderResult = await exe(orderSql, orderValues);
-//         const orderId = orderResult.insertId; // Getting order id for insert order_products table.
-
-//         var productSql = `INSERT INTO order_products (order_id, user_id, product_id,product_name, product_qty, product_price, product_details) VALUES (?, ?, ?, ?, ?, ?, ?)`;
-
-//         for (let product of cartProducts) {
-//             const productValues = [orderId, userId, product.product_id, product.product_name, product.qty, product.product_price, product.product_details];
-//             await exe(productSql, productValues);
-//         }
-//         res.status(200).json({ status: 'success', message: 'COD order placed successfully' });
-//     } catch (error) {
-//         console.error('Error placing COD order:', error);
-//         res.status(500).json({ success: false, message: 'Internal server error' });
-//     }
-// });
-// router.post('/place_cod_order', authenticateToken, async (req, res) => {
-//     try {
-//         const { c_country, c_fname, c_lname, c_address, c_area, c_state, c_postal_zip, c_email, c_phone, cartProducts } = req.body;
-//         const userId = req.user.id;
-
-//         if (!cartProducts || cartProducts.length === 0) {
-//             console.error("Missing order details or empty cart:", req.body);
-//             return res.status(400).json({ success: false, message: 'Missing order details or empty cart' });
-//         }
-
-//         // Function to calculate order totals and prepare product values
-//         let total_amount = 0, total_gst = 0, total_discount = 0, final_total = 0;
-//         let productValuesArray = [];
-
-//         for (let product of cartProducts) {
-//             let product_price = parseFloat(product.product_price);
-//             let gst_percentage = parseFloat(product.gst_percentage);
-//             let discount_percentage = parseFloat(product.discount_percentage);
-
-//             let gst_amount = (product_price * gst_percentage) / 100;
-//             let discount_amount = (product_price * discount_percentage) / 100;
-//             let final_price = product_price + gst_amount - discount_amount;
-
-//             // Accumulate totals
-//             total_amount += product_price;
-//             total_gst += gst_amount;
-//             total_discount += discount_amount;
-//             final_total += final_price;
-
-//             // Store product values for batch insert
-//             productValuesArray.push([
-//                 product.product_id, product.product_name, product.qty, product_price,
-//                 gst_amount, discount_amount, final_price, product.product_details
-//             ]);
-//         }
-
-//         // Insert Order Data into order_tbl table
-//         const orderSql = `
-//             INSERT INTO order_tbl (
-//                 user_id, country, c_fname, c_lname, c_address, c_area, c_state, c_postal_zip, c_email_address, c_phone,
-//                 payment_mode, order_date, order_status, order_dispatch_date, order_delivered_date, order_cancel_date,
-//                 order_reject_date, payment_status, transaction_id, payment_date, total_amount, total_gst, total_discount, final_total
-//             ) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, NOW(), ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
-//         `;
-
-//         const orderValues = [
-//             userId, c_country, c_fname, c_lname, c_address, c_area, c_state, c_postal_zip, c_email, c_phone, "cod",
-//             "Pending", null, null, null, null, "Pending", null, null,
-//             total_amount, total_gst, total_discount, final_total
-//         ];
-
-//         const orderResult = await exe(orderSql, orderValues);
-//         if (!orderResult || !orderResult.insertId) throw new Error("Order insertion failed.");
-
-//         const orderId = orderResult.insertId; // Get order_id for order_products table
-
-//         // Insert all products in a single query
-//         const productSql = `
-//             INSERT INTO order_products (
-//                 order_id, user_id, product_id, product_name, product_qty, product_price,
-//                 gst_amount, discount_amount, final_price, product_details
-//             ) VALUES ?
-//         `;
-
-//         // Add order_id and user_id to each product entry
-//         const finalProductValues = productValuesArray.map(productValues => [orderId, userId, ...productValues]);
-
-//         await exe(productSql, [finalProductValues]); // Batch insert
-
-//         // Send Success Response
-//         console.log('COD Order Placed Successfully');
-//         res.status(200).json({ success: true, message: 'COD order placed successfully!' });
-
-//     } catch (error) {
-//         console.error('Error placing COD order:', error);
-//         res.status(500).json({ success: false, message: 'Internal server error' });
-//     }
-// });
-
-
 router.post('/place_cod_order', authenticateToken, async (req, res) => {
     try {
         const { c_country, c_fname, c_lname, c_address, c_area, c_state, c_postal_zip, c_email, c_phone, cartProducts } = req.body;
@@ -890,12 +720,6 @@ router.post('/place_cod_order', authenticateToken, async (req, res) => {
         res.status(500).json({ success: false, message: 'Internal server error' });
     }
 });
-
-
-
-
-
-
 
 // Clear Cart
 router.delete('/clear_cart', authenticateToken, async (req, res) => {
