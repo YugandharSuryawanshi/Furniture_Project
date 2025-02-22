@@ -16,12 +16,12 @@ app.use(bodyParser.json());
 app.use(upload());
 app.use(express.static("public"));
 
-const corsOptions = {
-    origin: "http://localhost:4200",
-    methods: "GET, POST, PUT, DELETE, PATCH, HEAD",
-    credentials: true
-};
-app.use(cors(corsOptions));
+// ✅ Configure CORS
+app.use(cors({
+    origin: '*',
+    methods: ['GET', 'POST', 'PUT', 'DELETE'],
+    allowedHeaders: ['Content-Type', 'Authorization']
+}));
 
 app.use('/', userRoute);
 app.use('/admin', adminRoute);
@@ -30,3 +30,11 @@ const PORT = process.env.PORT || 1000;
 app.listen(PORT, () => {
     console.log(`Server running on port ${PORT}`);
 });
+
+
+
+
+
+
+
+
