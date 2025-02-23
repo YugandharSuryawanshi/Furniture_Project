@@ -26,7 +26,7 @@ export class LoginComponent {
     
     if (!this.formData.user_email || !this.formData.user_password) {
       // alert('Please Email And Password.');
-      this.toastr.error('Enter Email and Password', "Success", { disableTimeOut: false,closeButton: true });
+      this.toastr.error('Enter Email and Password', "Error", { disableTimeOut: false, progressBar:true , closeButton: true });
       return;
     }
 
@@ -43,10 +43,10 @@ export class LoginComponent {
           localStorage.setItem('userEmail', this.formData.user_email);
 
           this.userApi.setToken(response.userToken);
-          this.toastr.success("Login successfully", "Success", { disableTimeOut: false,closeButton: true });
+          this.toastr.success("Login successfully", "Success", { disableTimeOut: false, progressBar:true , closeButton: true });
           this.router.navigate(['/user/home']);
         } else {
-          this.toastr.error("Login Error - Invalid User Details", "Error", { disableTimeOut: false,closeButton: true });
+          this.toastr.error("Login Error - Invalid User Details", "Error", { disableTimeOut: false, progressBar:true ,closeButton: true });
         }
       });
   }
