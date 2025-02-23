@@ -75,7 +75,7 @@ export class AdminNavbarComponent implements AfterViewInit {
     // For admin state changes
     this.adminApi.adminState$.subscribe((admin) => {
       this.adminDetails = admin;
-      this.adminProfile = `http://localhost:1000/uploads/${this.adminDetails.admin_profile}`;
+      this.adminProfile = `http://localhost:1000/uploads/${this.adminDetails?.admin_profile}`;
     });
   }
 
@@ -88,7 +88,7 @@ export class AdminNavbarComponent implements AfterViewInit {
       if(data.success)
       {
         this.adminDetails = data.admin;
-        this.adminProfile = `http://localhost:1000/uploads/${this.adminDetails.admin_profile}`;
+        this.adminProfile = `http://localhost:1000/uploads/${this.adminDetails?.admin_profile}`;
         this.adminName = 'Welcome '+this.adminDetails.admin_name + '!';
       }
       else {

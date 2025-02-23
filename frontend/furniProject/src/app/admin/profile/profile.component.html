@@ -57,7 +57,7 @@
                     <div class="profile-img">
                         <!-- <img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTKlIcH0Q1e2QDuzvM94CnN3vdzXrvebSHNeQ&s"
                             alt="User Profile" class="img-fluid rounded-circle border" /> -->
-                            <img [src]="adminProfileUrl" alt="User Profile" class="img-fluid rounded-circle border" style="height: 250px; width: 250px;">
+                            <img *ngIf="adminDetails?.admin_profile" [src]="'http://localhost:1000/uploads/'+adminDetails?.admin_profile" alt="Admin Profile" class="img-fluid rounded-circle border" style="height: 250px; width: 250px;">
                         <div class="file btn btn-primary mt-2">
                             Change Photo
                             <input type="file" id="admin_profile" (change)="onFileChange($event)" name="admin_profile" class="form-control" />

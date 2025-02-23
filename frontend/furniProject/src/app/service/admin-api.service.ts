@@ -385,5 +385,17 @@ export class AdminApiService {
     return this.http.get(`http://localhost:1000/admin/get_orders`);
   }
 
+  // Get Single Order By ID
+  getSingleOrder(id:any)
+  {
+    return this.http.get(`http://localhost:1000/admin/get_order_details/${id}`);
+  }
+
+  // UPdate Order Status
+  updateOrder(orderDetails:any)
+  {
+    return this.http.put(`http://localhost:1000/admin/update_order`, orderDetails);
+  }
+
 
 }

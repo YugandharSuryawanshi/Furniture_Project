@@ -9,46 +9,6 @@
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
     <!-- Bootstrap Icons -->
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.1/font/bootstrap-icons.css">
-    <style>
-        .order-card {
-            background: #ffffff;
-            border-radius: 15px;
-            box-shadow: 0 0 20px rgba(0, 0, 0, 0.1);
-            transition: transform 0.3s ease;
-        }
-
-        .order-card:hover {
-            transform: translateY(-5px);
-        }
-
-        .status-badge {
-            padding: 8px 15px;
-            border-radius: 10px;
-            font-size: 0.9rem;
-        }
-
-        .order-table thead th {
-            background: #f8f9fa;
-            border-bottom: 2px solid #dee2e6;
-        }
-
-        .order-actions .btn {
-            padding: 5px 12px;
-            margin: 2px;
-            border-radius: 8px;
-        }
-
-        .search-box {
-            max-width: 300px;
-            border-radius: 25px;
-        }
-
-        .stats-card {
-            background: linear-gradient(45deg, #6c5ce7, #a8a4e6);
-            color: white;
-            border-radius: 15px;
-        }
-    </style>
 </head>
 
 <body class="bg-light">
@@ -71,7 +31,6 @@
                         [(ngModel)]="searchQuery" (input)="applyFilters()">
                 </div>
             </div>
-            
         </div>
     </div>
 
@@ -88,7 +47,8 @@
         <div class="col-12 col-sm-6 col-xl-3">
             <div class="stats-card p-4">
                 <h5>Total Revenue</h5>
-                <h2 class="mb-0">{{total_revenue}}</h2>
+                <!-- <h2 class="mb-0">{{total_revenue}}</h2> -->
+                <h2 class="mb-0">&#8377; {{total_revenue | number:'1.2-2'}}</h2>
                 <i class="bi bi-currency-rupee fs-3 float-end"></i>
             </div>
         </div>
@@ -124,6 +84,9 @@
                     <button class="status-btn btn btn-outline-info px-3" [class.active]="selectedStatus === 'Confirmed'"
                         (click)="setStatus('Confirmed')">Confirmed</button>
                     <button class="status-btn btn btn-outline-success px-3"
+                        [class.active]="selectedStatus === 'Dispatched'"
+                        (click)="setStatus('Dispatched')">Dispatched</button>
+                    <button class="status-btn btn btn-outline-success px-3"
                         [class.active]="selectedStatus === 'Delivered'"
                         (click)="setStatus('Delivered')">Delivered</button>
                     <button class="status-btn btn btn-outline-danger px-3"
@@ -150,8 +113,7 @@
                         </tr>
                     </thead>
                     <tbody>
-                        <!-- Sample Data - Repeat this row for each order -->
-                        <tr *ngFor="let order of filteredOrders">
+                        <tr *ngFor="let order of paginatedOrders">
                             <td>#FURNI{{ order.order_id }}</td>
                             <td>
                                 <ul class="list-unstyled mb-1">
@@ -163,8 +125,9 @@
                             </td>
                             <td>
                                 <div class="d-flex align-items-center">
-                                    <img src="https://via.placeholder.com/40" class="rounded-circle me-2">
-                                    {{ order.c_fname }} {{ order.c_lname }}
+                                    <img [src]="'http://localhost:1000/uploads/'+order.user_profile"
+                                        style="height: 35px; width: 35px;" class="rounded-circle me-2">
+                                    {{ order.user_name }}
                                 </div>
                             </td>
                             <td>
@@ -177,6 +140,7 @@
                                 'bg-success': order.order_status === 'Delivered',
                                 'bg-warning': order.order_status === 'Pending',
                                 'bg-info': order.order_status === 'Confirmed',
+                                'cssClass': order.order_status === 'Dispatched',
                                 'bg-danger': order.order_status === 'Cancelled'
                             }">
                                     {{ order.order_status }}
@@ -184,7 +148,8 @@
                             </td>
                             <td>
                                 <div class="order-actions">
-                                    <button class="btn btn-sm btn-outline-primary" title="View Details">
+                                    <button class="btn btn-sm btn-outline-primary"
+                                        (click)="viewOrderDetails(order.order_id)" title="View Details">
                                         <i class="bi bi-eye"></i>
                                     </button>
                                     <button class="btn btn-sm btn-outline-success" title="Edit"
@@ -201,16 +166,105 @@
             <!-- Pagination -->
             <nav class="d-flex justify-content-end mt-4">
                 <ul class="pagination">
-                    <li class="page-item"><a class="page-link" href="#">Previous</a></li>
-                    <li class="page-item active"><a class="page-link" href="#">1</a></li>
-                    <li class="page-item"><a class="page-link" href="#">2</a></li>
-                    <li class="page-item"><a class="page-link" href="#">3</a></li>
-                    <li class="page-item"><a class="page-link" href="#">Next</a></li>
+                    <!-- Previous Button -->
+                    <li class="page-item" [class.disabled]="currentPage === 1">
+                        <a class="page-link" (click)="goToPage(currentPage - 1)" aria-label="Previous">
+                            Previous
+                        </a>
+                    </li>
+
+                    <!-- Page Numbers -->
+                    <li *ngFor="let page of totalPagesArray" class="page-item" [class.active]="page === currentPage">
+                        <a class="page-link" (click)="goToPage(page)">{{ page }}</a>
+                    </li>
+
+                    <!-- Next Button -->
+                    <li class="page-item" [class.disabled]="currentPage === totalPages">
+                        <a class="page-link" (click)="goToPage(currentPage + 1)" aria-label="Next">
+                            Next
+                        </a>
+                    </li>
                 </ul>
             </nav>
         </div>
-
     </div>
+
+
+    <!-- Order Details Modal -->
+    <div *ngIf="showTracking" class="order-modal">
+        <div class="order-modal-content">
+            <button class="close-btn" (click)="closeOrderDetails()">❌</button>
+            <div class="col-md-12">
+                <div class="row" style="font-size: 18px;">
+                    <div class="col-md-5">
+                        <h3>Order Details (ID: {{ singleOrderDetails?.order_id }})</h3>
+                    </div>
+                    <div class="col-md-7">
+                        <h5> Customer Email : {{singleOrderDetails?.user_email}}</h5>
+                    </div>
+                    <hr>
+                    <div class="col-md-5">
+                        <p><strong>Customer Name : </strong> {{ singleOrderDetails?.user_name }} </p>
+                    </div>
+                    <div class="col-md-7">
+                        <p><strong>Address : </strong> {{ singleOrderDetails?.c_address }}, {{
+                            singleOrderDetails?.c_state }}, {{
+                            singleOrderDetails?.c_postal_zip }}</p>
+                    </div>
+                    <hr>
+                    <div class="col-md-4">
+                        <p><strong>Phone : </strong> {{ singleOrderDetails?.c_phone }}</p>
+                    </div>
+                    <div class="col-md-4">
+                        <p><strong>Payment Mode : </strong> {{ singleOrderDetails?.payment_mode }}</p>
+                    </div>
+                    <div class="col-md-4">
+                        <p><strong>Status : </strong> {{ singleOrderDetails?.order_status }}</p>
+                    </div>
+                    <hr>
+                    <div class="col-md-4">
+                        <p><strong>Total Amount : </strong> &#8377; {{ singleOrderDetails?.total_amount }}</p>
+                    </div>
+                    <div class="col-md-4">
+                        <p><strong>Total GST : </strong> &#8377; {{ singleOrderDetails?.total_gst }}</p>
+                    </div>
+                    <div class="col-md-4">
+                        <p><strong>Total Discount : </strong> &#8377; {{ singleOrderDetails?.total_discount }}</p>
+                    </div>
+                    <hr>
+                    <div class="col-md-4">
+                        <p><strong>Final Total : </strong> &#8377; {{ singleOrderDetails?.final_total | number: '1.2-2'
+                            }}/-</p>
+                    </div>
+                    <div class="col-md-4">
+                        <p><strong>Order Date : </strong> {{ singleOrderDetails?.order_date | date:'dd-MM-yyyy' }}</p>
+                    </div>
+                    <div class="col-md-4">
+                        <p><strong>Transaction Id : </strong> <small>{{ singleOrderDetails?.transaction_id }}</small>
+                        </p>
+                    </div>
+                    <hr>
+                    <div class="col-md-10">
+                        <h4>Products : </h4>
+                        <ul>
+                            <li *ngFor="let product of singleOrderDetails?.products?.split(', ')">
+                                {{ product }}
+                            </li>
+                        </ul>
+                    </div>
+                    <div class="col-md-12 text-center">
+                        <button class="btn btn-warning" (click)="closeOrderDetails()">Close</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+
+
+
+
+
 </body>
 
 </html>

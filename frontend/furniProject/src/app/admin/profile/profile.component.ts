@@ -1,8 +1,8 @@
 import { CommonModule } from '@angular/common';
-import { Component, OnInit } from '@angular/core';
-import { Router, RouterModule } from '@angular/router';
-import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { HttpHeaders } from '@angular/common/http';
+import { Component, OnInit } from '@angular/core';
+import { FormsModule, ReactiveFormsModule } from '@angular/forms';
+import { Router, RouterModule } from '@angular/router';
 import { AdminApiService } from '../../service/admin-api.service';
 
 @Component({
@@ -94,13 +94,11 @@ ngOnInit()
   this.getAdminData();
 }
 adminDetails:any;
-adminProfileUrl:any;
 getAdminData()
 {
   this.adminApi.getAdminDetails()?.subscribe((data:any)=>{
     if (data.success) {
       this.adminDetails = data.admin;
-      this.adminProfileUrl = `http://localhost:1000/uploads/${this.adminDetails.admin_profile}`;
       this.adminProfile.admin_name = this.adminDetails.admin_name;
       this.adminProfile.admin_mobile = this.adminDetails.admin_mobile;
       this.adminProfile.admin_email = this.adminDetails.admin_email;
