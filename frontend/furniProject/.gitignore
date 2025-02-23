@@ -28,21 +28,10 @@ Thumbs.db
 *.log
 
 
-
-
-
-
-
-
-
-
-
+# Ignore Angular cache files
+frontend/furniProject/.angular/cache/
+.angular/cache/
+*.tsbuildinfo
 .angular/cache
 .angular/cache/
 *.tsbuildinfo
-
-
-
-
-# Ignore Angular cache files
-frontend/furniProject/.angular/cache/
