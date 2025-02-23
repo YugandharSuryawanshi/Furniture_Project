@@ -28,4 +28,5 @@ Thumbs.db
 *.log
 
 .angular/cache
-
+.angular/cache/
+*.tsbuildinfo
