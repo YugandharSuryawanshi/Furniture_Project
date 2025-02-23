@@ -27,6 +27,22 @@ Thumbs.db
 # Other files to ignore (if any)
 *.log
 
+
+
+
+
+
+
+
+
+
+
 .angular/cache
 .angular/cache/
 *.tsbuildinfo
+
+
+
+
+# Ignore Angular cache files
+frontend/furniProject/.angular/cache/
