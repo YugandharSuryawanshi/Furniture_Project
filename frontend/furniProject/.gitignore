@@ -26,3 +26,7 @@ Thumbs.db
 
 # Other files to ignore (if any)
 *.log
+
+
+.angular/cache/
+*.tsbuildinfo
