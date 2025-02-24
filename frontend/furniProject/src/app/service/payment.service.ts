@@ -12,6 +12,12 @@ export class PaymentService {
 
   constructor(private http: HttpClient, private userApi: UserApiService) { }
 
+  //Get razorpay key id
+  getId()
+  {
+    return this.http.get(`${this.apiUrl}/send_key_id`);
+  }
+
   // Create Razorpay Order
   createOrder(amount: number, currency: string): Observable<any> {
     const token = this.userApi.getToken();
