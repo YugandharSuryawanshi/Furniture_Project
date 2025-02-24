@@ -505,6 +505,17 @@ router.get('/user_info', authenticateToken, async (req, res) => {
     }
 })
 
+//Send Razorpay key_id
+router.get('/send_key_id', authenticateToken, async (req, res) => {
+    try {
+        const key_id = config.razorpayKeyId;
+        return res.json({ success: true, key_id });
+    } catch (error) {
+        console.error('Error sending Razorpay key_id:', error);
+        return res.status(500).json({ success: false, message: 'Error sending key_id' });
+    }
+})
+
 // Create Razorpay Order
 router.post('/create_order', authenticateToken, async (req, res) => {
     try {

@@ -3,8 +3,8 @@ import { Component, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, FormsModule, ReactiveFormsModule, Validators } from '@angular/forms';
 import { Router, RouterModule } from '@angular/router';
 import { ToastrService } from 'ngx-toastr';
-import { UserApiService } from '../../service/user-api.service';
 import { PaymentService } from '../../service/payment.service';
+import { UserApiService } from '../../service/user-api.service';
 
 declare var Razorpay: any;
 
@@ -22,6 +22,7 @@ export class CheckoutComponent implements OnInit {
   totalGST: number = 0;
   totalDiscount: number = 0;
   finalTotal: number = 0;
+  payment_Key_id:any;
 
   constructor(
     private userApi: UserApiService,
@@ -95,6 +96,19 @@ export class CheckoutComponent implements OnInit {
     this.finalTotal = (this.subtotal + this.totalGST) - this.totalDiscount;
 }
 
+getRazorPay_key()
+{
+  this.paymentService.getId().subscribe((res:any)=>{
+    if(res.status ==='success' && res.key_id)
+    {
+      this.payment_Key_id = res.key_id;
+    }
+    else
+    {
+      this.toastr.error('Failed to fetch payment key.', 'error', { disableTimeOut: false, progressBar:true , closeButton: true });
+    }
+  })
+}
 
   placeOrder() {
     const token = localStorage.getItem('userToken');
@@ -137,7 +151,7 @@ export class CheckoutComponent implements OnInit {
       (res: any) => {
         if (res.success) {
           const options = {
-            key: "rzp_test_a5ccNst7Xe98mG", // Store securely
+            key: this.payment_Key_id, //Store securely Came towards Backend.
             amount: res.order.amount,
             currency: "INR",
             name: "E-commerce Store",
