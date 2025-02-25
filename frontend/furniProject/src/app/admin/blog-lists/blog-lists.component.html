@@ -7,26 +7,16 @@
                 <table class="table table-bordered table-striped table-hover align-middle text-center">
                     <thead class="table-dark">
                         <tr>
-                            <th> Action </th>
                             <th> Sr. No. </th>
                             <th> Blog Title </th>
                             <th> Post By </th>
                             <th> Position </th>
                             <th> Image </th>
+                            <th> Action </th>
                         </tr>
                     </thead>
                     <tbody>
                         <tr *ngFor="let data of blogs; let i = index">
-                            <td>
-                                <button (click)="get_One_Blog(data.blog_id)"
-                                    class="btn btn-warning btn-sm m-1" title="Edit">
-                                    <i class="fa fa-pencil text-white"></i>
-                                </button>
-                                <button (click)="deleteBlog(data.blog_id)"
-                                    class="btn btn-danger btn-sm m-1" title="Delete">
-                                    <i class="fa fa-trash text-white"></i>
-                                </button>
-                            </td>
                             <td>{{ i + 1 }}</td>
                             <td>{{ data.blog_title }}</td>
                             <td>
@@ -37,6 +27,16 @@
                                 <img [src]="'http://localhost:1000/uploads/' + data.blog_image"
                                     alt="Customer Image" class="img-thumbnail"
                                     style="max-width: 100%; max-height: 100px;" />
+                            </td>
+                            <td>
+                                <button (click)="get_One_Blog(data.blog_id)"
+                                    class="btn btn-warning btn-sm m-1" title="Edit">
+                                    <i class="fa fa-pencil text-white"></i>
+                                </button>
+                                <button (click)="deleteBlog(data.blog_id)"
+                                    class="btn btn-danger btn-sm m-1" title="Delete">
+                                    <i class="fa fa-trash text-white"></i>
+                                </button>
                             </td>
                         </tr>
                     </tbody>
@@ -88,16 +88,8 @@
         </form>
     </div>
 </div>
-    <img *ngIf="!showList" [src]="'http://localhost:1000/uploads/' + blogImg"
-                                    alt="Customer Image" class="img-thumbnail"
-                                    style="height: 300px; width: 300px;"/>
-<!-- Success and Error Messages -->
-<div *ngIf="successMessage" class="alert alert-success mt-3">
-    {{ successMessage }}
-</div>
-<div *ngIf="errorMessage" class="alert alert-danger mt-3">
-    {{ errorMessage }}
-</div>
+    <img *ngIf="!showList"
+    [src]="'http://localhost:1000/uploads/' + blogImg" alt="Customer Image" class="img-thumbnail" style="height: 300px; width: 300px;"/>
 
 
 

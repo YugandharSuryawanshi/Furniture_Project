@@ -3,6 +3,7 @@ import { Router, RouterModule } from '@angular/router';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { AdminApiService } from '../../service/admin-api.service';
+import { ToastrService } from 'ngx-toastr';
 
 @Component({
   selector: 'app-register',
@@ -18,41 +19,35 @@ export class RegisterComponent {
   admin_email = '';
   admin_password = '';
   confirmPassword = '';
-  errorMessage = '';
   secret_key = '';
   predifined_secret_key = 'yogi_marathe';
 
-  constructor(private router: Router, private adminApi:AdminApiService) {}
-
-
+  constructor(private router: Router, private adminApi:AdminApiService, private toastr:ToastrService) {}
 
   register() {
     if (this.admin_password !== this.confirmPassword) {
-      this.errorMessage = 'Passwords do not match';
+    this.toastr.error('Password and Confirm Password do Not Match, Please Try Again..!', 'Success' , { progressBar: true, disableTimeOut:false, closeButton: true });
       return;
-
     } else if (this.predifined_secret_key === this.secret_key) {
-
-      console.log(this.admin_name, this.admin_mobile, this.admin_email, this.admin_password);
-
-
-      console.log('Secret Key Match Successfully');
-      this.errorMessage = 'Passwords match successfully';
-      this.adminApi.adminRegister({ admin_name: this.admin_name, admin_mobile: this.admin_mobile, admin_email: this.admin_email, admin_password: this.admin_password }).subscribe((res: any) => {
-        alert('Register Success');
-        this.router.navigate(['/admin/login']);
+      this.adminApi.adminRegister(
+        {
+          admin_name: this.admin_name,
+          admin_mobile: this.admin_mobile,
+          admin_email: this.admin_email,
+          admin_password: this.admin_password
+        }).subscribe((res: any) => {
+          this.toastr.success('Register Successfully..!', 'Success' , { progressBar: true, disableTimeOut:false, closeButton: true });
+          this.router.navigate(['/admin/login']);
         (err: any) => {
           console.error(err);
-          this.errorMessage = 'An error occurred while registering';
+          this.toastr.error('An error occurred while registering', 'Error' , { progressBar: true, disableTimeOut:false, closeButton: true });
         }
       })
     }
     else {
-      this.errorMessage = 'Invalid Secret Key';
+      this.toastr.warning('Invalid Secret Key, Please Try Again..! OR Contact With the Manager', 'Error' , { progressBar: true, disableTimeOut:false, closeButton: true });
     }
 
   }
-
-
 
 }

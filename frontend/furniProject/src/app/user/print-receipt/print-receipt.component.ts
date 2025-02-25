@@ -42,8 +42,6 @@ export class PrintReceiptComponent {
       (res: any) => {
         if (res.success) {
           this.orderDetails = res.order
-          console.log(this.orderDetails);
-          
         }
       },
       (error) => {
@@ -53,17 +51,16 @@ export class PrintReceiptComponent {
     );
   }
 
-
   printReceipt() {
     this.hideHeaderFooter();
 
     setTimeout(() => {
       window.print();
-    }, 300); // Delay to ensure the UI updates before printing
+    }, 300);
 
     setTimeout(() => {
       this.showHeaderFooter();
-    }, 1000); //Reappear header & footer after printing
+    }, 1000);
   }
 
   hideHeaderFooter() {

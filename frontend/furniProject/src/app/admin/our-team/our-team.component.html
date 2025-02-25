@@ -6,19 +6,12 @@
             <h2 *ngIf="updateMember" class="mb-0 fw-bold">Update Member</h2>
         </div>
         <div class="col-md-2 text-end">
-            <button class="btn btn-danger fw-bold text-white me-2 mt-2" (click)="list()"><i class="fa fa-list"></i> List</button>
-            <button class="btn btn-danger fw-bold text-white mt-2" (click)="add()"><i class="fa fa-user-plus"></i> Member</button>
+            <button class="btn btn-danger fw-bold text-white me-2 mt-2" (click)="list()"><i class="fa fa-list"></i>
+                List</button>
+            <button class="btn btn-danger fw-bold text-white mt-2" (click)="add()"><i class="fa fa-user-plus"></i>
+                Member</button>
         </div>
     </div>
-</div>
-
-<hr>
-<!-- Success and Error Messages -->
-<div *ngIf="successMessage" class="alert alert-success mt-3">
-    {{ successMessage }}
-</div>
-<div *ngIf="errorMessage" class="alert alert-danger mt-3">
-    {{ errorMessage }}
 </div>
 
 <div class="container-fluid bg-light pt-4" *ngIf="addMember">
@@ -64,16 +57,26 @@
                 <table class="table table-bordered table-striped table-hover align-middle text-center">
                     <thead class="table-dark">
                         <tr>
-                            <th> Action </th>
                             <th> Sr. No. </th>
                             <th> Name </th>
                             <th> Position </th>
                             <th> Details </th>
                             <th> Image </th>
+                            <th> Action </th>
                         </tr>
                     </thead>
                     <tbody>
                         <tr *ngFor="let data of members; let i = index">
+                            <td>{{ i + 1 }}</td>
+                            <td>{{ data.member_name }}</td>
+                            <td>
+                                {{data.member_position}}
+                            </td>
+                            <td>{{ data.member_details }}</td>
+                            <td>
+                                <img [src]="'http://localhost:1000/uploads/' + data.member_image" alt="Customer Image"
+                                class="img-thumbnail" style="max-width: 100%; max-height: 100px;" />
+                            </td>
                             <td>
                                 <button (click)="get_single_member(data.member_id)" class="btn btn-warning btn-sm m-1"
                                     title="Edit">
@@ -84,16 +87,6 @@
                                     <i class="fa fa-trash text-white"></i>
                                 </button>
                             </td>
-                            <td>{{ i + 1 }}</td>
-                            <td>{{ data.member_name }}</td>
-                            <td>
-                                {{data.member_position}}
-                            </td>
-                            <td>{{ data.member_details }}</td>
-                            <td>
-                                <img [src]="'http://localhost:1000/uploads/' + data.member_image" alt="Customer Image"
-                                    class="img-thumbnail" style="max-width: 100%; max-height: 100px;" />
-                            </td>
                         </tr>
                     </tbody>
                 </table>
@@ -103,12 +96,11 @@
 </div>
 
 
-
-
 <!-- Update Section Start Here -->
 <div class="container-fluid bg-light pt-4" *ngIf="updateMember">
     <div class="col-md-12 pt-2">
-        <button class="float-end btn btn-danger text-white fw-bold" (click)="changeView()"><i class="fa fa-times"></i> Cancel </button>
+        <button class="float-end btn btn-danger text-white fw-bold" (click)="changeView()"><i class="fa fa-times"></i>
+            Cancel </button>
         <form (submit)="update_Member()" enctype="multipart/form-data">
             <div class="row text-center justify-content-center">
                 <input type="text" name="member_id" [(ngModel)]="formData.member_id" style="display: none;">
@@ -135,7 +127,7 @@
                 <div class="col-md-4" *ngIf="singleImage">
                     current Image
                     <img [src]="'http://localhost:1000/uploads/' + singleImage" alt="Customer Image"
-    class="img-thumbnail" style="width: 300px; max-height: 150px;" />
+                        class="img-thumbnail" style="width: 300px; max-height: 150px;" />
                 </div>
                 <div class="col-md-12 mb-4">
                     <button class="btn btn-warning">Update Member</button>

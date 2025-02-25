@@ -1,7 +1,8 @@
 import { CommonModule } from '@angular/common';
-import { Component } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import { AdminApiService } from '../../service/admin-api.service';
+import { ToastrService } from 'ngx-toastr';
 
 @Component({
   selector: 'app-interior-design',
@@ -10,11 +11,7 @@ import { AdminApiService } from '../../service/admin-api.service';
   templateUrl: './interior-design.component.html',
   styleUrl: './interior-design.component.css'
 })
-export class InteriorDesignComponent {
-  errorMessage: string = '';
-  successMessage: string = '';
-
-  // Form data with placeholders for pre-filled values
+export class InteriorDesignComponent implements OnInit{
   formData = {
     heading: '',
     interior_details: '',
@@ -22,9 +19,9 @@ export class InteriorDesignComponent {
     second_key: '',
     third_key: '',
     forth_key: '',
-    first_image: '', // Existing image path
-    second_image: '', // Existing image path
-    third_image: '', // Existing image path
+    first_image: '',
+    second_image: '',
+    third_image: '',
   };
 
   // Object to track newly selected images
@@ -34,7 +31,7 @@ export class InteriorDesignComponent {
     third_image: null,
   };
 
-  constructor(public adminApi:AdminApiService) { }
+  constructor(private adminApi:AdminApiService, private toastr:ToastrService) { }
 
   ngOnInit(): void {
     this.getData();
@@ -56,7 +53,7 @@ export class InteriorDesignComponent {
     const file = event.target.files[0];
     
     if (file) {
-      this.selectedImages[key] = file; // Store the newly selected file
+      this.selectedImages[key] = file;
     }
   }
   
@@ -88,17 +85,13 @@ export class InteriorDesignComponent {
     // Call API to update interior design
     this.adminApi.updateInterior(formData).subscribe((res: any) => {
       if (res.success) {
-        this.successMessage = res.message;
+        this.toastr.success('Interior Design updated successfully!', 'Success', { progressBar: true, closeButton: true, disableTimeOut: false });
         this.getData(); // Fetch the updated data after successful submission
       }
       else
       {
-        this.errorMessage = res.message;
+        this.toastr.error('Failed to update interior design!', 'Error', { progressBar: true, closeButton: true, disableTimeOut: false });
       }
-      setTimeout(()=>{
-        this.errorMessage = '';
-        this.successMessage = '';
-      }, 5000);
     });
   }
   

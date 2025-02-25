@@ -50,27 +50,32 @@ router.post('/adminLogin', async (req, res) => {
     const { admin_email, admin_password } = req.body;
 
     if (!admin_email || !admin_password) {
-        return res.status(400).send('Email and password are required');
+        return res.status(400).send({message: 'Email and password Both Fields are required'});
     }
 
     const sql = 'SELECT * FROM admins WHERE admin_email = ?';
     try {
         const results = await exe(sql, [admin_email]);
-
-        if (results.length === 0) return res.status(401).send('Invalid Email or password');
+    
+        if (results.length === 0)
+        {
+            return res.status(401).send({message: 'Invalid Email or password'});
+        }
 
         const admin = results[0];
         const isPasswordValid = await bcrypt.compare(admin_password, admin.admin_password);
 
-        if (!isPasswordValid) return res.status(401).send('Invalid admin_email or password');
+        if (!isPasswordValid) return res.status(401).send({message: 'Invalid admin Email or Password, Please Enter Valid Email or Password'});
+        const adminToken = jwt.sign(
+            { id: admin.admin_id, admin_email: admin.admin_email },
+            config.adminJwtSecret,
+            { expiresIn: config.adminJwtExpire }
+        );
+        res.status(200).send({ message: 'Login successful', success: true , adminToken });
 
-        const adminToken = jwt.sign({ id: admin.admin_id, admin_email: admin.admin_email }, config.adminJwtSecret, { expiresIn: config.adminJwtExpire });
-
-        // Send response and log the adminToken correctly
-        res.send({ message: 'Login successful', adminToken });
     } catch (err) {
         console.error(err);
-        return res.status(500).send('Database error');
+        return res.status(500).send({message: 'Database error'});
     }
 });
 
@@ -78,7 +83,7 @@ router.post('/adminLogin', async (req, res) => {
 router.get('/adminProtected', authenticateToken, (req, res) => {
     res.json({
         message: 'Access granted to protected route',
-        admin: req.admin, // Token's decoded admin payload
+        admin: req.admin,
     });
 });
 
@@ -1438,6 +1443,35 @@ router.put('/update_order', async (req, res) => {
     }
 });
 
+// Contact Us
+router.get('/contact_us', async (req, res) => {
+    try {
+        const sql = `SELECT * FROM contact_us ORDER BY contact_id DESC`;
+        const data = await exe(sql);
+        if (data.length > 0) {
+            res.status(200).json({ success: true, data });
+        } else {
+            res.status(404).json({ success: false, message: "No messages found" });
+        }
+    } catch (err) {
+        console.error("Error fetching contact us messages: ", err);
+        res.status(500).json({ success: false, message: "Internal Server Error", error: err.message });
+    }
+})
+
+// Delete Contact Us
+router.delete('/delete_contact_us/:id', async (req, res) => {
+    try {
+        const sql = `DELETE FROM contact_us WHERE contact_id=${req.params.id}`;
+        const result = await exe(sql);
+        if (result.affectedRows === 0) {
+            return res.status(404).json({ success: false, message: "Message not found" });
+        }
+        res.status(200).json({ success: true, message: "Contact Message deleted successfully!" });
+    } catch (err) {
+        res.status(500).json({ success: false, message: "Internal Server Error", error: err.message });
+    }
+});
 
 
 

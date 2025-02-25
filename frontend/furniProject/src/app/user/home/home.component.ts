@@ -29,7 +29,6 @@ export class HomeComponent {
 
   resetTimer() {
     clearTimeout(this.inactivityTimeout);// clear timeout when any activity is happen
-
     this.inactivityTimeout = setTimeout(() => {
       this.autoLogout();
     }, this.logoutTime);
@@ -37,7 +36,8 @@ export class HomeComponent {
 
   autoLogout() {
     this.userApi.userLogout();
-    this.toastr.warning('You have been logged out due to inactivity', "Session Expired", { disableTimeOut: false, closeButton: true });
+    alert('Logged out Due to Inactivity timeout..! , Login Again!');
+    this.toastr.warning('You have been logged out due to inactivity', "Session Expired", { disableTimeOut: false, progressBar:true ,closeButton: true });
     this.router.navigate(['/user/login']);
   }
 
@@ -82,7 +82,6 @@ export class HomeComponent {
       }
 
       this.blogs = res.blog;
-
     })
   }
 

@@ -3,6 +3,7 @@ import { Component } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import { Router, RouterModule } from '@angular/router';
 import { AdminApiService } from '../../service/admin-api.service';
+import { ToastrService } from 'ngx-toastr';
 
 @Component({
   selector: 'app-blog',
@@ -14,10 +15,7 @@ import { AdminApiService } from '../../service/admin-api.service';
 })
 export class BlogComponent {
 
-  errorMessage: string = '';
-  successMessage: string = '';
-
-  constructor(public datePipe:DatePipe, public adminApi:AdminApiService, public router:Router) {}
+  constructor(private datePipe:DatePipe, private adminApi:AdminApiService, private router:Router, private toastr:ToastrService) {}
 
   formData: any = {
     blog_title: '',
@@ -55,17 +53,10 @@ export class BlogComponent {
       formData.append('blog_image', this.selectedImage);
     }
 
-    console.log('Blog Title: ' + this.formData.blog_title);
-    console.log('Blog Post Date: ' + this.formData.blog_post_date);
-    console.log('Blog Post Time: ' + this.formData.blog_post_time);
-    console.log('Blog Post By: ' + this.formData.blog_post_by);
-    console.log('Blog Post By Position: ' + this.formData.blog_post_by_position);
-    console.log('Blog Image: ', this.selectedImage);
-
     this.adminApi.saveBlog(formData).subscribe((res:any)=>{
       if(res.success)
       {
-        this.successMessage = 'Blog saved successfully'+ res.message;
+        this.toastr.success('Blog Saved Successfully', 'Success' , { progressBar: true, disableTimeOut:false, closeButton: true });
         this.formData.blog_title='';
         this.formData.blog_post_date='';
         this.formData.blog_post_time='';
@@ -79,14 +70,9 @@ export class BlogComponent {
       }
       else
       {
-        this.errorMessage = 'Error saving blog'+ res.message;
+        this.toastr.error('Error saving blog', 'Error', { progressBar: true, disableTimeOut:false, closeButton: true });
       }
     })
-    setTimeout(()=>{
-      this.errorMessage = '';
-      this.successMessage= '';
-    },5000);
-    
   }
 
 

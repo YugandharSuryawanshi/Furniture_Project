@@ -8,29 +8,29 @@
                 <table class="table table-bordered table-striped table-hover align-middle text-center">
                     <thead class="table-dark">
                         <tr>
-                            <th> Action </th>
                             <th> Sr. No. </th>
                             <th>First Name</th>
                             <th>Last Name</th>
                             <th>Gmail</th>
                             <th>Message</th>
+                            <th> Action </th>
                         </tr>
                     </thead>
                     <tbody>
                         <tr *ngFor="let data of contacts; let i = index">
+                            <td>{{ i + 1 }}</td>
+                            <td>{{ data.first_name }}</td>
+                            <td>
+                                {{data.last_name}}
+                            </td>
+                            <td>{{ data.contact_gmail }}</td>
+                            <td>{{ data.contact_message }}</td>
                             <td>
                                 <button (click)="deleteContact(data.contact_id)" class="btn btn-danger btn-sm m-1"
                                     title="Delete">
                                     <i class="fa fa-trash text-white"></i>
                                 </button>
                             </td>
-                            <td>{{ i + 1 }}</td>
-                            <td>{{ data.member_name }}</td>
-                            <td>
-                                {{data.member_position}}
-                            </td>
-                            <td>{{ data.member_details }}</td>
-                            <td>{{ data.member_details }}</td>
                         </tr>
                     </tbody>
                 </table>

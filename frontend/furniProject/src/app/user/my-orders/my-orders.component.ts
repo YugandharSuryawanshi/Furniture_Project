@@ -50,7 +50,6 @@ export class MyOrdersComponent {
     );
   }
 
-
   openTrackingModal(orderId: number, orderStatus: string) {
     if (orderStatus === 'Cancelled') {
       this.toastr.warning("This order has been canceled. Tracking is unavailable.", 'warning', { disableTimeOut: false, progressBar:true , closeButton: true });
@@ -83,7 +82,7 @@ export class MyOrdersComponent {
     this.userApi.cancelOrder(orderId).subscribe(
       (res: any) => {
         if (res.success) {
-          this.toastr.success(res.message, 'Success', { disableTimeOut: false, progressBar:true , closeButton: true });
+          this.toastr.success(res.message || 'Order Cancelled..!', 'Success', { disableTimeOut: false, progressBar:true , closeButton: true });
           this.loadOrders();
         } else {
           this.toastr.error('Failed to cancel order.', 'error', { disableTimeOut: false, progressBar:true , closeButton: true });

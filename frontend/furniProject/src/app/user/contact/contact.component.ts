@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import { UserApiService } from '../../service/user-api.service';
 import { ToastrService } from 'ngx-toastr';
 import { CommonModule } from '@angular/common';
@@ -12,7 +12,7 @@ import { RouterModule } from '@angular/router';
   templateUrl: './contact.component.html',
   styleUrl: './contact.component.css'
 })
-export class ContactComponent {
+export class ContactComponent implements OnInit {
 
   contact = {
     first_name: '',
@@ -26,7 +26,6 @@ export class ContactComponent {
   ngOnInit(): void { }
 
   onSubmit(): void {
-
     this.userApi.addContactUsInfo(this.contact).subscribe((res:any)=>{
       if(res.success)
       {
@@ -44,7 +43,5 @@ export class ContactComponent {
         };
     })
   }
-
-
 
 }

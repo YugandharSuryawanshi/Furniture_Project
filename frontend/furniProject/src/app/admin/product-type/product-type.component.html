@@ -7,14 +7,6 @@
     </div>
 </div>
 
-<!-- Success and Error Messages -->
-<div *ngIf="successMessage" class="alert alert-success mt-3">
-    {{ successMessage }}
-</div>
-<div *ngIf="errorMessage" class="alert alert-danger mt-3">
-    {{ errorMessage }}
-</div>
-
 <form #product_type_form="ngForm" (ngSubmit)="add_Product_Type(product_type_form)" *ngIf="displayAddType">
     <div class="container-fluid p-4 bg-light">
         <div class="row justify-content-center">
@@ -30,9 +22,6 @@
             </div>
         </div>
     </div>
-    <div class="col-md-12 text-end">
-        <p *ngIf="errorMessage" class="text-primary">{{errorMessage}}</p>
-    </div>
 </form>
 <br>
 
@@ -42,11 +31,13 @@
         <div class="col-md-8">
             <table class="table table-bordered text-center" *ngIf="types.length > 0;">
                 <tr>
-                    <th>ACTION</th>
                     <th>SrNo.</th>
                     <th>Type</th>
+                    <th>ACTION</th>
                 </tr>
                 <tr *ngFor="let type of types let i = index">
+                    <td>{{i+1}}</td>
+                    <td>{{ type.product_type_name }}</td>
                     <td>
                         <div class="col-md-12">
                             <button class="mr-1 btn btn-warning"
@@ -57,14 +48,11 @@
                         </div>
 
                     </td>
-                    <td>{{i+1}}</td>
-                    <td>{{ type.product_type_name }}</td>
                 </tr>
             </table>
         </div>
     </div>
 </div>
-
 
 
 <div class="col-md-12" *ngIf="displayUpdate">

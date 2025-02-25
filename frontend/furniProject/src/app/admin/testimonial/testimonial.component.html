@@ -46,16 +46,6 @@
     </div>
 </div>
 
-<!-- Success and Error Messages -->
-<div *ngIf="successMessage" class="alert alert-success mt-3">
-    {{ successMessage }}
-</div>
-<div *ngIf="errorMessage" class="alert alert-danger mt-3">
-    {{ errorMessage }}
-</div>
-
-
-
 <div class="container-fluid bg-white p-4" *ngIf="displayList">
     <div class="row">
         <div class="col-md-12 text-center mb-3">
@@ -65,26 +55,16 @@
                 <table class="table table-bordered table-striped table-hover align-middle text-center">
                     <thead class="table-dark">
                         <tr>
-                            <th>Action</th>
                             <th>Sr. No.</th>
                             <th>Customer Name</th>
                             <th>Customer Position</th>
                             <th>Customer Image</th>
                             <th>Customer Message</th>
+                            <th>Action</th>
                         </tr>
                     </thead>
                     <tbody>
                         <tr *ngFor="let testimonial of testimonials; let i = index">
-                            <td>
-                                <button (click)="get_This_Product(testimonial.customer_id)"
-                                    class="btn btn-warning btn-sm m-1" title="Edit">
-                                    <i class="fa fa-pencil text-white"></i>
-                                </button>
-                                <button (click)="deleteProduct(testimonial.customer_id)"
-                                    class="btn btn-danger btn-sm m-1" title="Delete">
-                                    <i class="fa fa-trash text-white"></i>
-                                </button>
-                            </td>
                             <td>{{ i + 1 }}</td>
                             <td>{{ testimonial.customer_name }}</td>
                             <td>{{ testimonial.customer_position }}</td>
@@ -97,6 +77,16 @@
                                 <textarea class="form-control" readonly rows="3" style="resize: none;">
                                     {{ testimonial.customer_massage }}
                                 </textarea>
+                            </td>
+                            <td>
+                                <button (click)="get_This_Product(testimonial.customer_id)"
+                                    class="btn btn-warning btn-sm m-1" title="Edit">
+                                    <i class="fa fa-pencil text-white"></i>
+                                </button>
+                                <button (click)="deleteProduct(testimonial.customer_id)"
+                                    class="btn btn-danger btn-sm m-1" title="Delete">
+                                    <i class="fa fa-trash text-white"></i>
+                                </button>
                             </td>
                         </tr>
                     </tbody>
@@ -136,7 +126,7 @@
                         Select Customer Image
                         <input type="file" name="customer_image" (change)="onSelectedUpdateImage($event)"
                             class="form-control" />
-                        
+
                     </div>
                     <div class="col-md-8 mb-2 text-center">
                         Enter Customer Message
@@ -158,49 +148,3 @@
             class="img-thumbnail mt-2" style="max-width: 200px; max-height:200px;" />
     </div>
 </div>
-
-
-
-<!-- <div>
-    <div class="container-fluid form-control mt-2">
-        <div class="row">
-            <div class="col-md-12">
-                <table class="table table-bordered table-striped table-sm text-center" width="100%">
-                    <tr>
-                        <th>ACTION</th>
-                        <th>Customer_name</th>
-                        <th>Customer_position</th>
-                        <th>Customer_image</th>
-                        <th>Customer_massage</th>
-                    </tr>
-                    <% for(var i=0;i<data.length;i++) {%>
-                    <tr>
-                        <th class="w-15">
-                            <a href="/admin/edit_customer/<%=data[i].customer_id%>">
-                                <button class="btn btn-primary p-1 pe-2 ps-2">
-                                    <i class="fa fa-pencil"></i>
-                                </button>
-                            </a>
-                            <a href="/admin/delete_customer/<%=data[i].customer_id%>">
-                                <button class="btn btn-primary p-1 pe-2 ps-2">
-                                    <i class="fa fa-trash"></i>
-                                </button>
-                            </a>
-                        </th>
-                        <th class=""><%=data[i].customer_name%></th>
-                        <th class=""><%=data[i].customer_position%></th>
-                        <th class="w-25">
-                            <img src="/uploads/<%=data[i].customer_image%>" width="60%" style="height: 170px;  size: 0px;" alt="">
-                        </th>
-                        <th class="">
-                            <textarea name="" id="" cols="30" rows="6" class="form-control">
-                                <%=data[i].customer_massage%>
-                            </textarea>
-                        </th>
-                    </tr>
-                    <% } %>
-                </table>
-            </div>
-        </div>
-    </div>
-</div> -->

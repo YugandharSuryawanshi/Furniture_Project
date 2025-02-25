@@ -3,6 +3,7 @@ import { Component } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import { Router } from '@angular/router';
 import { AdminApiService } from '../../service/admin-api.service';
+import { ToastrService } from 'ngx-toastr';
 
 @Component({
   selector: 'app-blog-lists',
@@ -14,28 +15,22 @@ import { AdminApiService } from '../../service/admin-api.service';
 })
 export class BlogListsComponent {
 
-  constructor(public datePipe:DatePipe, public adminApi:AdminApiService, public router:Router) {}
+  constructor(private datePipe: DatePipe, private adminApi: AdminApiService, private router: Router, private toastr: ToastrService) { }
 
-  successMessage:any = '';
-  errorMessage:any = '';
-  showList:boolean = true;
-  showUpdate:boolean = false;
-  changeView()
-  {
+  showList: boolean = true;
+  showUpdate: boolean = false;
+  changeView() {
     this.showList = true;
     this.showUpdate = false;
   }
 
-
-  ngOnInit()
-  {
+  ngOnInit() {
     this.get_all_blogs();
   }
 
-  blogs:any;
-  get_all_blogs()
-  {
-    this.adminApi.getBlogs().subscribe((data:any)=>{
+  blogs: any;
+  get_all_blogs() {
+    this.adminApi.getBlogs().subscribe((data: any) => {
       this.blogs = data.data;
     })
 
@@ -60,14 +55,14 @@ export class BlogListsComponent {
     }
   }
 
-  blogImg:any;
+  blogImg: any;
   get_One_Blog(id: any) {
     this.showList = false;
     this.showUpdate = true;
     this.adminApi.getSingleBlog(id).subscribe((data: any) => {
       const blog = data.data;
       this.blogImg = blog.blog_image;
-  
+
       // Parse blog_post_time to a valid date format
       const time = blog.blog_post_time; // E.g., "3:23 PM"
       if (time) {
@@ -81,12 +76,12 @@ export class BlogListsComponent {
             : parseInt(hours, 10) % 12;
         blog.blog_post_time = `${hours24.toString().padStart(2, '0')}:${minutes}`;
       }
-  
+
       this.formData = { ...blog };
-      
+
     });
   }
-  
+
 
   updateBlog() {
     const formData = new FormData();
@@ -95,20 +90,20 @@ export class BlogListsComponent {
     const formattedTime = this.datePipe.transform(timeWithDate, 'h:mm a'); // Format time as h:mm AM/PM
     this.formData.blog_post_time = formattedTime || this.formData.blog_post_time;
 
-  
+
     formData.append('blog_title', this.formData.blog_title);
     formData.append('blog_post_date', this.formData.blog_post_date);
     formData.append('blog_post_time', this.formData.blog_post_time);
     formData.append('blog_post_by', this.formData.blog_post_by);
     formData.append('blog_post_by_position', this.formData.blog_post_by_position);
-  
+
     if (this.selectedImage) {
       formData.append('blog_image', this.selectedImage, this.selectedImage.name);
     }
     this.adminApi.updateBlog(id, formData).subscribe(
       (data: any) => {
         if (data.success) {
-          this.successMessage = data.message;
+          this.toastr.success(data.message, 'Success', { progressBar: true, disableTimeOut: false, closeButton: true });
           this.formData.blog_title = '';
           this.formData.blog_post_date = '';
           this.formData.blog_post_time = '';
@@ -124,30 +119,20 @@ export class BlogListsComponent {
 
           this.get_all_blogs();
         } else {
-          this.errorMessage = data.message;
-          this.successMessage = '';
+          this.toastr.error(data.message, 'Error', { progressBar: true, disableTimeOut: false, closeButton: true });
         }
       });
-    setTimeout(() => {
-      this.successMessage = '';
-      this.errorMessage = '';
-    }, 5000);
   }
-  
 
-  deleteBlog(id:any)
-  {
-    this.adminApi.deleteBlog(id).subscribe((res:any)=>{
-      if(res.success){
-        this.successMessage = res.message;
+
+  deleteBlog(id: any) {
+    this.adminApi.deleteBlog(id).subscribe((res: any) => {
+      if (res.success) {
+        this.toastr.success(res.message, 'Success', { progressBar: true, disableTimeOut: false, closeButton: true });
         this.get_all_blogs();
-      }else{
-        this.errorMessage = res.message;
+      } else {
+        this.toastr.error(res.message, 'Error', { progressBar: true, disableTimeOut: false, closeButton: true });
       }
-      setTimeout(() => {
-        this.successMessage = '';
-        this.errorMessage = '';
-      }, 5000);
     })
   }
 

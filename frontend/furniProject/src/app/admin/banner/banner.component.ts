@@ -3,6 +3,7 @@ import { Component, OnInit } from '@angular/core';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { RouterModule } from '@angular/router';
 import { AdminApiService } from '../../service/admin-api.service';
+import { ToastrService } from 'ngx-toastr';
 
 @Component({
   selector: 'app-banner',
@@ -13,7 +14,7 @@ import { AdminApiService } from '../../service/admin-api.service';
 })
 export class BannerComponent implements OnInit {
 
-  constructor(public adminApi:AdminApiService){}
+  constructor(public adminApi:AdminApiService, private toastr:ToastrService){}
   
   selectedImagePreview: string | ArrayBuffer | null = null;
   selectedImage: any;
@@ -34,13 +35,12 @@ export class BannerComponent implements OnInit {
   getBanner(): void {
     this.adminApi.getBanner().subscribe((data: any) => {
       if (data.success) {
-        // this.bannerData = data.banner;
         this.bannerImageUrl = `http://localhost:1000/uploads/${data.banner.banner_image}`;
         this.formData.banner_title = data.banner.banner_title;
         this.formData.banner_details = data.banner.banner_details;
         this.formData.banner_link = data.banner.banner_link;
       } else {
-        console.error('No banner data found');
+        this.toastr.error('No banner data found', 'Error', { progressBar: true, closeButton: true , disableTimeOut: false });
       }
     });
   }
@@ -49,8 +49,6 @@ export class BannerComponent implements OnInit {
   onFileChange(event: any): void {
     if (event.target.files && event.target.files.length > 0) {
       this.selectedImage = event.target.files[0];
-      console.log('Selected Image:', this.selectedImage.name);
-
       const reader = new FileReader();
       reader.onload = () => {
         this.selectedImagePreview = reader.result;
@@ -72,10 +70,11 @@ export class BannerComponent implements OnInit {
     this.adminApi.updateBanner(formData).subscribe(
       (res: any) => {
         if (res.success) {
-          console.log('Banner updated successfully');
-          this.getBanner(); // Fetch updated banner details
+          this.toastr.success('Banner updated successfully', 'Success', { progressBar: true, closeButton: true , disableTimeOut: false });
+          this.getBanner();
         } else {
           console.error('Failed to update banner:', res.message || res.error || 'Unknown error');
+          this.toastr.error(res.message, 'Error', { progressBar: true, closeButton: true , disableTimeOut: false });
         }
       }
     )

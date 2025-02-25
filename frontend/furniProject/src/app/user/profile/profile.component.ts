@@ -14,7 +14,7 @@ import { UserApiService } from '../../service/user-api.service';
 })
 export class ProfileComponent {
 
-  constructor(public userApi: UserApiService, public router: Router, public toastr:ToastrService){}
+  constructor(private userApi: UserApiService, private router: Router, private toastr:ToastrService){}
 
   formData =
     {
@@ -31,7 +31,6 @@ export class ProfileComponent {
   ngOnInit() {
     this.getUserProfile();
   }
-  
     
   loggedInUser: any;
   loggedInUserImage: any = null;
@@ -45,7 +44,7 @@ export class ProfileComponent {
         this.formData.user_mobile = this.loggedInUser.user_mobile;
         this.formData.user_email = this.loggedInUser.user_email;
         this.formData.user_address = this.loggedInUser.user_address;
-        if (this.loggedInUser) {
+        if (this.loggedInUser.user_profile) {
           this.loggedInUserImage = `http://localhost:1000/uploads/${this.loggedInUser.user_profile}`;
         }
         else {
@@ -67,14 +66,14 @@ export class ProfileComponent {
     this.userApi.updateUserDetails(formData).subscribe({
       next: (res: any) => {
         if (res.status === 'success') {
-          this.toastr.success('User Details updated successfully', "Success", { disableTimeOut: false,closeButton: true });
+          this.toastr.success('User Details updated successfully', "Success", { disableTimeOut: false, progressBar:true ,closeButton: true });
           this.getUserProfile(); // Refresh profile
         } else {
-          this.toastr.error('Failed to update user details: ' + res.message,"Error", { disableTimeOut: false,closeButton: true });
+          this.toastr.error('Failed to update user details: ' + res.message,"Error", { disableTimeOut: false, progressBar:true ,closeButton: true });
         }
       },
       error: (err: any) => {
-        this.toastr.error('Failed to update user details: Server error' + err.message, "Error", { disableTimeOut: false,closeButton: true });
+        this.toastr.error('Failed to update user details: Server error' + err.message, "Error", { disableTimeOut: false, progressBar:true ,closeButton: true });
       }
     });
   }
@@ -95,15 +94,15 @@ export class ProfileComponent {
 
       this.userApi.updateUserProfile(formData).subscribe((res: any) => {
         if (res.status === 'success') {
-          this.toastr.success('Profile image updated successfully', "Success", { disableTimeOut: false,closeButton: true });
+          this.toastr.success('Profile image updated successfully', "Success", { disableTimeOut: false, progressBar:true ,closeButton: true });
           this.getUserProfile();
         } else {
-          this.toastr.error('Failed to update profile..!', "Error", { disableTimeOut: false,closeButton: true })
+          this.toastr.error('Failed to update profile..!', "Error", { disableTimeOut: false, progressBar:true ,closeButton: true })
         }
       });
     }
     if (!this.selectedImage) {
-      this.toastr.error('Please Select an Image..!', "Error", { disableTimeOut: false,closeButton: true })
+      this.toastr.error('Please Select an Image..!', "Error", { disableTimeOut: false, progressBar:true ,closeButton: true })
       return;
     }
   }
@@ -113,12 +112,12 @@ export class ProfileComponent {
     const formData = new FormData();
 
     if (this.formData.new_password !== this.formData.confirm_password) {
-      this.toastr.error('New password and Confirm password do not match!', "Error", { disableTimeOut: false,closeButton: true })
+      this.toastr.error('New password and Confirm password do not match!', "Error", { disableTimeOut: false, progressBar:true ,closeButton: true })
       return;
     }
 
     if (!this.formData.current_password || !this.formData.new_password || !this.formData.confirm_password) {
-      this.toastr.warning('All fields are required!', "Warning", { disableTimeOut: false,closeButton: true });
+      this.toastr.warning('All fields are required!', "Warning", { disableTimeOut: false, progressBar:true ,closeButton: true });
       return;
     }
 
@@ -128,7 +127,7 @@ export class ProfileComponent {
     this.userApi.updatePassword(formData).subscribe(
       (res: any) => {
         if (res.status === 'success') {
-          this.toastr.success('Password updated successfully', "Success", { disableTimeOut: false,closeButton: true });
+          this.toastr.success('Password updated successfully', "Success", { disableTimeOut: false, progressBar:true ,closeButton: true });
           this.formData.current_password = '';
           this.formData.new_password = '';
           this.formData.confirm_password = '';
@@ -140,7 +139,7 @@ export class ProfileComponent {
         } else if (err.status === 400) {
           this.toastr.error(err.error.message);
         } else {
-          this.toastr.error('An unexpected error occurred. Please try again later', "Error", { disableTimeOut: false,closeButton: true });
+          this.toastr.error('An unexpected error occurred. Please try again later', "Error", { disableTimeOut: false, progressBar:true ,closeButton: true });
         }
       }
     );
@@ -150,7 +149,7 @@ export class ProfileComponent {
   logout() {
     const confirmLogout = confirm('Are you sure!! You want to logout');
     if (confirmLogout) {
-      this.toastr.success("LogOut successfully", "Success", { disableTimeOut: false,closeButton: true });
+      this.toastr.success("LogOut successfully", "Success", { disableTimeOut: false, progressBar:true ,closeButton: true });
       this.userApi.userLogout();
       this.router.navigate(['/user/login']);
     }

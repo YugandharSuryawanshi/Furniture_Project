@@ -8,10 +8,6 @@
                         <p class="mb-0">Fill the form to create Account</p>
                     </div>
                     <div class="card-body p-4">
-                        <!-- Success Message -->
-                        <div *ngIf="successMessage" class="alert alert-success text-center" role="alert">
-                            {{ successMessage }}
-                        </div>
 
                         <!-- Registration Form -->
                         <form (ngSubmit)="register()" novalidate>
