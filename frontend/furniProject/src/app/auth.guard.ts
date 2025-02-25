@@ -1,4 +1,3 @@
-
 import { Injectable } from '@angular/core';
 import {
   ActivatedRouteSnapshot,
@@ -18,14 +17,11 @@ export class AuthGuard implements CanActivate {
     const requiresLogin = route.data['requiresLogin'] as boolean; // Check if the route requires login
 
     if (!isLoggedIn && requiresLogin) {
-      // Admin not logged in but tries to access a protected route
       if (confirm('You are not logged in. Would you like to log in now?')) {
-        this.router.navigate(['/admin/login']); // Redirect to admin login
+        this.router.navigate(['/admin/login']);
       }
       return false; // Prevent access to the route
     }
-
-    // Allow access if logged in or route doesn't require login
     return true;
   }
 }
