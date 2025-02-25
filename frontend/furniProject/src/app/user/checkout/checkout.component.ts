@@ -202,6 +202,4 @@ getRazorPay_key()
     });
   }
 
-
-
 }

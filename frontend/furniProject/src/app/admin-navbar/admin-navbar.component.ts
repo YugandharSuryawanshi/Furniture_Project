@@ -14,9 +14,10 @@ import { AdminApiService } from '../service/admin-api.service';
 })
 export class AdminNavbarComponent implements AfterViewInit {
 
-  constructor(private el: ElementRef, public adminApi:AdminApiService, private router:Router) {}
+  constructor(private el: ElementRef, public adminApi: AdminApiService, private router: Router) { }
   private sidebar!: Sidebar;
 
+  // This is for toggle navigation
   ngAfterViewInit(): void {
     this.getAdminProfile();
     const sidebarElement = document.querySelector('#sidebar');
@@ -35,61 +36,56 @@ export class AdminNavbarComponent implements AfterViewInit {
 
   dropdownOpen = false;
   toggleDropdown(event: Event) {
-    event.preventDefault(); // Prevent default behavior of the <a> tag
+    event.preventDefault();
     this.dropdownOpen = !this.dropdownOpen;
   }
 
-  productDropdownOpen = false; // State for Product dropdown
-  whyChooseDropdownOpen = false; // State for Why Choose Us dropdown
+  //Here are Dropdown instances
+  productDropdownOpen = false;
+  whyChooseDropdownOpen = false;
   blogDropdownOpen = false;
   teamDropdownOpen = false;
 
   toggleProductDropdown(event: Event): void {
-    event.preventDefault(); // Prevent default anchor behavior
+    event.preventDefault();
     this.productDropdownOpen = !this.productDropdownOpen;
   }
 
   toggleWhyChooseDropdown(event: Event): void {
-    event.preventDefault(); // Prevent default anchor behavior
+    event.preventDefault();
     this.whyChooseDropdownOpen = !this.whyChooseDropdownOpen;
   }
 
   // Toggle Blog Dropdown
   toggleBlogDropdown(event: Event): void {
-    event.preventDefault(); // Prevent default behavior of the <a> tag
+    event.preventDefault();
     this.blogDropdownOpen = !this.blogDropdownOpen;
   }
 
-
   // Toggle function for Our Team dropdown
   toggleTeamDropdown(event: Event): void {
-    event.preventDefault(); // Prevent default behavior of the <a> tag
+    event.preventDefault();
     this.teamDropdownOpen = !this.teamDropdownOpen;
   }
 
-  
-
-  ngOnInit()
-  {
+  ngOnInit() {
     this.getAdminProfile();
-    // For admin state changes
+    // For View login admin Profile
     this.adminApi.adminState$.subscribe((admin) => {
       this.adminDetails = admin;
       this.adminProfile = `http://localhost:1000/uploads/${this.adminDetails?.admin_profile}`;
     });
   }
 
-  adminDetails:any;
+  adminDetails: any;
   adminProfile: any;
-  adminName:string = '';
-  getAdminProfile()
-  {
-    this.adminApi.getAdminDetails()?.subscribe((data:any)=>{
-      if(data.success)
-      {
+  adminName: string = '';
+  getAdminProfile() {
+    this.adminApi.getAdminDetails()?.subscribe((data: any) => {
+      if (data.success) {
         this.adminDetails = data.admin;
         this.adminProfile = `http://localhost:1000/uploads/${this.adminDetails?.admin_profile}`;
-        this.adminName = 'Welcome '+this.adminDetails.admin_name + '!';
+        this.adminName = 'Welcome ' + this.adminDetails.admin_name + '!';
       }
       else {
         this.adminProfile = "C:\Users\ADMIN\OneDrive\Desktop\RadheKrishna.jpg";
@@ -100,7 +96,7 @@ export class AdminNavbarComponent implements AfterViewInit {
     }, 4000);
   }
 
-
+// Admin Logout
   logout() {
     this.adminApi.adminLogout();
     this.adminProfile = null;

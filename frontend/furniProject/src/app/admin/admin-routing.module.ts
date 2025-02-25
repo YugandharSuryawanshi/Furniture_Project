@@ -24,7 +24,7 @@ import { UpdateOrderComponent } from './update-order/update-order.component';
 
 const routes: Routes = [
   { path: 'login', component: AdminLoginComponent }, // Allow login without authentication
-  { path: '', redirectTo: 'home', pathMatch: 'full' }, // Default admin route
+  { path: '', redirectTo: 'dashboard', pathMatch: 'full' }, // Default admin route
   { path:'register', component: RegisterComponent }, // Allow registration without authentication
   { path: 'dashboard', component: DashboardComponent, canActivate: [AuthGuard], data: { role: 'admin',requiresLogin: true } },
   { path: 'home', component: HomeComponent, canActivate: [AuthGuard], data: { role: 'admin' , requiresLogin: true } },

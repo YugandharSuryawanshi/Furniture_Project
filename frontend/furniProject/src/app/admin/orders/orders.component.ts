@@ -49,8 +49,6 @@ export class OrdersComponent implements OnInit {
     this.adminApi.getOrders().subscribe((res: any) => {
       if (res.success) {
         this.orders = res.data;
-        console.log('Orders fetched successfully', this.orders);
-        
         this.total_orders = this.orders.length;
         this.total_pending = 0;
         this.total_revenue = 0;
@@ -149,14 +147,12 @@ export class OrdersComponent implements OnInit {
     }
   }
 
-  // Function to set selected order details
-  // View order details
+  // Function to set selected order details //View order details
   viewOrderDetails(id: any) {
     this.showTracking = true;
     this.adminApi.getSingleOrder(id).subscribe((res: any) => {
       if (res.success) {
         this.singleOrderDetails = res.data;
-        console.log('Order details fetched successfully', this.singleOrderDetails);
         this.showOrderDetails = true;
       } else {
         this.toastr.error('No order found', 'Error', { progressBar: true, closeButton: true, disableTimeOut: false });
@@ -167,8 +163,5 @@ export class OrdersComponent implements OnInit {
   closeOrderDetails() {
     this.showTracking = false;
   }
-
-
-
 
 }

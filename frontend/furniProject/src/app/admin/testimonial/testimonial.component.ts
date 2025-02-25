@@ -2,6 +2,7 @@ import { CommonModule } from '@angular/common';
 import { Component } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import { AdminApiService } from '../../service/admin-api.service';
+import { ToastrService } from 'ngx-toastr';
 
 @Component({
   selector: 'app-testimonial',
@@ -12,16 +13,13 @@ import { AdminApiService } from '../../service/admin-api.service';
 })
 export class TestimonialComponent {
 
-  constructor(public adminApi: AdminApiService){}
+  constructor(private adminApi: AdminApiService, private toastr: ToastrService) { }
 
-  errorMessage:any = '';
-  successMessage:any = '';
-  displayAdd:boolean = true;
-  displayList:boolean = false;
-  displayUpdate:boolean = false;
+  displayAdd: boolean = true;
+  displayList: boolean = false;
+  displayUpdate: boolean = false;
 
-  display1()
-  {
+  display1() {
     this.displayAdd = true;
     this.displayList = false;
     this.displayUpdate = false;
@@ -31,15 +29,13 @@ export class TestimonialComponent {
     this.formData.customer_massage = '';
 
   }
-  display2()
-  {
+  display2() {
     this.getAllTestimonials();
     this.displayAdd = false;
     this.displayList = true;
     this.displayUpdate = false;
   }
-  display3()
-  {
+  display3() {
     this.displayUpdate = false;
     this.displayList = true;
     this.HideImage = false;
@@ -53,29 +49,27 @@ export class TestimonialComponent {
   }
 
   selectedImage: File | null = null;
-  onSelectedImage(event:any)
-  {
+  onSelectedImage(event: any) {
     const file = event.target.files[0];
-    if (file){
+    if (file) {
       this.selectedImage = file;
     }
   }
-  saveTestimonial()
-  {
+  saveTestimonial() {
     const formData = new FormData();
-    
+
     formData.append('customer_name', this.formData.customer_name);
     formData.append('customer_position', this.formData.customer_position);
     formData.append('customer_massage', this.formData.customer_massage);
 
     if (this.selectedImage) {
-      formData.append('customer_image',this.selectedImage, this.selectedImage.name);
+      formData.append('customer_image', this.selectedImage, this.selectedImage.name);
     }
 
     //Send Form Data TO Backend
-    this.adminApi.saveTestimonial(formData).subscribe((res:any)=>{
+    this.adminApi.saveTestimonial(formData).subscribe((res: any) => {
       if (res.success) {
-        this.successMessage = res.message;
+        this.toastr.success(res.message || 'Testimonial Saved Successfully', 'Success', { progressBar: true, disableTimeOut: false, closeButton: true });
         this.formData = {
           customer_name: '',
           customer_position: '',
@@ -85,122 +79,96 @@ export class TestimonialComponent {
         this.selectedImage = null;
         this.getAllTestimonials();
       }
-      else
-      {
-        this.errorMessage = 'Error To Save Testimonial Data'+res.message;
+      else {
+        this.toastr.success('Error To Save Testimonial Data', 'Error', { progressBar: true, disableTimeOut: false, closeButton: true });
       }
     })
-    setTimeout(()=>{
-      this.errorMessage = '';
-      this.successMessage = '';
-    }, 5000);
   }
 
-  ngOnInit()
-  {
+  ngOnInit() {
     this.getAllTestimonials();
   }
   // Get the testimonial
   testimonials: any = [];
-  getAllTestimonials()
-  {
-    this.adminApi.getTestimonials().subscribe((res:any)=>{
+  getAllTestimonials() {
+    this.adminApi.getTestimonials().subscribe((res: any) => {
       if (res.success) {
         this.testimonials = res.data;
       }
-      else
-      {
-        this.errorMessage = 'Error To Get Testimonials'+res.message;
+      else {
+        this.toastr.success('Error To Get Testimonial' + res.message, 'Error', { progressBar: true, disableTimeOut: false, closeButton: true });
       }
     })
   }
 
   // Fetch Testimonial and Set to Form
-get_This_Product(id: any) {
-  console.log('Fetching Testimonial ID:', id);
-  this.displayAdd = false;
-  this.displayList = false;
-  this.displayUpdate = true;
-  this.HideImage = true;
+  get_This_Product(id: any) {
+    this.displayAdd = false;
+    this.displayList = false;
+    this.displayUpdate = true;
+    this.HideImage = true;
 
-  this.adminApi.getOneTestimonial(id).subscribe(
+    this.adminApi.getOneTestimonial(id).subscribe(
       (res: any) => {
-          if (res.success) {
-              this.formData = { ...res.data }; //Spread Operator is Used Here For Display Info in Testimonial
-              // this.formData.customer_name = res.data.customer_name || '';
-          } else {
-              this.errorMessage = 'Error fetching Testimonial: ' + res.message;
-          }
+        if (res.success) {
+          this.formData = { ...res.data }; //Spread Operator is Used Here For Display Info in Testimonial
+        } else {
+          this.toastr.error('Error fetching Testimonial: ' + res.message, 'Error', { progressBar: true, disableTimeOut: false, closeButton: true });
+        }
       });
-}
-
-// Handle Image Selection for Update
-HideImage: boolean = true;
-onSelectedUpdateImage(event: any) {
-  this.HideImage = false;
-  this.selectedImage = event.target.files[0];
-  console.log('Selected Image for Update:', this.selectedImage);
-}
-
-// Save Testimonial
-updateTestimonial() {
-  const updatedFormData = new FormData();
-  updatedFormData.append('customer_name', this.formData.customer_name);
-  updatedFormData.append('customer_position', this.formData.customer_position);
-  updatedFormData.append('customer_massage', this.formData.customer_massage);
-  if (this.selectedImage) {
-      updatedFormData.append('customer_image', this.selectedImage, this.selectedImage.name);
   }
 
-  this.adminApi.updateTestimonial(this.formData.customer_id,updatedFormData).subscribe((res:any)=>{
-    if (res.success) {
-      this.successMessage = res.message;
-      this.getAllTestimonials();
-      this.displayAdd = false;
-      this.displayList = true;
-      this.displayUpdate = false;
-      this.formData = {
-        customer_name: '',
-        customer_position: '',
-        customer_massage: '',
-        customer_image: null,
-      }
-      this.selectedImage = null;
-    }
-    else
-    {
-      this.errorMessage = 'Error To Update Testimonial Data'+res.message;
-    }
-  })
-  setTimeout(()=>{
-    this.errorMessage = '';
-    this.successMessage = '';
-  }, 5000);
-}
+  // Handle Image Selection for Update
+  HideImage: boolean = true;
+  onSelectedUpdateImage(event: any) {
+    this.HideImage = false;
+    this.selectedImage = event.target.files[0];
+  }
 
-// Delete Testimonial
-deleteProduct(id:any)
-{
-  if (confirm('Are you sure!! you want to delete this'))
-  {
-    this.adminApi.deleteTestimonial(id).subscribe((res:any)=>{
+  // Save Testimonial
+  updateTestimonial() {
+    const updatedFormData = new FormData();
+    updatedFormData.append('customer_name', this.formData.customer_name);
+    updatedFormData.append('customer_position', this.formData.customer_position);
+    updatedFormData.append('customer_massage', this.formData.customer_massage);
+    if (this.selectedImage) {
+      updatedFormData.append('customer_image', this.selectedImage, this.selectedImage.name);
+    }
+
+    this.adminApi.updateTestimonial(this.formData.customer_id, updatedFormData).subscribe((res: any) => {
       if (res.success) {
-        this.successMessage = res.message;
+        this.toastr.success(res.message || 'Testimonial Updated Successfully', 'Success', { progressBar: true, disableTimeOut: false, closeButton: true });
         this.getAllTestimonials();
+        this.displayAdd = false;
+        this.displayList = true;
+        this.displayUpdate = false;
+        this.formData = {
+          customer_name: '',
+          customer_position: '',
+          customer_massage: '',
+          customer_image: null,
+        }
+        this.selectedImage = null;
       }
-      else
-      {
-        this.errorMessage = 'Error To Delete Testimonial Data'+res.message;
+      else {
+        this.toastr.error('Error To Update Testimonial Data', 'Error', { progressBar: true, disableTimeOut: false, closeButton: true });
       }
     })
-    setTimeout(()=>{
-      this.errorMessage = '';
-      this.successMessage = '';
-    }, 5000);
   }
 
-}
-
-
+  // Delete Testimonial
+  deleteProduct(id: any) {
+    if (confirm('Are you sure!! you want to delete this')) {
+      this.adminApi.deleteTestimonial(id).subscribe((res: any) => {
+        if (res.success) {
+          this.toastr.success(res.message || 'Testimonial Deleted Successfully', 'Success', { progressBar: true, disableTimeOut: false, closeButton: true });
+          this.getAllTestimonials();
+        }
+        else {
+          this.toastr.error('Error To Delete Testimonial Data', 'Error', { progressBar: true, disableTimeOut: false, closeButton: true });
+        }
+      })
+    }
+  }
 
 }

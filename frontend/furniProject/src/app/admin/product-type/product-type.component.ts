@@ -3,6 +3,7 @@ import { Component } from '@angular/core';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { Router, RouterModule } from '@angular/router';
 import { AdminApiService } from '../../service/admin-api.service';
+import { ToastrService } from 'ngx-toastr';
 
 @Component({
   selector: 'app-product-type',
@@ -13,23 +14,19 @@ import { AdminApiService } from '../../service/admin-api.service';
 })
 export class ProductTypeComponent {
 
-  constructor(public adminApi: AdminApiService, public router: Router) { }
+  constructor(private adminApi: AdminApiService, private router: Router, private toastr: ToastrService) { }
 
   displayList: boolean = false;
   displayAddType: boolean = true;
   displayUpdate: boolean = false;
-  errorMessage: string = '';
-  successMessage: string = '';
 
   //Top Menu On Change display parts
-  showList()
-  {
+  showList() {
     this.displayList = true;
     this.displayAddType = false;
     this.displayUpdate = false;
   }
-  addType()
-  {
+  addType() {
     this.displayAddType = true;
     this.displayList = false;
   }
@@ -40,18 +37,13 @@ export class ProductTypeComponent {
     if (data.product_type_name) {
       this.adminApi.saveProductType(data).subscribe(
         (res: any) => {
-          this.successMessage = 'Product type saved successfully';
+          this.toastr.success(res.message || 'Product Type Saved Successfully..!', 'Success', { progressBar: true, disableTimeOut: false, closeButton: true });
           product_type_form.reset();
           this.getProducts();
         });
     } else {
-      this.errorMessage = 'Product type name is required';
+      this.toastr.warning('Product Type Name Is Required', 'Enter', { progressBar: true, disableTimeOut: false, closeButton: true });
     }
-
-    setTimeout(() => {
-      this.successMessage = '';
-      this.errorMessage = '';
-    }, 5000);
   }
 
   ngOnInit() {
@@ -66,6 +58,7 @@ export class ProductTypeComponent {
         if (response.success) {
           this.types = response.product_types;
         } else {
+          this.toastr.error(response.message || 'Failed to fetch Product Types', 'Error', { progressBar: true, disableTimeOut: false, closeButton: true });
           console.log('Failed to fetch product types:', response.message);
         }
       });
@@ -99,38 +92,30 @@ export class ProductTypeComponent {
     if (data.product_type_id) {
       this.adminApi.updateProductType(data.product_type_id, data.product_type_name).subscribe((res: any) => {
         if (res.success) {
-          this.successMessage = res.message;
+          this.toastr.success(res.message || 'Product Type updated successfully..!', 'Success', { progressBar: true, disableTimeOut: false, closeButton: true });
           this.displayUpdate = false;
           this.displayList = true;
           form.reset();
           this.getProducts();
         }
         else {
-          this.errorMessage = 'Failed to update product type' , res.message;
+          this.toastr.error(res.message || 'Failed to update product type', 'Error', { progressBar: true, disableTimeOut: false, closeButton: true });
         }
       })
     }
-    setTimeout(() => {
-      this.errorMessage = '';
-      this.successMessage = '';
-    }, 5000);
   }
 
   //Delete product type
   deleteProductType(id: any) {
-    this.adminApi.deleteProductType(id).subscribe((data:any)=>{
+    this.adminApi.deleteProductType(id).subscribe((data: any) => {
       if (data.success) {
-        this.successMessage = 'Product Type deleted successfully';
+        this.toastr.success(data.message || 'Product Type deleted successfully..!', 'Success', { progressBar: true, disableTimeOut: false, closeButton: true });
         this.getProducts();
       }
       else {
-        this.errorMessage = 'Failed to delete product type', data.message;
+        this.toastr.error(data.message || 'Failed to delete product type', 'Error', { progressBar: true, disableTimeOut: false, closeButton: true });
       }
     })
-    setTimeout(() => {
-      this.errorMessage = '';
-      this.successMessage = '';
-    }, 5000);
   }
 
 

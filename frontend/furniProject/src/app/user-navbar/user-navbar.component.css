@@ -1,0 +1,8 @@
+.collapse {
+    display: none; /* By default, navbar is hidden */
+  }
+  
+  .collapse.show {
+    display: block; /* When toggled, navbar becomes visible */
+  }
+  

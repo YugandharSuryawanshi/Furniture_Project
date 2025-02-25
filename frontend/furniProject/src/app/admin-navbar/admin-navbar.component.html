@@ -1,281 +1,240 @@
-    <!DOCTYPE html>
-    <html lang="en">
+<!DOCTYPE html>
+<html lang="en">
 
-    <head>
-        <base href="./">
-        <meta charset="utf-8">
-        <meta http-equiv="X-UA-Compatible" content="IE=edge">
-        <meta name="viewport" content="width=device-width, initial-scale=1.0, shrink-to-fit=no">
-        <meta name="description" content="CoreUI - Open Source Bootstrap Admin Template">
-        <meta name="author" content="Łukasz Holeczek">
-        <meta name="keyword" content="Bootstrap,Admin,Template,Open,Source,jQuery,CSS,HTML,RWD,Dashboard">
-        <title>Yogi Furniture</title>
-        <link rel="apple-touch-icon" sizes="57x57" href="/admin/assets/favicon/apple-icon-57x57.png">
-        <link rel="apple-touch-icon" sizes="60x60" href="/admin/assets/favicon/apple-icon-60x60.png">
-        <link rel="apple-touch-icon" sizes="72x72" href="/admin/assets/favicon/apple-icon-72x72.png">
-        <link rel="apple-touch-icon" sizes="76x76" href="/admin/assets/favicon/apple-icon-76x76.png">
-        <link rel="apple-touch-icon" sizes="114x114" href="/admin/assets/favicon/apple-icon-114x114.png">
-        <link rel="apple-touch-icon" sizes="120x120" href="/admin/assets/favicon/apple-icon-120x120.png">
-        <link rel="apple-touch-icon" sizes="144x144" href="/admin/assets/favicon/apple-icon-144x144.png">
-        <link rel="apple-touch-icon" sizes="152x152" href="/admin/assets/favicon/apple-icon-152x152.png">
-        <link rel="apple-touch-icon" sizes="180x180" href="/admin/assets/favicon/apple-icon-180x180.png">
-        <link rel="icon" type="image/png" sizes="192x192" href="/admin/assets/favicon/android-icon-192x192.png">
-        <link rel="icon" type="image/png" sizes="32x32" href="/admin/assets/favicon/favicon-32x32.png">
-        <link rel="icon" type="image/png" sizes="96x96" href="/admin/assets/favicon/favicon-96x96.png">
-        <link rel="icon" type="image/png" sizes="16x16" href="/admin/assets/favicon/favicon-16x16.png">
-        <link rel="manifest" href="/admin/assets/favicon/manifest.json">
-        <meta name="msapplication-TileColor" content="#ffffff">
-        <meta name="msapplication-TileImage" content="/admin/assets/favicon/ms-icon-144x144.png">
-        <meta name="theme-color" content="#ffffff">
-        <!-- Vendors styles-->
-        <link rel="stylesheet" href="/admin/vendors/simplebar/css/simplebar.css">
-        <link rel="stylesheet" href="/admin/css/vendors/simplebar.css">
+<head>
+    <base href="./">
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, shrink-to-fit=no">
+    <meta name="description" content="CoreUI - Open Source Bootstrap Admin Template">
+    <meta name="author" content="Łukasz Holeczek">
+    <meta name="keyword" content="Bootstrap,Admin,Template,Open,Source,jQuery,CSS,HTML,RWD,Dashboard">
+    <title>Yogi Furniture</title>
+    <link rel="apple-touch-icon" sizes="57x57" href="/admin/assets/favicon/apple-icon-57x57.png">
+    <link rel="apple-touch-icon" sizes="60x60" href="/admin/assets/favicon/apple-icon-60x60.png">
+    <link rel="apple-touch-icon" sizes="72x72" href="/admin/assets/favicon/apple-icon-72x72.png">
+    <link rel="apple-touch-icon" sizes="76x76" href="/admin/assets/favicon/apple-icon-76x76.png">
+    <link rel="apple-touch-icon" sizes="114x114" href="/admin/assets/favicon/apple-icon-114x114.png">
+    <link rel="apple-touch-icon" sizes="120x120" href="/admin/assets/favicon/apple-icon-120x120.png">
+    <link rel="apple-touch-icon" sizes="144x144" href="/admin/assets/favicon/apple-icon-144x144.png">
+    <link rel="apple-touch-icon" sizes="152x152" href="/admin/assets/favicon/apple-icon-152x152.png">
+    <link rel="apple-touch-icon" sizes="180x180" href="/admin/assets/favicon/apple-icon-180x180.png">
+    <link rel="icon" type="image/png" sizes="192x192" href="/admin/assets/favicon/android-icon-192x192.png">
+    <link rel="icon" type="image/png" sizes="32x32" href="/admin/assets/favicon/favicon-32x32.png">
+    <link rel="icon" type="image/png" sizes="96x96" href="/admin/assets/favicon/favicon-96x96.png">
+    <link rel="icon" type="image/png" sizes="16x16" href="/admin/assets/favicon/favicon-16x16.png">
+    <link rel="manifest" href="/admin/assets/favicon/manifest.json">
+    <meta name="msapplication-TileColor" content="#ffffff">
+    <meta name="msapplication-TileImage" content="/admin/assets/favicon/ms-icon-144x144.png">
+    <meta name="theme-color" content="#ffffff">
+    <!-- Vendors styles-->
+    <link rel="stylesheet" href="/admin/vendors/simplebar/css/simplebar.css">
+    <link rel="stylesheet" href="/admin/css/vendors/simplebar.css">
 
-        <!-- Font Awesome CDN -->
-        <link rel="stylesheet" href="https://pro.fontawesome.com/releases/v5.10.0/css/all.css"
-            integrity="sha384-AYmEC3Yw5cVb3ZcuHtOA93w35dYTsvhLPVnYs9eStHfGJvOvKxVfELGroGkvsg+p" crossorigin="anonymous" />
+    <!-- Font Awesome CDN -->
+    <link rel="stylesheet" href="https://pro.fontawesome.com/releases/v5.10.0/css/all.css"
+        integrity="sha384-AYmEC3Yw5cVb3ZcuHtOA93w35dYTsvhLPVnYs9eStHfGJvOvKxVfELGroGkvsg+p" crossorigin="anonymous" />
 
-        <!-- Main styles for this application-->
-        <link href="/admin/css/style.css" rel="stylesheet">
-        <!-- We use those styles to show code examples, you should remove them in your application.-->
-        <link href="/admin/css/examples.css" rel="stylesheet">
-        <link href="/admin/vendors/@coreui/chartjs/css/coreui-chartjs.css" rel="stylesheet">
+    <!-- Main styles for this application-->
+    <link href="/admin/css/style.css" rel="stylesheet">
+    <!-- We use those styles to show code examples, you should remove them in your application.-->
+    <link href="/admin/css/examples.css" rel="stylesheet">
+    <link href="/admin/vendors/@coreui/chartjs/css/coreui-chartjs.css" rel="stylesheet">
+</head>
 
-    </head>
-
-    <body>
-        <div class="sidebar sidebar-dark sidebar-fixed" id="sidebar">
-            <div class="sidebar-brand d-none d-md-flex">
-                <svg class="sidebar-brand-full" width="118" height="46" alt="CoreUI Logo">
-                    <use xlink:href="/admin/assets/brand/coreui.svg#full"></use>
-                </svg>
-                <svg class="sidebar-brand-narrow" width="46" height="46" alt="CoreUI Logo">
-                    <use xlink:href="/admin/assets/brand/coreui.svg#signet"></use>
-                </svg>
-            </div>
-            <ul class="sidebar-nav" data-coreui="navigation" data-simplebar="">
-                <li class="nav-item">
-                    <a class="nav-link" routerLink="/admin/home">
-                        <svg class="nav-icon">
-                            <use xlink:href="/admin/vendors/@coreui/icons/svg/free.svg#cil-home"></use>
-                        </svg> Home
-                    </a>
-                </li>
-                <li class="nav-item">
-                    <a class="nav-link" routerLink="/admin/orders">
-                        <svg class="nav-icon">
-                            <use xlink:href="/admin/vendors/@coreui/icons/svg/free.svg#cil-home"></use>
-                        </svg> Orders
-                    </a>
-                </li>
-                <li class="nav-item">
-                    <a class="nav-link" routerLink="/admin/banner">
-                        <svg class="nav-icon">
-                            <use xlink:href="/admin/vendors/@coreui/icons/svg/free.svg#cil-speedometer"></use>
-                        </svg>Banner
-                    </a>
-                </li>
-
-
-                <li class="nav-group" [class.show]="productDropdownOpen">
-                    <a class="nav-link nav-group-toggle" href="#" (click)="toggleProductDropdown($event)">
-                        <svg class="nav-icon">
-                            <use xlink:href="/admin/vendors/@coreui/icons/svg/free.svg#cil-cursor"></use>
-                        </svg>
-                        Product
-                    </a>
-                    <ul class="nav-group-items" *ngIf="productDropdownOpen">
-                        <li class="nav-item">
-                            <a class="nav-link" routerLink="/admin/product_type">
-                                <svg class="nav-icon">
-                                    <use xlink:href="/admin/vendors/@coreui/icons/svg/free.svg#cil-cursor"></use>
-                                </svg>
-                                Product Type
-                            </a>
-                        </li>
-                        <li class="nav-item">
-                            <a class="nav-link" routerLink="/admin/product">
-                                <svg class="nav-icon">
-                                    <use xlink:href="/admin/vendors/@coreui/icons/svg/free.svg#cil-cursor"></use>
-                                </svg>
-                                Product
-                            </a>
-                        </li>
-                        <li class="nav-item">
-                            <a class="nav-link" routerLink="/admin/product_list">
-                                <svg class="nav-icon">
-                                    <use xlink:href="/admin/vendors/@coreui/icons/svg/free.svg#cil-cursor"></use>
-                                </svg>
-                                Product List
-                            </a>
-                        </li>
-                        <li class="nav-item">
-                            <a class="nav-link" routerLink="/admin/interior_design">
-                                <svg class="nav-icon">
-                                    <use xlink:href="/admin/vendors/@coreui/icons/svg/free.svg#cil-cursor"></use>
-                                </svg>
-                                Interior Design
-                            </a>
-                        </li>
-                        <li class="nav-item">
-                            <a class="nav-link" routerLink="/admin/testimonials">
-                                <svg class="nav-icon">
-                                    <use xlink:href="/admin/vendors/@coreui/icons/svg/free.svg#cil-cursor"></use>
-                                </svg>
-                                Testimonials
-                            </a>
-                        </li>
-                    </ul>
-                </li>
-
-
-                <li class="nav-group" [class.show]="whyChooseDropdownOpen">
-                    <a class="nav-link nav-group-toggle" href="#" (click)="toggleWhyChooseDropdown($event)">
-                        <svg class="nav-icon">
-                            <use xlink:href="/admin/vendors/@coreui/icons/svg/free.svg#cil-cursor"></use>
-                        </svg>
-                        Why Choose Us
-                    </a>
-                    <ul class="nav-group-items" *ngIf="whyChooseDropdownOpen">
-                        <li class="nav-item">
-                            <a class="nav-link" routerLink="/admin/why_choose_us">
-                                <svg class="nav-icon">
-                                    <use xlink:href="/admin/vendors/@coreui/icons/svg/free.svg#cil-cursor"></use>
-                                </svg>
-                                Why Choose Us
-                            </a>
-                        </li>
-                        <li class="nav-item">
-                            <a class="nav-link" routerLink="/admin/why_choose_us_points">
-                                <svg class="nav-icon">
-                                    <use xlink:href="/admin/vendors/@coreui/icons/svg/free.svg#cil-cursor"></use>
-                                </svg>
-                                Why Choose Points
-                            </a>
-                        </li>
-                    </ul>
-                </li>
-
-
-                <li class="nav-group" [class.show]="blogDropdownOpen">
-                    <a class="nav-link nav-group-toggle" href="#" (click)="toggleBlogDropdown($event)">
-                        <svg class="nav-icon">
-                            <use xlink:href="/admin/vendors/@coreui/icons/svg/free.svg#cil-cursor"></use>
-                        </svg>
-                        Blog
-                    </a>
-                    <ul class="nav-group-items" *ngIf="blogDropdownOpen">
-                        <li class="nav-item">
-                            <a class="nav-link" routerLink="/admin/blog">
-                                <svg class="nav-icon">
-                                    <use xlink:href="/admin/vendors/@coreui/icons/svg/free.svg#cil-cursor"></use>
-                                </svg>
-                                Blog
-                            </a>
-                        </li>
-                        <li class="nav-item">
-                            <a class="nav-link" routerLink="/admin/blog_list">
-                                <svg class="nav-icon">
-                                    <use xlink:href="/admin/vendors/@coreui/icons/svg/free.svg#cil-cursor"></use>
-                                </svg>
-                                Blog List
-                            </a>
-                        </li>
-                    </ul>
-                </li>
-
-
-                <li class="nav-group" [class.show]="teamDropdownOpen">
-                    <a class="nav-link nav-group-toggle" href="#" (click)="toggleTeamDropdown($event)">
-                        <svg class="nav-icon">
-                            <use xlink:href="/admin/vendors/@coreui/icons/svg/free.svg#cil-cursor"></use>
-                        </svg>
-                        Our Team
-                    </a>
-                    <ul class="nav-group-items" *ngIf="teamDropdownOpen">
-                        <li class="nav-item">
-                            <a class="nav-link" routerLink="/admin/our_team">
-                                <svg class="nav-icon">
-                                    <use xlink:href="/admin/vendors/@coreui/icons/svg/free.svg#cil-cursor"></use>
-                                </svg>
-                                Our Team
-                            </a>
-                        </li>
-                        <li class="nav-item">
-                            <a class="nav-link" routerLink="/admin/contact_us">
-                                <svg class="nav-icon">
-                                    <use xlink:href="/admin/vendors/@coreui/icons/svg/free.svg#cil-cursor"></use>
-                                </svg>
-                                Contact Us List
-                            </a>
-                        </li>
-                    </ul>
-                </li>
-
-            </ul>
-            <button class="sidebar-toggler" type="button" data-coreui-toggle="unfoldable"></button>
+<body>
+    <div class="sidebar sidebar-dark sidebar-fixed" id="sidebar">
+        <div class="sidebar-brand d-none d-md-flex">
+            <svg class="sidebar-brand-full" width="118" height="46" alt="CoreUI Logo">
+                <use xlink:href="/admin/assets/brand/coreui.svg#full"></use>
+            </svg>
+            <svg class="sidebar-brand-narrow" width="46" height="46" alt="CoreUI Logo">
+                <use xlink:href="/admin/assets/brand/coreui.svg#signet"></use>
+            </svg>
         </div>
+        <ul class="sidebar-nav" data-coreui="navigation" data-simplebar="">
+            <li class="nav-item">
+                <a class="nav-link" routerLink="/admin/dashboard">
+                    <svg class="nav-icon">
+                        <use xlink:href="/admin/vendors/@coreui/icons/svg/free.svg#cil-speedometer"></use>
+                    </svg> Dashboard
+                </a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link" routerLink="/admin/orders">
+                    <i class="fas fa-box-open nav-icon"></i> Orders
+                </a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link" routerLink="/admin/banner">
+                    <i class="fas fa-image nav-icon"></i> Banner
+                </a>
+            </li>
 
+            <li class="nav-group" [class.show]="productDropdownOpen">
+                <a class="nav-link nav-group-toggle" href="#" (click)="toggleProductDropdown($event)">
+                    <svg class="nav-icon">
+                        <use xlink:href="/admin/vendors/@coreui/icons/svg/free.svg#cil-cursor"></use>
+                    </svg>
+                    Product
+                </a>
+                <ul class="nav-group-items" *ngIf="productDropdownOpen">
+                    <li class="nav-item">
+                        <a class="nav-link" routerLink="/admin/product_type">
+                            <i class="fas fa-layer-group nav-icon"></i>
+                            Product Type
+                        </a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" routerLink="/admin/product">
+                            <i class="fas fa-tags nav-icon"></i>
+                            Product
+                        </a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" routerLink="/admin/product_list">
+                            <i class="fas fa-list nav-icon"></i>
+                            Product List
+                        </a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" routerLink="/admin/interior_design">
+                            <i class="fas fa-drafting-compass nav-icon"></i>
+                            Interior Design
+                        </a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" routerLink="/admin/testimonials">
+                            <i class="fas fa-user-check nav-icon"></i>
+                            Testimonials
+                        </a>
+                    </li>
+                </ul>
+            </li>
 
-        <div class="wrapper">
-            <header class="header header-sticky mb-2">
-                <div class="container-fluid">
+            <li class="nav-group" [class.show]="whyChooseDropdownOpen">
+                <a class="nav-link nav-group-toggle" href="#" (click)="toggleWhyChooseDropdown($event)">
+                    <svg class="nav-icon">
+                        <use xlink:href="/admin/vendors/@coreui/icons/svg/free.svg#cil-cursor"></use>
+                    </svg>
+                    Why Choose Us
+                </a>
+                <ul class="nav-group-items" *ngIf="whyChooseDropdownOpen">
+                    <li class="nav-item">
+                        <a class="nav-link" routerLink="/admin/why_choose_us">
+                            <i class="fas fa-award nav-icon"></i>
+                            Why Choose Us
+                        </a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" routerLink="/admin/why_choose_us_points">
+                            <i class="fas fa-star nav-icon"></i>
+                            Why Choose Points
+                        </a>
+                    </li>
+                </ul>
+            </li>
 
+            <li class="nav-group" [class.show]="blogDropdownOpen">
+                <a class="nav-link nav-group-toggle" href="#" (click)="toggleBlogDropdown($event)">
+                    <svg class="nav-icon">
+                        <use xlink:href="/admin/vendors/@coreui/icons/svg/free.svg#cil-cursor"></use>
+                    </svg>
+                    Blog
+                </a>
+                <ul class="nav-group-items" *ngIf="blogDropdownOpen">
+                    <li class="nav-item">
+                        <a class="nav-link" routerLink="/admin/blog">
+                            <i class="fas fa-pen-nib nav-icon"></i>
+                            Blog
+                        </a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" routerLink="/admin/blog_list">
+                            <i class="fas fa-list nav-icon"></i>
+                            Blog List
+                        </a>
+                    </li>
+                </ul>
+            </li>
 
-                    <button class="header-toggler px-md-0 me-md-3" type="button" (click)="toggleSidebar()">
-                        <svg class="icon icon-lg">
-                            <use xlink:href="/admin/vendors/@coreui/icons/svg/free.svg#cil-menu"></use>
-                        </svg>
-                    </button>
+            <li class="nav-group" [class.show]="teamDropdownOpen">
+                <a class="nav-link nav-group-toggle" href="#" (click)="toggleTeamDropdown($event)">
+                    <svg class="nav-icon">
+                        <use xlink:href="/admin/vendors/@coreui/icons/svg/free.svg#cil-cursor"></use>
+                    </svg>
+                    Our Team
+                </a>
+                <ul class="nav-group-items" *ngIf="teamDropdownOpen">
+                    <li class="nav-item">
+                        <a class="nav-link" routerLink="/admin/our_team">
+                            <i class="fas fa-users nav-icon"></i>
+                            Our Team
+                        </a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" routerLink="/admin/contact_us">
+                            <i class="fas fa-address-book nav-icon"></i>
+                            Contact Us List
+                        </a>
+                    </li>
+                </ul>
+            </li>
 
-
-
-                    <a class="header-brand d-md-none" href="#">
-                        <svg width="118" height="46" alt="CoreUI Logo">
-                            <use xlink:href="/admin/assets/brand/coreui.svg#full"></use>
-                        </svg></a>
-
-
-                    <ul class="header-nav ms-3">
-                        <button class="btn btn-dark" routerLink="/admin/login" *ngIf="!adminApi.isAdminLoggedIn()">Login
-                            Now </button>
-                        <div *ngIf="adminApi.isAdminLoggedIn()">
-                            <li class="nav-item dropdown" [class.show]="dropdownOpen">
-                                <a class="nav-link py-0" (click)="toggleDropdown($event)" role="button" aria-haspopup="true" [attr.aria-expanded]="dropdownOpen" >
-                                    <div class="avatar avatar-md" style="height: 35px; width: 35px; border-radius: 50%;">
-                                        <img style="height: 35px; width: 35px; border-radius: 50%;" class="avatar-img" [src]="adminProfile"
-                                            alt="admin_profile"  />
-                                    </div>
-                                    <i class="ml-5"></i>
-                                </a>
-                                <div class="dropdown-menu dropdown-menu-end pt-0" [class.show]="dropdownOpen">
-                                    <a class="dropdown-item" routerLink="/admin/profile">
-                                        <svg class="icon me-2">
-                                            <use xlink:href="/admin/vendors/@coreui/icons/svg/free.svg#cil-user"></use>
-                                        </svg>
-                                        Profile
-                                    </a>
-                                    <a class="dropdown-item" (click)="logout()">
-                                        <svg class="icon me-2">
-                                            <use xlink:href="/admin/vendors/@coreui/icons/svg/free.svg#cil-account-logout">
-                                            </use>
-                                        </svg>
-                                        Logout
-                                    </a>
+        </ul>
+        <button class="sidebar-toggler" type="button" data-coreui-toggle="unfoldable"></button>
+    </div>
+    <div class="wrapper">
+        <header class="header header-sticky mb-2">
+            <div class="container-fluid">
+                <button class="header-toggler px-md-0 me-md-3" type="button" (click)="toggleSidebar()">
+                    <svg class="icon icon-lg">
+                        <use xlink:href="/admin/vendors/@coreui/icons/svg/free.svg#cil-menu"></use>
+                    </svg>
+                </button>
+                <a class="header-brand d-md-none" href="#">
+                    <svg width="118" height="46" alt="CoreUI Logo">
+                        <use xlink:href="/admin/assets/brand/coreui.svg#full"></use>
+                    </svg></a>
+                <ul class="header-nav ms-3">
+                    <button class="btn btn-dark" routerLink="/admin/login" *ngIf="!adminApi.isAdminLoggedIn()">Login
+                        Now </button>
+                    <div *ngIf="adminApi.isAdminLoggedIn()">
+                        <li class="nav-item dropdown" [class.show]="dropdownOpen">
+                            <a class="nav-link py-0" (click)="toggleDropdown($event)" role="button" aria-haspopup="true"
+                                [attr.aria-expanded]="dropdownOpen">
+                                <div class="avatar avatar-md" style="height: 35px; width: 35px; border-radius: 50%;">
+                                    <img style="height: 35px; width: 35px; border-radius: 50%;" class="avatar-img"
+                                        [src]="adminProfile" alt="admin_profile" />
                                 </div>
-                            </li>
-                        </div>
-                    </ul>
-                </div>
-            </header>
-            <div class="body flex-grow-1 px-3">
-                <br>
-                <router-outlet></router-outlet>
-                <div style="margin-bottom: 50px; margin-top: 100px; width: 100%;"></div>
+                                <i class="ml-5"></i>
+                            </a>
+                            <div class="dropdown-menu dropdown-menu-end pt-0" [class.show]="dropdownOpen">
+                                <a class="dropdown-item" routerLink="/admin/profile">
+                                    <svg class="icon me-2">
+                                        <use xlink:href="/admin/vendors/@coreui/icons/svg/free.svg#cil-user"></use>
+                                    </svg>
+                                    Profile
+                                </a>
+                                <a class="dropdown-item" (click)="logout()">
+                                    <svg class="icon me-2">
+                                        <use xlink:href="/admin/vendors/@coreui/icons/svg/free.svg#cil-account-logout">
+                                        </use>
+                                    </svg>
+                                    Logout
+                                </a>
+                            </div>
+                        </li>
+                    </div>
+                </ul>
             </div>
+        </header>
+        <div class="body flex-grow-1 px-3">
+            <br>
+            <router-outlet></router-outlet>
+            <div style="margin-bottom: 50px; margin-top: 100px; width: 100%;"></div>
         </div>
-
-
+    </div>
 
     <!-- CoreUI and necessary plugins-->
     <script src="/admin/vendors/@coreui/coreui/js/coreui.bundle.min.js"></script>
@@ -285,10 +244,6 @@
     <script src="/admin/vendors/@coreui/chartjs/js/coreui-chartjs.js"></script>
     <script src="/admin/vendors/@coreui/utils/js/coreui-utils.js"></script>
     <script src="/admin/js/main.js"></script>
-
-
-
-
 
 </body>
 

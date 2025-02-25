@@ -21,42 +21,46 @@
 <body>
 
     <!-- Start Header/Navigation -->
-    <nav class="custom-navbar navbar navbar-expand-md navbar-dark bg-dark" aria-label="Furni navigation bar">
+    <!-- Start Header/Navigation -->
+<nav class="custom-navbar navbar navbar-expand-md navbar-dark bg-dark" aria-label="Furni navigation bar">
+    <div class="container">
+        <a class="navbar-brand" routerLink="/">Furni<span>.</span></a>
 
-        <div class="container">
-            <a class="navbar-brand" routerLink="/">Furni<span>.</span></a>
+        <!-- Toggle Button -->
+        <button class="navbar-toggler" type="button" (click)="toggleNavbar()" aria-controls="navbarsFurni"
+            [attr.aria-expanded]="isNavbarCollapsed" aria-label="Toggle navigation">
+            <span class="navbar-toggler-icon"></span>
+        </button>
 
-            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarsFurni"
-                aria-controls="navbarsFurni" aria-expanded="false" aria-label="Toggle navigation">
-                <span class="navbar-toggler-icon"></span>
-            </button>
+        <!-- Navbar Menu -->
+        <div class="collapse navbar-collapse" [ngClass]="{ 'show': isNavbarCollapsed }" id="navbarsFurni">
+            <ul class="custom-navbar-nav navbar-nav ms-auto mb-2 mb-md-0">
+                <li class="nav-item active">
+                    <a class="nav-link" routerLink="/user/home">Home</a>
+                </li>
+                <li><a class="nav-link" routerLink="/user/shop">Shop</a></li>
+                <li><a class="nav-link" routerLink="/user/about">About us</a></li>
+                <li><a class="nav-link" routerLink="/user/service">Services</a></li>
+                <li><a class="nav-link" routerLink="/user/blog">Blog</a></li>
+                <li><a class="nav-link" routerLink="/user/contact">Contact us</a></li>
+            </ul>
 
-            <div class="collapse navbar-collapse" id="navbarsFurni">
-                <ul class="custom-navbar-nav navbar-nav ms-auto mb-2 mb-md-0">
-                    <li class="nav-item active">
-                        <a class="nav-link" routerLink="/user/home">Home</a>
-                    </li>
-                    <li><a class="nav-link" routerLink="/user/shop">Shop</a></li>
-                    <li><a class="nav-link" routerLink="/user/about">About us</a></li>
-                    <li><a class="nav-link" routerLink="/user/service">Services</a></li>
-                    <li><a class="nav-link" routerLink="/user/blog">Blog</a></li>
-                    <li><a class="nav-link" routerLink="/user/contact">Contact us</a></li>
-                </ul>
-
-                <ul class="custom-navbar-cta navbar-nav mb-2 mb-md-0 ms-5">
-                    <li *ngIf="userApi.isUserLoggedIn()">
-                        <a class="nav-link" routerLink="/user/profile"><img src="/images/user.svg"></a>
-                    <!-- </li> -->
-                    <li *ngIf="!userApi.isUserLoggedIn()">
-                        <a class="nav-link border ps-3 pe-3" style="color: white; border-radius: 50px;" routerLink="/user/login">Login / Signup</a>
-                    <!-- </li> -->
-                    <li>
-                        <a class="nav-link" routerLink="/user/cart"><img src="/images/cart.svg"></a>
-                    </li>
-                </ul>
-            </div>
+            <ul class="custom-navbar-cta navbar-nav mb-2 mb-md-0 ms-5">
+                <li *ngIf="userApi.isUserLoggedIn()">
+                    <a class="nav-link" routerLink="/user/profile"><img src="/images/user.svg"></a>
+                </li>
+                <li *ngIf="!userApi.isUserLoggedIn()">
+                    <a class="nav-link border ps-3 pe-3" style="color: white; border-radius: 50px;"
+                        routerLink="/user/login">Login / Signup</a>
+                </li>
+                <li>
+                    <a class="nav-link" routerLink="/user/cart"><img src="/images/cart.svg"></a>
+                </li>
+            </ul>
         </div>
-    </nav>
+    </div>
+</nav>
+
 
     <!-- Add your content below -->
 </body>

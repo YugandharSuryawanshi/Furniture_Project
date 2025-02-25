@@ -30,7 +30,7 @@ export class CartComponent implements OnInit {
           this.products = res.products;
           this.calculateTotalPrice();
         } else {
-          this.toastr.warning('No products found in the cart', 'Warning' , { disableTimeOut: false, closeButton : true });
+          this.toastr.warning('No products found in the cart', 'Warning' , { disableTimeOut: false, progressBar:true ,closeButton : true });
           this.products = [];
         }
       });
@@ -60,10 +60,10 @@ export class CartComponent implements OnInit {
     this.userApi.removeCartItem(cartId).subscribe(
       (res: any) => {
         if (res.status ==='success') {
-          this.toastr.success('Product removed from cart', 'success', { disableTimeOut: false, closeButton: true });
           this.getCartProducts();
+          this.toastr.success('Product removed from cart', 'success', { disableTimeOut: false, progressBar:true , closeButton: true });
         } else {
-          this.toastr.error('Failed to remove product from cart', 'error', { disableTimeOut: false, closeButton: true });
+          this.toastr.error('Failed to remove product from cart', 'error', { disableTimeOut: false, progressBar:true ,closeButton: true });
         }
       });
   }

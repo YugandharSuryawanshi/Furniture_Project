@@ -20,13 +20,7 @@
         </div>
     </div>
 </form>
-<div class="col-md-12 mt-3">
-    <span class="text-success">{{ successMessage }}</span>
-    <span class="text-danger">{{ errorMessage }}</span>
-</div>
-
 <hr>
-
 <div class="container-fluid bg-white p-4">
     <div class="row">
         <div class="col-md-12">
@@ -42,11 +36,9 @@
                         <tr>
                             <td style="font-weight: bold;">{{ heading }}</td>
                             <td>
-                                <img [src]="'http://localhost:1000/uploads/' + image"
-                                    alt="Customer Image" class="img-thumbnail"
-                                    style="max-width: 350px; max-height: 350px;" />
+                                <img [src]="'http://localhost:1000/uploads/' + image" alt="Customer Image"
+                                    class="img-thumbnail" style="max-width: 350px; max-height: 350px;" />
                             </td>
-                            
                         </tr>
                     </tbody>
                 </table>
@@ -54,4 +46,3 @@
         </div>
     </div>
 </div>
-

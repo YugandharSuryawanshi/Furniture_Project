@@ -11,25 +11,24 @@
     </div>
 </div>
 
-
-
-
-
 <div class="col-md-12" *ngIf="addPoint">
     <form (submit)="saveData()" enctype="multipart/form-data">
         <div class="container-fluid p-3 bg-light text-center">
             <div class="row">
                 <div class="col-md-4">
                     Select Image
-                    <input type="file" name="why_choose_points_img" (change)="selectedImage($event)" class="form-control">
+                    <input type="file" name="why_choose_points_img" (change)="selectedImage($event)"
+                        class="form-control">
                 </div>
                 <div class="col-md-8">
                     Enter name
-                    <input type="text" name="why_choose_points_name" [(ngModel)]="formData.why_choose_points_name" class="form-control">
+                    <input type="text" name="why_choose_points_name" [(ngModel)]="formData.why_choose_points_name"
+                        class="form-control">
                 </div>
                 <div class="col-md-12 mt-3 mb-4">
                     Details
-                    <textarea name="why_choose_points_details" [(ngModel)]="formData.why_choose_points_details" rows="2" class="form-control text-center"></textarea>
+                    <textarea name="why_choose_points_details" [(ngModel)]="formData.why_choose_points_details" rows="2"
+                        class="form-control text-center"></textarea>
                 </div>
                 <div class="col-md-12 mb-3 text-center">
                     <button class="btn btn-warning">Save</button>
@@ -38,17 +37,6 @@
         </div>
     </form>
 </div>
-
-
-<!-- Success and Error Messages -->
-<div *ngIf="successMessage" class="alert alert-success mt-3">
-    {{ successMessage }}
-</div>
-<div *ngIf="errorMessage" class="alert alert-danger mt-3">
-    {{ errorMessage }}
-</div>
-
-
 
 <div class="container-fluid bg-white p-4" *ngIf="showList">
     <div class="row">
@@ -59,25 +47,15 @@
                 <table class="table table-bordered table-striped table-hover align-middle text-center">
                     <thead class="table-dark">
                         <tr>
-                            <th>Action</th>
                             <th>Sr. No.</th>
                             <th>Point Name</th>
                             <th>Point Details</th>
                             <th>Point Image</th>
+                            <th>Action</th>
                         </tr>
                     </thead>
                     <tbody>
                         <tr *ngFor="let data of points; let i = index">
-                            <td>
-                                <button (click)="get_One_Point(data.why_choose_points_id)"
-                                    class="btn btn-warning btn-sm m-1" title="Edit">
-                                    <i class="fa fa-pencil text-white"></i>
-                                </button>
-                                <button (click)="deletePoint(data.why_choose_points_id)"
-                                    class="btn btn-danger btn-sm m-1" title="Delete">
-                                    <i class="fa fa-trash text-white"></i>
-                                </button>
-                            </td>
                             <td>{{ i + 1 }}</td>
                             <td>{{ data.why_choose_points_name }}</td>
                             <td>
@@ -90,6 +68,16 @@
                                     alt="Customer Image" class="img-thumbnail"
                                     style="max-width: 100px; max-height: 100px;" />
                             </td>
+                            <td>
+                                <button (click)="get_One_Point(data.why_choose_points_id)"
+                                    class="btn btn-warning btn-sm m-1" title="Edit">
+                                    <i class="fa fa-pencil text-white"></i>
+                                </button>
+                                <button (click)="deletePoint(data.why_choose_points_id)"
+                                    class="btn btn-danger btn-sm m-1" title="Delete">
+                                    <i class="fa fa-trash text-white"></i>
+                                </button>
+                            </td>
                         </tr>
                     </tbody>
                 </table>
@@ -98,26 +86,28 @@
     </div>
 </div>
 
-
-
 <div class="col-md-12" *ngIf="updatePoint">
     <form (submit)="updateData()" enctype="multipart/form-data">
         <div class="container-fluid p-3 bg-light text-center">
             <div class="row">
                 <div>
-                    <input type="text" name="why_choose_points_id" [(ngModel)]="formData.why_choose_points_id" class="form-control" style="display: none;">
+                    <input type="text" name="why_choose_points_id" [(ngModel)]="formData.why_choose_points_id"
+                        class="form-control" style="display: none;">
                 </div>
                 <div class="col-md-4">
                     Select Image
-                    <input type="file" name="why_choose_points_img" (change)="selectedImage($event)" class="form-control">
+                    <input type="file" name="why_choose_points_img" (change)="selectedImage($event)"
+                        class="form-control">
                 </div>
                 <div class="col-md-8">
                     Enter name
-                    <input type="text" name="why_choose_points_name" [(ngModel)]="formData.why_choose_points_name" class="form-control">
+                    <input type="text" name="why_choose_points_name" [(ngModel)]="formData.why_choose_points_name"
+                        class="form-control">
                 </div>
                 <div class="col-md-12 mt-3 mb-4">
                     Details
-                    <textarea name="why_choose_points_details" [(ngModel)]="formData.why_choose_points_details" rows="2" class="form-control text-center"></textarea>
+                    <textarea name="why_choose_points_details" [(ngModel)]="formData.why_choose_points_details" rows="2"
+                        class="form-control text-center"></textarea>
                 </div>
                 <div class="col-md-12 mb-3 text-center">
                     <button class="btn btn-warning">UPDATE</button>
@@ -127,8 +117,6 @@
     </form>
 </div>
 <div *ngIf="update_img">
-    <img [src]="'http://localhost:1000/uploads/' + single_image"
-                                    alt="Customer Image" class="img-thumbnail"
-                                    style="max-width: 800px; max-height: 800px;" />
+    <img [src]="'http://localhost:1000/uploads/' + single_image" alt="Customer Image" class="img-thumbnail"
+        style="max-width: 800px; max-height: 800px;" />
 </div>
-

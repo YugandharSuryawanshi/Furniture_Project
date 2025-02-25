@@ -15,6 +15,13 @@ export class UserNavbarComponent {
 
   constructor( public userApi:UserApiService ){}
 
+  isNavbarCollapsed = false; // Initially, the navbar is closed
+
+  toggleNavbar() {
+    this.isNavbarCollapsed = !this.isNavbarCollapsed;
+  }
+
+
   ngOnInit()
   {
     this.check();

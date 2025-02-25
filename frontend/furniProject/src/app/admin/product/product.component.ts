@@ -35,7 +35,6 @@ export class ProductComponent implements OnInit {
     this.getProductTypes();
   }
 
-
   // Handle image selection and preview
   onImageSelect(event: Event): void {
     const fileInput = event.target as HTMLInputElement;
@@ -79,7 +78,6 @@ export class ProductComponent implements OnInit {
     }
 
   // Save product
-
   saveProduct() {
     const formData = new FormData();
 

@@ -3,6 +3,7 @@ import { Component } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import { query } from '@angular/animations';
 import { AdminApiService } from '../../service/admin-api.service';
+import { ToastrService } from 'ngx-toastr';
 
 @Component({
   selector: 'app-our-team',
@@ -12,8 +13,9 @@ import { AdminApiService } from '../../service/admin-api.service';
   styleUrl: './our-team.component.css'
 })
 export class OurTeamComponent {
-  errorMessage: any = '';
-  successMessage: any = '';
+
+  constructor(private adminApi: AdminApiService, private toastr:ToastrService) { }
+  
   showList: boolean = false;
   addMember: boolean = true;
   updateMember: boolean = false;
@@ -44,8 +46,6 @@ export class OurTeamComponent {
     this.updateMember = false;
   }
 
-
-
   Selected_image: File | null = null;
   selectImage(event: any) {
     const file = event.target.files[0];
@@ -62,16 +62,11 @@ export class OurTeamComponent {
       member_image: null
     }
 
-  constructor(public adminApi: AdminApiService) { }
-
   saveMember() {
     const formData = new FormData();
 
     if (!this.formData.member_name || !this.formData.member_position || !this.formData.member_details) {
-      this.errorMessage = 'Please Fill the details...?';
-      setTimeout(() => {
-        this.errorMessage = '';
-      }, 5000);
+      this.toastr.error('Please Fill the Detils..?', 'Error', {progressBar: true, disableTimeOut: false, closeButton: true});
       return;
     }
 
@@ -85,7 +80,7 @@ export class OurTeamComponent {
 
     this.adminApi.saveTeamMember(formData).subscribe((res: any) => {
       if (res.success) {
-        this.successMessage = 'Member Added Successfully...!';
+        this.toastr.success('Member Added Successfully...!', 'Success', {progressBar: true, disableTimeOut: false, closeButton: true});
         this.formData.member_name = '';
         this.formData.member_position = '';
         this.formData.member_details = '';
@@ -96,17 +91,10 @@ export class OurTeamComponent {
           fileInput.value = '';
         }
       } else {
-        this.errorMessage = res.message || 'Failure to Save Team Member';
+        this.toastr.error(res.message || 'Failed to Add Member...!', 'Error', {progressBar: true, disableTimeOut: false, closeButton: true});
       }
-      setTimeout(() => {
-        this.errorMessage = '';
-        this.successMessage = '';
-      }, 5000);
     }, (err) => {
-      this.errorMessage = 'Error occurred while saving the team member.';
-      setTimeout(() => {
-        this.errorMessage = '';
-      }, 5000);
+      this.toastr.error('Error Occured while saving the team member', 'Error', {progressBar: true, disableTimeOut: false, closeButton: true});
     });
   }
 
@@ -118,30 +106,21 @@ members:any;
     this.adminApi.getTeamMembers().subscribe(
       (res: any) => {
         if (res.success) {
-          this.errorMessage = '';
-          this.successMessage = '';
           this.members = res.data;
-          console.log('Fetched Data: ', this.members);
         } else {
-          this.errorMessage = res.message || 'Error fetching team members';
+          this.toastr.error(res.message || 'Error getching team members', 'Error', {progressBar : true, disableTimeOut: false, closeButton: true});
         }
       },
       (err) => {
-        this.errorMessage = 'Failed to fetch team members. Please try again later.';
+        this.toastr.error('Error Occured while fetching team members', 'Error', {progressBar: true, disableTimeOut: false, closeButton: true});
       }
     );
-    setTimeout(() => {
-      this.errorMessage = '';
-      this.successMessage = '';
-    }, 5000);
   }
 
   singleImage:any;
   get_single_member(id: any)
   {
-    console.log('Camed to single ID : ' + id);
     this.adminApi.getSingleTeamMember(id).subscribe((data:any)=>{
-      console.log('Data: ', data);
       const team_member = data.data;
       this.singleImage = team_member.member_image;
       this.formData = {...team_member}
@@ -165,7 +144,7 @@ members:any;
     this.adminApi.updateTeamMember(id, updateFormData).subscribe((res:any)=>{
       if(res.success)
       {
-        this.successMessage = 'Team Member Updated Successfully...!';
+        this.toastr.success(res.message || 'Team Member Updated Successfully', 'Success' , { progressBar: true, disableTimeOut:false, closeButton: true });
         this.getAllMembers();
         this.formData.member_name = '';
         this.formData.member_position = '';
@@ -177,10 +156,6 @@ members:any;
         }
       }
     })
-    setTimeout(() => {
-      this.errorMessage = '';
-      this.successMessage = '';
-    }, 5000);
   }
 
   deleteMember(id: any)
@@ -188,20 +163,11 @@ members:any;
     this.adminApi.deleteTeamMember(id).subscribe((res:any)=>{
       if(res.success)
       {
-        this.successMessage = 'Team Member Deleted Successfully...!';
+        this.toastr.success('Team Member Deleted Successfully...!', 'Success', { progressBar: true, disableTimeOut: false, closeButton: true });
         this.getAllMembers();
       }
     })
-    setTimeout(() => {
-      this.errorMessage = '';
-      this.successMessage = '';
-    }, 5000);
   }
-
-
-
-
-
 
 }
 

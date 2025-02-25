@@ -1,5 +1,3 @@
-
-
 <!-- Start Hero Section -->
 <div class="hero">
     <div class="container">
@@ -14,7 +12,6 @@
     </div>
 </div>
 <!-- End Hero Section -->
-
 
 <div class="untree_co-section">
     <form [formGroup]="checkoutForm" (ngSubmit)="placeOrder()">
@@ -36,35 +33,41 @@
                                 <option value="Japan">Japan</option>
                             </select>
                         </div>
-                        
+
                         <div class="form-group row">
                             <div class="col-md-6">
                                 <label class="text-black">First Name <span class="text-danger">*</span></label>
-                                <input type="text" class="form-control" formControlName="c_fname" placeholder="First Name...">
+                                <input type="text" class="form-control" formControlName="c_fname"
+                                    placeholder="First Name...">
                             </div>
                             <div class="col-md-6">
                                 <label class="text-black">Last Name <span class="text-danger">*</span></label>
-                                <input type="text" class="form-control" formControlName="c_lname" placeholder="Last Name...">
+                                <input type="text" class="form-control" formControlName="c_lname"
+                                    placeholder="Last Name...">
                             </div>
                         </div>
 
                         <div class="form-group">
                             <label class="text-black">Address <span class="text-danger">*</span></label>
-                            <input type="text" class="form-control" formControlName="c_address" placeholder="Street address">
+                            <input type="text" class="form-control" formControlName="c_address"
+                                placeholder="Street address">
                         </div>
 
                         <div class="form-group mt-3">
-                            <input type="text" class="form-control" formControlName="c_area" placeholder="Apartment, suite, unit etc. (optional)">
+                            <input type="text" class="form-control" formControlName="c_area"
+                                placeholder="Apartment, suite, unit etc. (optional)">
                         </div>
 
                         <div class="form-group row">
                             <div class="col-md-6">
                                 <label class="text-black">State <span class="text-danger">*</span></label>
-                                <input type="text" class="form-control" formControlName="c_state" placeholder="State...">
+                                <input type="text" class="form-control" formControlName="c_state"
+                                    placeholder="State...">
                             </div>
                             <div class="col-md-6">
                                 <label class="text-black">Postal / Zip Code <span class="text-danger">*</span></label>
-                                <input type="text" class="form-control" formControlName="c_postal_zip" placeholder="Pin Code...">
+                                <input type="text" class="form-control" formControlName="c_postal_zip"
+                                    placeholder="Pin Code...">
                             </div>
                         </div>
 
@@ -75,7 +78,8 @@
                             </div>
                             <div class="col-md-6">
                                 <label class="text-black">Phone <span class="text-danger">*</span></label>
-                                <input type="tel" class="form-control" formControlName="c_phone" placeholder="Phone Number">
+                                <input type="tel" class="form-control" formControlName="c_phone"
+                                    placeholder="Phone Number">
                             </div>
                         </div>
                     </div>
@@ -110,7 +114,7 @@
                                     </td>
                                     <td>&#8377; {{ item.product_price * item.qty }}</td>
                                 </tr>
-                                
+
                                 <tr>
                                     <td class="text-black font-weight-bold">Cart Subtotal</td>
                                     <td class="text-black">&#8377; {{ subtotal.toFixed(2) }}</td>
@@ -127,17 +131,18 @@
                                     <td class="text-black font-weight-bold">Final Total</td>
                                     <td class="text-black font-weight-bold">&#8377; {{ finalTotal.toFixed(2) }}</td>
                                 </tr>
-                                
-                                
+
+
                             </tbody>
                         </table>
 
                         <div class="form-group">
                             <label class="d-block fw-bold mb-3">Select Payment Method:</label>
-                        
+
                             <div class="row">
                                 <div class="col-md-6">
-                                    <label class="payment-card p-4 rounded shadow-sm d-flex align-items-center" [class.active]="checkoutForm.get('payment_mode')?.value === 'cod'">
+                                    <label class="payment-card p-4 rounded shadow-sm d-flex align-items-center"
+                                        [class.active]="checkoutForm.get('payment_mode')?.value === 'cod'">
                                         <input type="radio" formControlName="payment_mode" value="cod" class="d-none">
                                         <i class="fas fa-money-bill-wave fa-2x text-success me-3"></i>
                                         <div>
@@ -147,10 +152,12 @@
                                         <span class="checkmark"><i class="fas fa-check-circle"></i></span>
                                     </label>
                                 </div>
-                        
+
                                 <div class="col-md-6">
-                                    <label class="payment-card p-4 rounded shadow-sm d-flex align-items-center" [class.active]="checkoutForm.get('payment_mode')?.value === 'online'">
-                                        <input type="radio" formControlName="payment_mode" value="online" class="d-none">
+                                    <label class="payment-card p-4 rounded shadow-sm d-flex align-items-center"
+                                        [class.active]="checkoutForm.get('payment_mode')?.value === 'online'">
+                                        <input type="radio" formControlName="payment_mode" value="online"
+                                            class="d-none">
                                         <i class="fas fa-credit-card fa-2x text-primary me-3"></i>
                                         <div>
                                             <h6 class="fw-bold mb-0">Online Payment</h6>
@@ -161,7 +168,7 @@
                                 </div>
                             </div>
                         </div>
-                        
+
 
                         <div class="form-group">
                             <div class="col-md-12">
@@ -180,10 +187,3 @@
         </div>
     </form>
 </div>
-
-
-
-
-
-
-

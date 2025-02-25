@@ -72,7 +72,7 @@ export class ProductInfoComponent {
   }
 
   onMouseMove(event: MouseEvent): void {
-    if (!this.isDesktop) return; // Stop zoom preview on mobile
+    if (!this.isDesktop) return; // Stop zoom preview on mobile screen
 
     const target = event.currentTarget as HTMLElement;
     const { width, height, left, top } = target.getBoundingClientRect();
@@ -148,20 +148,19 @@ export class ProductInfoComponent {
           this.toastr.success(
             'Review Added successfully',
             'Success',
-            { disableTimeOut: true, closeButton: true });
+            { disableTimeOut: true, progressBar: true, closeButton: true });
         }
         else {
-          this.toastr.error(res.message, 'Error', { disableTimeOut: true, closeButton: true });
+          this.toastr.error(res.message, 'Error', { disableTimeOut: true, progressBar: true, closeButton: true });
         }
       });
     } else {
       this.toastr.error(
         'Please fill all fields',
         'Error',
-        { disableTimeOut: true, closeButton: true });
+        { disableTimeOut: true, progressBar: true, closeButton: true });
     }
   }
-
 
   topReviews: any[] = [];
   allReviews: any[] = [];
@@ -181,7 +180,6 @@ export class ProductInfoComponent {
           }));
         }
       });
-
   }
 
   // Review button and form Toggle
@@ -202,7 +200,6 @@ export class ProductInfoComponent {
   }
 
   // Add to Cart Start Here
-
   gotocart: boolean = false;
 
   addToCart(product_id: any) {
@@ -215,11 +212,11 @@ export class ProductInfoComponent {
             this.gotocart = true;
           }
           else if (res.status === 'success') {
-            this.toastr.success("Product added to cart successfully", "Success", { disableTimeOut: false, closeButton: true });
+            this.toastr.success("Product added to cart successfully", "Success", { disableTimeOut: false, progressBar: true, closeButton: true });
             this.gotocart = true;
           }
           else {
-            this.toastr.error(res.message, "Error", { disableTimeOut: false, closeButton: true });
+            this.toastr.error(res.message, "Error", { disableTimeOut: false, progressBar: true, closeButton: true });
           }
         });
     }
@@ -229,9 +226,6 @@ export class ProductInfoComponent {
         this.router.navigate(['/user/login']);
       }
     }
-
-
-
   }
 
   getCartStatus(product_id: any) {
@@ -243,13 +237,6 @@ export class ProductInfoComponent {
       }
     });
   }
-
-
-
-
-
-
-
 
 
 }
