@@ -13,15 +13,41 @@ import { ToastrService } from 'ngx-toastr';
   styleUrl: './admin-login.component.css'
 })
 export class AdminLoginComponent {
-  constructor(private adminApi: AdminApiService, public router: Router, private toastr:ToastrService) { }
+  constructor(private adminApi: AdminApiService, public router: Router, private toastr: ToastrService) { }
 
   admin_email = '';
   admin_password = '';
+  loading = false;
+  emailTouched = false;
+  passwordTouched = false;
 
-  login()
-  {
+  togglePasswordVisibility() {
+    const passwordField = document.getElementById('admin_password');
+    if (passwordField) {
+      const type = passwordField.getAttribute('type') === 'password' ? 'text' : 'password';
+      passwordField.setAttribute('type', type);
+    }
+  }
+
+  emailValid(): boolean {
+    const emailPattern = /^[a-z0-9._%+-]+@[a-z0-9.-]+\.[a-z]{2,4}$/;
+    return emailPattern.test(this.admin_email);
+  }
+
+  onEmailInput() {
+    this.emailTouched = true;  // Mark email as touched when user starts typing
+    if (this.admin_email) {
+      this.admin_email = this.admin_email.toLowerCase();
+    }
+  }
+
+  onPasswordInput() {
+    this.passwordTouched = true; // Mark password as touched when user starts typing
+  }
+
+  login() {
     if (!this.admin_email || !this.admin_password) {
-      this.toastr.error('Please enter both email and password', 'Error', { progressBar: true, disableTimeOut: false, closeButton:true});
+      this.toastr.error('Please enter both email and password', 'Error', { progressBar: true, disableTimeOut: false, closeButton: true });
       return;
     }
 
