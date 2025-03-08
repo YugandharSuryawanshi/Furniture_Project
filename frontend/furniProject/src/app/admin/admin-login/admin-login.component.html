@@ -1,38 +1,72 @@
-<div class="wrapper d-flex flex-column min-vh-100 bg-light">
-
-    <section style="margin-top: 20px;">
+<div class="d-flex flex-column min-vh-100">
+    <section class="gradient-custom">
         <div class="container py-5 h-100">
             <div class="row d-flex align-items-center justify-content-center h-100">
                 <div class="col-md-8 col-lg-7 col-xl-6">
                     <img src="https://mdbcdn.b-cdn.net/img/Photos/new-templates/bootstrap-login-form/draw2.svg"
-                        class="img-fluid" alt="Phone image">
+                        class="img-fluid floating" alt="Login illustration">
                 </div>
                 <div class="col-md-7 col-lg-5 col-xl-5 offset-xl-1">
-                    <form (ngSubmit)="login()">
-                        <div data-mdb-input-init class="form-outline mb-4">
-                            <label class="form-label">User Email </label>
-                            <input type="email" id="admin_email" [(ngModel)]="admin_email" name="admin_email"
-                                class="form-control" required />
-                        </div>
-                        <div data-mdb-input-init class="form-outline mb-4">
-                            <label class="form-label">Password</label>
-                            <input ngModel type="password" id="admin_password" [(ngModel)]="admin_password"
-                                name="admin_password" class="form-control" required />
-                        </div>
+                    <div class="card glassmorphism-card shadow-lg">
+                        <div class="card-body p-5">
+                            <h3 class="text-center mb-4 fw-bold text-primary">Welcome Back! 👋</h3>
+                            <form (ngSubmit)="login()" class="needs-validation" novalidate>
+                                <div class="form-outline mb-4">
+                                    <label class="form-label fw-medium">Email Address</label>
+                                    <div class="input-group">
+                                        <input type="email" id="admin_email" [(ngModel)]="admin_email"
+                                            name="admin_email" class="form-control form-control-lg" required
+                                            pattern="[a-z0-9._%+-]+@[a-z0-9.-]+\.[a-z]{2,4}$"
+                                            (input)="onEmailInput()">
+                                        <div class="invalid-feedback d-block" *ngIf="emailTouched && !emailValid()">
+                                            Please enter a valid email address
+                                        </div>
+                                        <span class="input-group-text">
+                                            <i class="fas fa-envelope"></i>
+                                        </span>
+                                    </div>
+                                </div>
 
-                        <div class="d-flex justify-content-around align-items-center mb-4">
-                            <div class="form-check">
-                                <label class="form-check-label"> New User! </label>
-                                <a routerLink="/admin/register"> Create Account </a>
-                            </div>
+                                <div class="form-outline mb-4">
+                                    <label class="form-label fw-medium">Password</label>
+                                    <div class="input-group">
+                                        <input type="password" id="admin_password" [(ngModel)]="admin_password"
+                                            name="admin_password" class="form-control form-control-lg" required
+                                            minlength="6"
+                                            (input)="onPasswordInput()">
+                                        <button type="button" class="input-group-text toggle-password"
+                                            (click)="togglePasswordVisibility()">
+                                            <i class="fas fa-eye"></i>
+                                        </button>
+                                        <div class="invalid-feedback d-block"
+                                            *ngIf="passwordTouched && admin_password.length < 6">
+                                            Password must be at least 6 characters
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <div class="d-flex justify-content-between align-items-center mb-4">
+                                    <a href="#!" class="text-decoration-none small text-muted">Forgot password?</a>
+                                    <div class="text-end">
+                                        <span class="text-muted small">New User? </span>
+                                        <a routerLink="/admin/register" class="text-decoration-none fw-medium">
+                                            Create Account
+                                        </a>
+                                    </div>
+                                </div>
+
+                                <button type="submit" class="btn btn-primary btn-lg btn-block rounded-pill w-100">
+                                    <span *ngIf="!loading">Sign In</span>
+                                    <div *ngIf="loading" class="spinner-border spinner-border-sm" role="status">
+                                        <span class="visually-hidden">Loading...</span>
+                                    </div>
+                                </button>
+                            </form>
                         </div>
-
-                        <!-- Submit button -->
-                        <button type="submit" class="btn btn-primary btn-lg btn-block">Login</button>
-
-                    </form>
+                    </div>
                 </div>
             </div>
         </div>
     </section>
 </div>
+<br>

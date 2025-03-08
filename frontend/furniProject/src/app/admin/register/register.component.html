@@ -1,58 +1,134 @@
-<div class="wrapper d-flex flex-column min-vh-100 bg-light">
-    <div class="container">
-        <div class="row justify-content-center">
-            <div class="col-md-6">
-                <h1 class="text-center mb-3">Registration Form</h1>
-                <div class="border shadow p-4">
-                    <form (ngSubmit)="register()" class="p-2">
-                        <div class="form-group">
-                            <label for="admin_name">User Name:</label>
-                            <input class="form-control" id="admin_name" [(ngModel)]="admin_name" name="admin_name"
-                                required />
-                        </div>
-
-                        <div class="form-group">
-                            <label for="admin_mobile">Mobile No:</label>
-                            <input class="form-control" id="admin_mobile" [(ngModel)]="admin_mobile" name="admin_mobile"
-                                required />
-                        </div>
-
-                        <div class="form-group">
-                            <label for="admin_email">User Email:</label>
-                            <input class="form-control" id="admin_email" [(ngModel)]="admin_email" name="admin_email"
-                                required />
-                        </div>
-
-                        <div class="form-group">
-                            <label for="admin_password">Enter Password:</label>
-                            <input type="password" class="form-control" id="admin_password" [(ngModel)]="admin_password"
-                                name="admin_password" required />
-                        </div>
-
-                        <div class="form-group">
-                            <label for="confirmPassword">Enter Confirm Password:</label>
-                            <input type="password" id="confirmPassword" class="form-control"
-                                [(ngModel)]="confirmPassword" name="confirmPassword" required />
-                        </div>
-
-                        <div class="form-group">
-                            <label for="secret_key">Enter Secret Key :</label><span>(Given By Owner)</span>
-                            <input type="password" id="secret_key" class="form-control" [(ngModel)]="secret_key"
-                                name="secret_key" required />
-                        </div>
-
-                        <div class="d-flex justify-content-between align-items-center mt-4">
-                            <button type="submit" class="btn btn-warning">Register Now</button>
-                            <div class="d-flex justify-content-around align-items-center mb-4">
-                                <div class="form-check">
-                                    <label class="form-check-label"> Already Registered? </label>
-                                    <a routerLink="/admin/login"> Login Now </a>
+<div class="d-flex flex-column min-vh-100">
+    <section class="gradient-custom">
+        <div class="container py-5 h-100">
+            <div class="row d-flex align-items-center justify-content-center h-100">
+                <div class="col-md-12 col-lg-8 col-xl-8 offset-xl-1">
+                    <div class="card glassmorphism-card shadow-lg">
+                        <div class="card-body p-5">
+                            <h3 class="text-center mb-4 fw-bold text-primary">Create Account </h3>
+                            <form (ngSubmit)="register()" class="needs-validation" novalidate>
+                                <!-- Name Field -->
+                                <div class="form-group mb-4">
+                                    <label class="form-label fw-medium">Full Name</label>
+                                    <div class="input-group">
+                                        <input class="form-control form-control-lg" id="admin_name"
+                                            [(ngModel)]="admin_name" name="admin_name" required minlength="3"
+                                            pattern="[A-Za-z ]+"
+                                            [ngClass]="{'is-invalid': admin_name && (admin_name.length < 3 || !nameValid())}">
+                                        <span class="input-group-text">
+                                            <i class="fas fa-user"></i>
+                                        </span>
+                                        <div class="invalid-feedback">
+                                            Please enter a valid name (min 3 characters, letters only)
+                                        </div>
+                                    </div>
                                 </div>
-                            </div>
+
+                                <!-- Mobile Field -->
+                                <div class="form-group mb-4">
+                                    <label class="form-label fw-medium">Mobile Number</label>
+                                    <div class="input-group">
+                                        <input class="form-control form-control-lg" id="admin_mobile"
+                                            [(ngModel)]="admin_mobile" name="admin_mobile" required pattern="[0-9]{10}"
+                                            maxlength="10" [ngClass]="{'is-invalid': admin_mobile && !mobileValid()}">
+                                        <span class="input-group-text">
+                                            <i class="fas fa-mobile-alt"></i>
+                                        </span>
+                                        <div class="invalid-feedback">
+                                            Please enter a valid 10-digit mobile number
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <!-- Email Field -->
+                                <div class="form-group mb-4">
+                                    <label class="form-label fw-medium">Email Address</label>
+                                    <div class="input-group">
+                                        <input class="form-control form-control-lg" id="admin_email"
+                                            [(ngModel)]="admin_email" name="admin_email" required
+                                            pattern="[a-z0-9._%+-]+@[a-z0-9.-]+\.[a-z]{2,4}$"
+                                            [ngClass]="{'is-invalid': admin_email && !emailValid()}"
+                                            (input)="onEmailInput()">
+                                        <span class="input-group-text">
+                                            <i class="fas fa-envelope"></i>
+                                        </span>
+                                        <div class="invalid-feedback">
+                                            Please enter a valid email address
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <!-- Password Fields -->
+                                <div class="form-group mb-4">
+                                    <label class="form-label fw-medium">Password</label>
+                                    <div class="input-group">
+                                        <input type="password" class="form-control form-control-lg" id="admin_password"
+                                            [(ngModel)]="admin_password" name="admin_password" required minlength="8"
+                                            pattern="(?=.*\d)(?=.*[a-z])(?=.*[A-Z]).{8,}"
+                                            [ngClass]="{'is-invalid': admin_password && !passwordValid()}">
+                                        <button type="button" class="input-group-text toggle-password"
+                                            (click)="togglePasswordVisibility('admin_password')">
+                                            <i class="fas fa-eye"></i>
+                                        </button>
+                                        <div class="invalid-feedback">
+                                            Password must contain: 8+ chars, 1 uppercase, 1 lowercase, 1 number
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <!-- Confirm Password -->
+                                <div class="form-group mb-4">
+                                    <label class="form-label fw-medium">Confirm Password</label>
+                                    <div class="input-group">
+                                        <input type="password" class="form-control form-control-lg" id="confirmPassword"
+                                            [(ngModel)]="confirmPassword" name="confirmPassword" required
+                                            [ngClass]="{'is-invalid': confirmPassword && !passwordsMatch()}">
+                                        <button type="button" class="input-group-text toggle-password"
+                                            (click)="togglePasswordVisibility('confirmPassword')">
+                                            <i class="fas fa-eye"></i>
+                                        </button>
+                                        <div class="invalid-feedback">
+                                            Passwords do not match
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <!-- Secret Key -->
+                                <div class="form-group mb-4">
+                                    <label class="form-label fw-medium">Secret Key
+                                        <span class="text-muted small">(Provided by Owner)</span>
+                                    </label>
+                                    <div class="input-group">
+                                        <input type="password" class="form-control form-control-lg" id="secret_key"
+                                            [(ngModel)]="secret_key" name="secret_key" required minlength="8"
+                                            [ngClass]="{'is-invalid': secret_key && secret_key.length < 8}">
+                                        <button type="button" class="input-group-text toggle-password"
+                                            (click)="togglePasswordVisibility('secret_key')">
+                                            <i class="fas fa-eye"></i>
+                                        </button>
+                                        <div class="invalid-feedback">
+                                            Secret key must be at least 8 characters
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <!-- Submit Section -->
+                                <div class="d-flex justify-content-between align-items-center mt-4">
+                                    <button type="submit" class="btn btn-primary btn-lg rounded-pill px-5">
+                                        Register Now
+                                    </button>
+                                    <div class="text-end">
+                                        <span class="text-muted small">Already Registered? </span>
+                                        <a routerLink="/admin/login" class="text-decoration-none fw-medium">
+                                            Login Here
+                                        </a>
+                                    </div>
+                                </div>
+                            </form>
                         </div>
-                    </form>
+                    </div>
                 </div>
             </div>
         </div>
-    </div>
+    </section>
 </div>
