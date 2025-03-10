@@ -223,8 +223,19 @@
                     <div *ngFor="let review of topReviews" class="review-container p-3 border rounded mb-3">
                         <!-- User Profile -->
                         <div class="d-flex align-items-center mb-2">
-                            <img [src]="'http://localhost:1000/uploads/' + review.user_profile" alt="User Profile"
-                                class="rounded-circle border" style="height: 40px; width: 40px; margin-right: 10px;">
+                            <ng-container *ngIf="review.user_profile; else initialsTemplate">
+                                <img [src]="'http://localhost:1000/uploads/' + review.user_profile" alt="User Profile"
+                                    class="rounded-circle border"
+                                    style="height: 40px; width: 40px; margin-right: 10px;">
+                            </ng-container>
+
+                            <!-- Set User initials if profile are not updated -->
+                            <ng-template #initialsTemplate>
+                                <div class="rounded-circle bg-secondary text-white d-flex justify-content-center align-items-center border"
+                                    style="height: 40px; width: 40px; margin-right: 10px; font-weight: bold;">
+                                    {{ getInitials(review.user_name) }}
+                                </div>
+                            </ng-template>
                             <strong>{{ review.user_name }}</strong>
                         </div>
 
@@ -260,9 +271,19 @@
                         <div *ngFor="let review of allReviews" class="review-container p-3 border rounded mb-3">
                             <!-- User Profile -->
                             <div class="d-flex align-items-center mb-2">
-                                <img [src]="'http://localhost:1000/uploads/' + review.user_profile" alt="User Profile"
-                                    class="rounded-circle border"
-                                    style="height: 40px; width: 40px; margin-right: 10px;">
+                                <ng-container *ngIf="review.user_profile; else initialsTemplate">
+                                    <img [src]="'http://localhost:1000/uploads/' + review.user_profile"
+                                        alt="User Profile" class="rounded-circle border"
+                                        style="height: 40px; width: 40px; margin-right: 10px;">
+                                </ng-container>
+
+                                <!-- User initials -->
+                                <ng-template #initialsTemplate>
+                                    <div class="rounded-circle bg-secondary text-white d-flex justify-content-center align-items-center border"
+                                        style="height: 40px; width: 40px; margin-right: 10px; font-weight: bold;">
+                                        {{ getInitials(review.user_name) }}
+                                    </div>
+                                </ng-template>
                                 <strong>{{ review.user_name }}</strong>
                             </div>
 

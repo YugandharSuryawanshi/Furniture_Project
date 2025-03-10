@@ -2,8 +2,8 @@ import { CommonModule, CurrencyPipe } from '@angular/common';
 import { Component, HostListener } from '@angular/core';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { ActivatedRoute, Router, RouterModule } from '@angular/router';
-import { UserApiService } from '../../service/user-api.service';
 import { ToastrService } from 'ngx-toastr';
+import { UserApiService } from '../../service/user-api.service';
 
 @Component({
   selector: 'app-product-info',
@@ -145,20 +145,17 @@ export class ProductInfoComponent {
             this.selectedImages = [],
             this.addReview = false,
             this.getReviews();
-          this.toastr.success(
-            'Review Added successfully',
-            'Success',
-            { disableTimeOut: true, progressBar: true, closeButton: true });
+          this.toastr.success('Review Added successfully','Success', { disableTimeOut: false, progressBar: true, closeButton: true });
         }
         else {
-          this.toastr.error(res.message, 'Error', { disableTimeOut: true, progressBar: true, closeButton: true });
+          this.toastr.error(res.message, 'Error', { disableTimeOut: false, progressBar: true, closeButton: true });
         }
       });
     } else {
       this.toastr.error(
         'Please fill all fields',
         'Error',
-        { disableTimeOut: true, progressBar: true, closeButton: true });
+        { disableTimeOut: false, progressBar: true, closeButton: true });
     }
   }
 
@@ -237,6 +234,14 @@ export class ProductInfoComponent {
       }
     });
   }
+
+  getInitials(name: string): string {
+    if (!name) return '';
+    const nameParts = name.trim().split(' ');
+    const initials = nameParts.map(part => part.charAt(0).toUpperCase()).slice(0, 2).join('');
+    return initials;
+  }
+  
 
 
 }

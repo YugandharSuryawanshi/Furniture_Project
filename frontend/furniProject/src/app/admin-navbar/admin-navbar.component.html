@@ -204,8 +204,17 @@
                             <a class="nav-link py-0" (click)="toggleDropdown($event)" role="button" aria-haspopup="true"
                                 [attr.aria-expanded]="dropdownOpen">
                                 <div class="avatar avatar-md" style="height: 35px; width: 35px; border-radius: 50%;">
-                                    <img style="height: 35px; width: 35px; border-radius: 50%;" class="avatar-img"
-                                        [src]="adminProfile" alt="admin_profile" />
+                                    <ng-container *ngIf="adminProfile; else initialsTemplate">
+                                        <img [src]="adminProfile" alt="Admin Profile" class="rounded-circle border"
+                                            style="height: 40px; width: 60px; margin-right: 10px; border-radius: 50%;">
+                                    </ng-container>
+
+                                    <ng-template #initialsTemplate>
+                                        <div class="rounded-circle bg-secondary text-white d-flex justify-content-center align-items-center border"
+                                            style="height: 40px; width: 40px; margin-right: 10px; border-radius: 50%; font-weight: bold; font-size: 25px; letter-spacing: 3px;">
+                                            {{ adminInitials }}
+                                        </div>
+                                    </ng-template>
                                 </div>
                                 <i class="ml-5"></i>
                             </a>

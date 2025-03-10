@@ -124,8 +124,19 @@
                             </td>
                             <td>
                                 <div class="d-flex align-items-center">
-                                    <img [src]="'http://localhost:1000/uploads/'+order.user_profile"
-                                        style="height: 35px; width: 35px;" class="rounded-circle me-2">
+                                    <ng-container *ngIf="order.user_profile; else initialsTemplate">
+                                        <img [src]="'http://localhost:1000/uploads/' + order.user_profile"
+                                            alt="User Profile" class="rounded-circle border"
+                                            style="height: 40px; width: 40px; margin-right: 10px;">
+                                    </ng-container>
+
+                                    <!-- Fallback: User initials -->
+                                    <ng-template #initialsTemplate>
+                                        <div class="rounded-circle bg-secondary text-white d-flex justify-content-center align-items-center border"
+                                            style="height: 40px; width: 40px; margin-right: 10px; font-weight: bold;">
+                                            {{ getInitials(order.user_name) }}
+                                        </div>
+                                    </ng-template>
                                     {{ order.user_name }}
                                 </div>
                             </td>
