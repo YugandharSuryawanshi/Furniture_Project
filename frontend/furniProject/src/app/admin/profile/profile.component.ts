@@ -62,8 +62,8 @@ export class ProfileComponent implements OnInit {
 
       this.adminApi.updateProfile(formData, headers).subscribe(
         (res: any) => {
-          this.toastr.success('Profile Updated Successfully..!', 'Success', { progressBar: true, disableTimeOut: false, closeButton: true });
           this.getAdminData();
+          this.toastr.success('Profile Updated Successfully..!', 'Success', { progressBar: true, disableTimeOut: false, closeButton: true });
           this.isDivVisible = false;
           this.isBtnVisible = true;
           this.adminProfile.old_password = '';
@@ -126,7 +126,7 @@ export class ProfileComponent implements OnInit {
   deleteAccount() {
     if (confirm('Are you sure you want to delete your account?')) {
       this.adminApi.deleteAdminAccount().subscribe((res: any) => {
-        this.toastr.success('Account Deleted Succcessfully..!','Success' , { progressBar: true, disableTimeOut:false, closeButton: true });
+        this.toastr.success('Account Deleted Succcessfully..!', 'Success', { progressBar: true, disableTimeOut: false, closeButton: true });
         this.adminApi.adminLogout();
         this.router.navigate(['/admin/login']);
       },
