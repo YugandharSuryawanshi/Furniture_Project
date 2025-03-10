@@ -27,3 +27,23 @@
 .nav-group.show .nav-group-toggle svg {
   transform: rotate(90deg);
 }
+
+
+
+.profile-img-wrapper {
+  height: 50px;
+  width: 50px;
+  border-radius: 50%;
+  overflow: hidden;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border: 2px solid #f49090;
+  margin-right: 10px;
+}
+
+.profile-img {
+  height: 100%;
+  width: 100%;
+  object-fit: cover;
+}
