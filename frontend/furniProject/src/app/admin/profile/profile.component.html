@@ -1,6 +1,6 @@
-    <link href="//maxcdn.bootstrapcdn.com/bootstrap/4.1.1/css/bootstrap.min.css" rel="stylesheet" id="bootstrap-css">
-    <script src="//maxcdn.bootstrapcdn.com/bootstrap/4.1.1/js/bootstrap.min.js"></script>
-    <script src="//cdnjs.cloudflare.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+<link href="//maxcdn.bootstrapcdn.com/bootstrap/4.1.1/css/bootstrap.min.css" rel="stylesheet" id="bootstrap-css">
+<script src="//maxcdn.bootstrapcdn.com/bootstrap/4.1.1/js/bootstrap.min.js"></script>
+<script src="//cdnjs.cloudflare.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
 
 
 <div class="container mt-5">
@@ -10,10 +10,22 @@
                 <!-- Profile Image Section -->
                 <div class="col-md-4 text-center">
                     <div class="profile-img">
-                            <img *ngIf="adminDetails?.admin_profile" [src]="'http://localhost:1000/uploads/'+adminDetails?.admin_profile" alt="Admin Profile" class="img-fluid rounded-circle border" style="height: 250px; width: 250px;">
+                        <ng-container *ngIf="adminDetails?.admin_profile; else initialsTemplate">
+                            <img [src]="'http://localhost:1000/uploads/' + adminDetails?.admin_profile"
+                                alt="User Profile" class="img-fluid rounded-circle border"
+                                style="height: 250px; width: 250px;">
+                        </ng-container>
+                        <ng-template #initialsTemplate>
+                            <div class="img-fluid rounded-circle border d-flex justify-content-center align-items-center"
+                                style="height: 250px; width: 250px;">
+                                <h1 style="font-size: 100px; letter-spacing: 10px;">{{
+                                    getInitials(adminDetails?.admin_name) }}</h1>
+                            </div>
+                        </ng-template>
                         <div class="file btn btn-primary mt-2">
                             Change Photo
-                            <input type="file" id="admin_profile" (change)="onFileChange($event)" name="admin_profile" class="form-control" />
+                            <input type="file" id="admin_profile" (change)="onFileChange($event)" name="admin_profile"
+                                class="form-control" />
                         </div>
                     </div>
                 </div>
@@ -49,13 +61,16 @@
                 </div>
                 <!-- Action Buttons -->
                 <div class="col-md-2 text-center d-flex flex-column justify-content-center">
-                    <button type="button" class="btn btn-success mb-2"  (click)="updateShow_hide()" *ngIf="isBtnVisible"><i class="fas fa-edit"></i> Update Profile</button>
-                    <button type="submit" class="btn btn-success mb-2" *ngIf="isDivVisible"><i class="fas fa-edit"></i> Update Profile</button>
-                    <button type="button" class="btn btn-danger mb-2" (click)="logout()"><i class="fas fa-sign-out-alt"></i> LogOut</button>
-                    <button type="button" class="btn btn-danger mb-2" (click)="deleteAccount()"><i class="fas fa-trash-alt"></i> Delete A/c</button>
+                    <button type="button" class="btn btn-success mb-2" (click)="updateShow_hide()"
+                        *ngIf="isBtnVisible"><i class="fas fa-edit"></i> Update Profile</button>
+                    <button type="submit" class="btn btn-success mb-2" *ngIf="isDivVisible"><i class="fas fa-edit"></i>
+                        Update Profile</button>
+                    <button type="button" class="btn btn-danger mb-2" (click)="logout()"><i
+                            class="fas fa-sign-out-alt"></i> LogOut</button>
+                    <button type="button" class="btn btn-danger mb-2" (click)="deleteAccount()"><i
+                            class="fas fa-trash-alt"></i> Delete A/c</button>
                 </div>
             </div>
         </form>
     </div>
 </div>
-    

@@ -73,22 +73,29 @@ export class AdminNavbarComponent implements AfterViewInit {
     // For View login admin Profile
     this.adminApi.adminState$.subscribe((admin) => {
       this.adminDetails = admin;
-      this.adminProfile = `http://localhost:1000/uploads/${this.adminDetails?.admin_profile}`;
+      if (this.adminDetails?.admin_profile != null && this.adminDetails?.admin_profile !== '') {
+        this.adminProfile = `http://localhost:1000/uploads/${this.adminDetails.admin_profile}`;
+      }
+      else {
+        this.getAdminProfile();
+      }
     });
   }
 
   adminDetails: any;
   adminProfile: any;
   adminName: string = '';
+  adminInitials: string = '';
   getAdminProfile() {
     this.adminApi.getAdminDetails()?.subscribe((data: any) => {
       if (data.success) {
         this.adminDetails = data.admin;
-        this.adminProfile = `http://localhost:1000/uploads/${this.adminDetails?.admin_profile}`;
         this.adminName = 'Welcome ' + this.adminDetails.admin_name + '!';
-      }
-      else {
-        this.adminProfile = "C:\Users\ADMIN\OneDrive\Desktop\RadheKrishna.jpg";
+        if (this.adminDetails?.admin_profile != null && this.adminDetails?.admin_profile !== '') {
+          this.adminProfile = `http://localhost:1000/uploads/${this.adminDetails?.admin_profile}`;
+        } else {
+          this.adminInitials = this.getInitials(this.adminDetails?.admin_name);
+        }
       }
     })
     setTimeout(() => {
@@ -96,7 +103,17 @@ export class AdminNavbarComponent implements AfterViewInit {
     }, 4000);
   }
 
-// Admin Logout
+  getInitials(admin_name: string): string {
+    if (!admin_name) {
+      return 'Furni';
+    }
+    const name = admin_name.trim();
+    const nameParts: string[] = name.split(' ');
+    const initials = nameParts.map((part: string) => part.charAt(0).toUpperCase()).slice(0, 2).join('');
+    return initials;
+  }
+
+  // Admin Logout
   logout() {
     this.adminApi.adminLogout();
     this.adminProfile = null;

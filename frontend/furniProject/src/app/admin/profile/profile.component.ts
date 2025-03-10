@@ -101,6 +101,12 @@ export class ProfileComponent implements OnInit {
     })
   }
 
+  getInitials(name: string): string {
+    if (!name) return '';
+    const nameParts = name.trim().split(' ');
+    const initials = nameParts.map(part => part.charAt(0).toUpperCase()).slice(0, 2).join('');
+    return initials;
+  }
 
   isDivVisible: boolean = false;
   isBtnVisible: boolean = true;
