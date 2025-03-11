@@ -1493,12 +1493,10 @@ router.get('/get_subscribers', async (req, res) => {
 router.put('/update_subscriber', async (req, res) => {
     try {
         const d = req.body;
-        console.log(d);
         
         if (!d.id || !d.name || !d.email || !d.status) {
             return res.status(400).json({ success: false, message: "Missing required fields" });
         }
-        console.log("Updating subscriber:", d.id);
         let updateQuery = `UPDATE user_subscriber SET name =?, email =?, status =? WHERE id =?`;
         let queryParams = [d.name, d.email, d.status, d.id];
         const result = await exe(updateQuery, queryParams);
