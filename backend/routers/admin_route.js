@@ -50,32 +50,31 @@ router.post('/adminLogin', async (req, res) => {
     const { admin_email, admin_password } = req.body;
 
     if (!admin_email || !admin_password) {
-        return res.status(400).send({message: 'Email and password Both Fields are required'});
+        return res.status(400).send({ message: 'Email and password Both Fields are required' });
     }
 
     const sql = 'SELECT * FROM admins WHERE admin_email = ?';
     try {
         const results = await exe(sql, [admin_email]);
-    
-        if (results.length === 0)
-        {
-            return res.status(401).send({message: 'Invalid Email or password'});
+
+        if (results.length === 0) {
+            return res.status(401).send({ message: 'Invalid Email or password' });
         }
 
         const admin = results[0];
         const isPasswordValid = await bcrypt.compare(admin_password, admin.admin_password);
 
-        if (!isPasswordValid) return res.status(401).send({message: 'Invalid admin Email or Password, Please Enter Valid Email or Password'});
+        if (!isPasswordValid) return res.status(401).send({ message: 'Invalid admin Email or Password, Please Enter Valid Email or Password' });
         const adminToken = jwt.sign(
             { id: admin.admin_id, admin_email: admin.admin_email },
             config.adminJwtSecret,
             { expiresIn: config.adminJwtExpire }
         );
-        res.status(200).send({ message: 'Login successful', success: true , adminToken });
+        res.status(200).send({ message: 'Login successful', success: true, adminToken });
 
     } catch (err) {
         console.error(err);
-        return res.status(500).send({message: 'Database error'});
+        return res.status(500).send({ message: 'Database error' });
     }
 });
 
@@ -1473,16 +1472,60 @@ router.delete('/delete_contact_us/:id', async (req, res) => {
     }
 });
 
+// Get All Subscribers
+router.get('/get_subscribers', async (req, res) => {
+    try {
+        const sql = `SELECT * FROM user_subscriber`;
+        const data = await exe(sql);
+        if (data.length > 0) {
+            res.status(200).json({ success: true, data });
+        } else {
+            res.status(404).json({ success: false, message: "No subscribers found" });
+        }
+    } catch (err) {
+        console.error("Error fetching subscribers: ", err);
+        res.status(500).json({ success: false, message: "Internal Server Error", error: err.message });
+    }
+});
 
+// Update subscriber
 
+router.put('/update_subscriber', async (req, res) => {
+    try {
+        const d = req.body;
+        console.log(d);
+        
+        if (!d.id || !d.name || !d.email || !d.status) {
+            return res.status(400).json({ success: false, message: "Missing required fields" });
+        }
+        console.log("Updating subscriber:", d.id);
+        let updateQuery = `UPDATE user_subscriber SET name =?, email =?, status =? WHERE id =?`;
+        let queryParams = [d.name, d.email, d.status, d.id];
+        const result = await exe(updateQuery, queryParams);
+        if (result.affectedRows === 0) {
+            return res.status(404).json({ success: false, message: "Subscriber not found" });
+        }
+        res.status(200).json({ success: true, message: "Subscriber updated successfully!" });
+    } catch (err) {
+        console.error("Error updating subscriber:", err);
+        res.status(500).json({ success: false, message: "Internal Server Error", error: err.message });
+    }
+})
 
-
-
-
-
-
-
-
+// Delete subscriber
+router.delete('/delete_subscriber/:id', async (req, res) => {
+    try {
+        const id = req.params.id;
+        const sql = `DELETE FROM user_subscriber WHERE id=${id}`;
+        const result = await exe(sql);
+        if (result.affectedRows === 0) {
+            return res.status(404).json({ success: false, message: "Subscriber not found" });
+        }
+        res.status(200).json({ success: true, message: "Subscriber deleted successfully!" });
+    } catch (err) {
+        res.status(500).json({ success: false, message: "Internal Server Error", error: err.message });
+    }
+});
 
 
 export { router as adminRoute };

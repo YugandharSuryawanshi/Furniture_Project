@@ -372,5 +372,20 @@ export class AdminApiService {
     return this.http.delete(`${this.adminUrl}/delete_contact_us/${id}`);
   }
 
+  //Get Subscribers
+  getSubscribers() {
+    return this.http.get(`${this.adminUrl}/get_subscribers`);
+  }
+
+  //Update Subscribers
+  updateSubscriber(subscriberData: any) {
+    return this.http.put(`${this.adminUrl}/update_subscriber`, subscriberData);
+  }
+
+  //Delete Subscriber
+  deleteSubscriber(id: any) {
+    return this.http.delete(`${this.adminUrl}/delete_subscriber/${id}`);
+  }
+
 
 }
