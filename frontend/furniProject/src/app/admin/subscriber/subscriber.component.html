@@ -1,0 +1,77 @@
+<div class="container">
+    <h2 class="mb-4 text-center fw-bold text-dark">Subscribers List</h2>
+    <div class="table-responsive">
+        <table class="table table-dark table-hover table-borderless">
+            <thead>
+                <tr>
+                    <th scope="col">Sr. No</th>
+                    <th scope="col">Name</th>
+                    <th scope="col">Email</th>
+                    <th scope="col">Status</th>
+                    <th scope="col">Last Updated</th>
+                    <th scope="col">Actions</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr *ngFor="let subscriber of subscribers; let i = index;" class="align-middle">
+                    <td>{{ i+1 }}</td>
+                    <td>{{ subscriber.name }}</td>
+                    <td>{{ subscriber.email }}</td>
+                    <td>
+                        <span class="status-badge"
+                            [ngClass]="{'active': subscriber.status === 'Active', 'inactive': subscriber.status === 'Inactive'}">
+                            {{ subscriber.status }}
+                        </span>
+                    </td>
+                    <td>{{ subscriber.updated_at }}</td>
+                    <td>
+                        <button class="btn btn-edit me-2" (click)="openEditModal(subscriber)">
+                            <i class="fas fa-edit"></i>
+                        </button>
+                        <button class="btn btn-delete" (click)="deleteSubscriber(subscriber.id)">
+                            <i class="fas fa-trash"></i>
+                        </button>
+                    </td>
+                </tr>
+            </tbody>
+        </table>
+    </div>
+</div>
+
+<!-- Edit Modal -->
+<div *ngIf="isEditModalOpen" class="modal-overlay">
+    <div class="modal-content">
+        <div class="modal-header">
+            <h5 class="modal-title fw-bold">Edit Subscriber</h5>
+            <button type="button" class="btn-close" (click)="closeEditModal()"></button>
+        </div>
+        <div class="modal-body">
+            <form *ngIf="selectedSubscriber">
+                <div class="form-group">
+                    <label for="status" class="form-label">Status</label>
+                    <select class="form-control" id="status" [(ngModel)]="selectedSubscriber.status" name="status">
+                        <option value="Active">Active</option>
+                        <option value="Inactive">Inactive</option>
+                    </select>
+                </div>
+                <div class="form-group">
+                    <label for="name" class="form-label">Name</label>
+                    <input type="text" class="form-control" id="name" [(ngModel)]="selectedSubscriber.name" name="name">
+                </div>
+                <div class="form-group">
+                    <label for="email" class="form-label">Email</label>
+                    <input type="email" class="form-control" id="email" [(ngModel)]="selectedSubscriber.email"
+                        name="email">
+                </div>
+            </form>
+        </div>
+        <div class="modal-footer">
+            <button type="button" class="btn btn-danger" (click)="closeEditModal()">
+                <i class="fas fa-times"></i> Cancel
+            </button>
+            <button type="button" class="btn btn-warning" (click)="saveChanges()">
+                <i class="fas fa-save"></i> Save Changes
+            </button>
+        </div>
+    </div>
+</div>
