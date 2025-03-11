@@ -33,7 +33,7 @@
             <div class="col-12 text-center">
                 <button *ngFor="let page of [].constructor(totalPages); let i = index" (click)="fetchProducts(i + 1)"
                     [class.btn-primary]="currentPage === (i + 1)" [class.btn_light]="currentPage !== (i + 1)"
-                    class="btn">
+                    class="btn btn-warning m-1">
                     {{ i + 1 }}
                 </button>
             </div>
