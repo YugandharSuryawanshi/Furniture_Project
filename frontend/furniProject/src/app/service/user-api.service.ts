@@ -233,6 +233,10 @@ export class UserApiService {
     return this.http.post(`${this.userUrl}/contact_us`, formData);
   }
 
+  //Subscriber Information Store
+  addSubscriber(formData: any): Observable<any> {
+    return this.http.post(`${this.userUrl}/subscribe`, formData);
+  }
 
-
+  
 }

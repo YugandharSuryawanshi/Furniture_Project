@@ -878,5 +878,18 @@ router.post('/contact_us', async (req, res) => {
     }
 });
 
+// Save Subscriber information
+router.post('/subscribe', async (req,res)=>{
+    try {
+        var d = req.body;
+        var sql =`INSERT INTO user_subscriber (name, email) VALUES ('${d.name}', '${d.email}')`;
+        await exe(sql);
+        res.status(200).json({ success: true, message: 'Thank you for subscribing to our newsletter.' });
+    } catch (err) {
+        console.error('Error saving subscriber information:', err);
+        res.status(500).json({ success: false, message: 'Error saving subscriber information' });
+    }
+})
+
 export { router as userRoute };
 

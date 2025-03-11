@@ -1,4 +1,3 @@
-
 <footer class="footer-section">
     <div class="container relative">
 
@@ -9,17 +8,20 @@
         <div class="row">
             <div class="col-lg-8">
                 <div class="subscription-form">
-                    <h3 class="d-flex align-items-center"><span class="me-1"><img src="/images/envelope-outline.svg" alt="Image" class="img-fluid"></span><span>Subscribe to Newsletter</span></h3>
+                    <h3 class="d-flex align-items-center"><span class="me-1"><img src="/images/envelope-outline.svg"
+                                alt="Image" class="img-fluid"></span><span>Subscribe to Newsletter</span></h3>
 
-                    <form action="#" class="row g-3">
+                    <form [formGroup]="userForm" (ngSubmit)="onSubmit()" class="row g-3">
                         <div class="col-auto">
-                            <input type="text" class="form-control" placeholder="Enter your name">
+                            <input type="text" formControlName="name" class="form-control"
+                                placeholder="Enter your name">
                         </div>
                         <div class="col-auto">
-                            <input type="email" class="form-control" placeholder="Enter your email">
+                            <input type="email" formControlName="email" class="form-control"
+                                placeholder="Enter your email">
                         </div>
                         <div class="col-auto">
-                            <button class="btn btn-primary">
+                            <button class="btn btn-warning" type="submit" [disabled]="userForm.invalid">
                                 <span class="fa fa-paper-plane"></span>
                             </button>
                         </div>
@@ -50,35 +52,35 @@
                 <div class="row links-wrap">
                     <div class="col-6 col-sm-6 col-md-3">
                         <ul class="list-unstyled">
-                            <li><a routerLink ="/user/about" >About us</a></li>
-                            <li><a routerLink ="/user/service" >Services</a></li>
-                            <li><a routerLink ="/user/blog" >Blog</a></li>
-                            <li><a routerLink ="/user/contact" >Contact us</a></li>
+                            <li><a routerLink="/user/about">About us</a></li>
+                            <li><a routerLink="/user/service">Services</a></li>
+                            <li><a routerLink="/user/blog">Blog</a></li>
+                            <li><a routerLink="/user/contact">Contact us</a></li>
                         </ul>
                     </div>
 
                     <div class="col-6 col-sm-6 col-md-3">
                         <ul class="list-unstyled">
-                            <li><a routerLink ="#" >Support</a></li>
-                            <li><a routerLink ="#" >Knowledge base</a></li>
-                            <li><a routerLink ="#" >Live chat</a></li>
+                            <li><a routerLink="#">Support</a></li>
+                            <li><a routerLink="#">Knowledge base</a></li>
+                            <li><a routerLink="#">Live chat</a></li>
                         </ul>
                     </div>
 
                     <div class="col-6 col-sm-6 col-md-3">
                         <ul class="list-unstyled">
-                            <li><a routerLink ="#" >Jobs</a></li>
-                            <li><a routerLink ="#" >Our team</a></li>
-                            <li><a routerLink ="#" >Leadership</a></li>
-                            <li><a routerLink ="#" >Privacy Policy</a></li>
+                            <li><a routerLink="#">Jobs</a></li>
+                            <li><a routerLink="#">Our team</a></li>
+                            <li><a routerLink="#">Leadership</a></li>
+                            <li><a routerLink="#">Privacy Policy</a></li>
                         </ul>
                     </div>
 
                     <div class="col-6 col-sm-6 col-md-3">
                         <ul class="list-unstyled">
-                            <li><a routerLink ="#" >Nordic Chair</a></li>
-                            <li><a routerLink ="#" >Kruzo Aero</a></li>
-                            <li><a routerLink ="#" >Ergonomic Chair</a></li>
+                            <li><a routerLink="#">Nordic Chair</a></li>
+                            <li><a routerLink="#">Kruzo Aero</a></li>
+                            <li><a routerLink="#">Ergonomic Chair</a></li>
                         </ul>
                     </div>
                 </div>
@@ -94,7 +96,8 @@
                         <script>document.write(new Date().getFullYear());</script>
                         All Rights Reserved. &mdash;
                         Designed with love by
-                        <a href="https://www.linkedin.com/in/yugandhar-suryawanshi-028311228/"> Yugandhar Suryawanshi </a>
+                        <a href="https://www.linkedin.com/in/yugandhar-suryawanshi-028311228/"> Yugandhar Suryawanshi
+                        </a>
                         Distributed By <a routerLink="/user/home"> Furni </a>
                     </p>
                 </div>
