@@ -1,16 +1,104 @@
+/* Body with background image and dark overlay */
 body {
-    background: url('../../../../public/images/temp_img.avif') no-repeat center center fixed;
-    /* Set the image as the background */
+    background: linear-gradient(rgba(0, 0, 0, 0.6), rgba(0, 0, 0, 0.6)),
+                url('https://png.pngtree.com/thumb_back/fh260/background/20210929/pngtree-gradient-color-glassmorphism-effect-abstract-background-image_908567.png') no-repeat center center fixed;
     background-size: cover;
-    height: 100vh;
-    margin: 0;
+    font-family: 'Poppins', sans-serif;
+    min-height: 85vh;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 30px;
 }
 
-.container {
-    background-color: rgba(255, 255, 255, 0.9);
-    /* Semi-transparent white background for the form */
-    border-radius: 10px;
-    padding: 20px;
-    box-shadow: 0px 4px 6px rgba(0, 0, 0, 0.1);
-    /* Soft shadow for the form container */
+/* Frosted glass card effect */
+.glass-card {
+    background: rgba(255, 255, 255, 0.1);
+    backdrop-filter: blur(15px);
+    -webkit-backdrop-filter: blur(15px);
+    border: 1px solid rgba(255, 255, 255, 0.3);
+    border-radius: 20px;
+    box-shadow: 0 8px 32px rgba(31, 38, 135, 0.37);
+    color: #fff;
+    transition: transform 0.4s ease, box-shadow 0.4s ease;
+    width: 100%;
+}
+
+/* Animation on hover */
+.glass-card:hover {
+    transform: translateY(-8px);
+    box-shadow: 0 12px 40px rgba(31, 38, 135, 0.5);
+}
+
+/* Card header */
+.glass-card .card-header {
+    background: rgba(223, 78, 78, 0.8);
+    border-top-left-radius: 20px;
+    border-top-right-radius: 20px;
+    color: #fff;
+    text-align: center;
+}
+
+/* Card body */
+.glass-card .card-body {
+    background: rgba(255, 255, 255, 0.1);
+    border-bottom-left-radius: 20px;
+    border-bottom-right-radius: 20px;
+}
+
+/* Form label text color */
+.form-label {
+    color: #fff;
+    font-weight: 500;
+}
+
+/* Form controls */
+.form-control {
+    background: rgba(255, 255, 255, 0.2);
+    color: #fff;
+    border: 1px solid rgba(255, 255, 255, 0.3);
+    border-radius: 8px;
+    transition: background 0.3s ease, box-shadow 0.3s ease;
+}
+
+.form-control::placeholder {
+    color: #eee;
+}
+
+.form-control:focus {
+    background: rgba(255, 255, 255, 0.3);
+    color: #fff;
+    box-shadow: 0 0 5px rgba(78, 115, 223, 0.5);
+    border-color: #4e73df;
+}
+
+/* Primary button styles */
+.btn-primary {
+    background-color: #dfda4e;
+    border-color: #fa2b2b;
+    color: black;
+    border-radius: 50px;
+    font-weight: 600;
+    transition: all 0.3s ease-in-out;
+}
+
+.btn-primary:hover {
+    background-color: #d9842e;
+    border-color: #d42626;
+    box-shadow: 0 8px 15px rgba(46, 200, 217, 0.3);
+}
+
+/* Link styling */
+.text-light, .text-white {
+    color: #fff !important;
+}
+
+.text-center a {
+    color: #ffd700; /* gold-ish link color */
+    transition: color 0.3s ease, text-decoration 0.3s ease;
+}
+
+.text-center a:hover {
+    color: #fff;
+    text-decoration: underline;
 }
