@@ -9,3 +9,168 @@
 .strength-weak { background: #ff4757; width: 33%; }
 .strength-medium { background: #ffa502; width: 66%; }
 .strength-strong { background: #2ed573; width: 100%; }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+/* GENERAL RESET */
+* {
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+  }
+  
+  html, body {
+    height: 100%;
+    font-family: 'Poppins', sans-serif;
+    background: linear-gradient(135deg, #0f2027, #203a43, #2c5364);
+    color: #ffffff;
+  }
+  
+  /* MAIN WRAPPER */
+  .register-wrapper {
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+  }
+  
+  /* BACKGROUND SECTION */
+  .gradient-custom {
+    background: linear-gradient(rgba(15, 32, 39, 0.8), rgba(32, 58, 67, 0.8), rgba(44, 83, 100, 0.8)),
+                url('https://images.unsplash.com/photo-1508780709619-79562169bc64?auto=format&fit=crop&w=1350&q=80') center/cover no-repeat;
+    min-height: 100vh;
+    padding: 60px 0;
+  }
+  
+/* Glassmorphism - Enhanced */
+.glass-card {
+    background: rgba(255, 255, 255, 0.15);
+    border-radius: 20px;
+    backdrop-filter: blur(20px);
+    -webkit-backdrop-filter: blur(20px);
+    box-shadow: 0 8px 32px rgba(31, 38, 135, 0.37);
+    border: 1px solid rgba(255, 255, 255, 0.3);
+    transition: all 0.4s ease;
+    padding: 30px;
+  }
+  
+  .glass-card:hover {
+    transform: translateY(-10px);
+    box-shadow: 0 16px 48px rgba(0, 0, 0, 0.4);
+    border: 1px solid rgba(255, 255, 255, 0.5);
+  }
+  
+  /* Inputs - Floating Icons & Soft Glow */
+  .input-group {
+    position: relative;
+    background: rgba(255, 255, 255, 0.1);
+    border-radius: 12px;
+    overflow: hidden;
+    box-shadow: inset 0 0 10px rgba(255, 255, 255, 0.05);
+  }
+  
+  .input-group:hover {
+    box-shadow: 0 0 15px rgba(106, 17, 203, 0.2);
+  }
+  
+  .input-group .form-control {
+    padding-left: 50px;
+    background: transparent;
+    color: #fff;
+    border: none;
+    height: 50px;
+  }
+  
+  .input-group .input-group-text {
+    position: absolute;
+    left: 10px;
+    top: 50%;
+    transform: translateY(-50%);
+    background: none;
+    border: none;
+    color: #fff;
+    font-size: 1.2rem;
+  }
+  
+  /* Buttons - Glow & Hover */
+  .btn-gradient {
+    background: linear-gradient(to right, #6a11cb, #2575fc);
+    color: #fff;
+    border-radius: 50px;
+    padding: 12px 30px;
+    font-weight: 600;
+    letter-spacing: 1px;
+    box-shadow: 0 4px 15px rgba(106, 17, 203, 0.4);
+    transition: all 0.4s ease;
+  }
+  
+  .btn-gradient:hover {
+    background: linear-gradient(to left, #6a11cb, #2575fc);
+    box-shadow: 0 8px 25px rgba(106, 17, 203, 0.6);
+    transform: translateY(-3px);
+  }
+  
+  .btn-gradient:active {
+    transform: scale(0.95);
+  }
+  
+  /* Animations - Keep as it is, but smoother delays */
+  .animated {
+    opacity: 0;
+    transform: translateY(30px);
+    animation: fadeInUp 0.8s forwards;
+  }
+  
+  .animated.delay-1 { animation-delay: 0.1s; }
+  .animated.delay-2 { animation-delay: 0.2s; }
+  .animated.delay-3 { animation-delay: 0.3s; }
+  .animated.delay-4 { animation-delay: 0.4s; }
+  .animated.delay-5 { animation-delay: 0.5s; }
+  .animated.delay-6 { animation-delay: 0.6s; }
+  
+  @keyframes fadeInUp {
+    to {
+      opacity: 1;
+      transform: translateY(0);
+    }
+  }
+  
+  /* Gradients for text */
+  .text-gradient {
+    background: linear-gradient(to right, #6a11cb, #2575fc);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    font-weight: bold;
+    font-size: 2rem;
+  }
+  
+  /* Responsive fixes */
+  @media (max-width: 768px) {
+    .col-md-4 {
+      width: 100%;
+      margin-bottom: 1rem;
+    }
+  }
+  
