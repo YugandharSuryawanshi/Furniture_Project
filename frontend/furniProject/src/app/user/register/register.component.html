@@ -1,80 +1,146 @@
 <body>
-    <div class="container">
-        <div class="row justify-content-center">
-            <div class="col-lg-8 col-md-10">
-                <div class="card glass-card shadow-lg border-0 rounded-4 animate__animated animate__fadeIn">
-                    <div class="card-header text-center bg-gradient-primary text-white py-4 rounded-top-4">
-                        <h2 class="fw-bold mb-1">Create Your Account</h2>
-                        <p class="mb-0 text-light">Join us! It takes only a few seconds</p>
-                    </div>
+    <div class="register-wrapper d-flex flex-column">
+        <section class="gradient-custom d-flex align-items-center justify-content-center flex-grow-1">
+            <div class="container">
+                <div class="row">
+                    <div class="col-md-1"></div>
+                    <div class="col-md-10">
+                        <div class="row justify-content-center">
+                            <div class="col-md-12">
+                                <div class="card glass-card animated fadeInUp">
+                                    <div class="card-body p-4">
+                                        <h1 class="text-center mb-4 fw-bold text-gradient">Create Account</h1>
+                                        <p class="text-center text-muted mb-4">Join us! It takes only a few seconds</p>
 
-                    <div class="card-body px-5 py-4 rounded-bottom-4">
-                        <!-- Registration Form -->
-                        <form (ngSubmit)="register()" novalidate>
-                            <div class="row g-3">
-                                <div class="col-md-6">
-                                    <label for="user_name" class="form-label fw-semibold">Full Name <span class="text-danger">*</span></label>
-                                    <input type="text" class="form-control form-control-lg" id="user_name"
-                                        [(ngModel)]="formData.user_name" name="user_name" required placeholder="ABC XYZ">
-                                    <div *ngIf="!formData.user_name && errorMessage" class="form-text text-danger">
-                                        Please enter your full name.
+                                        <form (ngSubmit)="register()" class="needs-validation" novalidate>
+                                            <div class="row">
+
+                                                <!-- Full Name -->
+                                                <div class="col-md-4">
+                                                    <div class="form-group mb-4">
+                                                        <label class="form-label fw-medium">Full Name</label>
+                                                        <div class="input-group input-group-lg animated fadeIn">
+                                                            <input type="text" class="form-control"
+                                                                [(ngModel)]="formData.user_name" name="user_name"
+                                                                (blur)="validateName()" (input)="validateName()"
+                                                                placeholder="ABC XYZ" required />
+                                                            <span class="input-group-text"><i
+                                                                    class="fas fa-user"></i></span>
+                                                        </div>
+                                                        <small *ngIf="nameError" class="text-danger">{{ nameError
+                                                            }}</small>
+                                                    </div>
+                                                </div>
+
+                                                <!-- Mobile Number -->
+                                                <div class="col-md-4">
+                                                    <div class="form-group mb-4">
+                                                        <label class="form-label fw-medium">Mobile Number</label>
+                                                        <div class="input-group input-group-lg animated fadeIn">
+                                                            <input type="text" class="form-control"
+                                                                [(ngModel)]="formData.user_mobile" name="user_mobile"
+                                                                (blur)="validateMobile()" (input)="validateMobile()"
+                                                                placeholder="+1 234 567 890" required />
+                                                            <span class="input-group-text"><i
+                                                                    class="fas fa-mobile-alt"></i></span>
+                                                        </div>
+                                                        <small *ngIf="mobileError" class="text-danger">{{ mobileError
+                                                            }}</small>
+                                                    </div>
+                                                </div>
+
+                                                <!-- Email -->
+                                                <div class="col-md-4">
+                                                    <div class="form-group mb-4">
+                                                        <label class="form-label fw-medium">Email Address</label>
+                                                        <div class="input-group input-group-lg animated fadeIn">
+                                                            <input type="email" class="form-control"
+                                                                [(ngModel)]="formData.user_email" name="user_email"
+                                                                (blur)="validateEmail()" (input)="validateEmail()"
+                                                                placeholder="name@example.com" required />
+                                                            <span class="input-group-text"><i
+                                                                    class="fas fa-envelope"></i></span>
+                                                        </div>
+                                                        <small *ngIf="emailError" class="text-danger">{{ emailError
+                                                            }}</small>
+                                                    </div>
+                                                </div>
+
+                                                <!-- Password -->
+                                                <div class="col-md-2"></div>
+                                                <div class="col-md-4">
+                                                    <div class="form-group mb-4">
+                                                        <label class="form-label fw-medium">Password</label>
+                                                        <div class="input-group input-group-lg animated fadeIn">
+                                                            <input [type]="passwordFieldType" class="form-control"
+                                                                [(ngModel)]="formData.user_password"
+                                                                name="user_password" (blur)="validatePassword()"
+                                                                (input)="validatePassword()" placeholder="********"
+                                                                required />
+                                                            <button type="button"
+                                                                class="input-group-text toggle-password"
+                                                                (click)="togglePasswordVisibility()">
+                                                                <i class="fas fa-eye"></i>
+                                                            </button>
+                                                        </div>
+                                                        <small *ngIf="passwordError" class="text-danger">{{
+                                                            passwordError }}</small>
+                                                    </div>
+                                                </div>
+
+                                                <!-- Confirm Password -->
+                                                <div class="col-md-4 animated fadeIn confirm-password">
+                                                    <div class="form-group mb-4">
+                                                        <label class="form-label fw-medium">Confirm Password</label>
+                                                        <div class="input-group input-group-lg">
+                                                            <input [type]="confirmPasswordFieldType"
+                                                                class="form-control"
+                                                                [(ngModel)]="formData.confirmPassword"
+                                                                name="confirmPassword"
+                                                                (blur)="validateConfirmPassword()"
+                                                                (input)="validateConfirmPassword()"
+                                                                placeholder="********" required />
+                                                            <button type="button"
+                                                                class="input-group-text toggle-password"
+                                                                (click)="toggleConfirmPasswordVisibility()">
+                                                                <i class="fas fa-eye"></i>
+                                                            </button>
+                                                        </div>
+                                                        <small *ngIf="confirmPasswordError" class="text-danger">{{
+                                                            confirmPasswordError }}</small>
+                                                    </div>
+                                                </div>
+
+                                            </div>
+
+                                            <!-- Submit Button -->
+                                            <div
+                                                class="row d-flex justify-content-between align-items-center mt-4 animated fadeIn">
+                                                <div class="col-md-12 text-center mb-2">
+                                                    <button type="submit"
+                                                        class="btn btn-gradient btn-lg rounded-pill px-5 shadow-sm">
+                                                        <i class="fas fa-user-plus me-2"></i> Register Now
+                                                    </button>
+                                                </div>
+
+                                                <div class="col-md-12 text-center">
+                                                    <span class="text-muted small">Already Registered?</span>
+                                                    <a routerLink="/user/login"
+                                                        class="text-decoration-none fw-medium ms-1">
+                                                        Login Here
+                                                    </a>
+                                                </div>
+                                            </div>
+                                        </form>
+
                                     </div>
-                                </div>
-
-                                <div class="col-md-6">
-                                    <label for="user_mobile" class="form-label fw-semibold">Mobile Number <span class="text-danger">*</span></label>
-                                    <input type="text" class="form-control form-control-lg" id="user_mobile"
-                                        [(ngModel)]="formData.user_mobile" name="user_mobile" required placeholder="+1 234 567 890">
-                                    <div *ngIf="!formData.user_mobile && errorMessage" class="form-text text-danger">
-                                        Please provide a valid mobile number.
-                                    </div>
-                                </div>
-
-                                <div class="col-md-12">
-                                    <label for="user_email" class="form-label fw-semibold">Email Address <span class="text-danger">*</span></label>
-                                    <input type="email" class="form-control form-control-lg" id="user_email"
-                                        [(ngModel)]="formData.user_email" name="user_email" required placeholder="name@example.com">
-                                    <div *ngIf="!formData.user_email && errorMessage" class="form-text text-danger">
-                                        A valid email is required.
-                                    </div>
-                                </div>
-
-                                <div class="col-md-6">
-                                    <label for="user_password" class="form-label fw-semibold">Password <span class="text-danger">*</span></label>
-                                    <input type="password" class="form-control form-control-lg" id="user_password"
-                                        [(ngModel)]="formData.user_password" name="user_password" required placeholder="********">
-                                    <div *ngIf="!formData.user_password && errorMessage" class="form-text text-danger">
-                                        Please enter a password.
-                                    </div>
-                                </div>
-
-                                <div class="col-md-6">
-                                    <label for="confirmPassword" class="form-label fw-semibold">Confirm Password <span class="text-danger">*</span></label>
-                                    <input type="password" class="form-control form-control-lg" id="confirmPassword"
-                                        [(ngModel)]="formData.confirmPassword" name="confirmPassword" required placeholder="********">
-                                    <div *ngIf="formData.user_password !== formData.confirmPassword && errorMessage"
-                                        class="form-text text-danger">
-                                        Passwords do not match.
-                                    </div>
-                                </div>
-
-                                <div class="col-md-12 text-center mt-4">
-                                    <button type="submit" class="btn btn-primary btn-lg px-5">
-                                        <i class="fas fa-user-plus me-2"></i> Register
-                                    </button>
                                 </div>
                             </div>
-                        </form>
-
-                        <div class="text-center mt-4">
-                            <p class="mb-0 text-light">Already have an account?
-                                <a routerLink="/user/login" class="text-decoration-none fw-bold text-white">Login Here</a>
-                            </p>
                         </div>
                     </div>
                 </div>
             </div>
-        </div>
+        </section>
     </div>
 </body>
 <br><br><br>
