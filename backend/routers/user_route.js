@@ -133,9 +133,6 @@ router.put('/userUpdate', authenticateToken, async (req, res) => {
     const userId = req.user.id;
     const { user_name, user_mobile, user_email, user_address } = req.body;
 
-    console.log('Request Body:', req.body);
-    console.log('User ID:', userId);
-
     // Check if all fields are provided
     if (!user_name || !user_mobile || !user_email || !user_address) {
         return res.status(400).json({ status: 'failed', message: 'All fields are required' });
@@ -161,7 +158,6 @@ router.put('/userUpdateProfile', authenticateToken, async (req, res) => {
     const userId = req.user.id;
 
     if (!req.files || !req.files.user_profile) {
-        console.log('No profile image provided');
         return res.status(400).json({ status: 'failed', message: 'Profile image is required.' });
     }
 
@@ -212,7 +208,6 @@ router.put('/userUpdatePassword', authenticateToken, async (req, res) => {
         }
 
         const hashedPassword = await bcrypt.hash(new_password, 10);
-        console.log('Hashed Password : ' + hashedPassword);
         const updateQuery = 'UPDATE users SET user_password = ? WHERE user_id = ?';
         const updateResult = await exe(updateQuery, [hashedPassword, userId]);
 
@@ -240,7 +235,6 @@ router.get('/home', async (req, res) => {
         var blog = await exe(`SELECT * FROM blog ORDER BY blog_id DESC LIMIT 3`);
         var blogs = await exe(`SELECT * FROM blog`);
         var team = await exe("SELECT * FROM our_team");
-        console.log(blog);
 
         res.status(200).json({ banner_info, products, about, about_points, interior, testimonial, blog, team, blogs });
 
@@ -304,7 +298,6 @@ router.post('/save_review', authenticateToken, async (req, res) => {
             if (Array.isArray(req.files.review_img)) {
                 for (let i = 0; i < req.files.review_img.length; i++) {
                     let fn = new Date().getTime() + "_" + req.files.review_img[i].name;
-                    console.log('Multiple image are : ' + fn);
 
                     req.files.review_img[i].mv("public/uploads/" + fn);
                     file_names.push(fn);
@@ -312,7 +305,6 @@ router.post('/save_review', authenticateToken, async (req, res) => {
                 file_name = file_names.join(",");
             } else {
                 var fn = new Date().getTime() + "_" + req.files.review_img.name;
-                console.log('Single Image is : ' + fn);
 
                 req.files.review_img.mv("public/uploads/" + fn);
                 file_name = fn;
@@ -634,7 +626,6 @@ router.post('/verify_payment', authenticateToken, async (req, res) => {
         }
 
         //Send Success Response
-        console.log('Payment Verified & Order Stored Successfully');
         res.status(200).json({ success: true, message: 'Order placed successfully!' });
 
     } catch (error) {
@@ -723,7 +714,6 @@ router.post('/place_cod_order', authenticateToken, async (req, res) => {
         }
 
         // Send Success Response
-        console.log('COD Order Placed Successfully');
         res.status(200).json({ success: true, status: 'success', message: 'COD order placed successfully!' });
 
     } catch (error) {
