@@ -225,7 +225,6 @@ router.put('/userUpdatePassword', authenticateToken, async (req, res) => {
 // Get All Home Page Data
 router.get('/home', async (req, res) => {
     try {
-        // const users = await exe('SELECT * FROM users');
         var banner_info = await exe("SELECT * FROM banner");
         var products = await exe(`SELECT * FROM product ORDER BY product_id DESC LIMIT 3`);
         var about = await exe("SELECT * FROM why_choose_us");
@@ -251,7 +250,6 @@ router.get('/products', async (req, res) => {
     const offset = (page - 1) * limit;
 
     await exe('SELECT * FROM product LIMIT ?, ?', [offset, limit], (err, results) => {
-
         if (err) throw err;
         // Fetch the total number of pages
         exe('SELECT COUNT(*) AS total FROM product', (err, countResult) => {
