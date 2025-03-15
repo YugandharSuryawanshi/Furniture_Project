@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Generation Time: Feb 23, 2025 at 04:46 PM
+-- Generation Time: Mar 15, 2025 at 07:50 PM
 -- Server version: 10.4.32-MariaDB
 -- PHP Version: 8.2.12
 
@@ -41,9 +41,11 @@ CREATE TABLE `admins` (
 --
 
 INSERT INTO `admins` (`admin_id`, `admin_name`, `admin_mobile`, `admin_email`, `admin_password`, `admin_profile`) VALUES
-(2, 'Yugandhar Suryawanshi', '9359087068', 'yugandhar@gmail.com', '$2a$10$2tDpOKeO4IVR.DU/goPgRew4UMnByE79nsM6ZsjOjltkUsHNv0Qxi', '1736439598182study.jpg'),
+(2, 'Yugandhar Suryawanshi', '9359087068', 'yugandhar@gmail.com', '$2b$10$ehyXenucTJOkbk91whp2JOfW5WcUQgRm7Bv1jbotyHDYaBfqekQeO', '1736439598182study.jpg'),
 (3, 'Chaitanya Kodre', '9359087069', 'chaitu@gmail.com', '$2a$10$7q1Z3nvV1HcsfvG6amkgueXZLxKOSWTQYW0h2t8qKYAnzyMiQ7Nqq', '1736446596106IMG_20220623_152031.jpg'),
-(5, 'Radha Krishna', '9359087068', 'radhekrishna@gmail.com', '$2a$10$alD6Qg58fLjR9bH96gkE5uNhqgeNYMIGd0CDmulbdin9cxRQYXxWC', '1736420229774RadheKrishna.jpg');
+(5, 'Radha Krishna', '9359087068', 'radhekrishna@gmail.com', '$2a$10$alD6Qg58fLjR9bH96gkE5uNhqgeNYMIGd0CDmulbdin9cxRQYXxWC', '1736420229774RadheKrishna.jpg'),
+(8, 'Shahadev Warkhede', '1234567891', 'shahadev@gmail.com', '$2b$10$4U16zOJ3/krd0S8ivVCUxOpPm9EbB78IqiFG7sqvxKuphMu1v3/Lu', '17404872113151697381295688.jpg'),
+(10, 'Chaitanya Kodre', '1234567890', 'chaitanya@gmail.com', '$2b$10$PW3EWjsPPs8wjLn0FgiUBeOCoLn4tBWZG/T5i/ZfSuuRy/A6oRA1e', '1741610784840IMG_20241217_215310.jpg');
 
 -- --------------------------------------------------------
 
@@ -173,7 +175,20 @@ INSERT INTO `order_products` (`order_product_id`, `order_id`, `user_id`, `produc
 (5, 3, 4, 2, 'My Art Design - Scandinavian Chair with Padded & Solid Wood Oak Legs... ', 1, 3300.00, 594.00, 726.00, 3168.00, 'Provide best feel and comfert. Build Quality is good and used wood quality is best.'),
 (6, 4, 3, 1, 'Modern Classic 4 Seater Leatharrate Tufted 3+1+1Footrest Chesterfield Sofa', 1, 28998.00, 5219.64, 5799.60, 28418.04, 'No assembly required the product is delivered in a preassembled state.(only legs to be fix by the customer)Our delivery service is very fast, we deliver the order to the customer with 5 days guarantee after dispatch.\r\nModern Chesterfield Design: Designed with the traditional moden Chesterfield style in mind, this piece hits all the key elements, with deep button tufting, nailhead accents, scrolled arms and stylish legs.\r\nDIMENSION: 190 Lx 80Dx 80H.\r\nSeating Capacity: 3 Seat;'),
 (7, 5, 4, 9, 'Criss Cross Chair - Stylish PU Leather Accent Chair for Long Hours Sitting Comfort', 1, 9900.00, 1782.00, 1485.00, 10197.00, '✅RELAX IN STYLE: High density sponge-filled cushion and backrest will give you the feeling of sitting on the sofa, very comfortable and not easily deformed. The widened and soft seat executive chair allows you to sit comfortably in various positions including cross-legged for moments of relaxation while working or thinking.\r\n✅PREMIUM PU LEATHER: Upholstered in top-grain faux leather, the seat and backrest are durable for long-lasting use. Each support foot comes with a non-slip natural rubber foot pad to prevent scratches and slips. Our leather office chairs for work is waterproof, easy to clean, wear-resistant and durable.\r\n'),
-(8, 6, 4, 9, 'Criss Cross Chair - Stylish PU Leather Accent Chair for Long Hours Sitting Comfort', 1, 9900.00, 1782.00, 1485.00, 10197.00, '✅RELAX IN STYLE: High density sponge-filled cushion and backrest will give you the feeling of sitting on the sofa, very comfortable and not easily deformed. The widened and soft seat executive chair allows you to sit comfortably in various positions including cross-legged for moments of relaxation while working or thinking.\r\n✅PREMIUM PU LEATHER: Upholstered in top-grain faux leather, the seat and backrest are durable for long-lasting use. Each support foot comes with a non-slip natural rubber foot pad to prevent scratches and slips. Our leather office chairs for work is waterproof, easy to clean, wear-resistant and durable.\r\n');
+(8, 6, 4, 9, 'Criss Cross Chair - Stylish PU Leather Accent Chair for Long Hours Sitting Comfort', 1, 9900.00, 1782.00, 1485.00, 10197.00, '✅RELAX IN STYLE: High density sponge-filled cushion and backrest will give you the feeling of sitting on the sofa, very comfortable and not easily deformed. The widened and soft seat executive chair allows you to sit comfortably in various positions including cross-legged for moments of relaxation while working or thinking.\r\n✅PREMIUM PU LEATHER: Upholstered in top-grain faux leather, the seat and backrest are durable for long-lasting use. Each support foot comes with a non-slip natural rubber foot pad to prevent scratches and slips. Our leather office chairs for work is waterproof, easy to clean, wear-resistant and durable.\r\n'),
+(9, 7, 4, 5, 'Altamore Engineered Wood 2 Door Wardrobe with Drawer (Wenge Finish)', 1, 11900.00, 2142.00, 2499.00, 11543.00, 'Included Components: 1 Wardrobe, 1 Drawer\r\nProduct Dimensions ( in Centimeters) : 80.3 x 45.3 x 182\r\nStorage Details: Comes with 4 Shelves and a drawer which can be installed by the seller'),
+(10, 8, 3, 2, 'My Art Design - Scandinavian Chair with Padded & Solid Wood Oak Legs... ', 1, 3300.00, 594.00, 726.00, 3168.00, 'Provide best feel and comfert. Build Quality is good and used wood quality is best.'),
+(11, 9, 3, 7, 'Sheesham Wooden Dining Set 6 Seater Dining Table with Chairs & Bench ', 1, 33900.00, 6102.00, 7458.00, 32544.00, 'Material: Wood- 100% Solid Sheesham Wood, Color- Walnut Finish (Glossy).\r\nAssembly: Only Table and Bench Requires Assembly(Comes With Tools & Self-Assembly Instructions & Based on Customer Basis), Chairs Comes Ready to Use.\r\nBuy With Confidence: Designed and Manufactured by Nisha Furniture. The Trusted Source for Stylish Furniture for Every Taste and Budget.'),
+(12, 10, 6, 8, 'FURNY Braustin 6 Seater Fabric LHS L Shape Sofa Set (Aqua Blue)', 1, 32500.00, 5850.00, 3250.00, 35100.00, '6 Seater Sofa Set for Living Rooms | PRIMARY MATERIAL- Solid Wood & high density Supersoft Air Foam -::- UPHOLSTERY MATERIAL- Premium Fabric -::- SEATING CAPACITY-6 seater\r\nFurny Sofas give best comfortable seating experience. Our Sofas are designed with High Quality which lasts longer. We have huge Catalogue of L shape Sofa Sets, 3 seater sofas, 2 seater sofas, Sofa Cum beds, Recliner Sofas, Beds, Mattresses, Dining Table Sets, browse & get the best fit for your Homes.\r\nAssembly: Do it By Yourself.'),
+(13, 10, 6, 2, 'My Art Design - Scandinavian Chair with Padded & Solid Wood Oak Legs... ', 1, 3300.00, 594.00, 726.00, 3168.00, 'Provide best feel and comfert. Build Quality is good and used wood quality is best.'),
+(14, 10, 6, 10, 'Stool', 1, 5000.00, 900.00, 750.00, 5150.00, 'The nightstand is a modern take on a retro look, with a sleek mid-century modern design that adds a touch of vintage styling to your bedroom.\r\nQuality details include floral carved top, handcarved drawer front,\r\nThis end table provides plenty of storage space for your bedtime essentials.\r\nMultifunctional Use, the simple and compact design of this nightstan; It measures 21\" tall , 14\" wide and 12\" depth'),
+(15, 11, 7, 8, 'FURNY Braustin 6 Seater Fabric LHS L Shape Sofa Set (Aqua Blue)', 1, 32500.00, 5850.00, 3250.00, 35100.00, '6 Seater Sofa Set for Living Rooms | PRIMARY MATERIAL- Solid Wood & high density Supersoft Air Foam -::- UPHOLSTERY MATERIAL- Premium Fabric -::- SEATING CAPACITY-6 seater\r\nFurny Sofas give best comfortable seating experience. Our Sofas are designed with High Quality which lasts longer. We have huge Catalogue of L shape Sofa Sets, 3 seater sofas, 2 seater sofas, Sofa Cum beds, Recliner Sofas, Beds, Mattresses, Dining Table Sets, browse & get the best fit for your Homes.\r\nAssembly: Do it By Yourself.'),
+(16, 11, 7, 10, 'Stool', 1, 5000.00, 900.00, 750.00, 5150.00, 'The nightstand is a modern take on a retro look, with a sleek mid-century modern design that adds a touch of vintage styling to your bedroom.\r\nQuality details include floral carved top, handcarved drawer front,\r\nThis end table provides plenty of storage space for your bedtime essentials.\r\nMultifunctional Use, the simple and compact design of this nightstan; It measures 21\" tall , 14\" wide and 12\" depth'),
+(17, 11, 7, 5, 'Altamore Engineered Wood 2 Door Wardrobe with Drawer (Wenge Finish)', 1, 11900.00, 2142.00, 2499.00, 11543.00, 'Included Components: 1 Wardrobe, 1 Drawer\r\nProduct Dimensions ( in Centimeters) : 80.3 x 45.3 x 182\r\nStorage Details: Comes with 4 Shelves and a drawer which can be installed by the seller'),
+(18, 12, 8, 1, 'Modern Classic 4 Seater Leatharrate Tufted 3+1+1Footrest Chesterfield Sofa', 1, 28998.00, 5219.64, 5799.60, 28418.04, 'No assembly required the product is delivered in a preassembled state.(only legs to be fix by the customer)Our delivery service is very fast, we deliver the order to the customer with 5 days guarantee after dispatch.\r\nModern Chesterfield Design: Designed with the traditional moden Chesterfield style in mind, this piece hits all the key elements, with deep button tufting, nailhead accents, scrolled arms and stylish legs.\r\nDIMENSION: 190 Lx 80Dx 80H.\r\nSeating Capacity: 3 Seat;'),
+(19, 13, 9, 7, 'Sheesham Wooden Dining Set 6 Seater Dining Table with Chairs & Bench ', 1, 33900.00, 6102.00, 7458.00, 32544.00, 'Material: Wood- 100% Solid Sheesham Wood, Color- Walnut Finish (Glossy).\r\nAssembly: Only Table and Bench Requires Assembly(Comes With Tools & Self-Assembly Instructions & Based on Customer Basis), Chairs Comes Ready to Use.\r\nBuy With Confidence: Designed and Manufactured by Nisha Furniture. The Trusted Source for Stylish Furniture for Every Taste and Budget.'),
+(20, 13, 9, 9, 'Criss Cross Chair - Stylish PU Leather Accent Chair for Long Hours Sitting Comfort', 2, 9900.00, 1782.00, 1485.00, 10197.00, '✅RELAX IN STYLE: High density sponge-filled cushion and backrest will give you the feeling of sitting on the sofa, very comfortable and not easily deformed. The widened and soft seat executive chair allows you to sit comfortably in various positions including cross-legged for moments of relaxation while working or thinking.\r\n✅PREMIUM PU LEATHER: Upholstered in top-grain faux leather, the seat and backrest are durable for long-lasting use. Each support foot comes with a non-slip natural rubber foot pad to prevent scratches and slips. Our leather office chairs for work is waterproof, easy to clean, wear-resistant and durable.\r\n'),
+(21, 14, 9, 10, 'Stool', 1, 5000.00, 900.00, 750.00, 5150.00, 'The nightstand is a modern take on a retro look, with a sleek mid-century modern design that adds a touch of vintage styling to your bedroom.\r\nQuality details include floral carved top, handcarved drawer front,\r\nThis end table provides plenty of storage space for your bedtime essentials.\r\nMultifunctional Use, the simple and compact design of this nightstan; It measures 21\" tall , 14\" wide and 12\" depth');
 
 -- --------------------------------------------------------
 
@@ -217,9 +232,17 @@ INSERT INTO `order_tbl` (`order_id`, `user_id`, `country`, `c_fname`, `c_lname`,
 (1, 4, 'India', 'Siya', 'Ram', 'Shree Ram Mandir Ayodhya', 'SiyaRam Coloni , Bhakti Appartment flat no 43', 'Maharashtra', '123456', 'ram@gmail.com', '1234567898', 'COD', 97898.00, 17621.64, 20957.60, 94562.04, '2025-02-21 20:47:13', 'Confirmed', NULL, NULL, NULL, NULL, 'Pending', NULL, NULL),
 (2, 4, 'India', 'Siya', 'Ram', 'Shree Ram Mandir Ayodhya', 'SiyaRam Appartment flat no 52', 'Maharashtra', '123456', 'ram@gmail.com', '1234567898', 'Online', 28998.00, 5219.64, 5799.60, 28418.04, '2025-02-21 20:48:44', 'Delivered', '2025-02-23 13:36:37', '2025-02-23 13:40:16', NULL, NULL, 'Paid', 'pay_PyUvwmsVBr1AQl', '2025-02-21 20:48:44'),
 (3, 4, 'India', 'Siya', 'Ram', 'Shree Ram Mandir Ayodhya', 'SiyaRam Appartment flat no 35', 'Maharashtra', '123454', 'ram@gmail.com', '1234567898', 'Online', 3300.00, 594.00, 726.00, 3168.00, '2025-02-21 20:52:34', 'Dispatched', '2025-02-23 13:20:33', NULL, NULL, NULL, 'Paid', 'pay_PyUzz8sbX6sIWl', '2025-02-21 20:52:34'),
-(4, 3, 'India', 'Yugandhar', 'Suryawanshi', 'Amdad Tal. & Dist. Dhule.', 'In Front of Shiv mandir, House no 432', 'Maharashtra', '424301', 'yugandhar@gmail.com', '9359087068', 'Online', 28998.00, 5219.64, 5799.60, 28418.04, '2025-02-21 08:00:09', 'Confirmed', NULL, NULL, NULL, NULL, 'Paid', 'pay_PygNAAdTvOhsg4', '2025-02-22 08:00:09'),
+(4, 3, 'India', 'Yugandhar', 'Suryawanshi', 'Amdad Tal. & Dist. Dhule.', 'In Front of Shiv mandir, House no 432', 'Maharashtra', '424301', 'yugandhar@gmail.com', '9359087068', 'Online', 28998.00, 5219.64, 5799.60, 28418.04, '2025-02-21 08:00:09', 'Delivered', '2025-02-24 11:06:00', '2025-02-24 11:06:55', NULL, NULL, 'Paid', 'pay_PygNAAdTvOhsg4', '2025-02-22 08:00:09'),
 (5, 4, 'India', 'Siya', 'Ram', 'Shree Ram Mandir Ayodhya', 'SiyaRam Appartment flat no 12', 'Maharashtra', '123456', 'ram@gmail.com', '1234567898', 'COD', 9900.00, 1782.00, 1485.00, 10197.00, '2025-02-22 12:34:01', 'Cancelled', '2025-02-23 13:30:41', '2025-02-23 13:31:00', '2025-02-23 13:42:38', '2025-02-23 13:31:57', 'Pending', NULL, NULL),
-(6, 4, 'India', 'Siya', 'Ram', 'Shree Ram Mandir Ayodhya', 'SiyaRam Appartment flat no 512', 'Maharashtra', '123456', 'ram@gmail.com', '1234567898', 'COD', 9900.00, 1782.00, 1485.00, 10197.00, '2025-02-23 15:30:51', 'Pending', NULL, NULL, NULL, NULL, 'Pending', NULL, NULL);
+(6, 4, 'India', 'Siya', 'Ram', 'Shree Ram Mandir Ayodhya', 'SiyaRam Appartment flat no 512', 'Maharashtra', '123456', 'ram@gmail.com', '1234567898', 'COD', 9900.00, 1782.00, 1485.00, 10197.00, '2025-02-23 15:30:51', 'Pending', NULL, NULL, NULL, NULL, 'Pending', NULL, NULL),
+(7, 4, 'India', 'Siya', 'Ram', 'Shree Ram Mandir Ayodhya', 'SiyaRam Appartment Flat no 124', 'Maharashtra', '123456', 'ram@gmail.com', '1234567898', 'Online', 11900.00, 2142.00, 2499.00, 11543.00, '2025-02-23 19:25:31', 'Confirmed', NULL, NULL, NULL, NULL, 'Paid', 'pay_PzGa3LE1Ztj8ff', '2025-02-23 19:25:31'),
+(8, 3, 'India', 'Yugandhar', 'Suryawanshi', 'Amdad Tal. & Dist. Dhule.', 'In Front of Shiv mandir, House no 234', 'Maharashtra', '424301', 'yugandhar@gmail.com', '9359087068', 'Online', 3300.00, 594.00, 726.00, 3168.00, '2025-02-24 10:36:02', 'Dispatched', '2025-02-25 13:58:16', NULL, NULL, NULL, 'Paid', 'pay_PzW65FP35HW6oI', '2025-02-24 10:36:02'),
+(9, 3, 'India', 'Yugandhar', 'Suryawanshi', 'Amdad Tal. & Dist. Dhule.', 'In Front of Shiv mandir , House no 234', 'Maharashtra', '424301', 'yugandhar@gmail.com', '9359087068', 'Online', 33900.00, 6102.00, 7458.00, 32544.00, '2025-02-24 10:48:10', 'Confirmed', NULL, NULL, NULL, NULL, 'Paid', 'pay_PzWItOIo1gr361', '2025-02-24 10:48:10'),
+(10, 6, 'India', 'Chaitanya', 'Kodre', 'Tandulwadi, Latur', 'House no: 123', 'Maharashtra', '123456', 'chaitanya@gmail.com', '1234567890', 'Online', 40800.00, 7344.00, 4726.00, 43418.00, '2025-03-10 11:49:37', 'Confirmed', NULL, NULL, NULL, NULL, 'Paid', 'pay_Q54pV62ZIld7f7', '2025-03-10 11:49:37'),
+(11, 7, 'India', 'Rushikesh', 'Pathade', 'Pathardi, Nagar', 'House no: 542 , near Shree Ram Madir , Pathardi', 'Maharashtra', '123456', 'rushi@gmail.com', '1234567893', 'Online', 49400.00, 8892.00, 6499.00, 51793.00, '2025-03-13 10:18:15', 'Confirmed', NULL, NULL, NULL, NULL, 'Paid', 'pay_Q6EsKnJa14fyrb', '2025-03-13 10:18:15'),
+(12, 8, 'India', 'Jagdish', 'Gawali', 'Velhane , Tal and Dist. Dhule', 'House no: 342, RamSadan Nivas', 'Maharashtra', '123456', 'jagdish@gmail.com', '1234567894', 'COD', 28998.00, 5219.64, 5799.60, 28418.04, '2025-03-13 10:57:50', 'Pending', NULL, NULL, NULL, NULL, 'Pending', NULL, NULL),
+(13, 9, 'India', 'Akshay', 'Pawar', 'Velhane, Tal. and Dist. Dhule', 'House no:321', 'Maharashtra', '123456', 'akshu@gmail.com', '1234567894', 'COD', 43800.00, 7884.00, 8943.00, 42741.00, '2025-03-13 16:08:51', 'Pending', NULL, NULL, NULL, NULL, 'Pending', NULL, NULL),
+(14, 9, 'India', 'Akshay', 'Pawar', 'Velhane, Tal. and Dist. Dhule', 'House no:321', 'Maharashtra', '123456', 'akshu@gmail.com', '1234567894', 'Online', 5000.00, 900.00, 750.00, 5150.00, '2025-03-13 16:12:28', 'Dispatched', '2025-03-13 16:13:03', NULL, NULL, NULL, 'Paid', 'pay_Q6KuWYkty3E5og', '2025-03-13 16:12:28');
 
 -- --------------------------------------------------------
 
@@ -241,8 +264,9 @@ CREATE TABLE `our_team` (
 
 INSERT INTO `our_team` (`member_id`, `member_name`, `member_position`, `member_details`, `member_image`) VALUES
 (1, 'Yugandhar Marathe', 'CEO', 'MCA, Full Stack Developer', '1737540769912_study.jpg'),
-(2, 'Shahadev Warkhede', 'Manager', 'BCA, Full Stack Developer', '1737544547071_IMG_20230819_152131.jpg'),
-(3, 'Chaitanya Kodre', 'Manager', 'MCA', '1737541751690_1732680223275.jpg');
+(2, 'Shahadev Warkhede', 'Employee', 'BCA, Full Stack Developer', '1737544547071_IMG_20230819_152131.jpg'),
+(3, 'Chaitanya Kodre', 'Manager', 'MCA', '1737541751690_1732680223275.jpg'),
+(4, 'Rushikesh Pathade', 'Manager', 'MCA, Full Stack Developer', '1741700280186_IMG_20231125_171737.jpg');
 
 -- --------------------------------------------------------
 
@@ -352,7 +376,18 @@ INSERT INTO `reviews` (`review_id`, `product_id`, `user_id`, `rating`, `country`
 (11, 7, 4, 5, 'India', 'This product are really good and this product build quality are really fantastic.', 'Just go for it . It is fantastic Product', '1739732620431_dining2.1.jpg,1739732620432_dining2.2.jpg,1739732620432_dining2.3.jpg', '2025-02-16 19:03:40'),
 (12, 1, 4, 4, 'India', 'This product are really fantastic it give rich look to home', 'Just go for it . ', '1739821107885_sofa4.1.jpg,1739821107886_sofa4.2.jpg,1739821107887_sofa4.3.jpg', '2025-02-17 19:38:27'),
 (13, 1, 4, 5, 'India', 'I used this product upto 1 year. This product build quality are awesome and upto now this product are shine as it is.', 'Just go for it . It is fantastic Product', '1740205412491_sofa4.1.jpg,1740205412493_sofa4.5.jpg,1740205412493_sofa4.6.jpg', '2025-02-22 06:23:32'),
-(14, 2, 4, 4, 'India', 'Good Product', 'Just go for it and specifically I would say the seller is fabulous', '1740205567685_chair1.1.jpg', '2025-02-22 06:26:07');
+(14, 2, 4, 4, 'India', 'Good Product', 'Just go for it and specifically I would say the seller is fabulous', '1740205567685_chair1.1.jpg', '2025-02-22 06:26:07'),
+(15, 8, 6, 4, 'India', 'This Product Build Quality is good and look are fantastic. this product gives rich look to your sweet house. i suggest you to buy this product.', 'Just go for it.', '1741606244929_sofa3.1.jpg,1741606244930_sofa3.3.jpg,1741606244931_sofa3.4.jpg', '2025-03-10 11:30:44'),
+(16, 2, 6, 5, 'India', 'Just go for it and specifically I would say the seller is fabulous.\r\nI order this product before two days and within two day product are delevered also.\r\nProduct Look are awesome.\r\nWhen we sit on this chair fill comfertable and relax.', 'Just go for it and specifically I would say the seller is fabulous.', '1741606438060_chair1.1.jpg', '2025-03-10 11:33:58'),
+(17, 5, 6, 5, 'India', 'Product build quality is good and Primium look', 'Good Product', '1741606903280_almirah1.1.jpg,1741606903281_almirah1.4.jpg', '2025-03-10 11:41:43'),
+(18, 6, 6, 5, 'India', 'Nice Product, Build qaulity is good.', 'Just go for it.', '1741607059937_almirah1.png', '2025-03-10 11:44:19'),
+(19, 10, 6, 4, 'India', 'This is awesome, quality is also good and look are fantastic.', 'Good Product', '1741607187900_stool1.1.jpg,1741607187901_stool1.3.jpg,1741607187902_stool1.4.jpg', '2025-03-10 11:46:27'),
+(20, 1, 6, 4, 'India', 'This product are really so good. This product build quality are very good and This product look are really fantastic and awesome.', 'Just go for it and specifically I would say the seller is fabulous.', '1741612466090_sofa4.1.jpg,1741612466091_sofa4.4.jpg,1741612466092_sofa4.6.jpg', '2025-03-10 13:14:26'),
+(21, 8, 7, 5, 'INDIA', 'This product is really good. It looks and Design are amazing and impressive. This product build quality is awesome.', 'Good Product', '1741860843813_sofa3.1.jpg,1741860843814_sofa3.3.jpg', '2025-03-13 10:14:03'),
+(22, 10, 7, 5, 'INDIA', 'I like this product its looks and Build quality are amesing.', 'First Product', '1741860964755_stool1.1.jpg,1741860964757_stool1.4.jpg', '2025-03-13 10:16:04'),
+(23, 1, 8, 5, 'INDIA', 'This product look and design are so awesome. Specially this product packing are really impressive. The product quality and used material are good.', 'Just go for it and specifically I would say the seller is good', '1741863355980_sofa4.1.jpg,1741863355981_sofa4.4.jpg,1741863355982_sofa4.6.jpg', '2025-03-13 10:55:55'),
+(24, 7, 9, 5, 'INDIA', 'This product build quality is good. look are also fantastic.', 'Just go for it . It is fantastic Product.', '1741882000965_dining2.1.jpg,1741882000967_dining2.2.jpg', '2025-03-13 16:06:40'),
+(25, 9, 9, 5, 'INDIA', 'This product is really fantastic. look are also good.', 'Just go for it.', '1741882089019_chair2.1.jpg,1741882089020_chair2.3.jpg', '2025-03-13 16:08:09');
 
 -- --------------------------------------------------------
 
@@ -400,9 +435,13 @@ CREATE TABLE `users` (
 --
 
 INSERT INTO `users` (`user_id`, `user_name`, `user_mobile`, `user_email`, `user_address`, `user_profile`, `user_password`) VALUES
-(3, 'Yugandhar Suryawanshi', '9359087068', 'yugandhar@gmail.com', 'Amdad Tal. & Dist. Dhule.', '1739793452719-yogi.jpg', '$2a$10$rStYOy.2x68GN0CeNglp9.qOl13iqfLRoXL.rnWL0MSsFA./E5XIe'),
-(4, 'Siya Ram', '1234567898', 'ram@gmail.com', 'Shree Ram Mandir Ayodhya', '1739732480355-RadheKrishna.jpg', '$2a$10$SbMda1v1/G6qMTDTXxWZ2eatPc93vNxToSTI24DRo7ykxTIUOwlvq'),
-(5, 'Shahadev Warkhede', '0987654321', 'shahadev@gmail.com', NULL, NULL, '$2b$10$nvdvXmdbBInFBRL5XjfviO17jehyhmXDoTbsW00tck77XJMd9XmEe');
+(3, 'Yugandhar Suryawanshi', '9359087068', 'yugandhar@gmail.com', 'Amdad Tal. & Dist. Dhule.', '1739793452719-yogi.jpg', '$2b$10$NpNPtIvl3dzTbRp4wiDmKejAiHsHQNW7lfcfDW./1K8U.ovi.m5hi'),
+(4, 'Siya Ram', '1234567898', 'ram@gmail.com', 'Shree Ram Mandir Ayodhya', '1739732480355-RadheKrishna.jpg', '$2b$10$16mHGjzW6h/aFkfduThtOuXWtZeS2lN1ObTprKeK9hDIVNvKwUN/6'),
+(5, 'Shahadev Warkhede', '0987654321', 'shahadev@gmail.com', NULL, NULL, '$2b$10$CPgJdhhikvQPUS4lW0jlVe8Mkw1qYAJx4rRsooRBjrltznORlNQpi'),
+(6, 'Chaitanya Kodre', '12345678902', 'chaitanya@gmail.com', 'Tandulwadi, Latur', NULL, '$2b$10$gcaqeJ0HHAssW.Y9t847MetjbuNfId.qNzla3PyUAY0Zut1Hmr5fS'),
+(7, 'Rushikesh Pathade', '1234567893', 'rushi@gmail.com', 'Pathardi, Nagar', NULL, '$2b$10$nZ5o5tsHnpwBTQ30hwSqaujMsoiEjiP00OvPfncxAf26uZY5Mm9Ri'),
+(8, 'Jagdish Gawali', '1234567894', 'jagdish@gmail.com', 'Velhane, Tal and Dist. Dhule', NULL, '$2b$10$eMVVPM9u/ZRKY6lHR/7gX./bemdbVy0wmxlopcIJbYkrc3pmFggra'),
+(9, 'Akshay Pawar', '1234567894', 'akshu@gmail.com', 'Velhane, Tal. and Dist. Dhule', NULL, '$2b$10$fhOktMS2Pn47SxB2wJ.zXOwYMTN0Syh0yl51AdsMM7yMuWJupEIke');
 
 -- --------------------------------------------------------
 
@@ -417,6 +456,30 @@ CREATE TABLE `user_cart` (
   `qty` int(11) NOT NULL,
   `created_at` timestamp NOT NULL DEFAULT current_timestamp()
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `user_subscriber`
+--
+
+CREATE TABLE `user_subscriber` (
+  `id` int(11) NOT NULL,
+  `name` varchar(100) NOT NULL,
+  `email` varchar(150) NOT NULL,
+  `status` enum('active','inactive') DEFAULT 'active',
+  `created_at` timestamp NOT NULL DEFAULT current_timestamp(),
+  `updated_at` timestamp NOT NULL DEFAULT current_timestamp() ON UPDATE current_timestamp()
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+
+--
+-- Dumping data for table `user_subscriber`
+--
+
+INSERT INTO `user_subscriber` (`id`, `name`, `email`, `status`, `created_at`, `updated_at`) VALUES
+(1, 'Yugandhar Suryawanshi', 'yugandhar@gmail.com', 'active', '2025-03-11 14:03:21', '2025-03-11 16:11:32'),
+(3, 'Chaitanya Kodre', 'chaitanya@gmail.com', 'active', '2025-03-11 16:23:47', '2025-03-11 16:24:58'),
+(4, 'Akshay Pawar', 'akshu@gmail.com', 'active', '2025-03-13 16:20:10', '2025-03-13 16:20:10');
 
 -- --------------------------------------------------------
 
@@ -559,6 +622,13 @@ ALTER TABLE `user_cart`
   ADD KEY `product_id` (`product_id`);
 
 --
+-- Indexes for table `user_subscriber`
+--
+ALTER TABLE `user_subscriber`
+  ADD PRIMARY KEY (`id`),
+  ADD UNIQUE KEY `email` (`email`);
+
+--
 -- Indexes for table `why_choose_points`
 --
 ALTER TABLE `why_choose_points`
@@ -578,7 +648,7 @@ ALTER TABLE `why_choose_us`
 -- AUTO_INCREMENT for table `admins`
 --
 ALTER TABLE `admins`
-  MODIFY `admin_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=7;
+  MODIFY `admin_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=12;
 
 --
 -- AUTO_INCREMENT for table `banner`
@@ -608,19 +678,19 @@ ALTER TABLE `interior`
 -- AUTO_INCREMENT for table `order_products`
 --
 ALTER TABLE `order_products`
-  MODIFY `order_product_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=9;
+  MODIFY `order_product_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=22;
 
 --
 -- AUTO_INCREMENT for table `order_tbl`
 --
 ALTER TABLE `order_tbl`
-  MODIFY `order_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=7;
+  MODIFY `order_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=15;
 
 --
 -- AUTO_INCREMENT for table `our_team`
 --
 ALTER TABLE `our_team`
-  MODIFY `member_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=4;
+  MODIFY `member_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=5;
 
 --
 -- AUTO_INCREMENT for table `product`
@@ -638,7 +708,7 @@ ALTER TABLE `product_type`
 -- AUTO_INCREMENT for table `reviews`
 --
 ALTER TABLE `reviews`
-  MODIFY `review_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=15;
+  MODIFY `review_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=26;
 
 --
 -- AUTO_INCREMENT for table `testimonial`
@@ -650,13 +720,19 @@ ALTER TABLE `testimonial`
 -- AUTO_INCREMENT for table `users`
 --
 ALTER TABLE `users`
-  MODIFY `user_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=6;
+  MODIFY `user_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=10;
 
 --
 -- AUTO_INCREMENT for table `user_cart`
 --
 ALTER TABLE `user_cart`
-  MODIFY `user_cart_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=48;
+  MODIFY `user_cart_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=62;
+
+--
+-- AUTO_INCREMENT for table `user_subscriber`
+--
+ALTER TABLE `user_subscriber`
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=5;
 
 --
 -- AUTO_INCREMENT for table `why_choose_points`

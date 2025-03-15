@@ -150,7 +150,6 @@ router.post('/update_admin', authenticateToken, async (req, res) => {
                 console.error(err);
                 return res.status(500).send({ success: false, message: 'An error occurred while updating the admin profile.' });
             }
-            console.log('Admin profile updated successfully');
             return res.status(200).send({ success: true, message: 'Admin profile updated successfully' });
         })
     }
@@ -591,7 +590,6 @@ router.delete('/product_delete/:id', async (req, res) => {
     const product_id = req.params.id;
 
     try {
-        // Step 1: Get the product details (including images) from the database
         const getProductSql = `SELECT product_image FROM product WHERE product_id = ?`;
         const product = await exe(getProductSql, [product_id]);
 
@@ -599,10 +597,7 @@ router.delete('/product_delete/:id', async (req, res) => {
             return res.status(404).json({ success: false, message: "Product not found" });
         }
 
-        // Extract product images
         const productImages = product[0].product_image.split(',');
-
-        // Step 2: Delete images from the public/uploads folder
         productImages.forEach((image) => {
             const filePath = path.join(__dirname, "public/uploads", image);
 
@@ -617,7 +612,6 @@ router.delete('/product_delete/:id', async (req, res) => {
             }
         });
 
-        // Step 3: Delete product from the database
         const sql = `DELETE FROM product WHERE product_id = ?`;
         const result = await exe(sql, [product_id]);
 
@@ -725,7 +719,6 @@ router.delete('/product_delete/:id', async (req, res) => {
 // });
 
 // Update Interior
-
 router.put('/update_interior', async (req, res) => {
     try {
         // Extract form data
@@ -1364,7 +1357,6 @@ router.get('/get_orders', async (req, res) => {
 //Get Order Details By order_id
 router.get('/get_order_details/:id', async (req, res) => {
     var order_id = req.params.id;
-    console.log(req.params.id);
     try {
         const sql = `SELECT
         o.order_id, o.user_id, o.order_status, o.order_date, o.payment_status, o.payment_mode,
@@ -1392,7 +1384,6 @@ router.get('/get_order_details/:id', async (req, res) => {
 })
 
 // update order
-
 router.put('/update_order', async (req, res) => {
     try {
         const { order_id, order_status, payment_status } = req.body;
@@ -1400,10 +1391,6 @@ router.put('/update_order', async (req, res) => {
         if (!order_id || !order_status || !payment_status) {
             return res.status(400).json({ success: false, message: "Missing required fields" });
         }
-
-        console.log("Updating order:", order_id);
-        console.log("New order status:", order_status);
-        console.log("New payment status:", payment_status);
 
         // Base query to update order status and payment status
         let updateQuery = `
@@ -1424,7 +1411,7 @@ router.put('/update_order', async (req, res) => {
             updateQuery += `, order_reject_date = NOW()`;
         }
 
-        updateQuery += ` WHERE order_id = ?`; // Corrected order_id parameter binding
+        updateQuery += ` WHERE order_id = ?`;
         queryParams.push(order_id); // Push order_id into queryParams
 
         // Execute the update query correctly
@@ -1489,7 +1476,6 @@ router.get('/get_subscribers', async (req, res) => {
 });
 
 // Update subscriber
-
 router.put('/update_subscriber', async (req, res) => {
     try {
         const d = req.body;
