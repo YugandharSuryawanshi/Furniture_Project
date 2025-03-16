@@ -45,7 +45,7 @@ router.post('/adminRegister', async (req, res) => {
     }
 });
 
-// 3. Login
+//Login
 router.post('/adminLogin', async (req, res) => {
     const { admin_email, admin_password } = req.body;
 
@@ -78,7 +78,7 @@ router.post('/adminLogin', async (req, res) => {
     }
 });
 
-// 3. Protected Route (Uses verifyToken middleware)
+// Protected Route (Uses verifyToken middleware)
 router.get('/adminProtected', authenticateToken, (req, res) => {
     res.json({
         message: 'Access granted to protected route',
@@ -86,14 +86,14 @@ router.get('/adminProtected', authenticateToken, (req, res) => {
     });
 });
 
-// 4. Logout admin
+// Logout admin
 router.post('/adminLogout', authenticateToken, (req, res) => {
     const adminToken = req.headers['authorization']?.split(' ')[1];
-    blacklist.add(adminToken); // Add the token to the blacklist
+    blacklist.add(adminToken); // Add token to the blacklist
     res.json({ message: 'Logout successful' });
 });
 
-// 5. Fetch admin Details from admins table
+// Fetch admin Details from admins table
 router.get("/admin_details", authenticateToken, async (req, res) => {
     try {
         const sql = `SELECT * FROM admins WHERE admin_id = '${req.admin.id}'`;
@@ -105,7 +105,7 @@ router.get("/admin_details", authenticateToken, async (req, res) => {
     }
 })
 
-// 6. Update Admin Details
+// Update Admin Details
 router.post('/update_admin', authenticateToken, async (req, res) => {
     const { admin_name, admin_mobile, admin_email, old_password, admin_password } = req.body;
 
@@ -342,7 +342,7 @@ router.get("/manage_banner", async (req, res) => {
 
 //Update product_type table
 router.post("/save_product_type", async (req, res) => {
-    const { product_type_name } = req.body; // Destructure the expected value
+    const { product_type_name } = req.body;
     if (product_type_name) {
         const sql = `INSERT INTO product_type(product_type_name) VALUES('${product_type_name}')`;
         try {
@@ -721,11 +721,9 @@ router.delete('/product_delete/:id', async (req, res) => {
 // Update Interior
 router.put('/update_interior', async (req, res) => {
     try {
-        // Extract form data
         const { heading, interior_details, first_key, second_key, third_key, forth_key } = req.body;
         const d = req.files;
 
-        // Initialize file_names array
         let first_image = null;
         let second_image = null;
         let third_image = null;
@@ -734,26 +732,25 @@ router.put('/update_interior', async (req, res) => {
         if (d.first_image) {
             let fn = new Date().getTime() + "_" + d.first_image.name;
             d.first_image.mv("public/uploads/" + fn);
-            first_image = fn; // Update first image
+            first_image = fn;
         }
 
         if (d.second_image) {
             let fn = new Date().getTime() + "_" + d.second_image.name;
             d.second_image.mv("public/uploads/" + fn);
-            second_image = fn; // Update second image
+            second_image = fn;
         }
 
         if (d.third_image) {
             let fn = new Date().getTime() + "_" + d.third_image.name;
             d.third_image.mv("public/uploads/" + fn);
-            third_image = fn; // Update third image
+            third_image = fn;
         }
 
-        // Prepare the SET clause for the SQL query based on the uploaded files
+        // Prepare SET clause for the SQL query based on the uploaded files
         let setClause = [];
         let values = [];
 
-        // Always include the text fields in the update
         setClause.push('heading = ?');
         setClause.push('interior_details = ?');
         setClause.push('first_key = ?');
@@ -778,7 +775,7 @@ router.put('/update_interior', async (req, res) => {
             values.push(third_image);
         }
 
-        // Construct the SQL query
+        // SQL query
         let sql = `UPDATE interior SET ${setClause.join(', ')} WHERE interior_id = 1`;
 
         var data = await exe(sql, values, (err, result) => {
@@ -934,7 +931,7 @@ router.put('/update_why_choose_us', (req, res) => {
     let fileName = null;
 
     try {
-        // If an image is provided
+        // If an image is provided/came
         if (req.files && req.files.why_choose_img) {
             fileName = new Date().getTime() + "_" + req.files.why_choose_img.name;
             req.files.why_choose_img.mv("public/uploads/" + fileName, (err) => {
@@ -942,7 +939,6 @@ router.put('/update_why_choose_us', (req, res) => {
                     return res.status(500).json({ success: false, message: "File upload failed" });
                 }
 
-                // After file upload
                 const sql = `UPDATE why_choose_us SET heading='${d.heading}', why_choose_img='${fileName}' WHERE why_choose_us_id=1`;
                 exe(sql, (err, result) => {
                     if (err) {
@@ -952,7 +948,6 @@ router.put('/update_why_choose_us', (req, res) => {
                 });
             });
         } else {
-            // Update without image
             const sql = `UPDATE why_choose_us SET heading='${d.heading}' WHERE why_choose_us_id=1`;
             exe(sql, (err, result) => {
                 if (err) {
@@ -1008,7 +1003,7 @@ router.post('/save_why_choose_us_point', (req, res) => {
         } else {
             // If no image is uploaded, Then insert only name and details
             const sql = `INSERT INTO why_choose_points (why_choose_points_name, why_choose_points_details)
-                      VALUES ('${d.why_choose_points_name}', '${d.why_choose_points_details}')`;
+                    VALUES ('${d.why_choose_points_name}', '${d.why_choose_points_details}')`;
             exe(sql, (err, result) => {
                 if (err) {
                     return res.status(500).json({ success: false, message: "Error saving data in the table" });
