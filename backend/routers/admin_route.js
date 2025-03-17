@@ -20,10 +20,8 @@ function authenticateToken(req, res, next) {
         if (err) {
             return res.status(403).send('adminToken is invalid or expired');
         }
-
         // Attach the decoded admin payload to the request object
         req.admin = admin;
-
         next();
     });
 }
@@ -1395,7 +1393,7 @@ router.put('/update_order', async (req, res) => {
 
         let queryParams = [order_status, payment_status];
 
-        // Add conditionally based on order status
+        // Add condition based on order status
         if (order_status === "Dispatched") {
             updateQuery += `, order_dispatch_date = NOW()`;
         } else if (order_status === "Delivered") {
