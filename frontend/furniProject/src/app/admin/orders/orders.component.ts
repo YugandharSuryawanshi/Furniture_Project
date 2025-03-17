@@ -14,19 +14,21 @@ import { ToastrService } from 'ngx-toastr';
 })
 export class OrdersComponent implements OnInit {
 
-  orders: any[] = []; // All orders
-  filteredOrders: any[] = []; // Filtered orders
-  paginatedOrders: any[] = []; // Displayed orders (pagination)
+  orders: any[] = [];
+  filteredOrders: any[] = [];
+  paginatedOrders: any[] = [];
   selectedStatus: string = 'All';
   searchQuery: string = '';
   selectedDateFilter: string = 'Every';
 
-  // Summary Counters
+  //Counters
   total_orders: number = 0;
   total_pending: number = 0;
   total_revenue: number = 0;
   total_cancelled: number = 0;
   total_delivered: number = 0;
+  animatedTotalRevenue: number = 0;
+  animatedTotalOrder: number = 0;
 
   // Pagination
   totalPages: number = 0;
@@ -36,8 +38,8 @@ export class OrdersComponent implements OnInit {
 
   // Show hide order Details
   showTracking: boolean = false;
-  singleOrderDetails:any; // Store the selected order details
-  showOrderDetails: boolean = false; // Toggle visibility
+  singleOrderDetails: any;
+  showOrderDetails: boolean = false;
 
   constructor(private adminApi: AdminApiService, private toastr: ToastrService, private router: Router) { }
 
@@ -63,6 +65,8 @@ export class OrdersComponent implements OnInit {
           if (order.order_status === 'Delivered') this.total_delivered++;
         });
 
+        this.animateCounter();
+        this.animateOrderCounter();
         this.applyFilters(); // Apply filters and pagination
       } else {
         this.toastr.error('No orders found', 'Error', { progressBar: true, closeButton: true, disableTimeOut: false });
@@ -71,6 +75,40 @@ export class OrdersComponent implements OnInit {
       console.error("Error fetching orders:", error);
       this.toastr.error('Error fetching orders', 'Error', { progressBar: true, closeButton: true, disableTimeOut: false });
     });
+  }
+
+  animateCounter() {
+    let start = 0;
+    let end = this.total_revenue;
+
+    let duration = 1500;
+    let increment = Math.ceil(end / (duration / 20));
+
+    let timer = setInterval(() => {
+      if (start < end) {
+        start += increment;
+        this.animatedTotalRevenue = start;
+      } else {
+        this.animatedTotalRevenue = end;
+        clearInterval(timer);
+      }
+    }, 10);
+  }
+
+  animateOrderCounter() {
+    let start = 0;
+    let end = this.total_orders;
+    let duration = 2500;
+    let increment = Math.ceil(end / (duration / 20));
+    let timer = setInterval(() => {
+      if (start < end) {
+        start += increment;
+        this.animatedTotalOrder = start;
+      } else {
+        this.animatedTotalOrder = end;
+        clearInterval(timer);
+      }
+    }, 60);
   }
 
   setStatus(status: string) {
@@ -147,7 +185,7 @@ export class OrdersComponent implements OnInit {
     }
   }
 
-  // Function to set selected order details //View order details
+  //View order details
   viewOrderDetails(id: any) {
     this.showTracking = true;
     this.adminApi.getSingleOrder(id).subscribe((res: any) => {
@@ -166,7 +204,6 @@ export class OrdersComponent implements OnInit {
     const initials = nameParts.map(part => part.charAt(0).toUpperCase()).slice(0, 2).join('');
     return initials;
   }
-  
 
   closeOrderDetails() {
     this.showTracking = false;

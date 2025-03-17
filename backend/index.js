@@ -16,7 +16,7 @@ app.use(bodyParser.json());
 app.use(upload());
 app.use(express.static("public"));
 
-// ✅ Configure CORS
+//Configure CORS
 app.use(cors({
     origin: '*',
     methods: ['GET', 'POST', 'PUT', 'DELETE'],

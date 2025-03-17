@@ -33,7 +33,6 @@ function authenticateToken(req, res, next) {
 
         // Attach the decoded user payload to the request object
         req.user = user;
-        console.log('Access From userToken Data IS :', JSON.stringify(req.user, null, 2));
         next();
     });
 };
