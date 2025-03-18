@@ -224,7 +224,9 @@ export class AdminApiService {
 
   //DELETE Product
   deleteProduct(product_id: any) {
-    return this.http.delete(`${this.adminUrl}/product_delete/${product_id}`);
+    console.log('Came product id is : ', product_id);
+    
+    return this.http.delete(`${this.adminUrl}/product_delete/${product_id}`, product_id);
   }
 
   //Get Interior
@@ -385,6 +387,21 @@ export class AdminApiService {
   //Delete Subscriber
   deleteSubscriber(id: any) {
     return this.http.delete(`${this.adminUrl}/delete_subscriber/${id}`);
+  }
+
+  //Get All Reviews
+  getReviews() {
+    return this.http.get(`${this.adminUrl}/get_reviews`);
+  }
+
+  //Update Review Information
+  updateReview(updateFormData: FormData) {
+    return this.http.put(`${this.adminUrl}/update_review`, updateFormData);
+  }
+
+  //Delete Review
+  deleteReview(id: any) {
+    return this.http.delete(`${this.adminUrl}/delete_review/${id}`);
   }
 
 
