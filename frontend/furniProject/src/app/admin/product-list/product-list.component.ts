@@ -163,6 +163,8 @@ export class ProductListComponent implements OnInit {
 
   deleteProduct(product_id: any) {
     if (confirm('Are you sure you want to delete this product?')) {
+      console.log(product_id);
+      
       this.adminApi.deleteProduct(product_id).subscribe((res: any) => {
         if (res.success) {
           this.toastr.success('Product deleted successfully!', 'Success', { disableTimeOut: false, progressBar: true, closeButton: true, });

@@ -1,0 +1,198 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<body>
+    <div class="container mt-2">
+        <h1 class="text-center mb-4 fade-in" style="color: #000000; font-weight: 700;"><i class="fas fa-comments"></i>
+            Product Reviews</h1>
+        <div class="card fade-in">
+            <div class="card-body p-0">
+                <div class="table-responsive">
+                    <table class="table table-hover mb-0">
+                        <thead>
+                            <tr>
+                                <th scope="col">Sr.No</th>
+                                <th scope="col">Product ID</th>
+                                <th scope="col">Product Name</th>
+                                <th scope="col">User Name</th>
+                                <th scope="col">Profile</th>
+                                <th scope="col">Rating</th>
+                                <th scope="col">Comment</th>
+                                <th scope="col">Time</th>
+                                <th scope="col">Action</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr *ngFor="let data of paginatedReviews; let i=index;">
+                                <td scope="row">{{ (currentPage - 1) * itemsPerPage + i + 1 }}</td>
+                                <td scope="row">{{ data.product_id }}</td>
+                                <td scope="row">{{ data.product_name }}</td>
+                                <td>{{ data.user_name }}</td>
+                                <td>
+                                    <ng-container *ngIf="data.user_profile; else initialsTemplate">
+                                        <img [src]="'http://localhost:1000/uploads/' + data.user_profile"
+                                            alt="User Profile" class="rounded-circle border"
+                                            style="height: 40px; width: 40px; margin-right: 10px;">
+                                    </ng-container>
+                                    <!--User initials -->
+                                    <ng-template #initialsTemplate>
+                                        <div class="rounded-circle bg-dark text-white d-flex justify-content-center align-items-center border"
+                                            style="height: 40px; width: 40px; margin-right: 10px; font-weight: bold;">
+                                            {{ getInitials(data.user_name) }}
+                                        </div>
+                                    </ng-template>
+                                </td>
+                                <td>
+                                    <span *ngFor="let star of getStars(data.rating)">
+                                        <i
+                                            [class]="'fas ' + (star ? 'fa-star text-warning' : 'fa-star text-muted')"></i>
+                                    </span>
+                                </td>
+                                <td>{{ data.comment }}</td>
+                                <td>{{ data.created_at | date }}</td>
+                                <td>
+                                    <button class="btn btn-gradient action-btn" (click)="openEditModal(data)">
+                                        <i class="fas fa-edit"></i>
+                                    </button>
+                                    <button class="btn btn-gradient action-btn" (click)="deleteReview(data.review_id)">
+                                        <i class="fas fa-trash"></i>
+                                    </button>
+                                </td>
+                            </tr>
+                        </tbody>
+
+                    </table>
+                </div>
+                <!-- Pagination -->
+                <nav class="d-flex justify-content-end mt-4">
+                    <ul class="pagination">
+                        <!-- Previous Button -->
+                        <li class="page-item" [class.disabled]="currentPage === 1">
+                            <a class="page-link" (click)="goToPage(currentPage - 1)" aria-label="Previous">
+                                Previous
+                            </a>
+                        </li>
+
+                        <!-- Page Numbers -->
+                        <li *ngFor="let page of totalPagesArray" class="page-item"
+                            [class.active]="page === currentPage">
+                            <a class="page-link" (click)="goToPage(page)">{{ page }}</a>
+                        </li>
+
+                        <!-- Next Button -->
+                        <li class="page-item" [class.disabled]="currentPage === totalPages">
+                            <a class="page-link" (click)="goToPage(currentPage + 1)" aria-label="Next">
+                                Next
+                            </a>
+                        </li>
+                    </ul>
+                </nav>
+            </div>
+        </div>
+    </div>
+
+    <div *ngIf="selectedReview" class="modal-overlay fade-in">
+        <div class="modal-content slide-up">
+            <span class="close-btn" (click)="closeModal()">&times;</span>
+
+            <h2 class="text-center"><i class="fas fa-comment-dots"></i>
+                Edit Review</h2>
+            <div class="review-details">
+                <div class="col-md-12">
+                    <div class="row">
+                        <div class="col-md-6">
+                            <div class="row">
+                                <div class="col-md-12 text-center justify-content-center align-items-center d-flex">
+                                    <ng-container *ngIf="selectedReview.user_profile; else initialsTemplate">
+                                        <img [src]="'http://localhost:1000/uploads/' + selectedReview.user_profile"
+                                            alt="User Profile" class="rounded-circle border"
+                                            style="height: 180px; width: 180px; margin-right: 10px;">
+                                    </ng-container>
+                                    <ng-template #initialsTemplate>
+                                        <div class="rounded-circle bg-dark text-white d-flex justify-content-center align-items-center border"
+                                            style="height: 180px; width: 180px; margin-right: 10px; font-weight: bold;">
+                                            {{ getInitials(selectedReview.user_name) }}
+                                        </div>
+                                    </ng-template>
+                                </div>
+                                <div class="col-md-12">
+                                    <p><strong>Product Name:</strong> {{ selectedReview.product_name }}</p>
+                                    <p><strong>User Name:</strong> {{ selectedReview.user_name }}</p>
+                                    <p><strong>User Email:</strong> {{ selectedReview.user_email}}</p>
+                                    <p><strong>Rating: </strong>
+                                        <span *ngFor="let star of getStars(selectedReview.rating)">
+                                            <i
+                                                [class]="'fas ' + (star ? 'fa-star text-warning' : 'fa-star text-muted')"></i>
+                                        </span>
+                                    </p>
+                                    <p><strong>Heading:</strong> {{ selectedReview.heading }}</p>
+                                    <p><strong>Comment:</strong> {{ selectedReview.comment }}</p>
+                                    <p><strong>Time:</strong> {{ selectedReview.created_at | date }}</p>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-md-6">
+                            <h4>Product Images</h4>
+                            <div class="row">
+                                <div class="col-md-4" *ngFor="let img of selectedReview.review_images">
+                                    <img [src]="'http://localhost:1000/uploads/' + img.trim()" alt="Review Image"
+                                        class="img-fluid rounded border shadow-sm">
+                                </div>
+                            </div>
+                            <h4>Change Details</h4>
+                            <div>
+                                <form (ngSubmit)="saveReview(selectedReview.review_id)">
+                                    <div class="col-md-12 bg-light">
+                                        <div class="row">
+                                            <!-- Rating -->
+                                            <div class="col-md-6">
+                                                <label for="rating">Change Rating:</label>
+                                                <select class="form-control" id="rating" name="rating"
+                                                    [(ngModel)]="formData.rating">
+                                                    <option value="1">1</option>
+                                                    <option value="2">2</option>
+                                                    <option value="3">3</option>
+                                                    <option value="4">4</option>
+                                                    <option value="5">5</option>
+                                                </select>
+                                            </div>
+
+                                            <!-- Heading -->
+                                            <div class="col-md-6">
+                                                <label for="heading">Heading:</label>
+                                                <input type="text" class="form-control" id="heading" name="heading"
+                                                    [(ngModel)]="formData.heading">
+                                            </div>
+
+                                            <!-- Comment -->
+                                            <div class="col-md-12">
+                                                <label for="comment">Comment:</label>
+                                                <textarea class="form-control" id="comment" rows="2" name="comment"
+                                                    [(ngModel)]="formData.comment"></textarea>
+                                            </div>
+
+                                            <!-- Submit Button -->
+                                            <div class="col-md-12 text-center mt-3">
+                                                <button type="submit" class="btn btn-warning">Submit</button>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </form>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-12">
+                <div class="row">
+                    <div class="col-md-4"></div>
+                    <div class="col-md-4">
+                        <button class="btn btn-danger btn-cancel" (click)="closeModal()">Cancel</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+</body>
+</html>

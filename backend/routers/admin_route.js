@@ -585,34 +585,10 @@ router.put('/product_update/:id', async (req, res) => {
 
 // Product Delete
 router.delete('/product_delete/:id', async (req, res) => {
-    const product_id = req.params.id;
-
+    const product_id = req.params.id;;
     try {
-        const getProductSql = `SELECT product_image FROM product WHERE product_id = ?`;
-        const product = await exe(getProductSql, [product_id]);
-
-        if (product.length === 0) {
-            return res.status(404).json({ success: false, message: "Product not found" });
-        }
-
-        const productImages = product[0].product_image.split(',');
-        productImages.forEach((image) => {
-            const filePath = path.join(__dirname, "public/uploads", image);
-
-            if (fs.existsSync(filePath)) {
-                try {
-                    fs.unlinkSync(filePath); // Delete the image
-                } catch (err) {
-                    console.error(`Error deleting file ${filePath}:`, err.message);
-                }
-            } else {
-                console.warn(`File not found: ${filePath}`);
-            }
-        });
-
         const sql = `DELETE FROM product WHERE product_id = ?`;
         const result = await exe(sql, [product_id]);
-
         return res.status(200).json({
             success: true,
             message: "Product and associated images deleted successfully",
@@ -1472,7 +1448,7 @@ router.get('/get_subscribers', async (req, res) => {
 router.put('/update_subscriber', async (req, res) => {
     try {
         const d = req.body;
-        
+
         if (!d.id || !d.name || !d.email || !d.status) {
             return res.status(400).json({ success: false, message: "Missing required fields" });
         }
@@ -1504,6 +1480,65 @@ router.delete('/delete_subscriber/:id', async (req, res) => {
     }
 });
 
+//Get All Reviews
+router.get('/get_reviews', async (req, res) => {
+    try {
+        const sql = `SELECT reviews.*,
+        users.user_name AS user_name,
+        users.user_email AS user_email,
+        users.user_profile AS user_profile,
+        product.product_name AS product_name
+    FROM reviews
+    JOIN users ON reviews.user_id = users.user_id
+    JOIN product ON reviews.product_id = product.product_id
+    ORDER BY reviews.created_at DESC`;
+
+        const data = await exe(sql);
+        if (data.length > 0) {
+            res.status(200).json({ success: true, data });
+        } else {
+            res.status(404).json({ success: false, message: "No reviews found" });
+        }
+    } catch (err) {
+        console.error("Error fetching reviews: ", err);
+        res.status(500).json({ success: false, message: "Internal Server Error", error: err.message });
+    }
+});
+
+// Update Review
+router.put('/update_review', async (req, res) => {
+    const d = req.body;
+    try {
+        if (!d.review_id || !d.rating || !d.comment || !d.heading) {
+            return res.status(400).json({ success: false, message: "Missing required fields" });
+        }
+        let updateQuery = `UPDATE reviews SET rating =?, comment =?, heading =?, created_at = NOW() WHERE review_id =?`;
+        let queryParams = [d.rating, d.comment, d.heading, d.review_id];
+        const result = await exe(updateQuery, queryParams);
+        if (result.affectedRows === 0) {
+            return res.status(404).json({ success: false, message: "Review not found" });
+        }
+        res.status(200).json({ success: true, message: "Review updated successfully!" });
+    } catch (err) {
+        console.error("Error updating review:", err);
+        res.status(500).json({ success: false, message: "Internal Server Error", error: err.message });
+    }
+})
+
+// Delete Review
+router.delete('/delete_review/:id', async (req, res) => {
+    try {
+        const id = req.params.id;
+        const sql = `DELETE FROM reviews WHERE review_id=${id}`;
+        const result = await exe(sql);
+        if (result.affectedRows === 0) {
+            return res.status(404).json({ success: false, message: "Review not found" });
+        }
+        res.status(200).json({ success: true, message: "Review deleted successfully!" });
+    } catch (err) {
+        res.status(500).json({ success: false, message: "Internal Server Error", error: err.message });
+    }
+});
 
 export { router as adminRoute };
 

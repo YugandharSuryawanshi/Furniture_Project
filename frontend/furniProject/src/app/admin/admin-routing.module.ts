@@ -22,6 +22,7 @@ import { AuthGuard } from '../auth.guard';
 import { OrdersComponent } from './orders/orders.component';
 import { UpdateOrderComponent } from './update-order/update-order.component';
 import { SubscriberComponent } from './subscriber/subscriber.component';
+import { ManageReviewComponent } from './manage-review/manage-review.component';
 
 const routes: Routes = [
   { path: 'login', component: AdminLoginComponent }, // Allow login without authentication
@@ -46,6 +47,7 @@ const routes: Routes = [
   { path: 'orders', component: OrdersComponent, canActivate: [AuthGuard], data: { role: 'admin' , requiresLogin: true }  },
   { path: 'update-order/:id', component: UpdateOrderComponent, canActivate: [AuthGuard], data: { role: 'admin' , requiresLogin: true }  },
   { path: 'subscriber', component: SubscriberComponent, canActivate: [AuthGuard], data: { role: 'admin' , requiresLogin: true } },
+  { path: 'manage-review', component: ManageReviewComponent, canActivate: [AuthGuard], data: { role: 'admin' , requiresLogin: true } },
   { path: '**', redirectTo: 'dashboard' } // Default admin route for invalid paths
 ];
 
