@@ -1,13 +1,4 @@
 @charset "UTF-8";
-/* stylelint-disable-line scss/dollar-variable-default */
-/* stylelint-disable-line scss/dollar-variable-default */
-/*!
- * CoreUI - HTML, CSS, and JavaScript UI Components Library
- * @version v4.2.6
- * @link https://coreui.io/
- * Copyright (c) 2022 creativeLabs Łukasz Holeczek
- * License MIT  (https://coreui.io/license/)
- */
 :root {
   --cui-blue: #0d6efd;
   --cui-indigo: #6610f2;

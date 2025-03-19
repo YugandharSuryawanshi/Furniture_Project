@@ -108,8 +108,7 @@ router.post('/userLogout', authenticateToken, (req, res) => {
 
     blacklist.add(userToken);
     res.status(200).json({ message: 'Logged out successfully' });
-    blacklist.add(userToken); // Add the token to the blacklist after logout
-    console.log('User logged out:', req.user.user_email);
+    blacklist.add(userToken);
 
 });
 

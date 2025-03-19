@@ -15,7 +15,7 @@ import { AdminApiService } from '../service/admin-api.service';
 export class AdminNavbarComponent implements AfterViewInit {
 
   constructor(private el: ElementRef, public adminApi: AdminApiService, private router: Router) { }
-  private sidebar!: Sidebar;
+  private sidebar!:Sidebar;
 
   // This is for toggle navigation
   ngAfterViewInit(): void {

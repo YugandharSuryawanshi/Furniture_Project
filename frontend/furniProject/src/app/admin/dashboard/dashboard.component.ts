@@ -40,6 +40,7 @@ export class DashboardComponent {
   order_count: any = 0;
   subscriber_count: any = 0;
   team_count: any = 0;
+  reviews_count: any = 0;
 
   getData() {
         this.user();
@@ -50,6 +51,7 @@ export class DashboardComponent {
         this.orders();
         this.subscribers();
         this.team_Meambers();
+        this.reviews();
   }
 
   user()
@@ -103,6 +105,12 @@ export class DashboardComponent {
   team_Meambers() {
     this.adminApi.getTeamMembers().subscribe((data: any) => {;
       this.team_count = data.data.length;
+    })
+  }
+
+  reviews() {
+    this.adminApi.getReviews().subscribe((data: any) => {
+      this.reviews_count = data.data.length;
     })
   }
 

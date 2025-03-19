@@ -3,6 +3,6 @@
   }
   
   .collapse.show {
-    display: block; /* When toggled, navbar becomes visible */
+    display: block;
   }
   
