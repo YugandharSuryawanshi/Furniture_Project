@@ -15,22 +15,17 @@ export class UserNavbarComponent {
 
   constructor( public userApi:UserApiService ){}
 
-  isNavbarCollapsed = false; // Initially, the navbar is closed
+  activeLink: string = 'home';
+  setActive(link: string) {
+    this.activeLink = link;
+  }
+  isActive(link: string): boolean {
+    return this.activeLink === link;
+  }
 
+
+  isNavbarCollapsed = false;
   toggleNavbar() {
     this.isNavbarCollapsed = !this.isNavbarCollapsed;
   }
-
-
-  ngOnInit()
-  {
-    this.check();
-  }
-  check()
-  {
-    const temp= this.userApi.isUserLoggedIn();
-    console.log('Is User Login Or Not'+temp);
-  }
-  
-
 }
