@@ -33,6 +33,7 @@ const routes: Routes = [
   { path: 'print_receipt/:order_id', component: PrintReceiptComponent, canActivate: [UserAuthGuard], data: { role: 'user' , requiresLogin: true}},
   { path: 'checkout', component: CheckoutComponent, canActivate: [UserAuthGuard], data: { role: 'user' , requiresLogin: true}},
   { path: '', redirectTo: 'home', pathMatch: 'full' },
+  { path: '**', redirectTo: 'home', pathMatch: 'full'}
 ];
 
 @NgModule({

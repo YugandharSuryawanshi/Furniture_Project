@@ -26,8 +26,8 @@ import { ManageReviewComponent } from './manage-review/manage-review.component';
 
 const routes: Routes = [
   { path: 'login', component: AdminLoginComponent }, // Allow login without authentication
-  { path: '', redirectTo: 'dashboard', pathMatch: 'full' }, // Default admin route
-  { path:'register', component: RegisterComponent }, // Allow registration without authentication
+  { path: '', redirectTo: 'dashboard', pathMatch: 'full' },
+  { path:'register', component: RegisterComponent },
   { path: 'dashboard', component: DashboardComponent, canActivate: [AuthGuard], data: { role: 'admin',requiresLogin: true } },
   { path: 'home', component: HomeComponent, canActivate: [AuthGuard], data: { role: 'admin' , requiresLogin: true } },
   { path: 'profile', component: ProfileComponent, canActivate: [AuthGuard], data: { role: 'admin' , requiresLogin: true } },
