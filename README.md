@@ -36,5 +36,7 @@
 <br>5) Run npm install command in frontend/furniProject path and run using ng serve -o
 <br>6) Start xampp then start apache and mysql and open phpMyAdmin server
 <br>7) Create new database with furni_shop name and import database using in backend/database/furni_shop.db file.
-<br>_______________________________________________________________________________________________________________
+<br>
+<hr>
+_______________________________________________________________________________________________________________
 
