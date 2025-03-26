@@ -20,7 +20,7 @@ export class AppComponent {
 
   isAdminRoute: boolean = false;
 
-  constructor(private router: Router) {}
+  constructor(private router: Router) { }
 
   ngOnInit(): void {
     // Subscribe to route changes
@@ -31,6 +31,5 @@ export class AppComponent {
       }
     });
   }
-
 
 }

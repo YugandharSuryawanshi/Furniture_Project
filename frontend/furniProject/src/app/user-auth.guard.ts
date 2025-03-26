@@ -8,12 +8,12 @@ import { UserApiService } from './service/user-api.service';
 })
 export class UserAuthGuard implements CanActivate {
 
-  constructor(private userApi:UserApiService , private router: Router) {}
+  constructor(private userApi: UserApiService, private router: Router) { }
 
   canActivate(route: ActivatedRouteSnapshot, state: RouterStateSnapshot): boolean {
     const token = localStorage.getItem('userToken');
     const requiresLogin = route.data['requiresLogin'];
-    
+
     if (!token && requiresLogin) {
 
       const shouldRedirect = confirm('You are not logged in? Log in First!');
