@@ -1,11 +1,10 @@
-import express from 'express';
-import dotenv from 'dotenv';
 import bodyParser from 'body-parser';
 import cors from 'cors';
+import dotenv from 'dotenv';
+import express from 'express';
 import upload from 'express-fileupload';
-import { userRoute } from './routers/user_route.js';
 import { adminRoute } from './routers/admin_route.js';
-import { config } from './config/config.js';
+import { userRoute } from './routers/user_route.js';
 
 dotenv.config();
 
