@@ -34,17 +34,19 @@ export class ProductInfoComponent {
   check_is_login: any = this.userApi.isUserLoggedIn();
   addReview: any = false;
   topReviewsDisplay: any = true;
+  isWishlistAdded:boolean = false;
 
   constructor(private route: ActivatedRoute, private userApi: UserApiService, public router: Router, public toastr: ToastrService) { }
 
   ngOnInit(): void {
     this.checkDeviceType(); // Check device on page load
-
+    
     const id = this.route.snapshot.paramMap.get('id');
     if (id) {
       this.came_product_id = id;
       this.fetchProductDetails(id);
       this.getReviews()
+      this.getWishlistStatus(id);
     }
   }
 
@@ -88,7 +90,7 @@ export class ProductInfoComponent {
   checkDeviceType(): void {
     this.isDesktop = window.innerWidth > 768; // Check if it's a desktop
     if (!this.isDesktop) {
-      this.showZoom = false; // Disable zoom preview on mobile
+      this.showZoom = false; // Disable zoom preview on mobile devices
     }
   }
 
@@ -145,7 +147,7 @@ export class ProductInfoComponent {
             this.selectedImages = [],
             this.addReview = false,
             this.getReviews();
-          this.toastr.success('Review Added successfully','Success', { disableTimeOut: false, progressBar: true, closeButton: true });
+          this.toastr.success('Review Added successfully', 'Success', { disableTimeOut: false, progressBar: true, closeButton: true });
         }
         else {
           this.toastr.error(res.message, 'Error', { disableTimeOut: false, progressBar: true, closeButton: true });
@@ -241,7 +243,43 @@ export class ProductInfoComponent {
     const initials = nameParts.map(part => part.charAt(0).toUpperCase()).slice(0, 2).join('');
     return initials;
   }
-  
 
+  // Add TO wishlist
+  addToWishlist(product_id: any) {
+    const isloginCheck = this.userApi.isUserLoggedIn();
+    if (isloginCheck) {
+      this.userApi.addToWishlist(product_id).subscribe(
+        (res: any) => {
+          if (res.success) {
+            this.toastr.success( res.message , "Success", { disableTimeOut: false, progressBar: true, closeButton: true });
+            this.isWishlistAdded = true;
+            this.getWishlistStatus(product_id);
+          }
+          else {
+            this.toastr.error(res.message, "Error", { disableTimeOut: false, progressBar: true, closeButton: true });
+          }
+        });
+    }
+    else {
+      const userConfirmed = window.confirm("Please login to add product to wishlist");
+      if (userConfirmed) {
+        this.router.navigate(['/user/login']);
+      }
+    }
+  }
+
+  // Get wishlist status for current product_id
+  getWishlistStatus(product_id: any) {
+    this.userApi.getWishlistStatus(product_id).subscribe((res: any) => {
+      if (res.success) {
+        this.isWishlistAdded = res.isInWishlist;
+      } else {
+        console.log("Error fetching wishlist status:", res.message);
+      }
+    },
+    (error) => {
+      console.error("Error:", error);
+    });
+}
 
 }
