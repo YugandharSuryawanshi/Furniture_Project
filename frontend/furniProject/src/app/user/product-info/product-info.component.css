@@ -91,3 +91,20 @@
 .large-img {
     height: 300px; /* Bigger middle image */
 }
+
+
+
+
+/* Wish List CSS Start */
+
+/* Default heart color */
+.wishlist-icon {
+    color: white;
+    font-size: 18px;
+    transition: color 0.3s ease-in-out;
+}
+
+/* Change heart color to red on hover */
+.wishlist-btn:hover .wishlist-icon {
+    color: red;
+}

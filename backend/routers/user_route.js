@@ -865,10 +865,10 @@ router.post('/contact_us', async (req, res) => {
 });
 
 // Save Subscriber information
-router.post('/subscribe', async (req,res)=>{
+router.post('/subscribe', async (req, res) => {
     try {
         var d = req.body;
-        var sql =`INSERT INTO user_subscriber (name, email) VALUES ('${d.name}', '${d.email}')`;
+        var sql = `INSERT INTO user_subscriber (name, email) VALUES ('${d.name}', '${d.email}')`;
         await exe(sql);
         res.status(200).json({ success: true, message: 'Thank you for subscribing to our newsletter.' });
     } catch (err) {
@@ -877,5 +877,71 @@ router.post('/subscribe', async (req,res)=>{
     }
 })
 
-export { router as userRoute };
+// Add Product in Wishlist
+router.post('/add_to_wishlist', authenticateToken, async (req, res) => {
+    try {
+        const userId = req.user.id;
+        const productId = req.body.product_id;
+        const sql = `INSERT INTO wishlist (user_id, product_id) VALUES (?,?) ON DUPLICATE KEY UPDATE date_added = NOW()`;
+        await exe(sql, [userId, productId]);
+        res.status(200).json({ success: true, message: 'Product added to wishlist successfully' });
+    } catch (error) {
+        console.error('Error adding product to wishlist:', error);
+        res.status(500).json({ success: false, message: 'Error adding product to wishlist' });
+    }
+});
 
+//Get wishlist Status
+router.get('/get_wishlist_status/:product_id', authenticateToken, async (req, res) => {
+    try {
+        const userId = req.user.id;
+        const product_id = req.params.product_id;
+        
+        const sql = `SELECT * FROM wishlist WHERE user_id = ? AND product_id = ?`;
+        const data = await exe(sql, [userId, product_id]);
+        
+        if (data.length > 0) {
+            res.status(200).json({ success: true, isInWishlist: true });
+        } else {
+            res.status(200).json({ success: true, isInWishlist: false });
+        }
+    } catch (error) {
+        console.error('Error fetching wishlist status:', error);
+        res.status(500).json({ success: false, message: 'Error fetching wishlist status' });
+    }
+});
+
+// Get Wishlist Products
+router.get('/get_wishlist', authenticateToken, async (req, res) => {
+    try {
+        const userId = req.user.id;
+        const sql = `SELECT wishlist.*, products.product_name, products.product_price, products.product_image FROM wishlist
+        JOIN products ON wishlist.product_id = products.product_id WHERE user_id =?`;
+        const wishlists = await exe(sql, [userId]);
+
+        res.status(200).json({ success: true, wishlists });
+    } catch (error) {
+        console.error('Error fetching wishlist products:', error);
+        res.status(500).json({ success: false, message: 'Error fetching wishlist products' });
+    }
+});
+
+// Remove Product from Wishlist
+router.delete('/remove_from_wishlist/:product_id', authenticateToken, async (req, res) => {
+    try {
+        const userId = req.user.id;
+        const productId = req.params.product_id;
+        const sql = `DELETE FROM wishlist WHERE user_id =? AND product_id =?`;
+        await exe(sql, [userId, productId]);
+        res.status(200).json({ success: true, message: 'Product removed from wishlist successfully' });
+    } catch (error) {
+        console.error('Error removing product from wishlist:', error);
+        res.status(500).json({ success: false, message: 'Error removing product from wishlist' });
+    }
+});
+
+
+
+
+
+export { router as userRoute };

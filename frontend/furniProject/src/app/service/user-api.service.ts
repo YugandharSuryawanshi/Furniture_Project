@@ -238,5 +238,33 @@ export class UserApiService {
     return this.http.post(`${this.userUrl}/subscribe`, formData);
   }
 
+  // Add Product To Wishlist
+  addToWishlist(productId: any): Observable<any> {
+    const token = this.getToken();
+    const headers = new HttpHeaders().set('Authorization', `Bearer ${token}`);
+    return this.http.post(`${this.userUrl}/add_to_wishlist`, { product_id: productId }, { headers });
+  }
+
+  //Get Wishlist
+  getWishlist(): Observable<any> {
+    const token = this.getToken();
+    const headers = new HttpHeaders().set('Authorization', `Bearer ${token}`);
+    return this.http.get(`${this.userUrl}/get_wishlist`, { headers });
+  }
+
+  //Remove product from wishlist
+  removeFromWishlist(productId: any): Observable<any> {
+    const token = this.getToken();
+    const headers = new HttpHeaders().set('Authorization', `Bearer ${token}`);
+    return this.http.delete(`${this.userUrl}/remove_from_wishlist/${productId}`, { headers });
+  }
+
+  //Get wishlist status
+  getWishlistStatus(productId: any) {
+    const token = this.getToken();
+    const headers = new HttpHeaders().set('Authorization', `Bearer ${token}`);
+    return this.http.get(`${this.userUrl}/get_wishlist_status/${productId}`, { headers });
+  }
+
   
 }

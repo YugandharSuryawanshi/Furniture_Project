@@ -26,7 +26,7 @@
                 <h1 class="text-dark">{{ product.product_name }}</h1>
                 <div class="row">
                     <h5 class="text-success ml-2 mt-1">-{{ discount }}% off</h5>
-                    <h4 class="text-dark ml-2"> {{ product_price | currency: 'INR':true:'1.0-0' }} /-</h4>
+                    <h4 class="text-dark ml-2"> {{ product_price | currency: 'INR':'symbol':'1.0-0' }} /-</h4>
                 </div>
                 <p> M.R.P. : <del> ₹{{ product.duplicate_price }} </del></p>
                 <div class="badge bg-primary">Trending</div>
@@ -45,12 +45,28 @@
                     </button>
                 </div>
 
-                <div *ngIf="!gotocart">
-                    <button (click)="addToCart(product.product_id)" class="btn btn-warning">
-                        <i class="fas fa-shopping-cart"></i> Add to Cart
-                    </button>
+                <div class="col-md-12">
+                    <div class="row align-items-center">
+                        <div class="col-auto m-1" *ngIf="!gotocart">
+                            <button (click)="addToCart(product.product_id)" class="btn btn-warning">
+                                <i class="fas fa-shopping-cart"></i> Add to Cart
+                            </button>
+                        </div>
+                
+                        <div class="col-auto m-1" *ngIf="!isWishlistAdded">
+                            <button (click)="addToWishlist(product.product_id)" class="btn btn-warning wishlist-btn">
+                                <i class="fas fa-heart wishlist-icon"></i> Add to Wishlist
+                            </button>
+                        </div>
+                
+                        <div class="col-auto m-1" *ngIf="isWishlistAdded">
+                            <button (click)="addToWishlist(product.product_id)" class="btn btn-warning">
+                                <i class="fas fa-heart" style="color: red;"></i> Added in Wishlist
+                            </button>
+                        </div>
+                    </div>
                 </div>
-            </div>
+                
 
             <!-- Zoom Preview Section (bg-warning div) -->
             <div class="col-md-7 preview-container" *ngIf="isDesktop && showZoom">
