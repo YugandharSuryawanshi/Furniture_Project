@@ -896,10 +896,10 @@ router.get('/get_wishlist_status/:product_id', authenticateToken, async (req, re
     try {
         const userId = req.user.id;
         const product_id = req.params.product_id;
-        
+
         const sql = `SELECT * FROM wishlist WHERE user_id = ? AND product_id = ?`;
         const data = await exe(sql, [userId, product_id]);
-        
+
         if (data.length > 0) {
             res.status(200).json({ success: true, isInWishlist: true });
         } else {
@@ -915,28 +915,119 @@ router.get('/get_wishlist_status/:product_id', authenticateToken, async (req, re
 router.get('/get_wishlist', authenticateToken, async (req, res) => {
     try {
         const userId = req.user.id;
-        const sql = `SELECT wishlist.*, products.product_name, products.product_price, products.product_image FROM wishlist
-        JOIN products ON wishlist.product_id = products.product_id WHERE user_id =?`;
-        const wishlists = await exe(sql, [userId]);
+        const sql = `
+            SELECT wishlist.*, product.product_name, product.product_price, product.duplicate_price, product.product_material , product.product_lable, product.product_brand, product.gst_percentage, product.discount_percentage , product.product_image
+            FROM wishlist
+            JOIN product ON wishlist.product_id = product.product_id
+            WHERE wishlist.user_id = ?`;
 
-        res.status(200).json({ success: true, wishlists });
+        const data = await exe(sql, [userId]);
+        res.status(200).json({ success: true, data: data });
     } catch (error) {
         console.error('Error fetching wishlist products:', error);
         res.status(500).json({ success: false, message: 'Error fetching wishlist products' });
     }
 });
 
-// Remove Product from Wishlist
+// Remove product from wishlist
 router.delete('/remove_from_wishlist/:product_id', authenticateToken, async (req, res) => {
     try {
+        const product_id = req.params.product_id;
         const userId = req.user.id;
-        const productId = req.params.product_id;
-        const sql = `DELETE FROM wishlist WHERE user_id =? AND product_id =?`;
-        await exe(sql, [userId, productId]);
-        res.status(200).json({ success: true, message: 'Product removed from wishlist successfully' });
+
+        if (!product_id) {
+            return res.status(400).json({ success: false, message: 'Product ID is required' });
+        }
+
+        const sql = `DELETE FROM wishlist WHERE user_id = ? AND product_id = ?`;
+        await exe(sql, [userId, product_id]);
+
+        res.status(200).json({ success: true, message: 'Removed from wishlist' });
     } catch (error) {
-        console.error('Error removing product from wishlist:', error);
-        res.status(500).json({ success: false, message: 'Error removing product from wishlist' });
+        console.error('Error removing wishlist product:', error);
+        res.status(500).json({ success: false, message: 'Error removing wishlist product' });
+    }
+});
+
+// Move all wishlist items to cart
+router.post('/move_to_cart', authenticateToken, async (req, res) => {
+    try {
+        const userId = req.user.id;
+
+        // 1. Get all wishlist items for the user
+        const wishlistItems = await exe('SELECT product_id FROM wishlist WHERE user_id = ?', [userId]);
+
+        if (wishlistItems.length === 0) {
+            return res.status(400).json({ success: false, message: 'Wishlist is empty' });
+        }
+
+        // 2. Prepare values for add
+        let cartValues = [];
+        let placeholders = [];
+
+        for (let i = 0; i < wishlistItems.length; i++) {
+            cartValues.push(userId, wishlistItems[i].product_id, 1); // (user_id, product_id, qty)
+            placeholders.push("(?, ?, ?)"); // Creates placeholders for each product
+        }
+
+        // 3. Insert all wishlist Products into cart
+        const insertCartQuery = `INSERT INTO user_cart (user_id, product_id, qty) VALUES ${placeholders.join(", ")}`;
+        await exe(insertCartQuery, cartValues);
+
+        // 4. Remove all wishlist Products after moving to cart from wishlist table
+        await exe('DELETE FROM wishlist WHERE user_id = ?', [userId]);
+
+        res.status(200).json({ success: true, message: 'All wishlist items moved to cart' });
+
+    } catch (error) {
+        console.error('Error moving wishlist items to cart:', error);
+        res.status(500).json({ success: false, message: 'Error moving wishlist items to cart' });
+    }
+});
+
+// Add Single Product into Cart from wishlist
+router.post('/add_to_cart_single', authenticateToken, async (req, res) => {
+    try {
+        const userId = req.user.id;
+        const { product_id } = req.body;
+
+        if (!product_id) {
+            return res.status(400).json({ success: false, message: 'Product ID is required' });
+        }
+
+        // Insert product into cart by default quantity is 1
+        const sql = `INSERT INTO user_cart (user_id, product_id, qty) VALUES (?, ?, 1)`;
+        await exe(sql, [userId, product_id]);
+
+        // Remove product from wishlist
+        await exe('DELETE FROM wishlist WHERE user_id = ? AND product_id = ?', [userId, product_id]);
+
+        res.status(200).json({ success: true, message: 'Product added to cart successfully' });
+
+    } catch (error) {
+        console.error('Error adding single product to cart:', error);
+        res.status(500).json({ success: false, message: 'Error adding single product to cart' });
+    }
+});
+
+// Get Most viewed Products
+router.get('/most_viewed', async (req, res) => {
+    try {
+        const limit = parseInt(req.query.limit) || 6;
+        const sql = `SELECT product_id, product_name, product_price, product_image FROM product ORDER BY product_id DESC LIMIT ?`;
+        const products = await exe(sql, [limit]);
+
+        // Convert product_image string into an array
+        products.forEach(product => {
+            product.product_image = product.product_image
+                ? product.product_image.split(',')
+                : [];
+        });
+
+        res.status(200).json({ success: true, data: products });
+    } catch (error) {
+        console.error('Error fetching most viewed products:', error);
+        res.status(500).json({ success: false, message: 'Error fetching products' });
     }
 });
 
@@ -944,4 +1035,11 @@ router.delete('/remove_from_wishlist/:product_id', authenticateToken, async (req
 
 
 
+
+
+
+
+
+
 export { router as userRoute };
+

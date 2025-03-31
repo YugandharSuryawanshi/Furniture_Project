@@ -221,10 +221,10 @@ export class UserApiService {
     const headers = new HttpHeaders().set('Authorization', `Bearer ${token}`);
 
     return this.http.get(`${this.userUrl}/get_order_receipt/${orderId}`, { headers }).pipe(
-        catchError(error => {
-            console.error('Error fetching receipt:', error);
-            return throwError(() => error);
-        })
+      catchError(error => {
+        console.error('Error fetching receipt:', error);
+        return throwError(() => error);
+      })
     );
   }
 
@@ -252,6 +252,13 @@ export class UserApiService {
     return this.http.get(`${this.userUrl}/get_wishlist`, { headers });
   }
 
+  //Move all to cart
+  moveAllToCart(): Observable<any> {
+    const token = this.getToken();
+    const headers = new HttpHeaders().set('Authorization', `Bearer ${token}`);
+    return this.http.post(`${this.userUrl}/move_to_cart`, {}, { headers });
+  }
+
   //Remove product from wishlist
   removeFromWishlist(productId: any): Observable<any> {
     const token = this.getToken();
@@ -266,5 +273,19 @@ export class UserApiService {
     return this.http.get(`${this.userUrl}/get_wishlist_status/${productId}`, { headers });
   }
 
-  
+  // Add to Cart Single Product
+  addToCartFromWishlist(productId: number): Observable<any> {
+    const token = this.getToken();
+    const headers = new HttpHeaders().set('Authorization', `Bearer ${token}`);
+    return this.http.post(`${this.userUrl}/add_to_cart_single`, { product_id: productId }, { headers });
+  }
+
+  // Most view products
+  getMostViewedProducts(limit: number): Observable<any> {
+    return this.http.get(`${this.userUrl}/most_viewed?limit=${limit}`);
+  }
+
+
+
+
 }
