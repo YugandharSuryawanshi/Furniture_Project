@@ -80,9 +80,9 @@ export class AdminApiService {
   }
 
   // Update Admin Details and profile
-  updateProfile(profile: any, headers: HttpHeaders) {
-    return this.http.post(`${this.adminUrl}/update_admin`, profile, {headers})
-  }
+  // updateAdminProfile(profile: any, headers: HttpHeaders) {
+  //   return this.http.post(`${this.adminUrl}/update_admin`, profile, {headers})
+  // }
 
   // Fetch or getting admin Details
   getAdminDetails() {
@@ -93,6 +93,27 @@ export class AdminApiService {
     }
     const headers = new HttpHeaders().set('Authorization', `Bearer ${token}`);
     return this.http.get(`${this.adminUrl}/admin_details`, { headers });
+  }
+
+  // Update Admin Details
+  updateAdminDetails(formData: FormData) {
+    const token = localStorage.getItem('adminToken');
+    const headers = new HttpHeaders().set('Authorization', `Bearer ${token}`);
+    return this.http.put(`${this.adminUrl}/update_admin`, formData, { headers });
+  }
+
+  // Update Admin Profile
+  updateAdminProfile(formData: FormData): Observable<any> {
+    const token = localStorage.getItem('adminToken');
+    const headers = new HttpHeaders().set('Authorization', `Bearer ${token}`);
+    return this.http.put(`${this.adminUrl}/update_admin_profile`, formData, { headers });
+  }
+
+  // Update Password
+  updatePassword(formData: FormData) {
+    const token = localStorage.getItem('adminToken');
+    const headers = new HttpHeaders().set('Authorization', `Bearer ${token}`);
+    return this.http.put(`${this.adminUrl}/update_password`, formData, { headers });
   }
 
   // Delete admin Account
@@ -225,7 +246,7 @@ export class AdminApiService {
   //DELETE Product
   deleteProduct(product_id: any) {
     console.log('Came product id is : ', product_id);
-    
+
     return this.http.delete(`${this.adminUrl}/product_delete/${product_id}`, product_id);
   }
 

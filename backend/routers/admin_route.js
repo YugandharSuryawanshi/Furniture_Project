@@ -94,8 +94,12 @@ router.post('/adminLogout', authenticateToken, (req, res) => {
 // Fetch admin Details from admins table
 router.get("/admin_details", authenticateToken, async (req, res) => {
     try {
+        console.log(req.admin.id);
+
         const sql = `SELECT * FROM admins WHERE admin_id = '${req.admin.id}'`;
         const admin_details = await exe(sql)
+        console.log(admin_details);
+
         res.status(200).json({ success: true, admin: admin_details[0] });
     } catch (error) {
         console.error("Error fetching admin details:", error);
@@ -104,55 +108,77 @@ router.get("/admin_details", authenticateToken, async (req, res) => {
 })
 
 // Update Admin Details
-router.post('/update_admin', authenticateToken, async (req, res) => {
-    const { admin_name, admin_mobile, admin_email, old_password, admin_password } = req.body;
+router.put('/update_admin', authenticateToken, async (req, res) => {
+    try {
+        const { admin_name, admin_mobile, admin_email } = req.body;
+        const admin_id = req.admin.id;
 
-    const admin_id = req.admin.id;
+        const sql = `UPDATE admins SET admin_name = ?, admin_mobile = ?, admin_email = ? WHERE admin_id = ?`;
+        await exe(sql, [admin_name, admin_mobile, admin_email, admin_id]);
 
-    var sql = `SELECT * FROM admins WHERE admin_id = '${admin_id}'`;
-    var admin_details = await exe(sql)
-
-    const hashedOldPassword = admin_details[0].admin_password;
-
-    // Compare entered old password with hashed password
-    const isMatchPassword = await bcrypt.compare(old_password, hashedOldPassword);
-
-    if (!isMatchPassword) {
-        return res.status(400).send({ success: false, message: 'Old password is incorrect' });
+        res.status(200).json({ success: true, message: 'Admin details updated successfully!' });
+    } catch (error) {
+        console.error("Error updating admin details:", error);
+        res.status(500).json({ success: false, message: 'An error occurred while updating admin details.' });
     }
+});
 
-    const hashedPassword = await bcrypt.hash(admin_password, 10);
-
-    let admin_profile = null;
-
-    if (req.files && req.files.admin_profile) {
+// Update Admin Profile
+router.put('/update_admin_profile', authenticateToken, async (req, res) => {
+    try {
+        const admin_id = req.admin.id;
+        if (!req.files || !req.files.admin_profile) {
+            return res.status(400).json({ success: false, message: 'No file uploaded' });
+        }
         const uploadedProfile = req.files.admin_profile.name;
-        admin_profile = new Date().getTime() + uploadedProfile;
+        const admin_profile = new Date().getTime() + uploadedProfile;
         req.files.admin_profile.mv("public/uploads/" + admin_profile);
-    }
 
-    if (admin_profile) {
-        const sql = `UPDATE admins SET admin_name = ?, admin_mobile = ?, admin_email = ?, admin_password = ?, admin_profile = ? WHERE admin_id = ?`;
-        const data = await exe(sql, [admin_name, admin_mobile, admin_email, hashedPassword, admin_profile, admin_id], (err, data) => {
-            if (err) {
-                console.error(err);
-                return res.status(500).send({ success: false, message: 'An error occurred while updating the admin profile.' });
-            }
-            return res.status(200).send({ success: true, message: 'Admin profile updated successfully' });
-        })
+        const sql = `UPDATE admins SET admin_profile = ? WHERE admin_id = ?`;
+        const data = await exe(sql, [admin_profile, admin_id]);
+        res.status(200).json({ success: true, message: 'Admin profile updated successfully!' });
+    } catch (error) {
+        console.error("Error updating admin profile:", error);
+        res.status(500).json({ success: false, message: 'An error occurred while updating admin profile.' });
     }
-    else {
-        const sql = `UPDATE admins SET admin_name = ? , admin_mobile = ? , admin_email = ? , admin_password = ? WHERE admin_id = ? `;
-        const data = await exe(sql, [admin_name, admin_mobile, admin_email, hashedPassword, admin_id], (err, result) => {
-            if (err) {
-                console.error(err);
-                return res.status(500).send({ success: false, message: 'An error occurred while updating the admin profile.' });
-            }
-            return res.status(200).send({ success: true, message: 'Admin profile updated successfully' });
-        })
-    }
-
 })
+
+// Update Admin Password
+router.put('/update_password', authenticateToken, async (req, res) => {
+    try {
+        const { old_password, new_password } = req.body;
+        const admin_id = req.admin.id;
+
+        var sql = `SELECT * FROM admins WHERE admin_id = ?`;
+        var admin_details = await exe(sql, [admin_id]);
+
+        if (admin_details.length === 0) {
+            return res.status(401).json({ success: false, message: 'Invalid admin ID' });
+        }
+        const hashedOldPassword = admin_details[0].admin_password;
+        // Compare passwords
+        const isMatchPassword = await bcrypt.compare(old_password, hashedOldPassword);
+        console.log('Password Match:', isMatchPassword);
+        
+        if (!isMatchPassword) {
+            return res.status(400).json({ success: false, message: 'Current  password is incorrect' });
+        }
+
+        // Hash new password
+        const hashedPassword = await bcrypt.hash(new_password, 10);
+
+        // Update password
+        const updateQuery = `UPDATE admins SET admin_password = ? WHERE admin_id = ?`;
+        await exe(updateQuery, [hashedPassword, admin_id]);
+
+        console.log('Admin password updated successfully');
+        
+        res.status(200).json({ success: true, message: 'Admin password updated successfully!' });
+    } catch (error) {
+        console.error("Error updating admin password:", error);
+        res.status(500).json({ success: false, message: 'An error occurred while updating admin password.' });
+    }
+});
 
 // DELETE Admin Account
 router.delete('/delete_admin', authenticateToken, async (req, res) => {
@@ -1540,5 +1566,7 @@ router.delete('/delete_review/:id', async (req, res) => {
     }
 });
 
-export { router as adminRoute };
 
+
+
+export { router as adminRoute };

@@ -47,7 +47,7 @@ export class WishlistComponent implements OnInit {
         this.count = this.wishlist.length;
         this.calculateTotals();
       } else {
-        this.toastr.error('Failed to load wishlist', 'Error');
+        this.toastr.error('Failed to load wishlist', 'Error', { disableTimeOut: false, closeButton: true, tapToDismiss: true, progressBar: true });
       }
     });
   }
@@ -91,7 +91,7 @@ export class WishlistComponent implements OnInit {
     this.userApi.moveAllToCart().subscribe(
       (res: any) => {
         this.toastr.success(res.message, 'Success');
-        this.loadWishlist(); // Reload wishlist to reflect changes
+        this.loadWishlist(); // Reload wishlist
         this.isProcessing = false;
       },
       error => {
@@ -118,7 +118,7 @@ export class WishlistComponent implements OnInit {
         this.toastr.success('Removed from wishlist', 'Success', { disableTimeOut: false, closeButton: true, tapToDismiss: true, progressBar: true });
         this.loadWishlist();
       } else {
-        this.toastr.error('Error removing item from wishlist', 'Error');
+        this.toastr.error('Error removing item from wishlist', 'Error', { disableTimeOut: false, closeButton: true, tapToDismiss: true, progressBar: true });
       }
     }, error => {
       console.error('Error:', error);
@@ -128,7 +128,6 @@ export class WishlistComponent implements OnInit {
 
   // Add to Cart Single Product
   addToCart(product_id: any) {
-    console.log('product_id:', product_id);
     this.userApi.addToCartFromWishlist(product_id).subscribe((res: any) => {
       if (res.success) {
         this.toastr.success('Product added to cart', 'Success', { disableTimeOut: false, closeButton: true, tapToDismiss: true, progressBar: true });
@@ -139,26 +138,23 @@ export class WishlistComponent implements OnInit {
 
   }
 
-
+  // Get Latest 6 Products
   getProducts() {
     this.userApi.getMostViewedProducts(6).subscribe((res: any) => {
       if (res.success) {
-        console.log('Product Data:', res.data);
-
         this.latestProducts = res.data.map((item: any) => ({
           ...item,
           product_images: item.product_image.length
             ? item.product_image.map((img: string) => this.imageBaseUrl + img)
             : ['https://placehold.co/300x300?text=No+Image']
         }));
-
-        console.log('Latest Products:', this.latestProducts);
       } else {
-        this.toastr.error('Failed to load latest products', 'Error');
+        this.toastr.error('Failed to load latest products', 'Error', { disableTimeOut: false, closeButton: true, tapToDismiss: true, progressBar: true });
       }
     });
   }
-
+  
+  // Add to Wishlist Single Product
   AddToWishlist(product_id: any) {
     this.userApi.addToWishlist(product_id).subscribe((res: any) => {
       if (res.success) {
