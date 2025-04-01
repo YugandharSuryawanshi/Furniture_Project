@@ -1017,7 +1017,7 @@ router.get('/most_viewed', async (req, res) => {
         const sql = `SELECT product_id, product_name, product_price, product_image FROM product ORDER BY product_id DESC LIMIT ?`;
         const products = await exe(sql, [limit]);
 
-        // Convert product_image string into an array
+        // Convert product_image string into an array & separate images ,
         products.forEach(product => {
             product.product_image = product.product_image
                 ? product.product_image.split(',')
@@ -1032,14 +1032,4 @@ router.get('/most_viewed', async (req, res) => {
 });
 
 
-
-
-
-
-
-
-
-
-
 export { router as userRoute };
-

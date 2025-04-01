@@ -4,11 +4,6 @@ body {
     overflow-x: hidden;
 }
 
-@font-face {
-    font-family: 'Poppins';
-    src: url('https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap');
-}
-
 /* Floating Bubbles Background */
 .bubble {
     position: absolute;
@@ -30,7 +25,7 @@ body {
     height: 200px;
     bottom: 50px;
     left: -50px;
-    animation: float 12s infinite ease-in-out reverse;
+    animation: float 12s infinite ease-in-out reverse; 
 }
 
 .bubble-3 {
@@ -48,7 +43,7 @@ body {
 
 /* Wishlist Header */
 .wishlist-header {
-    background: linear-gradient(135deg, #7a6ff0, #9d94ff);
+    background: linear-gradient(135deg, #d66ff0, #9d94ff);
     color: white;
     padding: 4rem 0;
     margin-bottom: 3rem;
@@ -195,7 +190,7 @@ body {
     right: 30px;
     width: 60px;
     height: 60px;
-    background: linear-gradient(135deg, #7a6ff0, #4895ef);
+    background: linear-gradient(135deg, #f06fa7, #4895ef);
     color: white;
     border-radius: 50%;
     display: flex;
@@ -388,7 +383,7 @@ body {
     margin-right: 10px;
 }
 
-
+/* ------------------------------------------------- */
 
 /* Empty Wishlist */
 .empty-wishlist {
