@@ -94,11 +94,8 @@ router.post('/adminLogout', authenticateToken, (req, res) => {
 // Fetch admin Details from admins table
 router.get("/admin_details", authenticateToken, async (req, res) => {
     try {
-        console.log(req.admin.id);
-
         const sql = `SELECT * FROM admins WHERE admin_id = '${req.admin.id}'`;
         const admin_details = await exe(sql)
-        console.log(admin_details);
 
         res.status(200).json({ success: true, admin: admin_details[0] });
     } catch (error) {
@@ -158,8 +155,7 @@ router.put('/update_password', authenticateToken, async (req, res) => {
         const hashedOldPassword = admin_details[0].admin_password;
         // Compare passwords
         const isMatchPassword = await bcrypt.compare(old_password, hashedOldPassword);
-        console.log('Password Match:', isMatchPassword);
-        
+
         if (!isMatchPassword) {
             return res.status(400).json({ success: false, message: 'Current  password is incorrect' });
         }
@@ -171,8 +167,6 @@ router.put('/update_password', authenticateToken, async (req, res) => {
         const updateQuery = `UPDATE admins SET admin_password = ? WHERE admin_id = ?`;
         await exe(updateQuery, [hashedPassword, admin_id]);
 
-        console.log('Admin password updated successfully');
-        
         res.status(200).json({ success: true, message: 'Admin password updated successfully!' });
     } catch (error) {
         console.error("Error updating admin password:", error);
@@ -1566,6 +1560,37 @@ router.delete('/delete_review/:id', async (req, res) => {
     }
 });
 
+//Get all Wishlist
+router.get('/get_wishlist', async (req, res) => {
+    try {
+        const sql = `SELECT wishlist.*,
+        users.user_name AS user_name,
+        users.user_email AS user_email,
+        users.user_profile AS user_profile,
+        product.product_name AS product_name,
+        product.product_price As product_price,
+        product_type.product_type_name AS product_type_name
+    FROM wishlist
+    JOIN users ON wishlist.user_id = users.user_id
+    JOIN product ON wishlist.product_id = product.product_id
+    JOIN product_type ON product.product_type_id = product_type.product_type_id
+    ORDER BY wishlist.date_added DESC`;
+        const data = await exe(sql);
+        console.log(data);
+        
+        if (data.length > 0) {
+            res.status(200).json({ success: true, data });
+        } else {
+            res.status(404).json({ success: false, message: "No wishlist found" });
+        }
+    } catch (err) {
+        console.error("Error fetching wishlist: ", err);
+        res.status(500).json({ success: false, message: "Internal Server Error", error: err.message });
+
+    }
+})
+
 
 
 export { router as adminRoute };
+
