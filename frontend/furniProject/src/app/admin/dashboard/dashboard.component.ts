@@ -41,6 +41,7 @@ export class DashboardComponent {
   subscriber_count: any = 0;
   team_count: any = 0;
   reviews_count: any = 0;
+  wishlist_count: any = 0;
 
   getData() {
         this.user();
@@ -52,6 +53,7 @@ export class DashboardComponent {
         this.subscribers();
         this.team_Meambers();
         this.reviews();
+        this.wishlists();
   }
 
   user()
@@ -107,6 +109,14 @@ export class DashboardComponent {
       this.team_count = data.data.length;
     })
   }
+
+  wishlists() {
+    this.adminApi.getAllWishlist().subscribe((data: any) => {
+      this.wishlist_count = data.data.length;
+    })
+  }
+
+
 
   reviews() {
     this.adminApi.getReviews().subscribe((data: any) => {
