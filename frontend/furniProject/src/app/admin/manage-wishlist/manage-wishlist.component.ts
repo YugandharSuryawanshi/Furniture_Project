@@ -3,6 +3,7 @@ import { AdminApiService } from '../../service/admin-api.service';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { RouterModule } from '@angular/router';
+import { ToastrService } from 'ngx-toastr';
 
 @Component({
   selector: 'app-manage-wishlist',
@@ -23,20 +24,21 @@ export class ManageWishlistComponent implements OnInit {
   selectedCategory: string = "";
   selectedPriority: string = "";
   searchText: string = "";
-  
+  selectedProduct: any = null;
+
   // Pagination
   pageSize: number = 5;
   currentPage: number = 0;
   totalPages: number = 0;
   totalPagesArray: number[] = [];
-  
-  constructor(private adminApi: AdminApiService) {}
-  
+
+  constructor(private adminApi: AdminApiService, private toastr: ToastrService) { }
+
   ngOnInit(): void {
     this.loadWishlist();
     this.loadCategoryList();
   }
-  
+
   loadWishlist(): void {
     this.adminApi.getAllWishlist().subscribe((data: any) => {
       this.wishlist = data.data;
@@ -45,12 +47,11 @@ export class ManageWishlistComponent implements OnInit {
       this.applyFilters();
     });
   }
-  
+
   loadCategoryList(): void {
     this.adminApi.getProductTypes().subscribe((data: any) => {
       this.catData = data.product_types;
       this.categories = this.catData.map((item: any) => item.product_type_name);
-      console.log(this.categories);
     });
   }
 
@@ -63,18 +64,18 @@ export class ManageWishlistComponent implements OnInit {
       return nameParts[0][0].toUpperCase();
     }
   }
-  
+
   calculatePriorities(): void {
     const priorityMap = new Map<string, number>();
-  
+
     // Count occurrences of each product_type_name
     this.wishlist.forEach(item => {
       priorityMap.set(item.product_type_name, (priorityMap.get(item.product_type_name) || 0) + 1);
     });
-  
+
     // Sort by highest occurrence
     const sortedPriorities = Array.from(priorityMap.entries()).sort((a, b) => b[1] - a[1]);
-  
+
     // Assign priority levels
     let priorityLevels = new Map<string, string>();
     if (sortedPriorities.length > 0) priorityLevels.set(sortedPriorities[0][0], "High");
@@ -84,16 +85,16 @@ export class ManageWishlistComponent implements OnInit {
         priorityLevels.set(sortedPriorities[i][0], "Low");
       }
     }
-  
+
     // Assign calculated priorities to wishlist items
     this.wishlist.forEach(item => {
       item.priority = priorityLevels.get(item.product_type_name) || "Low";
     });
-  
+
     // Count high-priority items
     this.highPriorityCount = this.wishlist.filter(item => item.priority === "High").length;
   }
-  
+
   applyFilters(): void {
     this.filteredWishlist = this.wishlist.filter(item =>
       (!this.searchText || item.product_name.toLowerCase().includes(this.searchText.toLowerCase())) &&
@@ -102,34 +103,44 @@ export class ManageWishlistComponent implements OnInit {
     );
     this.updatePagination();
   }
-  
+
   updatePagination(): void {
     this.totalPages = Math.ceil(this.filteredWishlist.length / this.pageSize);
     this.totalPagesArray = Array(this.totalPages).fill(0).map((_, i) => i);
     this.setPage(0);
   }
-  
+
   setPage(page: number): void {
     this.currentPage = page;
     this.paginatedWishlist = this.filteredWishlist.slice(page * this.pageSize, (page + 1) * this.pageSize);
   }
-  
+
   changePage(step: number): void {
     if ((this.currentPage + step) >= 0 && (this.currentPage + step) < this.totalPages) {
       this.setPage(this.currentPage + step);
     }
   }
-  
 
+  openPrompt(product: any): void {
+    this.selectedProduct = product;
+  }
 
+  closePrompt(): void {
+    this.selectedProduct = null;
+  }
 
-  // deleteItem(id: number): void {
-  //   if (confirm('Are you sure you want to delete this item?')) {
-  //     this.wishlistService.deleteWishlistItem(id).subscribe(() => {
-  //       this.loadWishlist();
-  //     });
-  //   }
-  // }
+  showEditComingSoon(): void {
+    window.scrollTo({ top: 0, behavior: 'smooth' });
+    this.toastr.info('Edit functionality is coming soon. Not need Right now!', 'Coming Soon', { progressBar: true });
+  }
+
+  deleteItem(id: number): void {
+    if (confirm('Are you sure you want to delete this item?')) {
+      this.adminApi.deleteWishlistItem(id).subscribe(() => {
+        this.loadWishlist();
+      });
+    }
+  }
 
 
 }

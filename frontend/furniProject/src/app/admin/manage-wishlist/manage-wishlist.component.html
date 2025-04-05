@@ -18,7 +18,7 @@
             </div>
 
             <div class="stat-card card-2 animate__animated animate__fadeIn animate-delay-1">
-                <i class="fas fa-fire stat-icon fire_Icon"></i>
+                <i class="fas fa-fire stat-icon" style="color: rgb(255, 136, 0);"></i>
                 <div class="stat-value">{{highPriorityCount}}</div>
                 <div class="stat-label">High Priority products</div>
             </div>
@@ -78,14 +78,14 @@
                                         <img [src]="'http://localhost:1000/uploads/' + product.user_profile"
                                             class="user-avatar" style="height: 50px; width: 50px; border-radius: 50%;">
                                     </ng-container>
-                                
+
                                     <!-- Fallback: Show Initials -->
                                     <ng-template #showInitials>
-                                        <div class="user-initials" >
+                                        <div class="user-initials">
                                             {{ getUserInitials(product.user_name) }}
                                         </div>
                                     </ng-template>
-                                
+
                                     <span class="user-name"> {{ product.user_name }}</span>
                                 </div>
                             </td>
@@ -97,9 +97,13 @@
                             <td>{{product.date_added | date:'YYYY-MM-dd'}}</td>
                             <td>
                                 <div class="action-btns">
-                                    <button class="action-btn btn-view"><i class="fas fa-eye"></i></button>
-                                    <button class="action-btn btn-edit"><i class="fas fa-edit"></i></button>
-                                    <button class="action-btn btn-delete"><i class="fas fa-trash"></i></button>
+                                    <button class="action-btn btn-view" (click)="openPrompt(product)">
+                                        <i class="fas fa-eye"></i>
+                                    </button>
+                                    <button class="action-btn" (click)="showEditComingSoon()" style="cursor: not-allowed;">
+                                        <i class="fas fa-edit"></i>
+                                    </button>
+                                    <button class="action-btn btn-delete" (click)="deleteItem(product.wish_id)"><i class="fas fa-trash"></i></button>
                                 </div>
                             </td>
                         </tr>
@@ -130,3 +134,30 @@
         </div>
     </div>
 </body>
+
+
+
+<!-- Prompt View Modal -->
+<div class="view-prompt-backdrop" *ngIf="selectedProduct">
+    <div class="view-prompt-card animate__animated animate__zoomIn">
+        <button class="close-btn" (click)="closePrompt()">
+            <i class="fas fa-times"></i>
+        </button>
+
+        <h2 class="prompt-title">Wishlist Product Details</h2>
+
+        <div class="prompt-details">
+            <p><strong>User:</strong> {{ selectedProduct.user_name }}</p>
+            <p><strong>Product:</strong> {{ selectedProduct.product_name }}</p>
+            <p><strong>Category:</strong> {{ selectedProduct.product_type_name }}</p>
+            <p><strong>Price:</strong> ₹{{ selectedProduct.product_price }}</p>
+            <p><strong>Date Added:</strong> {{ selectedProduct.date_added | date:'YYYY-MM-dd' }}</p>
+            <p><strong>Priority:</strong> {{ selectedProduct.priority }}</p>
+        </div>
+        <div class="col-md-12 mb-5">
+            <button class="btn btn-danger float-end" (click)="closePrompt()">
+                Close
+            </button>
+        </div>
+    </div>
+</div>
