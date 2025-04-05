@@ -1560,7 +1560,7 @@ router.delete('/delete_review/:id', async (req, res) => {
     }
 });
 
-//Get all Wishlist
+//Get all Wishlist Products
 router.get('/get_wishlist', async (req, res) => {
     try {
         const sql = `SELECT wishlist.*,
@@ -1590,6 +1590,20 @@ router.get('/get_wishlist', async (req, res) => {
     }
 })
 
+// Delete Wishlist Product
+router.delete('/delete_wishlist_item/:id', async (req, res) => {
+    try {
+        const id = req.params.id;
+        const sql = `DELETE FROM wishlist WHERE wish_id=${id}`;
+        const result = await exe(sql);
+        if (result.affectedRows === 0) {
+            return res.status(404).json({ success: false, message: "In Wishlist product not found" });
+        }
+        res.status(200).json({ success: true, message: "In Wishlist product deleted successfully!" });
+    } catch (err) {
+        res.status(500).json({ success: false, message: "Internal Server Error", error: err.message });
+    }
+});
 
 
 export { router as adminRoute };
