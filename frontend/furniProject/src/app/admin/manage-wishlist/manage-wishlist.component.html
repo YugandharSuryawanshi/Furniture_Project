@@ -5,7 +5,7 @@
             <h1 class="page-title">Wishlist Management</h1>
             <button class="btn btn-primary animate__animated animate__fadeInDown animate-delay-1"
                 routerLink="/admin/product">
-                <i class="fas fa-plus me-2"></i>Add New Item
+                <i class="fas fa-plus me-2"></i>Add New Product
             </button>
         </div>
 
@@ -14,13 +14,13 @@
             <div class="stat-card card-1 animate__animated animate__fadeIn">
                 <i class="fas fa-heart stat-icon" style="color: red"></i>
                 <div class="stat-value">{{wishlist_count}}</div>
-                <div class="stat-label">Total Wishlist Items</div>
+                <div class="stat-label">Total Wishlist products</div>
             </div>
 
             <div class="stat-card card-2 animate__animated animate__fadeIn animate-delay-1">
-                <i class="fas fa-fire stat-icon" style="color: rgb(255, 136, 0);"></i>
+                <i class="fas fa-fire stat-icon fire_Icon"></i>
                 <div class="stat-value">{{highPriorityCount}}</div>
-                <div class="stat-label">High Priority Items</div>
+                <div class="stat-label">High Priority products</div>
             </div>
         </div>
 
@@ -30,7 +30,7 @@
                 <div class="col-md-8 mb-5 mb-md-0">
                     <div class="search-box">
                         <i class="fas fa-search"></i>
-                        <input type="text" class="form-control" placeholder="Search wishlist items..."
+                        <input type="text" class="form-control" placeholder="Search wishlist products..."
                             [(ngModel)]="searchText" (input)="applyFilters()">
                     </div>
                 </div>
@@ -55,15 +55,15 @@
         <!-- Wishlist Table -->
         <div class="wishlist-table-container">
             <div class="table-header">
-                <h3 class="table-title">Recent Wishlist Items</h3>
+                <h3 class="table-title">Recent Wishlist Products</h3>
             </div>
 
             <div class="table-responsive">
                 <table class="table">
                     <thead>
-                        <tr>
+                        <tr class="text-center fw-bold bg-light">
                             <th>User</th>
-                            <th>Item</th>
+                            <th>Product Name</th>
                             <th>Category</th>
                             <th>Price</th>
                             <th>Date Added</th>
