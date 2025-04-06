@@ -431,6 +431,7 @@ export class AdminApiService {
     return this.http.get(`${this.adminUrl}/get_wishlist`);
   }
 
+  // Delete Selected Wishlist product
   deleteWishlistItem(id: any)
   {
     return this.http.delete(`${this.adminUrl}/delete_wishlist_item/${id}`);
