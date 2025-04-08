@@ -184,10 +184,26 @@
                             Subscribers
                         </a>
                     </li>
+                </ul>
+            </li>
+
+
+            <li class="nav-group" [class.show]="manageDropdownOpen">
+                <a class="nav-link nav-group-toggle" href="#" (click)="toggleManageDropdown($event)">
+                    <svg class="nav-icon">
+                        <use xlink:href="/admin/vendors/@coreui/icons/svg/free.svg#cil-cursor"></use>
+                    </svg>
+                    Manage
+                </a>
+                <ul class="nav-group-items" *ngIf="manageDropdownOpen">
                     <li class="nav-item">
                         <a class="nav-link" routerLink="/admin/manage-review">
-                            <i class="fas fa-comments nav-icon"></i>
-                            Manage Review
+                            <i class="fas fa-comments nav-icon"></i> Manage Review
+                        </a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" routerLink="/admin/manage-wishlist">
+                            <i class="fas fa-heart nav-icon"></i> Manage Wishlist
                         </a>
                     </li>
                 </ul>
@@ -204,6 +220,7 @@
                         <use xlink:href="/admin/vendors/@coreui/icons/svg/free.svg#cil-menu"></use>
                     </svg>
                 </button>
+
                 <a class="header-brand d-md-none" href="#">
                     <svg width="118" height="46" alt="CoreUI Logo">
                         <use xlink:href="/admin/assets/brand/coreui.svg#full"></use>

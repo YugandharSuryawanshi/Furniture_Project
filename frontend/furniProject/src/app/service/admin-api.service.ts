@@ -437,5 +437,5 @@ export class AdminApiService {
     return this.http.delete(`${this.adminUrl}/delete_wishlist_item/${id}`);
   }
 
-
+  
 }

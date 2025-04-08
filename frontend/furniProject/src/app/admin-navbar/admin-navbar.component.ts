@@ -15,14 +15,14 @@ import { AdminApiService } from '../service/admin-api.service';
 export class AdminNavbarComponent implements AfterViewInit {
 
   constructor(private el: ElementRef, public adminApi: AdminApiService, private router: Router) { }
-  private sidebar!:Sidebar;
+  
+  sidebar: Sidebar | null = null;
 
-  // This is for toggle navigation
   ngAfterViewInit(): void {
-    this.getAdminProfile();
-    const sidebarElement = document.querySelector('#sidebar');
+    const sidebarElement = document.querySelector('#sidebar') as HTMLElement;
     if (sidebarElement) {
       this.sidebar = Sidebar.getOrCreateInstance(sidebarElement);
+      this.sidebar.hide(); //Hide the Sidebar by default
     }
   }
 
@@ -30,7 +30,7 @@ export class AdminNavbarComponent implements AfterViewInit {
     if (this.sidebar) {
       this.sidebar.toggle();
     } else {
-      console.error('Sidebar instance is not initialized.');
+      console.error('Sidebar instance not found!');
     }
   }
 
@@ -45,28 +45,37 @@ export class AdminNavbarComponent implements AfterViewInit {
   whyChooseDropdownOpen = false;
   blogDropdownOpen = false;
   teamDropdownOpen = false;
+  manageDropdownOpen = false;
 
-  toggleProductDropdown(event: Event): void {
-    event.preventDefault();
-    this.productDropdownOpen = !this.productDropdownOpen;
-  }
+  // Toggle Team Dropdown
+toggleTeamDropdown(event: Event): void {
+  event.preventDefault();
+  this.teamDropdownOpen = !this.teamDropdownOpen;
+}
 
-  toggleWhyChooseDropdown(event: Event): void {
-    event.preventDefault();
-    this.whyChooseDropdownOpen = !this.whyChooseDropdownOpen;
-  }
+// Toggle Manage Dropdown
+toggleManageDropdown(event: Event): void {
+  event.preventDefault();
+  this.manageDropdownOpen = !this.manageDropdownOpen;
+}
 
-  // Toggle Blog Dropdown
-  toggleBlogDropdown(event: Event): void {
-    event.preventDefault();
-    this.blogDropdownOpen = !this.blogDropdownOpen;
-  }
+// Toggle Product Dropdown
+toggleProductDropdown(event: Event): void {
+  event.preventDefault();
+  this.productDropdownOpen = !this.productDropdownOpen;
+}
 
-  // Toggle function for Our Team dropdown
-  toggleTeamDropdown(event: Event): void {
-    event.preventDefault();
-    this.teamDropdownOpen = !this.teamDropdownOpen;
-  }
+// Toggle Why Choose Us Dropdown
+toggleWhyChooseDropdown(event: Event): void {
+  event.preventDefault();
+  this.whyChooseDropdownOpen = !this.whyChooseDropdownOpen;
+}
+
+// Toggle Blog Dropdown
+toggleBlogDropdown(event: Event): void {
+  event.preventDefault();
+  this.blogDropdownOpen = !this.blogDropdownOpen;
+}
 
   ngOnInit() {
     this.getAdminProfile();
@@ -120,7 +129,6 @@ export class AdminNavbarComponent implements AfterViewInit {
     this.router.navigate(['/admin/login']);
     this.getAdminProfile();
   }
-
 
 
 }
