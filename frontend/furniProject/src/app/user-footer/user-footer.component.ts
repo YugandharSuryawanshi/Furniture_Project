@@ -42,4 +42,9 @@ export class UserFooterComponent {
     }
   }
 
+
+  scrollToTop() {
+    window.scrollTo({ top: 0, behavior: 'smooth' });
+  }
+
 }

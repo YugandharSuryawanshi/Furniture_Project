@@ -79,11 +79,6 @@ export class AdminApiService {
     }
   }
 
-  // Update Admin Details and profile
-  // updateAdminProfile(profile: any, headers: HttpHeaders) {
-  //   return this.http.post(`${this.adminUrl}/update_admin`, profile, {headers})
-  // }
-
   // Fetch or getting admin Details
   getAdminDetails() {
     const token = localStorage.getItem('adminToken');
@@ -437,5 +432,5 @@ export class AdminApiService {
     return this.http.delete(`${this.adminUrl}/delete_wishlist_item/${id}`);
   }
 
-  
+
 }

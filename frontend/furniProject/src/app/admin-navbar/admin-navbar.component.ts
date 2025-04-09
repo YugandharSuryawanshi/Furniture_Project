@@ -4,6 +4,7 @@ import { FormsModule } from '@angular/forms';
 import { Router, RouterModule } from '@angular/router';
 import { Sidebar } from '@coreui/coreui';
 import { AdminApiService } from '../service/admin-api.service';
+import { ToastrService } from 'ngx-toastr';
 
 @Component({
   selector: 'app-admin-navbar',
@@ -14,7 +15,7 @@ import { AdminApiService } from '../service/admin-api.service';
 })
 export class AdminNavbarComponent implements AfterViewInit {
 
-  constructor(private el: ElementRef, public adminApi: AdminApiService, private router: Router) { }
+  constructor(private el: ElementRef, public adminApi: AdminApiService, private router: Router, private toastr:ToastrService) { }
   
   sidebar: Sidebar | null = null;
 
@@ -27,10 +28,16 @@ export class AdminNavbarComponent implements AfterViewInit {
   }
 
   toggleSidebar(): void {
-    if (this.sidebar) {
-      this.sidebar.toggle();
-    } else {
-      console.error('Sidebar instance not found!');
+    if (this.adminApi.isAdminLoggedIn()) {
+      if (this.sidebar) {
+        this.sidebar.toggle();
+      } else {
+        console.error('Sidebar instance not found!');
+      }
+    }
+    else
+    {
+      this.toastr.warning('Login First to view Sidebar', 'Warning', { disableTimeOut: false, progressBar: true })
     }
   }
 
@@ -128,6 +135,11 @@ toggleBlogDropdown(event: Event): void {
     this.adminProfile = null;
     this.router.navigate(['/admin/login']);
     this.getAdminProfile();
+    const sidebarElement = document.querySelector('#sidebar') as HTMLElement;
+    if (sidebarElement) {
+      this.sidebar = Sidebar.getOrCreateInstance(sidebarElement);
+      this.sidebar.hide(); //Hide the Sidebar when admin is logout
+    }
   }
 
 
