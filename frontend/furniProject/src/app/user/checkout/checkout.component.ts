@@ -22,15 +22,14 @@ export class CheckoutComponent implements OnInit {
   totalGST: number = 0;
   totalDiscount: number = 0;
   finalTotal: number = 0;
-  payment_Key_id:any;
+  payment_Key_id: any;
 
   constructor(
     private userApi: UserApiService,
     private toastr: ToastrService,
     private fb: FormBuilder,
     private router: Router,
-    private paymentService: PaymentService)
-  {
+    private paymentService: PaymentService) {
     this.checkoutForm = this.fb.group({
       c_country: ['', Validators.required],
       c_fname: ['', Validators.required],
@@ -48,6 +47,7 @@ export class CheckoutComponent implements OnInit {
   ngOnInit(): void {
     this.getCartProducts();
     this.fetchUserDetails();
+    this.getRazorPay_key()
   }
 
   fetchUserDetails() {
@@ -83,44 +83,46 @@ export class CheckoutComponent implements OnInit {
     this.totalDiscount = 0;
 
     this.cartProducts.forEach(item => {
-        const productTotal = item.product_price * item.qty; // Subtotal for each product
-        const gstAmount = (productTotal * item.gst_percentage) / 100; // GST on this product
-        const discountAmount = (productTotal * item.discount_percentage) / 100; // Discount on this product
+      const productTotal = item.product_price * item.qty; // Subtotal for each product
+      const gstAmount = (productTotal * item.gst_percentage) / 100; // GST on this product
+      const discountAmount = (productTotal * item.discount_percentage) / 100; // Discount on this product
 
-        this.subtotal += productTotal;
-        this.totalGST += gstAmount;
-        this.totalDiscount += discountAmount;
+      this.subtotal += productTotal;
+      this.totalGST += gstAmount;
+      this.totalDiscount += discountAmount;
     });
 
     // Final Total Payable Amount IS
     this.finalTotal = (this.subtotal + this.totalGST) - this.totalDiscount;
-}
+  }
 
-getRazorPay_key()
-{
-  this.paymentService.getId().subscribe((res:any)=>{
-    if(res.status ==='success' && res.key_id)
-    {
-      this.payment_Key_id = res.key_id;
-    }
-    else
-    {
-      this.toastr.error('Failed to fetch payment key.', 'error', { disableTimeOut: false, progressBar:true , closeButton: true });
-    }
-  })
-}
+  getRazorPay_key() {
+    this.paymentService.getId().subscribe(
+      (res: any) => {
+        if (res.status === 'success' && res.key_id) {
+          this.payment_Key_id = res.key_id;
+        } else {
+          this.toastr.error('Failed to fetch payment key.', 'Error', {disableTimeOut: false,progressBar: true,closeButton: true});
+        }
+      },
+      (err) => {
+        console.error('Error fetching Razorpay key:', err);
+        this.toastr.error('Authorization failed or server error.', 'Error');
+      }
+    );
+  }
 
   placeOrder() {
     const token = localStorage.getItem('userToken');
     if (!token) {
-      this.toastr.error("You must be logged in to place an order.", 'error', { disableTimeOut: false, progressBar:true , closeButton: true });
+      this.toastr.error("You must be logged in to place an order.", 'error', { disableTimeOut: false, progressBar: true, closeButton: true });
       this.router.navigate(['/user/login']);
       return;
     }
 
     // Single Form Validation Check
     if (!this.checkoutForm.valid) {
-      this.toastr.error('Please fill in all required fields.', 'error', { disableTimeOut: false, progressBar:true , closeButton: true });
+      this.toastr.error('Please fill in all required fields.', 'error', { disableTimeOut: false, progressBar: true, closeButton: true });
       return;
     }
 
@@ -134,11 +136,11 @@ getRazorPay_key()
       this.paymentService.placeCODOrder(orderData).subscribe(
         (res: any) => {
           if (res.status === 'success') {
-            this.toastr.success('Order placed successfully!', "Success", {disableTimeOut: false , progressBar:true , closeButton: true});
+            this.toastr.success('Order placed successfully!', "Success", { disableTimeOut: false, progressBar: true, closeButton: true });
             this.clearCart();
             this.router.navigate(['/user/orders']);
           } else {
-            this.toastr.error('Failed to place order. Try again.', 'error', {disableTimeOut: false, progressBar:true , closeButton: true});
+            this.toastr.error('Failed to place order. Try again.', 'error', { disableTimeOut: false, progressBar: true, closeButton: true });
           }
         });
     } else {
@@ -146,7 +148,8 @@ getRazorPay_key()
     }
   }
 
-  launchRazorpay(amount: number) {
+  async launchRazorpay(amount: number) {
+    await this.getRazorPay_key();
     this.paymentService.createOrder(amount, 'INR').subscribe(
       (res: any) => {
         if (res.success) {
@@ -176,19 +179,19 @@ getRazorPay_key()
     this.paymentService.verifyPayment({ ...paymentData, orderDetails: orderData }).subscribe(
       (res: any) => {
         if (res.success) {
-          this.toastr.success(res.message || 'Payment successful! Order placed.', "Success", { disableTimeOut: false, progressBar:true, closeButton: true });
+          this.toastr.success(res.message || 'Payment successful! Order placed.', "Success", { disableTimeOut: false, progressBar: true, closeButton: true });
           this.clearCart();  // Call clearCart after payment success
           this.router.navigate(['/user/orders']);
         } else {
-          this.toastr.error('Payment verification failed.', 'error', {disableTimeOut: false, progressBar:true, closeButton: true});
+          this.toastr.error('Payment verification failed.', 'error', { disableTimeOut: false, progressBar: true, closeButton: true });
         }
       },
       (error) => {
         console.error(" Error verifying payment:", error);
-        this.toastr.error('Something went wrong with payment verification.', 'error', { disableTimeOut: false ,progressBar:true ,  closeButton: true });
+        this.toastr.error('Something went wrong with payment verification.', 'error', { disableTimeOut: false, progressBar: true, closeButton: true });
       }
     );
-}
+  }
 
   clearCart() {
     this.userApi.clearCart().subscribe((res: any) => {
@@ -197,7 +200,7 @@ getRazorPay_key()
         this.getCartProducts();
       }
       else {
-        this.toastr.error('Failed to clear cart. Try again.', 'error', { disableTimeOut: false, progressBar:true, closeButton: true });
+        this.toastr.error('Failed to clear cart. Try again.', 'error', { disableTimeOut: false, progressBar: true, closeButton: true });
       }
     });
   }

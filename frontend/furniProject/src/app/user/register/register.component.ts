@@ -18,7 +18,8 @@ export class RegisterComponent {
     user_mobile: '',
     user_email: '',
     user_password: '',
-    confirmPassword: ''
+    confirmPassword: '',
+    otp: ''
   };
 
   // Input Fields error messages
@@ -26,11 +27,16 @@ export class RegisterComponent {
   mobileError: string = '';
   emailError: string = '';
   passwordError: string = '';
+  otpError: string = '';
   confirmPasswordError: string = '';
   passwordFieldType: string = 'password';
   confirmPasswordFieldType: string = 'password';
 
-  constructor(private userApi: UserApiService, private router: Router, private toastr: ToastrService) {}
+  otpSent: boolean = false;
+  backendCameOtp: any;
+  otpVerified: boolean = false;
+
+  constructor(private userApi: UserApiService, private router: Router, private toastr: ToastrService) { }
 
   // Name validation
   validateName() {
@@ -68,6 +74,18 @@ export class RegisterComponent {
     }
   }
 
+  // OTP validation
+  validateOtp() {
+    const statusOtp = /^\d{6}$/;
+    if (!this.formData.otp) {
+      this.otpError = 'OTP is required.';
+    } else if (!statusOtp.test(this.formData.otp)) {
+      this.otpError = 'Enter a valid OTP'
+    } else {
+      this.otpError = ''
+    }
+  }
+
   // Password validation
   validatePassword() {
     const statusPass = /^(?=.*\d)(?=.*[a-z])(?=.*[A-Z]).{8,}$/;
@@ -100,6 +118,26 @@ export class RegisterComponent {
     this.confirmPasswordFieldType = this.confirmPasswordFieldType === 'password' ? 'text' : 'password';
   }
 
+  // Send Otp on Email
+  sendOtp() {
+    if (!this.formData.user_email) {
+      this.toastr.warning('Please enter your email!', 'Warning', { progressBar: true, tapToDismiss: true });
+      return;
+    }
+
+    this.userApi.sendOtp({ email: this.formData.user_email }).subscribe(
+      (res: any) => {
+        this.backendCameOtp = res.otp;
+        this.otpSent = true;
+        this.toastr.success(res.message || 'OTP sent to your email', 'Success', { progressBar: true, tapToDismiss: true });
+      },
+      err => {
+        this.toastr.error(err.error.message || 'Error sending OTP', 'Error', { progressBar: true, tapToDismiss: true });
+      }
+    );
+  }
+
+  // Register New User
   register() {
     // Check all validations on submit also
     this.validateName();
@@ -110,24 +148,29 @@ export class RegisterComponent {
 
     // If any error, prevent submit
     if (this.nameError || this.mobileError || this.emailError || this.passwordError || this.confirmPasswordError) {
-      this.toastr.error('Please Enter valid data before submitting.', 'Requirement Not Full fill', { progressBar: true });
+      this.toastr.error('Please Enter valid data before submitting.', 'Requirement Not Full fill', { progressBar: true, tapToDismiss: true });
       return;
     }
 
-    const formData = new FormData();
-    formData.append('user_name', this.formData.user_name);
-    formData.append('user_mobile', this.formData.user_mobile);
-    formData.append('user_email', this.formData.user_email);
-    formData.append('user_password', this.formData.user_password);
+    if (this.backendCameOtp == this.formData.otp) {
+      
+      const formData = new FormData();
+      formData.append('user_name', this.formData.user_name);
+      formData.append('user_mobile', this.formData.user_mobile);
+      formData.append('user_email', this.formData.user_email);
+      formData.append('user_password', this.formData.user_password);
+      formData.append('otp', this.formData.otp);
 
-    this.userApi.register(this.formData).subscribe((res: any) => {
-      if (res.status === 'success') {
-        this.toastr.success('User registered successfully!', 'Success', { progressBar: true });
-        this.router.navigate(['/user/login']);
-      } else {
-        this.toastr.error('User registration failed!', 'Error', { progressBar: true });
-      }
-    });
+      this.userApi.register(this.formData).subscribe((res: any) => {
+        if (res.status === 'success') {
+          this.toastr.success('User registered successfully!', 'Success', { progressBar: true, tapToDismiss: true });
+          this.router.navigate(['/user/login']);
+        }
+      });
+    }
+    else {
+      this.otpError = 'Please Enter Correct OTP';
+    }
   }
 
 }
