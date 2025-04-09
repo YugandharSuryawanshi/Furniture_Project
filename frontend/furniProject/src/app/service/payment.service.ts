@@ -13,10 +13,25 @@ export class PaymentService {
   constructor(private http: HttpClient, private userApi: UserApiService) { }
 
   //Get razorpay key id
-  getId()
-  {
-    return this.http.get(`${this.apiUrl}/send_key_id`);
+  // getId()
+  // {
+  //   console.log('Get Id Call');
+    
+  //   return this.http.get(`${this.apiUrl}/send_key_id`);
+  // }
+
+  getId() {
+    const token = this.userApi.getToken(); // Ensure this returns a valid JWT
+    if (!token) {
+      console.error("Unauthorized: No token found!");
+      return throwError(() => new Error('Unauthorized'));
+    }
+  
+    const headers = new HttpHeaders().set('Authorization', `Bearer ${token}`);
+    return this.http.get(`${this.apiUrl}/send_key_id`, { headers });
   }
+  
+  
 
   // Create Razorpay Order
   createOrder(amount: number, currency: string): Observable<any> {

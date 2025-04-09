@@ -4,6 +4,7 @@ import { Router, RouterModule } from '@angular/router';
 import { ToastrService } from 'ngx-toastr';
 import { FormsModule } from '@angular/forms';
 import { CommonModule } from '@angular/common';
+import { UserApiService } from '../../service/user-api.service';
 
 @Component({
   selector: 'app-dashboard',
@@ -14,7 +15,7 @@ import { CommonModule } from '@angular/common';
 })
 export class DashboardComponent {
 
-  constructor(private adminApi: AdminApiService, private router: Router, private toastr: ToastrService) {
+  constructor(private adminApi: AdminApiService, private userApi:UserApiService , private router: Router, private toastr: ToastrService) {
     this.getData();
   }
 
@@ -215,6 +216,8 @@ export class DashboardComponent {
       if (data.success) {
         this.toastr.success(data.message, 'Success', { progressBar: true, disableTimeOut: false, closeButton: true });
         this.getData();
+        this.userApi.userLogout();
+        this.userApi.clearToken();
       }
       else {
         this.toastr.success(data.error, 'Error', { progressBar: true, disableTimeOut: false, closeButton: true });

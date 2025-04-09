@@ -14,8 +14,10 @@ import { UserApiService } from '../../service/user-api.service';
 })
 export class ProfileComponent {
 
-  constructor(private userApi: UserApiService, private router: Router, private toastr:ToastrService){}
+  constructor(private userApi: UserApiService, private router: Router, private toastr: ToastrService) { }
 
+  otpSent = false;
+  otpVerified = false;
   formData =
     {
       user_name: '',
@@ -25,13 +27,14 @@ export class ProfileComponent {
       current_password: '',
       new_password: '',
       confirm_password: '',
+      otp: '',
       user_profile: null
     }
 
   ngOnInit() {
     this.getUserProfile();
   }
-    
+
   loggedInUser: any;
   loggedInUserImage: any = null;
   // Get User Details
@@ -66,14 +69,14 @@ export class ProfileComponent {
     this.userApi.updateUserDetails(formData).subscribe({
       next: (res: any) => {
         if (res.status === 'success') {
-          this.toastr.success('User Details updated successfully', "Success", { disableTimeOut: false, progressBar:true ,closeButton: true });
+          this.toastr.success('User Details updated successfully', "Success", { disableTimeOut: false, progressBar: true, closeButton: true });
           this.getUserProfile(); // Refresh profile
         } else {
-          this.toastr.error('Failed to update user details: ' + res.message,"Error", { disableTimeOut: false, progressBar:true ,closeButton: true });
+          this.toastr.error('Failed to update user details: ' + res.message, "Error", { disableTimeOut: false, progressBar: true, closeButton: true });
         }
       },
       error: (err: any) => {
-        this.toastr.error('Failed to update user details: Server error' + err.message, "Error", { disableTimeOut: false, progressBar:true ,closeButton: true });
+        this.toastr.error('Failed to update user details: Server error' + err.message, "Error", { disableTimeOut: false, progressBar: true, closeButton: true });
       }
     });
   }
@@ -94,53 +97,90 @@ export class ProfileComponent {
 
       this.userApi.updateUserProfile(formData).subscribe((res: any) => {
         if (res.status === 'success') {
-          this.toastr.success('Profile image updated successfully', "Success", { disableTimeOut: false, progressBar:true ,closeButton: true });
+          this.toastr.success('Profile image updated successfully', "Success", { disableTimeOut: false, progressBar: true, closeButton: true });
           this.getUserProfile();
         } else {
-          this.toastr.error('Failed to update profile..!', "Error", { disableTimeOut: false, progressBar:true ,closeButton: true })
+          this.toastr.error('Failed to update profile..!', "Error", { disableTimeOut: false, progressBar: true, closeButton: true })
         }
       });
     }
     if (!this.selectedImage) {
-      this.toastr.error('Please Select an Image..!', "Error", { disableTimeOut: false, progressBar:true ,closeButton: true })
+      this.toastr.error('Please Select an Image..!', "Error", { disableTimeOut: false, progressBar: true, closeButton: true })
       return;
     }
   }
 
-  //Change User Password
+  // Generate Otp and send User Email
+  sendOtp() {
+    if (!this.formData.user_email) {
+      this.toastr.warning('Please enter your email!');
+      return;
+    }
+
+    this.userApi.sendOtp({ email: this.formData.user_email }).subscribe(
+      (res: any) => {
+        this.toastr.success(res.message || 'OTP sent to your email', 'Success', { progressBar: true, tapToDismiss: true });
+        this.otpSent = true;
+      },
+      err => {
+        this.toastr.error(err.error.message || 'Error sending OTP', 'Error', { progressBar: true, tapToDismiss: true });
+      }
+    );
+  }
+
+  // Varify OTP
+  verifyOtp() {
+    if (!this.formData.otp) {
+      this.toastr.warning('Please enter the OTP!', 'Warning', { progressBar: true, tapToDismiss: true });
+      return;
+    }
+
+    this.userApi.verifyOtp({
+      email: this.formData.user_email,
+      otp: this.formData.otp
+    }).subscribe(
+      (res: any) => {
+        this.toastr.success(res.message || 'OTP verified successfully', 'Success', { progressBar: true, tapToDismiss: true });
+        this.otpVerified = true;
+      },
+      err => {
+        this.toastr.error(err.error.message || 'OTP verification failed', 'Error', { progressBar: true, tapToDismiss: true });
+      }
+    );
+  }
+
+  //Change Password
   changePass() {
-    const formData = new FormData();
+    if (!this.otpVerified) {
+      this.toastr.warning("Please verify OTP first!", 'Warning', { progressBar: true, tapToDismiss: true });
+      return;
+    }
 
     if (this.formData.new_password !== this.formData.confirm_password) {
-      this.toastr.error('New password and Confirm password do not match!', "Error", { disableTimeOut: false, progressBar:true ,closeButton: true })
+      this.toastr.error("New password and confirm password do not match!", 'Error', { progressBar: true, tapToDismiss: true });
       return;
     }
 
     if (!this.formData.current_password || !this.formData.new_password || !this.formData.confirm_password) {
-      this.toastr.warning('All fields are required!', "Warning", { disableTimeOut: false, progressBar:true ,closeButton: true });
+      this.toastr.warning("All password fields are required!", "Warning", { progressBar: true, tapToDismiss: true });
       return;
     }
 
+    const formData = new FormData();
     formData.append('current_password', this.formData.current_password);
     formData.append('new_password', this.formData.new_password);
 
     this.userApi.updatePassword(formData).subscribe(
       (res: any) => {
-        if (res.status === 'success') {
-          this.toastr.success('Password updated successfully', "Success", { disableTimeOut: false, progressBar:true ,closeButton: true });
-          this.formData.current_password = '';
-          this.formData.new_password = '';
-          this.formData.confirm_password = '';
-        }
+        this.toastr.success("Password changed successfully!", 'Success', { progressBar: true, tapToDismiss: true });
+        this.otpSent = false;
+        this.otpVerified = false;
+        this.formData.current_password = '';
+        this.formData.new_password = '';
+        this.formData.confirm_password = '';
       },
-      (err: any) => {
-        if (err.status === 404) {
-          this.toastr.error(err.message);
-        } else if (err.status === 400) {
-          this.toastr.error(err.error.message);
-        } else {
-          this.toastr.error('An unexpected error occurred. Please try again later', "Error", { disableTimeOut: false, progressBar:true ,closeButton: true });
-        }
+      err => {
+        this.toastr.error(err.error.message || 'Error updating password', 'Error', { progressBar: true, tapToDismiss: true });
       }
     );
   }
@@ -149,7 +189,7 @@ export class ProfileComponent {
   logout() {
     const confirmLogout = confirm('Are you sure!! You want to logout');
     if (confirmLogout) {
-      this.toastr.success("LogOut successfully", "Success", { disableTimeOut: false, progressBar:true ,closeButton: true });
+      this.toastr.success("LogOut successfully", "Success", { disableTimeOut: false, progressBar: true, closeButton: true });
       this.userApi.userLogout();
       this.router.navigate(['/user/login']);
     }

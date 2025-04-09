@@ -286,6 +286,16 @@ export class UserApiService {
   }
 
 
+  sendOtp(data: any) {
+    return this.http.post(`${this.userUrl}/send-otp`, data);
+  }
+  
+  verifyOtp(data: any) {
+    return this.http.post(`${this.userUrl}/verify-otp`, data);
+  }
+  
+
+
 
 
 }

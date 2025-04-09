@@ -8,11 +8,14 @@
                         <div class="col-md-4 text-center p-3 bg-light shadow rounded">
                             <div class="col-md-12">
                                 <div class="profile-img" style="height: 250px; width: 300px;">
-                                    <img *ngIf="!loggedInUserImage" src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTKlIcH0Q1e2QDuzvM94CnN3vdzXrvebSHNeQ&s" alt="User Profile"/>
+                                    <img *ngIf="!loggedInUserImage"
+                                        src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTKlIcH0Q1e2QDuzvM94CnN3vdzXrvebSHNeQ&s"
+                                        alt="User Profile" />
                                     <img [src]="loggedInUserImage" alt="User Profile" />
                                     <div class="file btn btn-lg btn-primary">
                                         Select Pic
-                                        <input type="file" class="form-control" name="user_profile" (change)="onFileSelect($event)">
+                                        <input type="file" class="form-control" name="user_profile"
+                                            (change)="onFileSelect($event)">
                                     </div>
                                 </div>
                                 <br>
@@ -28,9 +31,10 @@
                                 <div class="card-body p-4">
                                     <ul class="nav nav-tabs" id="profileTab" role="tablist">
                                         <li class="nav-item" role="presentation">
-                                            <button class="bg-warning nav-link text-dark ml-1 mt-1 active" id="overview-tab"
-                                                data-bs-toggle="tab" data-bs-target="#overview-tab-pane" type="button"
-                                                role="tab" aria-controls="overview-tab-pane" aria-selected="true">
+                                            <button class="bg-warning nav-link text-dark ml-1 mt-1 active"
+                                                id="overview-tab" data-bs-toggle="tab"
+                                                data-bs-target="#overview-tab-pane" type="button" role="tab"
+                                                aria-controls="overview-tab-pane" aria-selected="true">
                                                 <i class="fas fa-edit text-dark"></i> Overview
                                             </button>
                                         </li>
@@ -42,20 +46,20 @@
                                             </button>
                                         </li>
                                         <li class="nav-item" role="presentation">
-                                            <button routerLink="/user/orders" class="bg-warning text-dark nav-link ml-1 mt-1"
-                                                type="button">
+                                            <button routerLink="/user/orders"
+                                                class="bg-warning text-dark nav-link ml-1 mt-1" type="button">
                                                 <i class="fas fa-shopping-cart"></i> My Orders
                                             </button>
                                         </li>
                                         <li class="nav-item" role="presentation">
-                                            <button routerLink="/user/wishlist" class="bg-warning text-dark nav-link ml-1 mt-1"
-                                                type="button">
+                                            <button routerLink="/user/wishlist"
+                                                class="bg-warning text-dark nav-link ml-1 mt-1" type="button">
                                                 <i class="fas fa-heart" style="color: red;"></i> My Wishlist
                                             </button>
                                         </li>
                                         <li class="nav-item" role="presentation">
-                                            <button class="text-dark bg-warning nav-link ml-1 mt-1" type="button" role="tab"
-                                                (click)="logout()">
+                                            <button class="text-dark bg-warning nav-link ml-1 mt-1" type="button"
+                                                role="tab" (click)="logout()">
                                                 <i class="fas fa-sign-out-alt"></i> LogOut
                                             </button>
                                         </li>
@@ -130,15 +134,45 @@
                                         </div>
 
                                         <!-- Password Section Start Here -->
-
                                         <div class="tab-pane fade" id="password-tab-pane" role="tabpanel"
                                             aria-labelledby="password-tab" tabindex="0">
-                                            <form (ngSubmit)="changePass()">
+
+                                            <form (ngSubmit)="changePass()" #resetForm="ngForm">
+                                                <h4 class="text-danger" *ngIf="!otpVerified">First Varify email then you
+                                                    can change password</h4>
+                                                <!-- Email + Send OTP -->
+                                                <div class="col-md-12 row">
+                                                    <div class="col-md-4">
+                                                        <label for="email" class="mt-3 form-label">Email</label>
+                                                    </div>
+                                                    <div class="col-md-8">
+                                                        <input type="email" name="user_email"
+                                                            [(ngModel)]="formData.user_email" class="form-control"
+                                                            required>
+                                                        <button type="button" (click)="sendOtp()"
+                                                            class="btn btn-primary mt-2">Get OTP</button>
+                                                    </div>
+                                                </div>
+
+                                                <!-- OTP Field + Verify OTP -->
+                                                <div *ngIf="otpSent" class="col-md-12 row">
+                                                    <div class="col-md-4">
+                                                        <label for="otp" class="mt-3 form-label">OTP</label>
+                                                    </div>
+                                                    <div class="col-md-8">
+                                                        <input type="text" name="otp" [(ngModel)]="formData.otp"
+                                                            class="form-control" required>
+                                                        <button type="button" (click)="verifyOtp()"
+                                                            class="btn btn-success mt-2">Verify OTP</button>
+                                                    </div>
+                                                </div>
+
+                                                <!-- Password Change Fields -->
                                                 <div class="row gy-3 gy-xxl-4">
-                                                    <div class="col-md-12 row">
+                                                    <div class="col-md-12 row" *ngIf="otpVerified">
                                                         <div class="col-md-4">
-                                                            <label for="current_password" class="mt-3 form-label">
-                                                                Current Password</label>
+                                                            <label for="current_password"
+                                                                class="mt-3 form-label">Current Password</label>
                                                         </div>
                                                         <div class="col-md-8">
                                                             <input type="password" class="form-control"
@@ -146,9 +180,10 @@
                                                                 [(ngModel)]="formData.current_password">
                                                         </div>
                                                     </div>
-                                                    <div class="col-md-12 row">
+
+                                                    <div class="col-md-12 row" *ngIf="otpVerified">
                                                         <div class="col-md-4">
-                                                            <label for="new_password" class="mt-3 form-label"> New
+                                                            <label for="new_password" class="mt-3 form-label">New
                                                                 Password</label>
                                                         </div>
                                                         <div class="col-md-8">
@@ -157,10 +192,11 @@
                                                                 [(ngModel)]="formData.new_password">
                                                         </div>
                                                     </div>
-                                                    <div class="col-md-12 row">
+
+                                                    <div class="col-md-12 row" *ngIf="otpVerified">
                                                         <div class="col-md-4">
-                                                            <label for="confirm_password" class="mt-3 form-label">
-                                                                Confirm Password</label>
+                                                            <label for="confirm_password"
+                                                                class="mt-3 form-label">Confirm Password</label>
                                                         </div>
                                                         <div class="col-md-8">
                                                             <input type="password" class="form-control"
@@ -168,18 +204,20 @@
                                                                 [(ngModel)]="formData.confirm_password">
                                                         </div>
                                                     </div>
-                                                    <div class="col-md-12">
-                                                        <button type="submit" class="btn btn-danger"> Reset
-                                                            Password</button>
-                                                    </div>
                                                 </div>
+
+                                                <!-- Reset Password Submit -->
+                                                <div class="col-md-12" *ngIf="otpVerified">
+                                                    <button type="submit" class="btn btn-danger mt-3">Reset
+                                                        Password</button>
+                                                </div>
+
                                             </form>
                                         </div>
 
                                     </div>
                                 </div>
                             </div>
-
                         </div>
                     </div>
                 </div>
