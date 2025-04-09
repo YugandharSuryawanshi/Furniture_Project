@@ -33,14 +33,30 @@
 
         <div class="row g-5 mb-5">
             <div class="col-lg-4">
-                <div class="mb-4 footer-logo-wrap"><a routerLink="/" class="footer-logo">Furni<span>.</span></a></div>
-                <p class="mb-4">This website is help users to purchase furniture online..</p>
+                <div class="mb-4 footer-logo-wrap">
+                    <a routerLink="/" class="footer-logo" (click)="scrollToTop()">
+                        <img src="/images/logo.png" style="height: 100px;" alt="">
+                        <span>.</span>
+                    </a>
+                </div>
+                <p class="mb-4">At Furni, we bring warmth and style to your home with furniture that fits your
+                    lifestyle—shipped fast, built to last.</p>
 
                 <ul class="list-unstyled custom-social">
-                    <li><a href="Link Are not Available"><span class="fa fa-brands fa-facebook-f"></span></a></li>
-                    <li><a href="Link Are not Available"><span class="fa fa-brands fa-twitter"></span></a></li>
-                    <li><a href="https://www.instagram.com/yugandhar_marathe/" target="_blank">
-                            <span class="fa fa-brands fa-instagram"></span></a>
+                    <li>
+                        <a href="Link Are not Available" title="This link are not Available">
+                            <span class="fa fa-brands fa-facebook-f"></span>
+                        </a>
+                    </li>
+                    <li>
+                        <a href="Link Are not Available" title="This link are not Available">
+                            <span class="fa fa-brands fa-twitter"></span>
+                        </a>
+                    </li>
+                    <li>
+                        <a href="https://www.instagram.com/yugandhar_marathe/" target="_blank">
+                            <span class="fa fa-brands fa-instagram"></span>
+                        </a>
                     </li>
                     <li>
                         <a href="https://www.linkedin.com/in/yugandhar-suryawanshi-028311228/" target="_blank">
@@ -59,35 +75,35 @@
                 <div class="row links-wrap">
                     <div class="col-6 col-sm-6 col-md-3">
                         <ul class="list-unstyled">
-                            <li><a routerLink="/user/about">About us</a></li>
-                            <li><a routerLink="/user/service">Services</a></li>
-                            <li><a routerLink="/user/blog">Blog</a></li>
-                            <li><a routerLink="/user/contact">Contact us</a></li>
+                            <li><a routerLink="/user/about" (click)="scrollToTop()">About us</a></li>
+                            <li><a routerLink="/user/service" (click)="scrollToTop()">Services</a></li>
+                            <li><a routerLink="/user/blog" (click)="scrollToTop()">Blog</a></li>
+                            <li><a routerLink="/user/contact" (click)="scrollToTop()">Contact us</a></li>
                         </ul>
                     </div>
 
                     <div class="col-6 col-sm-6 col-md-3">
                         <ul class="list-unstyled">
-                            <li><a routerLink="#">Support</a></li>
-                            <li><a routerLink="#">Knowledge base</a></li>
-                            <li><a routerLink="#">Live chat</a></li>
+                            <li><a routerLink="#" title="This facility coming Soon">Support</a></li>
+                            <li><a routerLink="#" title="This facility coming Soon">Knowledge base</a></li>
+                            <li><a routerLink="#" title="This facility coming Soon">Live chat</a></li>
                         </ul>
                     </div>
 
                     <div class="col-6 col-sm-6 col-md-3">
                         <ul class="list-unstyled">
-                            <li><a routerLink="#">Jobs</a></li>
-                            <li><a routerLink="#">Our team</a></li>
-                            <li><a routerLink="#">Leadership</a></li>
-                            <li><a routerLink="#">Privacy Policy</a></li>
+                            <li><a routerLink="#" title="This facility coming Soon">Jobs</a></li>
+                            <li><a routerLink="#" title="This facility coming Soon">Our team</a></li>
+                            <li><a routerLink="#" title="This facility coming Soon">Leadership</a></li>
+                            <li><a routerLink="#" title="This facility coming Soon">Privacy Policy</a></li>
                         </ul>
                     </div>
 
                     <div class="col-6 col-sm-6 col-md-3">
                         <ul class="list-unstyled">
-                            <li><a routerLink="#">Nordic Chair</a></li>
-                            <li><a routerLink="#">Sofa</a></li>
-                            <li><a routerLink="#">Sona Beds</a></li>
+                            <li><a routerLink="#" title="This facility coming Soon">Nordic Chair</a></li>
+                            <li><a routerLink="#" title="This facility coming Soon">Sofa</a></li>
+                            <li><a routerLink="#" title="This facility coming Soon">Sona Beds</a></li>
                         </ul>
                     </div>
                 </div>
@@ -95,29 +111,30 @@
 
         </div>
 
-        <div class="border-top copyright">
-            <div class="row pt-4">
-                <div class="col-lg-6">
-                    <p class="mb-2 text-center text-lg-start">
-                        Copyright &copy;
+        <div class="border-top copyright py-4">
+            <div class="row align-items-center">
+                <div class="col-lg-6 text-center text-lg-start mb-2 mb-lg-0">
+                    <p class="mb-0">
+                        &copy;
                         <script>document.write(new Date().getFullYear());</script>
-                        All Rights Reserved. &mdash;
-                        Designed with love by
-                        <a href="https://www.linkedin.com/in/yugandhar-suryawanshi-028311228/"> Yugandhar Suryawanshi
-                        </a>
-                        Distributed By <a routerLink="/user/home"> Furni </a>
+                        All Rights Reserved. —
+                        Designed with ❤️ by
+                        <a href="https://www.linkedin.com/in/yugandhar-suryawanshi-028311228/" target="_blank"
+                            style="font-family: Verdana, Geneva, Tahoma, sans-serif;">Yugandhar
+                            Suryawanshi</a> |
+                        Distributed by <a routerLink="/user/home" (click)="scrollToTop()">Furni</a>
                     </p>
                 </div>
 
                 <div class="col-lg-6 text-center text-lg-end">
-                    <ul class="list-unstyled d-inline-flex ms-auto">
-                        <li class="me-4"><a href="#">Terms &amp; Conditions</a></li>
+                    <ul class="list-unstyled d-flex justify-content-center justify-content-lg-end mb-0">
+                        <li><a href="#">Terms &amp; Conditions</a></li>
                         <li><a href="#">Privacy Policy</a></li>
                     </ul>
                 </div>
-
             </div>
         </div>
+
     </div>
 </footer>
 <!-- End Footer Section -->

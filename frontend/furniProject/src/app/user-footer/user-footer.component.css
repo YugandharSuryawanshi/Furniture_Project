@@ -1,0 +1,40 @@
+.copyright {
+    background: #ffeded;
+    font-size: 0.95rem;
+    color: #6c757d;
+    animation: fadeInUp 1.2s ease-in-out;
+    border-top: 2px solid #dee2e6;
+}
+
+.copyright a {
+    color: #343a40;
+    font-weight: 500;
+    text-decoration: none;
+    transition: color 0.3s ease, transform 0.3s ease;
+}
+
+.copyright a:hover {
+    color: #ff7b00;
+    transform: scale(1.05);
+}
+
+.copyright ul li {
+    display: inline;
+    margin-right: 1.5rem;
+}
+
+.copyright ul li:last-child {
+    margin-right: 0;
+}
+
+@keyframes fadeInUp {
+    0% {
+        opacity: 0;
+        transform: translateY(20px);
+    }
+
+    100% {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
