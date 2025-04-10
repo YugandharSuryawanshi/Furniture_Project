@@ -190,22 +190,9 @@ router.put('/userUpdateProfile', authenticateToken, async (req, res) => {
 // Update User Password Only
 router.put('/userUpdatePassword', authenticateToken, async (req, res) => {
     const userId = req.user.id;
-    const { current_password, new_password } = req.body;
+    const { new_password } = req.body;
 
     try {
-        const query = 'SELECT user_password FROM users WHERE user_id = ?';
-        const result = await exe(query, [userId]);
-
-        if (result.length === 0) {
-            return res.status(404).json({ status: 'userNotFound', message: 'User Which Password Are You Want To Update this is not found' });
-        }
-
-        const user = result[0];
-
-        const match = await bcrypt.compare(current_password, user.user_password);
-        if (!match) {
-            return res.status(400).json({ status: 'passNotMatch', message: 'Current password is incorrect..!' });
-        }
 
         const hashedPassword = await bcrypt.hash(new_password, 10);
         const updateQuery = 'UPDATE users SET user_password = ? WHERE user_id = ?';
@@ -1064,7 +1051,7 @@ router.post('/send-otp', async (req, res) => {
             html: emailHtml
         });
 
-        res.json({ status: 'success', message: 'OTP sent to email' , otp:otp });
+        res.json({ status: 'success', message: 'OTP sent to email', otp: otp });
     } catch (err) {
         console.log(err);
         res.status(500).json({ status: 'error', message: 'Failed to send OTP' });
