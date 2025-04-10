@@ -161,13 +161,12 @@ export class ProfileComponent {
       return;
     }
 
-    if (!this.formData.current_password || !this.formData.new_password || !this.formData.confirm_password) {
-      this.toastr.warning("All password fields are required!", "Warning", { progressBar: true, tapToDismiss: true });
+    if (!this.formData.new_password || !this.formData.confirm_password) {
+      this.toastr.warning("Both password fields are required!", "Warning", { progressBar: true, tapToDismiss: true });
       return;
     }
 
     const formData = new FormData();
-    formData.append('current_password', this.formData.current_password);
     formData.append('new_password', this.formData.new_password);
 
     this.userApi.updatePassword(formData).subscribe(
@@ -175,7 +174,6 @@ export class ProfileComponent {
         this.toastr.success("Password changed successfully!", 'Success', { progressBar: true, tapToDismiss: true });
         this.otpSent = false;
         this.otpVerified = false;
-        this.formData.current_password = '';
         this.formData.new_password = '';
         this.formData.confirm_password = '';
       },

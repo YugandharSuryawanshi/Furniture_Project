@@ -11,9 +11,9 @@
                         <p class="mb-4">
                             {{banner_info?.banner_details}}
                         </p>
-                        <p><a href="/user/shop" class="btn btn-secondary me-2">Shop
+                        <p><a routerLink="/user/shop" class="btn btn-secondary me-2">Shop
                                 Now</a>
-                            <a href="/user/service" class="btn btn-white-outline">Explore</a>
+                            <a routerLink="/user/service" class="btn btn-white-outline">Explore</a>
                         </p>
                     </div>
                 </div>
@@ -41,12 +41,12 @@
                 <p class="mb-4">
                     {{ products[0]?.product_details }}
                 </p>
-                <p><a href="/user/shop" class="btn">Explore</a></p>
+                <p><a routerLink="/user/shop" class="btn">Explore</a></p>
             </div>
 
             <!-- Products Grid -->
             <div class="col-12 col-md-4 col-lg-3 mb-5 mb-md-0" *ngFor="let product of products">
-                <a class="product-item" href="/user/shop">
+                <a class="product-item" routerLink="/user/shop">
                     <img style="height: 320px; width: 300px;" [src]="product?.firstImage" alt="image"
                         class="img-fluid product-thumbnail bg-light" />
                     <h3 class="product-title">{{ product?.product_name }}</h3>
@@ -159,7 +159,7 @@
                         <p>
                             {{product?.product_details}}
                         </p>
-                        <p><a href="/user/shop">Read More</a></p>
+                        <p><a routerLink="/user/shop">Read More</a></p>
                     </div>
                 </div>
             </div>
@@ -225,23 +225,23 @@
                 <h2 class="section-title">Recent Blog</h2>
             </div>
             <div class="col-md-6 text-start text-md-end">
-                <a href="/user/blog" class="more">View All Posts</a>
+                <a routerLink="/user/blog" class="more">View All Posts</a>
             </div>
         </div>
 
         <div class="row">
             <div class="col-12 col-sm-6 col-md-4 mb-5" *ngFor="let blog of blogs; let i = index">
                 <div class="post-entry">
-                    <a href="#" class="post-thumbnail">
+                    <a routerLink="#" class="post-thumbnail">
                         <img style="height: 350px; width: 450px;"
                             [src]="'http://localhost:1000/uploads/' + blog?.blog_image" alt="Image" class="img-fluid">
                     </a>
                     <div class="post-content-entry">
-                        <h3><a href="#">{{blog?.blog_title}}</a></h3>
+                        <h3><a routerLink="#">{{blog?.blog_title}}</a></h3>
                         <div class="meta">
-                            <span>by <a href="#">{{blog?.blog_post_by}}</a></span>
-                            <span>on <a href="#">{{blog?.blog_post_date}}</a>,time
-                                <a href="">{{blog?.blog_post_time}}</a>
+                            <span>by <a routerLink="#">{{blog?.blog_post_by}}</a></span>
+                            <span>on <a routerLink="#">{{blog?.blog_post_date}}</a>,time
+                                <a routerLink="">{{blog?.blog_post_time}}</a>
                             </span>
                         </div>
                     </div>
