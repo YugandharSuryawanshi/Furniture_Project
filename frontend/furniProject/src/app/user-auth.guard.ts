@@ -16,7 +16,7 @@ export class UserAuthGuard implements CanActivate {
 
     if (!token && requiresLogin) {
 
-      const shouldRedirect = confirm('You are not logged in? Log in First!');
+      const shouldRedirect = confirm('You are not logged in? Login First..!');
       if (shouldRedirect) {
         this.router.navigate(['/user/login']); // Redirect to login
       }
