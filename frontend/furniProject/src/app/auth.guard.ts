@@ -17,7 +17,7 @@ export class AuthGuard implements CanActivate {
     const requiresLogin = route.data['requiresLogin'] as boolean;
 
     if (!isLoggedIn && requiresLogin) {
-      if (confirm('You are not logged in. Would you like to log in now?')) {
+      if (confirm('You are not logged in. Would you like to Login Now?')) {
         this.router.navigate(['/admin/login']);
       }
       return false;
