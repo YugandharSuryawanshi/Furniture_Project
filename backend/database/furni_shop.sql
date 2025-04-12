@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Generation Time: Mar 15, 2025 at 07:50 PM
+-- Generation Time: Apr 11, 2025 at 05:29 PM
 -- Server version: 10.4.32-MariaDB
 -- PHP Version: 8.2.12
 
@@ -41,7 +41,7 @@ CREATE TABLE `admins` (
 --
 
 INSERT INTO `admins` (`admin_id`, `admin_name`, `admin_mobile`, `admin_email`, `admin_password`, `admin_profile`) VALUES
-(2, 'Yugandhar Suryawanshi', '9359087068', 'yugandhar@gmail.com', '$2b$10$ehyXenucTJOkbk91whp2JOfW5WcUQgRm7Bv1jbotyHDYaBfqekQeO', '1736439598182study.jpg'),
+(2, 'Yugandhar Suryawanshi', '9359087068', 'yugandhar@gmail.com', '$2b$10$FYnMTx547qVgQHyIMOvMGOuSJu8NgjmlRBSCIqD/BRb/IeyypDDn2', '1743517326401study.jpg'),
 (3, 'Chaitanya Kodre', '9359087069', 'chaitu@gmail.com', '$2a$10$7q1Z3nvV1HcsfvG6amkgueXZLxKOSWTQYW0h2t8qKYAnzyMiQ7Nqq', '1736446596106IMG_20220623_152031.jpg'),
 (5, 'Radha Krishna', '9359087068', 'radhekrishna@gmail.com', '$2a$10$alD6Qg58fLjR9bH96gkE5uNhqgeNYMIGd0CDmulbdin9cxRQYXxWC', '1736420229774RadheKrishna.jpg'),
 (8, 'Shahadev Warkhede', '1234567891', 'shahadev@gmail.com', '$2b$10$4U16zOJ3/krd0S8ivVCUxOpPm9EbB78IqiFG7sqvxKuphMu1v3/Lu', '17404872113151697381295688.jpg'),
@@ -89,11 +89,11 @@ CREATE TABLE `blog` (
 --
 
 INSERT INTO `blog` (`blog_id`, `blog_image`, `blog_title`, `blog_post_date`, `blog_post_time`, `blog_post_by`, `blog_post_by_position`) VALUES
-(1, '1737474406378_blog3.jpg', 'First Time Home Owner Ideas', '2025-01-21', '9:16 PM', 'Yugandhar Marathe', 'CEO'),
-(2, '1737522609012_why-choose-us-img.jpg', 'How To Keep Your Furniture Clean', '2025-01-22', '11:34', 'Chaitanya Kodre', 'Manager'),
-(3, '1737522184054_img-grid-1.jpg', 'Small Space Furniture Apartment Ideas', '2025-01-31', '8:34 PM', 'Shahadev Warkhede', 'Manager'),
-(5, '1737526457832_post-1.jpg', 'First Time Home Owner Ideas', '2025-01-24', '2:45 PM', 'Rohit Bhosle', 'Manager'),
-(6, '1737526559574_post-2.jpg', 'How To Keep Your Furniture Clean', '2025-01-25', '4:46 AM', 'Denish Patel', 'Employee');
+(1, '1744306834389_blog1.png', 'Designing Spaces That Inspire: Top Interior Trends for 2025', '2025-01-21', '9:16 PM', 'Yugandhar Marathe', 'CEO'),
+(2, '1744306855343_blog4.png', 'Transform Your Home: Smart Furniture Ideas for Modern Living', '2025-01-22', '11:34 AM', 'Chaitanya Kodre', 'Manager'),
+(3, '1744306870493_blog2.png', 'Maximize Small Spaces: Creative Interior Design Tips That Work', '2025-01-31', '8:34 PM', 'Shahadev Warkhede', 'Manager'),
+(5, '1744306886606_blog5.png', 'The Role of Color Psychology in Modern Home Interiors', '2025-01-24', '2:45 PM', 'Rohit Bhosle', 'Manager'),
+(6, '1744306900922_blog3.png', 'Maximizing Small Spaces with Smart Furniture Solutions', '2025-01-25', '4:46 AM', 'Denish Patel', 'Employee');
 
 -- --------------------------------------------------------
 
@@ -115,7 +115,8 @@ CREATE TABLE `contact_us` (
 --
 
 INSERT INTO `contact_us` (`contact_id`, `first_name`, `last_name`, `contact_gmail`, `contact_message`, `created_at`) VALUES
-(1, 'Siya', 'Ram', 'ram@gmail.com', 'Good Service', '2025-02-17 16:25:13');
+(1, 'Siya', 'Ram', 'ram@gmail.com', 'Good Service', '2025-02-17 16:25:13'),
+(2, 'Yugandhar', 'Suryawanshi', 'yugandharsuryawanshi1@gmail.com', 'Nice Products', '2025-04-10 16:38:59');
 
 -- --------------------------------------------------------
 
@@ -141,7 +142,7 @@ CREATE TABLE `interior` (
 --
 
 INSERT INTO `interior` (`interior_id`, `first_image`, `second_image`, `third_image`, `heading`, `interior_details`, `first_key`, `second_key`, `third_key`, `forth_key`) VALUES
-(1, '1737229568232_interior1.jpg', '1737229929657_interior2.jpg', '1737229519835_post-2.jpg', 'We Help You Make Modern Interior Design', 'Donec facilisis quam ut purus rutrum lobortis. Donec vitae odio quis nisl dapibus malesuada. Nullam ac aliquet velit. Aliquam vulputate velit imperdiet dolor tempor tristique. Pellentesque habitant morbi tristique senectus et netus et malesuada', 'Donec vitae odio quis nisl dapibus malesuada', 'Donec vitae odio quis nisl dapibus malesuada', 'Donec vitae odio quis nisl dapibus malesuada', 'Donec vitae odio quis nisl dapibus malesuada');
+(1, '1744304403729_img-grid-1.jpg', '1744304403730_img-grid-2.jpg', '1744304403730_post-2.jpg', '🏠 We Help You Create Stunning Modern Interior Design.', 'At our core, we believe interior design is more than just decor — it\'s about crafting spaces that inspire comfort, creativity, and confidence. Whether you\'re upgrading a room or transforming your entire home, we offer modern solutions that blend functionality with style. From layout planning to elegant furniture selection, we’re with you every step of the way.', '1) Personalized Design Concepts We tailor every design to fit your lifestyle and preferences, ensuring that your space reflects your unique personality.', '2) Modern & Timeless Aesthetics Our team blends the latest trends with classic elements to create interiors that are contemporary yet enduring.', '3) Expert Space Optimization Whether large or small, we maximize space utility without compromising on comfort or elegance.', '4) Quality Materials & Finishes We use only premium-grade materials, handpicked to enhance durability, beauty, and lasting value in every project.');
 
 -- --------------------------------------------------------
 
@@ -168,17 +169,6 @@ CREATE TABLE `order_products` (
 --
 
 INSERT INTO `order_products` (`order_product_id`, `order_id`, `user_id`, `product_id`, `product_name`, `product_qty`, `product_price`, `gst_amount`, `discount_amount`, `final_price`, `product_details`) VALUES
-(1, 1, 4, 1, 'Modern Classic 4 Seater Leatharrate Tufted 3+1+1Footrest Chesterfield Sofa', 1, 28998.00, 5219.64, 5799.60, 28418.04, 'No assembly required the product is delivered in a preassembled state.(only legs to be fix by the customer)Our delivery service is very fast, we deliver the order to the customer with 5 days guarantee after dispatch.\r\nModern Chesterfield Design: Designed with the traditional moden Chesterfield style in mind, this piece hits all the key elements, with deep button tufting, nailhead accents, scrolled arms and stylish legs.\r\nDIMENSION: 190 Lx 80Dx 80H.\r\nSeating Capacity: 3 Seat;'),
-(2, 1, 4, 7, 'Sheesham Wooden Dining Set 6 Seater Dining Table with Chairs & Bench ', 1, 33900.00, 6102.00, 7458.00, 32544.00, 'Material: Wood- 100% Solid Sheesham Wood, Color- Walnut Finish (Glossy).\r\nAssembly: Only Table and Bench Requires Assembly(Comes With Tools & Self-Assembly Instructions & Based on Customer Basis), Chairs Comes Ready to Use.\r\nBuy With Confidence: Designed and Manufactured by Nisha Furniture. The Trusted Source for Stylish Furniture for Every Taste and Budget.'),
-(3, 1, 4, 6, 'Furnilife Sliding Wardrobe 4 Doors with Mirror, Brown and Off White Color', 1, 35000.00, 6300.00, 7700.00, 33600.00, 'This wardrobe is suitable for many occasions, you can put it in children`s or adult`s bedroom, dressing room, living room, office, school, hospital, etc\r\nMade with engineered wood'),
-(4, 2, 4, 1, 'Modern Classic 4 Seater Leatharrate Tufted 3+1+1Footrest Chesterfield Sofa', 1, 28998.00, 5219.64, 5799.60, 28418.04, 'No assembly required the product is delivered in a preassembled state.(only legs to be fix by the customer)Our delivery service is very fast, we deliver the order to the customer with 5 days guarantee after dispatch.\r\nModern Chesterfield Design: Designed with the traditional moden Chesterfield style in mind, this piece hits all the key elements, with deep button tufting, nailhead accents, scrolled arms and stylish legs.\r\nDIMENSION: 190 Lx 80Dx 80H.\r\nSeating Capacity: 3 Seat;'),
-(5, 3, 4, 2, 'My Art Design - Scandinavian Chair with Padded & Solid Wood Oak Legs... ', 1, 3300.00, 594.00, 726.00, 3168.00, 'Provide best feel and comfert. Build Quality is good and used wood quality is best.'),
-(6, 4, 3, 1, 'Modern Classic 4 Seater Leatharrate Tufted 3+1+1Footrest Chesterfield Sofa', 1, 28998.00, 5219.64, 5799.60, 28418.04, 'No assembly required the product is delivered in a preassembled state.(only legs to be fix by the customer)Our delivery service is very fast, we deliver the order to the customer with 5 days guarantee after dispatch.\r\nModern Chesterfield Design: Designed with the traditional moden Chesterfield style in mind, this piece hits all the key elements, with deep button tufting, nailhead accents, scrolled arms and stylish legs.\r\nDIMENSION: 190 Lx 80Dx 80H.\r\nSeating Capacity: 3 Seat;'),
-(7, 5, 4, 9, 'Criss Cross Chair - Stylish PU Leather Accent Chair for Long Hours Sitting Comfort', 1, 9900.00, 1782.00, 1485.00, 10197.00, '✅RELAX IN STYLE: High density sponge-filled cushion and backrest will give you the feeling of sitting on the sofa, very comfortable and not easily deformed. The widened and soft seat executive chair allows you to sit comfortably in various positions including cross-legged for moments of relaxation while working or thinking.\r\n✅PREMIUM PU LEATHER: Upholstered in top-grain faux leather, the seat and backrest are durable for long-lasting use. Each support foot comes with a non-slip natural rubber foot pad to prevent scratches and slips. Our leather office chairs for work is waterproof, easy to clean, wear-resistant and durable.\r\n'),
-(8, 6, 4, 9, 'Criss Cross Chair - Stylish PU Leather Accent Chair for Long Hours Sitting Comfort', 1, 9900.00, 1782.00, 1485.00, 10197.00, '✅RELAX IN STYLE: High density sponge-filled cushion and backrest will give you the feeling of sitting on the sofa, very comfortable and not easily deformed. The widened and soft seat executive chair allows you to sit comfortably in various positions including cross-legged for moments of relaxation while working or thinking.\r\n✅PREMIUM PU LEATHER: Upholstered in top-grain faux leather, the seat and backrest are durable for long-lasting use. Each support foot comes with a non-slip natural rubber foot pad to prevent scratches and slips. Our leather office chairs for work is waterproof, easy to clean, wear-resistant and durable.\r\n'),
-(9, 7, 4, 5, 'Altamore Engineered Wood 2 Door Wardrobe with Drawer (Wenge Finish)', 1, 11900.00, 2142.00, 2499.00, 11543.00, 'Included Components: 1 Wardrobe, 1 Drawer\r\nProduct Dimensions ( in Centimeters) : 80.3 x 45.3 x 182\r\nStorage Details: Comes with 4 Shelves and a drawer which can be installed by the seller'),
-(10, 8, 3, 2, 'My Art Design - Scandinavian Chair with Padded & Solid Wood Oak Legs... ', 1, 3300.00, 594.00, 726.00, 3168.00, 'Provide best feel and comfert. Build Quality is good and used wood quality is best.'),
-(11, 9, 3, 7, 'Sheesham Wooden Dining Set 6 Seater Dining Table with Chairs & Bench ', 1, 33900.00, 6102.00, 7458.00, 32544.00, 'Material: Wood- 100% Solid Sheesham Wood, Color- Walnut Finish (Glossy).\r\nAssembly: Only Table and Bench Requires Assembly(Comes With Tools & Self-Assembly Instructions & Based on Customer Basis), Chairs Comes Ready to Use.\r\nBuy With Confidence: Designed and Manufactured by Nisha Furniture. The Trusted Source for Stylish Furniture for Every Taste and Budget.'),
 (12, 10, 6, 8, 'FURNY Braustin 6 Seater Fabric LHS L Shape Sofa Set (Aqua Blue)', 1, 32500.00, 5850.00, 3250.00, 35100.00, '6 Seater Sofa Set for Living Rooms | PRIMARY MATERIAL- Solid Wood & high density Supersoft Air Foam -::- UPHOLSTERY MATERIAL- Premium Fabric -::- SEATING CAPACITY-6 seater\r\nFurny Sofas give best comfortable seating experience. Our Sofas are designed with High Quality which lasts longer. We have huge Catalogue of L shape Sofa Sets, 3 seater sofas, 2 seater sofas, Sofa Cum beds, Recliner Sofas, Beds, Mattresses, Dining Table Sets, browse & get the best fit for your Homes.\r\nAssembly: Do it By Yourself.'),
 (13, 10, 6, 2, 'My Art Design - Scandinavian Chair with Padded & Solid Wood Oak Legs... ', 1, 3300.00, 594.00, 726.00, 3168.00, 'Provide best feel and comfert. Build Quality is good and used wood quality is best.'),
 (14, 10, 6, 10, 'Stool', 1, 5000.00, 900.00, 750.00, 5150.00, 'The nightstand is a modern take on a retro look, with a sleek mid-century modern design that adds a touch of vintage styling to your bedroom.\r\nQuality details include floral carved top, handcarved drawer front,\r\nThis end table provides plenty of storage space for your bedtime essentials.\r\nMultifunctional Use, the simple and compact design of this nightstan; It measures 21\" tall , 14\" wide and 12\" depth'),
@@ -188,7 +178,11 @@ INSERT INTO `order_products` (`order_product_id`, `order_id`, `user_id`, `produc
 (18, 12, 8, 1, 'Modern Classic 4 Seater Leatharrate Tufted 3+1+1Footrest Chesterfield Sofa', 1, 28998.00, 5219.64, 5799.60, 28418.04, 'No assembly required the product is delivered in a preassembled state.(only legs to be fix by the customer)Our delivery service is very fast, we deliver the order to the customer with 5 days guarantee after dispatch.\r\nModern Chesterfield Design: Designed with the traditional moden Chesterfield style in mind, this piece hits all the key elements, with deep button tufting, nailhead accents, scrolled arms and stylish legs.\r\nDIMENSION: 190 Lx 80Dx 80H.\r\nSeating Capacity: 3 Seat;'),
 (19, 13, 9, 7, 'Sheesham Wooden Dining Set 6 Seater Dining Table with Chairs & Bench ', 1, 33900.00, 6102.00, 7458.00, 32544.00, 'Material: Wood- 100% Solid Sheesham Wood, Color- Walnut Finish (Glossy).\r\nAssembly: Only Table and Bench Requires Assembly(Comes With Tools & Self-Assembly Instructions & Based on Customer Basis), Chairs Comes Ready to Use.\r\nBuy With Confidence: Designed and Manufactured by Nisha Furniture. The Trusted Source for Stylish Furniture for Every Taste and Budget.'),
 (20, 13, 9, 9, 'Criss Cross Chair - Stylish PU Leather Accent Chair for Long Hours Sitting Comfort', 2, 9900.00, 1782.00, 1485.00, 10197.00, '✅RELAX IN STYLE: High density sponge-filled cushion and backrest will give you the feeling of sitting on the sofa, very comfortable and not easily deformed. The widened and soft seat executive chair allows you to sit comfortably in various positions including cross-legged for moments of relaxation while working or thinking.\r\n✅PREMIUM PU LEATHER: Upholstered in top-grain faux leather, the seat and backrest are durable for long-lasting use. Each support foot comes with a non-slip natural rubber foot pad to prevent scratches and slips. Our leather office chairs for work is waterproof, easy to clean, wear-resistant and durable.\r\n'),
-(21, 14, 9, 10, 'Stool', 1, 5000.00, 900.00, 750.00, 5150.00, 'The nightstand is a modern take on a retro look, with a sleek mid-century modern design that adds a touch of vintage styling to your bedroom.\r\nQuality details include floral carved top, handcarved drawer front,\r\nThis end table provides plenty of storage space for your bedtime essentials.\r\nMultifunctional Use, the simple and compact design of this nightstan; It measures 21\" tall , 14\" wide and 12\" depth');
+(21, 14, 9, 10, 'Stool', 1, 5000.00, 900.00, 750.00, 5150.00, 'The nightstand is a modern take on a retro look, with a sleek mid-century modern design that adds a touch of vintage styling to your bedroom.\r\nQuality details include floral carved top, handcarved drawer front,\r\nThis end table provides plenty of storage space for your bedtime essentials.\r\nMultifunctional Use, the simple and compact design of this nightstan; It measures 21\" tall , 14\" wide and 12\" depth'),
+(22, 15, 5, 17, 'WOODIFY Wall Mounted TV Unit', 2, 1089.00, 196.02, 217.80, 1067.22, 'Rack Is Made of MDF wood with a natural wfinish.) With Strong Hardness, Good Toughness, And Beautiful Patterns SPACE SAVING - Large Countertops Ensure Ample Storage Space.'),
+(23, 16, 5, 2, 'My Art Design - Scandinavian Chair with Padded & Solid Wood Oak Legs... ', 1, 3300.00, 594.00, 726.00, 3168.00, 'Provide best feel and comfert. Build Quality is good and used wood quality is best.'),
+(24, 17, 10, 8, 'FURNY Braustin 6 Seater Fabric LHS L Shape Sofa Set (Aqua Blue)', 1, 32500.00, 5850.00, 3250.00, 35100.00, '6 Seater Sofa Set for Living Rooms | PRIMARY MATERIAL- Solid Wood & high density Supersoft Air Foam -::- UPHOLSTERY MATERIAL- Premium Fabric -::- SEATING CAPACITY-6 seater\r\nFurny Sofas give best comfortable seating experience. Our Sofas are designed with High Quality which lasts longer. We have huge Catalogue of L shape Sofa Sets, 3 seater sofas, 2 seater sofas, Sofa Cum beds, Recliner Sofas, Beds, Mattresses, Dining Table Sets, browse & get the best fit for your Homes.\r\nAssembly: Do it By Yourself.'),
+(25, 18, 10, 2, 'My Art Design - Scandinavian Chair with Padded & Solid Wood Oak Legs... ', 1, 3300.00, 594.00, 726.00, 3168.00, 'Provide best feel and comfert. Build Quality is good and used wood quality is best.');
 
 -- --------------------------------------------------------
 
@@ -229,20 +223,15 @@ CREATE TABLE `order_tbl` (
 --
 
 INSERT INTO `order_tbl` (`order_id`, `user_id`, `country`, `c_fname`, `c_lname`, `c_address`, `c_area`, `c_state`, `c_postal_zip`, `c_email_address`, `c_phone`, `payment_mode`, `total_amount`, `total_gst`, `total_discount`, `final_total`, `order_date`, `order_status`, `order_dispatch_date`, `order_delivered_date`, `order_cancel_date`, `order_reject_date`, `payment_status`, `transaction_id`, `payment_date`) VALUES
-(1, 4, 'India', 'Siya', 'Ram', 'Shree Ram Mandir Ayodhya', 'SiyaRam Coloni , Bhakti Appartment flat no 43', 'Maharashtra', '123456', 'ram@gmail.com', '1234567898', 'COD', 97898.00, 17621.64, 20957.60, 94562.04, '2025-02-21 20:47:13', 'Confirmed', NULL, NULL, NULL, NULL, 'Pending', NULL, NULL),
-(2, 4, 'India', 'Siya', 'Ram', 'Shree Ram Mandir Ayodhya', 'SiyaRam Appartment flat no 52', 'Maharashtra', '123456', 'ram@gmail.com', '1234567898', 'Online', 28998.00, 5219.64, 5799.60, 28418.04, '2025-02-21 20:48:44', 'Delivered', '2025-02-23 13:36:37', '2025-02-23 13:40:16', NULL, NULL, 'Paid', 'pay_PyUvwmsVBr1AQl', '2025-02-21 20:48:44'),
-(3, 4, 'India', 'Siya', 'Ram', 'Shree Ram Mandir Ayodhya', 'SiyaRam Appartment flat no 35', 'Maharashtra', '123454', 'ram@gmail.com', '1234567898', 'Online', 3300.00, 594.00, 726.00, 3168.00, '2025-02-21 20:52:34', 'Dispatched', '2025-02-23 13:20:33', NULL, NULL, NULL, 'Paid', 'pay_PyUzz8sbX6sIWl', '2025-02-21 20:52:34'),
-(4, 3, 'India', 'Yugandhar', 'Suryawanshi', 'Amdad Tal. & Dist. Dhule.', 'In Front of Shiv mandir, House no 432', 'Maharashtra', '424301', 'yugandhar@gmail.com', '9359087068', 'Online', 28998.00, 5219.64, 5799.60, 28418.04, '2025-02-21 08:00:09', 'Delivered', '2025-02-24 11:06:00', '2025-02-24 11:06:55', NULL, NULL, 'Paid', 'pay_PygNAAdTvOhsg4', '2025-02-22 08:00:09'),
-(5, 4, 'India', 'Siya', 'Ram', 'Shree Ram Mandir Ayodhya', 'SiyaRam Appartment flat no 12', 'Maharashtra', '123456', 'ram@gmail.com', '1234567898', 'COD', 9900.00, 1782.00, 1485.00, 10197.00, '2025-02-22 12:34:01', 'Cancelled', '2025-02-23 13:30:41', '2025-02-23 13:31:00', '2025-02-23 13:42:38', '2025-02-23 13:31:57', 'Pending', NULL, NULL),
-(6, 4, 'India', 'Siya', 'Ram', 'Shree Ram Mandir Ayodhya', 'SiyaRam Appartment flat no 512', 'Maharashtra', '123456', 'ram@gmail.com', '1234567898', 'COD', 9900.00, 1782.00, 1485.00, 10197.00, '2025-02-23 15:30:51', 'Pending', NULL, NULL, NULL, NULL, 'Pending', NULL, NULL),
-(7, 4, 'India', 'Siya', 'Ram', 'Shree Ram Mandir Ayodhya', 'SiyaRam Appartment Flat no 124', 'Maharashtra', '123456', 'ram@gmail.com', '1234567898', 'Online', 11900.00, 2142.00, 2499.00, 11543.00, '2025-02-23 19:25:31', 'Confirmed', NULL, NULL, NULL, NULL, 'Paid', 'pay_PzGa3LE1Ztj8ff', '2025-02-23 19:25:31'),
-(8, 3, 'India', 'Yugandhar', 'Suryawanshi', 'Amdad Tal. & Dist. Dhule.', 'In Front of Shiv mandir, House no 234', 'Maharashtra', '424301', 'yugandhar@gmail.com', '9359087068', 'Online', 3300.00, 594.00, 726.00, 3168.00, '2025-02-24 10:36:02', 'Dispatched', '2025-02-25 13:58:16', NULL, NULL, NULL, 'Paid', 'pay_PzW65FP35HW6oI', '2025-02-24 10:36:02'),
-(9, 3, 'India', 'Yugandhar', 'Suryawanshi', 'Amdad Tal. & Dist. Dhule.', 'In Front of Shiv mandir , House no 234', 'Maharashtra', '424301', 'yugandhar@gmail.com', '9359087068', 'Online', 33900.00, 6102.00, 7458.00, 32544.00, '2025-02-24 10:48:10', 'Confirmed', NULL, NULL, NULL, NULL, 'Paid', 'pay_PzWItOIo1gr361', '2025-02-24 10:48:10'),
 (10, 6, 'India', 'Chaitanya', 'Kodre', 'Tandulwadi, Latur', 'House no: 123', 'Maharashtra', '123456', 'chaitanya@gmail.com', '1234567890', 'Online', 40800.00, 7344.00, 4726.00, 43418.00, '2025-03-10 11:49:37', 'Confirmed', NULL, NULL, NULL, NULL, 'Paid', 'pay_Q54pV62ZIld7f7', '2025-03-10 11:49:37'),
 (11, 7, 'India', 'Rushikesh', 'Pathade', 'Pathardi, Nagar', 'House no: 542 , near Shree Ram Madir , Pathardi', 'Maharashtra', '123456', 'rushi@gmail.com', '1234567893', 'Online', 49400.00, 8892.00, 6499.00, 51793.00, '2025-03-13 10:18:15', 'Confirmed', NULL, NULL, NULL, NULL, 'Paid', 'pay_Q6EsKnJa14fyrb', '2025-03-13 10:18:15'),
 (12, 8, 'India', 'Jagdish', 'Gawali', 'Velhane , Tal and Dist. Dhule', 'House no: 342, RamSadan Nivas', 'Maharashtra', '123456', 'jagdish@gmail.com', '1234567894', 'COD', 28998.00, 5219.64, 5799.60, 28418.04, '2025-03-13 10:57:50', 'Pending', NULL, NULL, NULL, NULL, 'Pending', NULL, NULL),
 (13, 9, 'India', 'Akshay', 'Pawar', 'Velhane, Tal. and Dist. Dhule', 'House no:321', 'Maharashtra', '123456', 'akshu@gmail.com', '1234567894', 'COD', 43800.00, 7884.00, 8943.00, 42741.00, '2025-03-13 16:08:51', 'Pending', NULL, NULL, NULL, NULL, 'Pending', NULL, NULL),
-(14, 9, 'India', 'Akshay', 'Pawar', 'Velhane, Tal. and Dist. Dhule', 'House no:321', 'Maharashtra', '123456', 'akshu@gmail.com', '1234567894', 'Online', 5000.00, 900.00, 750.00, 5150.00, '2025-03-13 16:12:28', 'Dispatched', '2025-03-13 16:13:03', NULL, NULL, NULL, 'Paid', 'pay_Q6KuWYkty3E5og', '2025-03-13 16:12:28');
+(14, 9, 'India', 'Akshay', 'Pawar', 'Velhane, Tal. and Dist. Dhule', 'House no:321', 'Maharashtra', '123456', 'akshu@gmail.com', '1234567894', 'Online', 5000.00, 900.00, 750.00, 5150.00, '2025-03-13 16:12:28', 'Dispatched', '2025-03-13 16:13:03', NULL, NULL, NULL, 'Paid', 'pay_Q6KuWYkty3E5og', '2025-03-13 16:12:28'),
+(15, 5, 'India', 'Shahadev', 'Warkhede', 'Maher-Jawala , Jalna', 'house no:- 123', 'Maharashtra', '123456', 'shahadev@gmail.com', '0987654321', 'Online', 1089.00, 196.02, 217.80, 1067.22, '2025-03-17 13:24:41', 'Confirmed', NULL, NULL, NULL, NULL, 'Paid', 'pay_Q7sBkGGPg8Z4mL', '2025-03-17 13:24:41'),
+(16, 5, 'India', 'Shahadev', 'Warkhede', 'Maher-Jawala , Jalna', 'house no:-123', 'Maharashtra', '123456', 'shahadev@gmail.com', '0987654321', 'COD', 3300.00, 594.00, 726.00, 3168.00, '2025-03-17 13:29:33', 'Confirmed', NULL, NULL, NULL, NULL, 'Pending', NULL, NULL),
+(17, 10, 'India', 'Yugandhar', 'Suryawanshi', 'Shree Lok Nivas, In front of Mahadev Temple Fagane, Tal & Dist Dhule.', 'House no 123', 'Maharashtra', '424301', 'yugandharmarathe123@gmail.com', '9359087068', 'COD', 32500.00, 5850.00, 3250.00, 35100.00, '2025-04-09 12:29:07', 'Pending', NULL, NULL, NULL, NULL, 'Pending', NULL, NULL),
+(18, 10, 'India', 'Yugandhar', 'Suryawanshi', 'Shree Lok Nivas, In front of Mahadev Temple Fagane, Tal & Dist Dhule.', 'House no :- 123', 'Maharashtra', '424301', 'yugandharmarathe123@gmail.com', '9359087068', 'Online', 3300.00, 594.00, 726.00, 3168.00, '2025-04-09 13:58:30', 'Confirmed', NULL, NULL, NULL, NULL, 'Paid', 'pay_QGz3Fzt1WZZwiw', '2025-04-09 13:58:30');
 
 -- --------------------------------------------------------
 
@@ -263,10 +252,10 @@ CREATE TABLE `our_team` (
 --
 
 INSERT INTO `our_team` (`member_id`, `member_name`, `member_position`, `member_details`, `member_image`) VALUES
-(1, 'Yugandhar Marathe', 'CEO', 'MCA, Full Stack Developer', '1737540769912_study.jpg'),
-(2, 'Shahadev Warkhede', 'Employee', 'BCA, Full Stack Developer', '1737544547071_IMG_20230819_152131.jpg'),
-(3, 'Chaitanya Kodre', 'Manager', 'MCA', '1737541751690_1732680223275.jpg'),
-(4, 'Rushikesh Pathade', 'Manager', 'MCA, Full Stack Developer', '1741700280186_IMG_20231125_171737.jpg');
+(1, 'Yugandhar Suryawanshi', 'CEO', 'A visionary leader with a passion for innovation and excellence, Yugandhar founded the company with the mission to redefine modern living through functional and aesthetic interior solutions. His strategic direction and creative insight drive the success of our brand.', '1737540769912_study.jpg'),
+(2, 'Shahadev Warkhede', 'Employee', 'A dedicated and skilled team member, Shahadev plays a crucial role in executing our daily operations. His commitment to quality and teamwork ensures that every project is delivered with precision and care.', '1737544547071_IMG_20230819_152131.jpg'),
+(3, 'Chaitanya Kodre', 'Operations Manager', 'Chaitanya oversees our day-to-day operations with unmatched precision. With years of experience in logistics and team management, he ensures every process runs smoothly—from procurement to project delivery.', '1737541751690_1732680223275.jpg'),
+(4, 'Rushikesh Pathade', 'Design Manager', 'Rushikesh is the creative force behind our design philosophy. With an eye for detail and a flair for blending style with comfort, he ensures every project reflects the latest trends and customer aspirations.', '1741700280186_IMG_20231125_171737.jpg');
 
 -- --------------------------------------------------------
 
@@ -316,8 +305,10 @@ INSERT INTO `product` (`product_id`, `product_type_id`, `product_name`, `product
 (13, 2, 'Stylux Premium Ergonomic Office Chair | Patented SmartGRID Technology', 15999.00, 359999.00, '49D x 62W x 124H Centimeters', '#89f0ef', 'Recently Added', 'Patented SmartGRID Technology: Our ergonomic high back chair incorporates the patented SmartGRID Technology, which offers pressure-free support to your buttocks and cradles your tailbone. The design of the office chair enhances your natural sitting posture, ensuring optimum comfort. The SmartGRID seat evenly distributes your weight, promoting healthy spinal alignment throughout the day.\r\nSpinePro Cushioned Lumbar Support: The ergonomic high back chair features the SpinePro Cushioned Lumbar Support, designed to support the natural curve of your spine and alleviate back pain by providing full support to your lumbar region. The contoured cushion of the office chair enhances circulation and reduces stress on your lower back.', '1738328080883_chair3.1.jpg,1738328080883_chair3.3.jpg,1738328080883_chair3.4.jpg,1738328080883_chair3.5.jpg', 'Furni', '21 Kg', '1', 'Solid Black & Blue', 'India', 'Smart GRID', '3 Year', '‎Wipe Clean', 'Super Lounge Dual Tilt Mechanism: Ergonomic high back office chair features a super lounge recline at 135 seat tilt for your ultimate comfort. Our dual lever mechanism lets you control seat height and backrest angle with ease. Find your perfect position in any situation with adjustable height and angles. Get ready to sit in comfort like never before.\r\nHeavy Duty Base Structure: The office chairs come with a heavy-duty nylon-finished dual caster & nylon wheelbase which is BIFMA certified Dated 20 April 2025. The wheels of the computer chair come with 360 swivel movement and are made of Anti-Scratch properties for easy movement on any surface.\r\nWarranty: Stylux ergo high back office chair is proudly made in India. It comes with a 3-year hassle-free warranty from the manufacturer', 18.00, 20.00),
 (14, 6, 'SONA ART & CRAFTS Modern Furniture Solid Sheesham Wood Dining Table', 16299.00, 45000.00, '6 x 4', '#5b4425', 'Recently Added', 'Material : This Dining Table Set Is Fully Made By Solid Sheesham Wood , Table Top - Solid Sheesham Wood | Chair - Solid Sheesham Wood | This Dining Set Available in 3 More Different Color - Walnut , Honey Teak and Mahogany, Visit our all listing and choose your Matching Color .\r\nMulti Purpose Dining Table Set : Your can Enjoy your Dinner with Family on this Solid wood dining set, this is a 4 Seater Dining set , Dining table with 4 chair , Solid wood dining set | Also can use as Study Table | Working Table | Work From Home Table Dining table Set is Best Gift for Housewarming And Wedding', '1738321898508_dining1.1.jpg,1738321898509_dining1.3.jpg,1738321898509_dining1.4.jpg,1738321898509_dining1.5.jpg', 'Furni', '90 Kg', '1', 'Solid', 'India', 'Sheesham Wood', '1 Years', 'Dont wash this product.', 'Product 1 Dining Table With 4 Chairs.\r\nImportnt Note : Installation And Assembly Are Based On DO IT YOURSELF Bases, And It Requires Basic Asambely. Seller Will Not Provided Charges And Services For That.\r\nMulti Purpose Dining Table Set : Your can Enjoy your Dinner with Family on this Solid wood dining set, this is a 4 Seater Dining set , Dining table with 4 chair , Solid wood dining set | Also can use as Study Table | Working Table | Work From Home Table Dining table Set is Best Gift for Housewarming And Wedding\r\nWe Provide Quality Products. Every product goes through a tough quality check to ensure that we can serve it our best way. Only Made in India Products.', 0.00, 0.00),
 (15, 12, 'VIKI | Dressing Table with Mirror and Open Shelf DIY | Frosty White', 2999.00, 4949.00, '24D x 70W x 120H Centimeters', '#e6d1d1', 'Recently Added', 'PRODUCT SIZE : Dresser dimensions 120cms(H)x70cms(W)x20cms(D)Compact design with a depth of 20cm, a spacious width of 70cm, and a tall height of 120cm, creating a functional and stylish dressing area.\r\nMATERIALS USED : We utilize termite, borer and scratch resistant boards from Associate Decor, India`s largest particle board manufacturing unit. Our hardware components are sourced exclusively from reputed companies. Our Products are Made in India\r\nFEATURES : The designer dressing table offers a mirrored vanity with storage. It has a modern style, compact size, and luxury finish. Perfect for your bedroom, it accommodates cosmetics and provides ample storage space.', '1738321085070_dressing1.1.jpg,1738321085070_dressing1.2.jpg,1738321085070_dressing1.3.jpg,1738321085070_dressing1.4.jpg,1738321085070_dressing1.5.jpg,1738321085070_dressing1.6.jpg', 'Furni', '15 Kg', '1', 'Solid', 'India', 'Engineered Wood', '1 Years', 'Dry Clean Only', 'ASSEMBLY SERVICE : This product doesn`t come with free assembly. You`ll need to assemble it yourself using the provided DIY instructions and hardware. We recommend hiring a carpenter if you prefer professional assembly assistance.\r\nCARE & INSTRUCTION : Wipe clean with damp cloth and mild cleaner, avoiding harsh chemicals. Dry with clean cloth. Avoid excessive moisture and direct sunlight to prevent damage. Use trays or organizers for accessories. Lift, don`t drag when moving. Regularly inspect and address loose hardware', 18.00, 16.00),
-(16, 1, 'Sofa', 12000.00, 22000.00, '2x1.7x1.7x Ft.', '#000000', 'Trending', 'Good Product ', '1738253633290_sofa1.1.webp,1738253633291_sofa1.2.webp,1738253633292_sofa1.3.webp,1738253633292_sofa1.4.webp,1738253633292_sofa1.5.webp,1738253633292_sofa1.6.webp', 'Furni', '45 Kg', '1', 'Solid', 'France', 'Spanch , Wood', '1 Year', 'Dry Clean Only', 'Nice Look', 18.00, 22.00),
-(17, 8, 'Prime TV Unit ', 12000.00, 15000.00, '28x79x34x42 Inch.', '#fe6262', 'Trending', 'This is highly demanded and this product specially build using unscrachable plywood and that why it is long lasting Product', '1740155738393_temp_img.avif', 'Furnilife', '15 Kg', '1', 'Solid', 'India', 'Plywood', '1 Year', 'Dry Clean Only', 'This product is Long lasting and give rich look to your home.', 18.00, 20.00);
+(17, 8, 'WOODIFY Wall Mounted TV Unit', 1089.00, 1999.00, '70.4 x 20 x 14 Centimeters', '#949494', 'Trending', 'Rack Is Made of MDF wood with a natural wfinish.) With Strong Hardness, Good Toughness, And Beautiful Patterns SPACE SAVING - Large Countertops Ensure Ample Storage Space.', '1742217671037_tvUnit1.1.jpg,1742217671038_tvUnit1.2.jpg,1742217671038_tvUnit1.3.jpg,1742217671038_tvUnit1.4.jpg', 'Furnilife', '7 Kg', '1', 'Solid', 'India', '‎Engineered Wood', '1 Year', 'Wipe with Dry Cloth', 'Rack Is Made of MDF wood with a natural wfinish.) With Strong Hardness, Good Toughness, And Beautiful Patterns SPACE SAVING - Large Countertops Ensure Ample Storage Space. Wall-Mount Design Doesn’t Take Much Space and Frees Up Valuable Floor Space. The Middle Compartment is Intended to Keep Your Set-Top Box While Books, Decorative Items & 4 Fully Functional Floating Open Shelves for Organize and Display Your Decorative Objects. Product Color: Brown/White', 18.00, 20.00),
+(18, 8, 'SNQ Wall-Mounted TV Entertainment Unit with Shelves, White', 2099.00, 3499.00, '20 x 99 x 83.8 Centimeters', '#e6e6e6', 'Most Dimanded', 'Stylish Design: This TV entertainment unit features a sleek, modern design with a dark wood finish that adds a touch of elegance to any living space.\r\nAmple Storage: The unit includes open shelves and cabinets, providing ample storage space for your media components, books, and decorative items.', '1742218777353_tvUnit2.1.jpg,1742218777354_tvUnit2.2.jpg,1742218777354_tvUnit2.3.jpg,1742218777354_tvUnit2.4.jpg', 'Furni', '9.47 Kg', '1', 'Rectangular', 'India', 'Engineered Wood', '1 Year', 'Wipe Clean with Dry Cloth.', 'Stylish Design: This TV entertainment unit features a sleek, modern design with a dark wood finish that adds a touch of elegance to any living space.\r\nAmple Storage: The unit includes open shelves and cabinets, providing ample storage space for your media components, books, and decorative items.\r\nVersatile Arrangement: With its floating shelves and vertical shelving unit, you can arrange your belongings in a visually appealing and organized manner.\r\nDurable Construction: Crafted from high-quality materials, this entertainment unit is built to withstand daily use and last for years to come.\r\nSpace-Saving Design: The wall-mounted design helps save valuable floor space, making it an ideal choice for smaller living areas or rooms with limited space.', 18.00, 12.00),
+(19, 5, 'Wakefit Bed | Queen (78 X 60) Engineered Wood Bed with Storage', 11880.00, 13200.00, '2.1L x 1.57W x 0.8H Meters', '#c9663b', 'Recently  In Trending', 'Maximum Storage Capacity – Say goodbye to clutter! This king size bed with storage box (1105L) and queen bed with storage (920L) offer ample space to keep your home neat and organized.\r\nSuperior Strength & Durability – Built to last with 18mm European-grade engineered wood, 20% thicker for extra strength. Plus, 25% thicker edge bands provide superior moisture protection.', '1742219353255_bed1.1.jpg,1742219353255_bed1.2.jpg,1742219353255_bed1.3.jpg,1742219353255_bed1.4.jpg,1742219353255_bed1.5.jpg,1742219353255_bed1.6.jpg,1742219353255_bed1.7.jpg', 'Wakefit', '92 Kg', '1', 'Solid', 'India', 'Engineered Wood', '1 Year', '‎Do not keep hot items directly on a furniture surface.', 'Maximum Storage Capacity – Say goodbye to clutter! This king size bed with storage box (1105L) and queen bed with storage (920L) offer ample space to keep your home neat and organized.\r\nSuperior Strength & Durability – Built to last with 18mm European-grade engineered wood, 20% thicker for extra strength. Plus, 25% thicker edge bands provide superior moisture protection.\r\nStylish & Sturdy – A sleek box bed that’s as durable as it is stylish! Perfect for those who want a double bed with box that combines modern aesthetics with everyday practicality.\r\nPRODUCT DIMENSIONS: Length: 209.7cm, Width: 156.9cm, Height : 79.5cm / 78 x 60 x 30 inches / 6.5 x 5 x 2.5 feet\r\nStrong 18mm Engineered Wood Particle Board used; For bed base - Top 11mm MDF ; Bottom - MDF boards; The sheet has been designed specifically to be water resistant and withstand more uniform load\r\nPHYSICAL ATTRIBUTES: Product Color: Columbian Walnut | Product Weight: 99.3kg', 18.00, 12.00),
+(20, 5, 'SONA ART & CRAFTS Sheesham Wood Queen Size Bed with Box Storage | Solid Wooden Queen Size Cot | Double Bed Furniture for Bedroom Living Room Home', 27999.00, 74499.00, '2.08L x 1.6W x 0.66H Meters', '#ad721f', 'Most Dimanded', 'Dimensions: Queen size bed with Box Storage - Length (82 Inch), Width (63 Inch), Height (33 Inch), Mattress Size: 60 x 78 inches (Not Included). Ideal dimension for a wooden bed With Storage box diwan bed.\r\nPrimary Material: Sheesham Wood | Secondary Material: Solid MDF Sheet | Product Name: Wooden Queen Size Bed For Bedroom', '1742219882070_bed2.1.jpg,1742219882070_bed2.2.jpg,1742219882070_bed2.3.jpg,1742219882070_bed2.4.jpg,1742219882070_bed2.5.jpg,1742219882070_bed2.6.jpg', 'Sona Art', '100 Kg', '1', 'Solid', 'India', 'Sheesham Wood', '2 years', 'Wipe Clean with Dry Cloth.', 'Dimensions: Queen size bed with Box Storage - Length (82 Inch), Width (63 Inch), Height (33 Inch), Mattress Size: 60 x 78 inches (Not Included). Ideal dimension for a wooden bed With Storage box diwan bed\r\nPrimary Material: Sheesham Wood | Secondary Material: Solid MDF Sheet | Product Name: Wooden Queen Size Bed For Bedroom\r\nQuality: Our wooden cot double bed for bedroom or living room is made of high-quality sheesham wood. The contemporary & stylish design of the solid wood bed will surely upgrade your home.;Multipurpose: This storage bed Queen size is designed in an elegant way to perfectly work as double bed furniture along with a great Queen size bed with storage to store your essential households.\r\nAssembly Included: Installation/Assembly will be done within 4 working days of delivery, for any issue contact our customer support.\r\nSolid Wood Queen Size Bed For Bedroom | Pure Wood Queen Size With Storage Bed | Sheesham Wood Queen Size Bed With Storage | Rosewood Queen Size Cot With Storage | Queen Size Double Bed Furniture | Queen Size Palang Bed | Wooden Char Pai Bed With Storage | Bedroom Furniture.\r\n', 22.00, 15.00);
 
 -- --------------------------------------------------------
 
@@ -347,8 +338,8 @@ INSERT INTO `product_type` (`product_type_id`, `product_type_name`) VALUES
 (10, 'Mirror'),
 (11, 'Shoe Rack'),
 (12, 'Dressing Table'),
-(14, 'Sealings'),
-(15, 'Stool');
+(15, 'Stool'),
+(16, 'Sealing Fan');
 
 -- --------------------------------------------------------
 
@@ -373,10 +364,6 @@ CREATE TABLE `reviews` (
 --
 
 INSERT INTO `reviews` (`review_id`, `product_id`, `user_id`, `rating`, `country`, `comment`, `heading`, `review_img`, `created_at`) VALUES
-(11, 7, 4, 5, 'India', 'This product are really good and this product build quality are really fantastic.', 'Just go for it . It is fantastic Product', '1739732620431_dining2.1.jpg,1739732620432_dining2.2.jpg,1739732620432_dining2.3.jpg', '2025-02-16 19:03:40'),
-(12, 1, 4, 4, 'India', 'This product are really fantastic it give rich look to home', 'Just go for it . ', '1739821107885_sofa4.1.jpg,1739821107886_sofa4.2.jpg,1739821107887_sofa4.3.jpg', '2025-02-17 19:38:27'),
-(13, 1, 4, 5, 'India', 'I used this product upto 1 year. This product build quality are awesome and upto now this product are shine as it is.', 'Just go for it . It is fantastic Product', '1740205412491_sofa4.1.jpg,1740205412493_sofa4.5.jpg,1740205412493_sofa4.6.jpg', '2025-02-22 06:23:32'),
-(14, 2, 4, 4, 'India', 'Good Product', 'Just go for it and specifically I would say the seller is fabulous', '1740205567685_chair1.1.jpg', '2025-02-22 06:26:07'),
 (15, 8, 6, 4, 'India', 'This Product Build Quality is good and look are fantastic. this product gives rich look to your sweet house. i suggest you to buy this product.', 'Just go for it.', '1741606244929_sofa3.1.jpg,1741606244930_sofa3.3.jpg,1741606244931_sofa3.4.jpg', '2025-03-10 11:30:44'),
 (16, 2, 6, 5, 'India', 'Just go for it and specifically I would say the seller is fabulous.\r\nI order this product before two days and within two day product are delevered also.\r\nProduct Look are awesome.\r\nWhen we sit on this chair fill comfertable and relax.', 'Just go for it and specifically I would say the seller is fabulous.', '1741606438060_chair1.1.jpg', '2025-03-10 11:33:58'),
 (17, 5, 6, 5, 'India', 'Product build quality is good and Primium look', 'Good Product', '1741606903280_almirah1.1.jpg,1741606903281_almirah1.4.jpg', '2025-03-10 11:41:43'),
@@ -387,7 +374,11 @@ INSERT INTO `reviews` (`review_id`, `product_id`, `user_id`, `rating`, `country`
 (22, 10, 7, 5, 'INDIA', 'I like this product its looks and Build quality are amesing.', 'First Product', '1741860964755_stool1.1.jpg,1741860964757_stool1.4.jpg', '2025-03-13 10:16:04'),
 (23, 1, 8, 5, 'INDIA', 'This product look and design are so awesome. Specially this product packing are really impressive. The product quality and used material are good.', 'Just go for it and specifically I would say the seller is good', '1741863355980_sofa4.1.jpg,1741863355981_sofa4.4.jpg,1741863355982_sofa4.6.jpg', '2025-03-13 10:55:55'),
 (24, 7, 9, 5, 'INDIA', 'This product build quality is good. look are also fantastic.', 'Just go for it . It is fantastic Product.', '1741882000965_dining2.1.jpg,1741882000967_dining2.2.jpg', '2025-03-13 16:06:40'),
-(25, 9, 9, 5, 'INDIA', 'This product is really fantastic. look are also good.', 'Just go for it.', '1741882089019_chair2.1.jpg,1741882089020_chair2.3.jpg', '2025-03-13 16:08:09');
+(25, 9, 9, 5, 'INDIA', 'This product is really fantastic. look are also good.', 'Just go for it.', '1741882089019_chair2.1.jpg,1741882089020_chair2.3.jpg', '2025-03-13 16:08:09'),
+(26, 17, 5, 5, 'INDIA', 'This product are really amazing. it gives amazing look to house and TV. This product Build quality is also fantastic.', 'Just go for it . ', '1742218002161_tvUnit1.1.jpg,1742218002161_tvUnit1.3.jpg,1742218002161_tvUnit1.4.jpg', '2025-03-17 13:26:42'),
+(27, 2, 5, 4, 'INDIA', 'This is amaizing chair. sitting are comfertable and good feel.', 'Just go for it . It is fantastic Product', '1742218093970_chair1.1.jpg', '2025-03-17 13:28:13'),
+(28, 18, 5, 5, 'INDIA', 'I like this product, this product look are amazing it looks intractive and shiny. This product Build quality are also good.', 'Just go for it.', '1742218834435_tvUnit2.1.jpg,1742218834435_tvUnit2.3.jpg', '2025-03-17 13:40:34'),
+(30, 20, 6, 5, 'INDIA', 'Good Product, Build quality and look are amazing i like this product.', 'Just go for it and specifically I would say the seller is fabulous.', '1742287896762_bed2.1.jpg,1742287896763_bed2.4.jpg,1742287896763_bed2.6.jpg', '2025-03-18 12:33:42');
 
 -- --------------------------------------------------------
 
@@ -408,11 +399,11 @@ CREATE TABLE `testimonial` (
 --
 
 INSERT INTO `testimonial` (`customer_id`, `customer_name`, `customer_position`, `customer_image`, `customer_massage`) VALUES
-(1, 'Yugandhar Suryawanshi', 'CEO, Founder', '1737295736591_study.jpg', '“Donec facilisis quam ut purus rutrum lobortis. Donec vitae odio quis nisl dapibus malesuada. Nullam ac aliquet velit. Aliquam vulputate velit imperdiet dolor tempor tristique. Pellentesque habitant morbi tristique senectus et netus et malesuada fames ac turpis egestas. Integer convallis volutpat dui quis scelerisque.”'),
-(2, 'Shahadev Warkhede', 'Employee', '1737309766177_IMG_20230819_152131.jpg', '“Donec facilisis quam ut purus rutrum lobortis. Donec vitae odio quis nisl dapibus malesuada. Nullam ac aliquet velit. Aliquam vulputate velit imperdiet dolor tempor tristique. Pellentesque habitant morbi tristique senectus et netus et malesuada fames ac turpis egestas. Integer convallis volutpat dui quis scelerisque.”'),
-(3, 'Chaitanya Kodre', 'Manager', '1737310550393_1732680223275.jpg', '“Donec facilisis quam ut purus rutrum lobortis. Donec vitae odio quis nisl dapibus malesuada. Nullam ac aliquet velit. Aliquam vulputate velit imperdiet dolor tempor tristique. Pellentesque habitant morbi tristique senectus et netus et malesuada fames ac turpis egestas. Integer convallis volutpat dui quis scelerisque.”'),
-(5, 'Rushikesh Pathade', 'Manager', '1739009303110_IMG_20231125_171737.jpg', 'You Can perchase any furniture product in this website '),
-(6, 'Vipul Yadav', 'Employee', '1739822225481_IMG_20231128_115346.jpg', '“Donec facilisis quam ut purus rutrum lobortis. Donec vitae odio quis nisl dapibus malesuada. Nullam ac aliquet velit. Aliquam vulputate velit imperdiet dolor tempor tristique. Pellentesque habitant morbi tristique senectus et netus et malesuada fames ac turpis egestas. Integer convallis volutpat dui quis scelerisque.”');
+(1, 'Yugandhar Suryawanshi', 'CEO, Founder', '1737295736591_study.jpg', 'Working with this team has been a game-changer for our business. Their innovative approach, attention to detail, and relentless pursuit of quality have helped us scale faster than we imagined. From ideation to execution, every step was handled with professionalism and clarity. I highly recommend their services to anyone aiming for excellence.'),
+(2, 'Shahadev Warkhede', 'Employee', '1737309766177_IMG_20230819_152131.jpg', 'Working here has been a truly rewarding experience. The leadership is inspiring, the team is supportive, and every day presents a new opportunity to learn and grow. I feel valued, motivated, and proud to be part of an organization that genuinely cares about its people and their development.'),
+(3, 'Chaitanya Kodre', 'Manager', '1737310550393_1732680223275.jpg', 'Being in a managerial role here has been both challenging and fulfilling. I’ve had the chance to lead dynamic teams, drive meaningful results, and contribute to a culture that values innovation and accountability. It’s empowering to work in an environment where leadership is about trust, collaboration, and continuous improvement.'),
+(5, 'Rushikesh Pathade', 'Manager', '1739009303110_IMG_20231125_171737.jpg', 'This journey has truly shaped my perspective as a leader. At every step, I’ve been encouraged to take ownership, inspire my team, and focus on solutions that drive long-term success. The culture here fosters both personal growth and strategic thinking — it’s a place where managers are empowered to make a real difference.'),
+(6, 'Vipul Yadav', 'Employee', '1739822225481_IMG_20231128_115346.jpg', 'Being a part of this team has been an incredible learning experience. The supportive environment and collaborative culture have helped me grow both personally and professionally. Every challenge I’ve faced here has come with guidance and the freedom to innovate, making my journey truly rewarding.');
 
 -- --------------------------------------------------------
 
@@ -427,21 +418,24 @@ CREATE TABLE `users` (
   `user_email` varchar(300) NOT NULL,
   `user_address` text DEFAULT NULL,
   `user_profile` text DEFAULT NULL,
-  `user_password` varchar(450) NOT NULL
+  `user_password` varchar(450) NOT NULL,
+  `otp` varchar(10) DEFAULT NULL,
+  `otp_created_at` datetime DEFAULT NULL,
+  `otp_expiry` datetime DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 --
 -- Dumping data for table `users`
 --
 
-INSERT INTO `users` (`user_id`, `user_name`, `user_mobile`, `user_email`, `user_address`, `user_profile`, `user_password`) VALUES
-(3, 'Yugandhar Suryawanshi', '9359087068', 'yugandhar@gmail.com', 'Amdad Tal. & Dist. Dhule.', '1739793452719-yogi.jpg', '$2b$10$NpNPtIvl3dzTbRp4wiDmKejAiHsHQNW7lfcfDW./1K8U.ovi.m5hi'),
-(4, 'Siya Ram', '1234567898', 'ram@gmail.com', 'Shree Ram Mandir Ayodhya', '1739732480355-RadheKrishna.jpg', '$2b$10$16mHGjzW6h/aFkfduThtOuXWtZeS2lN1ObTprKeK9hDIVNvKwUN/6'),
-(5, 'Shahadev Warkhede', '0987654321', 'shahadev@gmail.com', NULL, NULL, '$2b$10$CPgJdhhikvQPUS4lW0jlVe8Mkw1qYAJx4rRsooRBjrltznORlNQpi'),
-(6, 'Chaitanya Kodre', '12345678902', 'chaitanya@gmail.com', 'Tandulwadi, Latur', NULL, '$2b$10$gcaqeJ0HHAssW.Y9t847MetjbuNfId.qNzla3PyUAY0Zut1Hmr5fS'),
-(7, 'Rushikesh Pathade', '1234567893', 'rushi@gmail.com', 'Pathardi, Nagar', NULL, '$2b$10$nZ5o5tsHnpwBTQ30hwSqaujMsoiEjiP00OvPfncxAf26uZY5Mm9Ri'),
-(8, 'Jagdish Gawali', '1234567894', 'jagdish@gmail.com', 'Velhane, Tal and Dist. Dhule', NULL, '$2b$10$eMVVPM9u/ZRKY6lHR/7gX./bemdbVy0wmxlopcIJbYkrc3pmFggra'),
-(9, 'Akshay Pawar', '1234567894', 'akshu@gmail.com', 'Velhane, Tal. and Dist. Dhule', NULL, '$2b$10$fhOktMS2Pn47SxB2wJ.zXOwYMTN0Syh0yl51AdsMM7yMuWJupEIke');
+INSERT INTO `users` (`user_id`, `user_name`, `user_mobile`, `user_email`, `user_address`, `user_profile`, `user_password`, `otp`, `otp_created_at`, `otp_expiry`) VALUES
+(5, 'Shahadev Warkhede', '0987654321', 'shahadev@gmail.com', 'Maherjawala , Jalna', '1742218125520-1697381295688.jpg', '$2b$10$CPgJdhhikvQPUS4lW0jlVe8Mkw1qYAJx4rRsooRBjrltznORlNQpi', NULL, NULL, NULL),
+(6, 'Chaitanya Kodre', '12345678902', 'chaitanya@gmail.com', 'Tandulwadi, Latur', NULL, '$2b$10$gcaqeJ0HHAssW.Y9t847MetjbuNfId.qNzla3PyUAY0Zut1Hmr5fS', NULL, NULL, NULL),
+(7, 'Rushikesh Pathade', '1234567893', 'rushi@gmail.com', 'Pathardi, Nagar', NULL, '$2b$10$nZ5o5tsHnpwBTQ30hwSqaujMsoiEjiP00OvPfncxAf26uZY5Mm9Ri', NULL, NULL, NULL),
+(8, 'Jagdish Gawali', '1234567894', 'jagdish@gmail.com', 'Velhane, Tal and Dist. Dhule', NULL, '$2b$10$eMVVPM9u/ZRKY6lHR/7gX./bemdbVy0wmxlopcIJbYkrc3pmFggra', NULL, NULL, NULL),
+(9, 'Akshay Pawar', '1234567895', 'akshu@gmail.com', 'Velhane, Tal. and Dist. Dhule', NULL, '$2b$10$J7C1/VvEicMfNWJZ09qF/e.8bP7EA8ylV3o2KzlAgnOslyL8E2HuK', NULL, NULL, NULL),
+(10, 'Yugandhar Suryawanshi', '9359087068', 'yugandharmarathe123@gmail.com', 'Shree Lok Nivas, In front of Mahadev Temple Fagane, Tal & Dist Dhule.', '1744201539494-study.jpg', '$2b$10$Ai1GrwMAt0m7trp3ySCvxu81O8HGtXt11sjLJnwRjVyhw3Q7TW7XW', '109176', '2025-04-09 18:10:35', '2025-04-09 18:15:35'),
+(16, 'Yugandhar Suryawanshi', '9359087068', 'yugandharsuryawanshi1@gmail.com', 'Amdad Tal. & Dist. Dhule.', NULL, '$2b$10$8aYiCnTfSF9EOd0wXOLOaOJyP.lhPW8.HsfK/qjtTNgl4hxxdas1K', '289246', '2025-04-10 21:36:37', '2025-04-10 21:41:37');
 
 -- --------------------------------------------------------
 
@@ -479,7 +473,10 @@ CREATE TABLE `user_subscriber` (
 INSERT INTO `user_subscriber` (`id`, `name`, `email`, `status`, `created_at`, `updated_at`) VALUES
 (1, 'Yugandhar Suryawanshi', 'yugandhar@gmail.com', 'active', '2025-03-11 14:03:21', '2025-03-11 16:11:32'),
 (3, 'Chaitanya Kodre', 'chaitanya@gmail.com', 'active', '2025-03-11 16:23:47', '2025-03-11 16:24:58'),
-(4, 'Akshay Pawar', 'akshu@gmail.com', 'active', '2025-03-13 16:20:10', '2025-03-13 16:20:10');
+(4, 'Akshay Pawar', 'akshu@gmail.com', 'active', '2025-03-13 16:20:10', '2025-03-13 16:20:10'),
+(5, 'Rushikesh Pathade', 'rushikesh@gmail.com', 'active', '2025-03-17 13:11:49', '2025-03-17 13:11:49'),
+(6, 'Shahadev Warkhede', 'shahadev@gmail.com', 'active', '2025-03-17 17:46:09', '2025-03-17 17:46:09'),
+(7, 'Rohit Bhosle', 'rohit@gmail.com', 'active', '2025-03-17 17:46:55', '2025-03-17 17:46:55');
 
 -- --------------------------------------------------------
 
@@ -499,10 +496,10 @@ CREATE TABLE `why_choose_points` (
 --
 
 INSERT INTO `why_choose_points` (`why_choose_points_id`, `why_choose_points_img`, `why_choose_points_name`, `why_choose_points_details`) VALUES
-(1, '1737438391015_truck.svg', 'Fast & Free Shipping', 'Donec vitae odio quis nisl dapibus malesuada. Nullam ac aliquet velit. Aliquam vulputate.'),
-(2, '1737439387145_bag.svg', 'Easy to Shop', 'Donec vitae odio quis nisl dapibus malesuada. Nullam ac aliquet velit. Aliquam vulputate.'),
-(3, '1737445678467_support.svg', '24/7 Support', 'Donec vitae odio quis nisl dapibus malesuada. Nullam ac aliquet velit. Aliquam vulputate.'),
-(5, '1737440019030_return.svg', 'Hassle Free Returns', 'Donec vitae odio quis nisl dapibus malesuada. Nullam ac aliquet velit. Aliquam vulputate.');
+(1, '1737438391015_truck.svg', 'Fast & Free Shipping', 'We understand the value of time. That’s why we offer quick, reliable, and absolutely free shipping on all orders, ensuring your products reach you in perfect condition without any extra cost or delay.'),
+(2, '1737439387145_bag.svg', 'Easy to Shop', 'Our platform is designed for a smooth and intuitive shopping experience. With user-friendly navigation, secure checkout, and personalized recommendations, shopping with us is as easy as it is enjoyable.'),
+(3, '1737445678467_support.svg', '24/7 Support', 'Need help anytime, anywhere? Our dedicated customer support team is available 24/7 to assist you with any queries, concerns, or guidance — ensuring a hassle-free experience round the clock.'),
+(5, '1737440019030_return.svg', 'Hassle Free Returns', 'Not satisfied with your purchase? No worries. We offer easy and transparent return policies, so you can shop confidently knowing that returns or exchanges are simple and stress-free.');
 
 -- --------------------------------------------------------
 
@@ -522,6 +519,32 @@ CREATE TABLE `why_choose_us` (
 
 INSERT INTO `why_choose_us` (`why_choose_us_id`, `heading`, `why_choose_img`) VALUES
 (1, 'We Help You Make Modern Interior Design', '1737318476619_why-choose-us-img.jpg');
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `wishlist`
+--
+
+CREATE TABLE `wishlist` (
+  `wish_id` int(11) NOT NULL,
+  `user_id` int(11) NOT NULL,
+  `product_id` int(11) NOT NULL,
+  `date_added` timestamp NOT NULL DEFAULT current_timestamp()
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+
+--
+-- Dumping data for table `wishlist`
+--
+
+INSERT INTO `wishlist` (`wish_id`, `user_id`, `product_id`, `date_added`) VALUES
+(34, 5, 17, '2025-03-31 19:24:26'),
+(37, 6, 20, '2025-04-03 14:57:36'),
+(38, 6, 17, '2025-04-03 14:57:39'),
+(40, 10, 17, '2025-04-09 12:27:03'),
+(41, 10, 19, '2025-04-09 12:27:07'),
+(42, 10, 14, '2025-04-09 12:27:09'),
+(43, 10, 8, '2025-04-09 12:27:35');
 
 --
 -- Indexes for dumped tables
@@ -641,6 +664,14 @@ ALTER TABLE `why_choose_us`
   ADD PRIMARY KEY (`why_choose_us_id`);
 
 --
+-- Indexes for table `wishlist`
+--
+ALTER TABLE `wishlist`
+  ADD PRIMARY KEY (`wish_id`),
+  ADD UNIQUE KEY `unique_wishlist` (`user_id`,`product_id`),
+  ADD KEY `product_id` (`product_id`);
+
+--
 -- AUTO_INCREMENT for dumped tables
 --
 
@@ -666,7 +697,7 @@ ALTER TABLE `blog`
 -- AUTO_INCREMENT for table `contact_us`
 --
 ALTER TABLE `contact_us`
-  MODIFY `contact_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2;
+  MODIFY `contact_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=3;
 
 --
 -- AUTO_INCREMENT for table `interior`
@@ -678,13 +709,13 @@ ALTER TABLE `interior`
 -- AUTO_INCREMENT for table `order_products`
 --
 ALTER TABLE `order_products`
-  MODIFY `order_product_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=22;
+  MODIFY `order_product_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=26;
 
 --
 -- AUTO_INCREMENT for table `order_tbl`
 --
 ALTER TABLE `order_tbl`
-  MODIFY `order_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=15;
+  MODIFY `order_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=19;
 
 --
 -- AUTO_INCREMENT for table `our_team`
@@ -696,19 +727,19 @@ ALTER TABLE `our_team`
 -- AUTO_INCREMENT for table `product`
 --
 ALTER TABLE `product`
-  MODIFY `product_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=18;
+  MODIFY `product_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=21;
 
 --
 -- AUTO_INCREMENT for table `product_type`
 --
 ALTER TABLE `product_type`
-  MODIFY `product_type_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=16;
+  MODIFY `product_type_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=17;
 
 --
 -- AUTO_INCREMENT for table `reviews`
 --
 ALTER TABLE `reviews`
-  MODIFY `review_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=26;
+  MODIFY `review_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=32;
 
 --
 -- AUTO_INCREMENT for table `testimonial`
@@ -720,19 +751,19 @@ ALTER TABLE `testimonial`
 -- AUTO_INCREMENT for table `users`
 --
 ALTER TABLE `users`
-  MODIFY `user_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=10;
+  MODIFY `user_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=17;
 
 --
 -- AUTO_INCREMENT for table `user_cart`
 --
 ALTER TABLE `user_cart`
-  MODIFY `user_cart_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=62;
+  MODIFY `user_cart_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=76;
 
 --
 -- AUTO_INCREMENT for table `user_subscriber`
 --
 ALTER TABLE `user_subscriber`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=5;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=8;
 
 --
 -- AUTO_INCREMENT for table `why_choose_points`
@@ -745,6 +776,12 @@ ALTER TABLE `why_choose_points`
 --
 ALTER TABLE `why_choose_us`
   MODIFY `why_choose_us_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2;
+
+--
+-- AUTO_INCREMENT for table `wishlist`
+--
+ALTER TABLE `wishlist`
+  MODIFY `wish_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=45;
 
 --
 -- Constraints for dumped tables
@@ -776,6 +813,13 @@ ALTER TABLE `reviews`
 ALTER TABLE `user_cart`
   ADD CONSTRAINT `user_cart_ibfk_1` FOREIGN KEY (`user_id`) REFERENCES `users` (`user_id`) ON DELETE CASCADE,
   ADD CONSTRAINT `user_cart_ibfk_2` FOREIGN KEY (`product_id`) REFERENCES `product` (`product_id`) ON DELETE CASCADE;
+
+--
+-- Constraints for table `wishlist`
+--
+ALTER TABLE `wishlist`
+  ADD CONSTRAINT `wishlist_ibfk_1` FOREIGN KEY (`user_id`) REFERENCES `users` (`user_id`) ON DELETE CASCADE,
+  ADD CONSTRAINT `wishlist_ibfk_2` FOREIGN KEY (`product_id`) REFERENCES `product` (`product_id`) ON DELETE CASCADE;
 COMMIT;
 
 /*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;
