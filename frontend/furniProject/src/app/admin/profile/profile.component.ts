@@ -25,8 +25,10 @@ export class ProfileComponent implements OnInit {
       old_password: '',
       new_password: '',
       confirm_password: '',
+      otp:'',
       admin_profile: null
     }
+    otpSent = false;
 
   ngOnInit() {
     this.getAdminProfile();
@@ -184,6 +186,14 @@ export class ProfileComponent implements OnInit {
         }
       );
     }
+  }
+
+  //Varify OTP
+  verifyOtp() {
+  }
+
+  //Send otp
+  sendOtp() {
   }
 
 
