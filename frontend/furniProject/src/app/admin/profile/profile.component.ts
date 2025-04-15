@@ -28,6 +28,7 @@ export class ProfileComponent implements OnInit {
       admin_profile: null
     }
     otpSent = false;
+    otpVerified = false;
 
   ngOnInit() {
     this.getAdminProfile();
@@ -139,9 +140,11 @@ export class ProfileComponent implements OnInit {
 
     this.adminApi.updatePassword(formData).subscribe((res: any) => {
       if (res.success) {
-        this.toastr.success('Password updated successfully', "Success", { disableTimeOut: false, progressBar: true, closeButton: true });
+        this.toastr.success('Your Password Changed Successfully', "Congratulations", { disableTimeOut: false, progressBar: true, closeButton: true });
         this.formData.new_password = '';
         this.formData.confirm_password = '';
+        this.otpSent = false;
+        this.otpVerified = false;
       }
     },
       (err: any) => {
@@ -158,15 +161,22 @@ export class ProfileComponent implements OnInit {
 
   // Logout User
   logout() {
-    const confirmLogout = confirm('Are you sure!! You want to logout');
-    if (confirmLogout) {
-      this.toastr.success("LogOut successfully", "Success", { disableTimeOut: false, progressBar: true, closeButton: true });
-      this.adminApi.adminLogout();
-      this.router.navigate(['/admin/login']);
-    }
-    else {
-      this.router.navigate(['/admin/profile']);
-    }
+    this.adminApi.adminLogout();
+    this.toastr.success(
+      'You have been successfully logged out!',
+      'Goodbye 👋',
+      {
+        timeOut: 4000,
+        progressBar: true,
+        progressAnimation: 'decreasing',
+        closeButton: true,
+        enableHtml: true,
+        toastClass: 'ngx-toastr custom-toast',
+        easing: 'ease-in-out',
+        easeTime: 700
+      }
+    );
+    this.router.navigate(['/admin/login']);
   }
 
   // Delete Admin Account
@@ -184,15 +194,45 @@ export class ProfileComponent implements OnInit {
       );
     }
   }
-
-  //Varify OTP
-  verifyOtp() {
-  }
-
+  
   //Send otp
   sendOtp() {
+    if (!this.formData.admin_email) {
+      this.toastr.warning('Please enter your email!');
+      return;
+    }
+
+    this.adminApi.sendOtp({ email: this.formData.admin_email }).subscribe(
+      (res: any) => {
+        this.toastr.success(res.message || 'OTP sent to your email', 'Success', { progressBar: true, tapToDismiss: true });
+        this.otpSent = true;
+      },
+      err => {
+        this.toastr.error(err.error.message || 'Error sending OTP', 'Error', { progressBar: true, tapToDismiss: true });
+      }
+    );
   }
 
+  // Varify OTP
+  verifyOtp() {
+    if (!this.formData.otp) {
+      this.toastr.warning('Please enter the OTP!', 'Warning', { progressBar: true, tapToDismiss: true });
+      return;
+    }
+
+    this.adminApi.verifyOtp({
+      email: this.formData.admin_email,
+      otp: this.formData.otp
+    }).subscribe(
+      (res: any) => {
+        this.toastr.success(res.message || 'OTP verified successfully', 'Success', { progressBar: true, tapToDismiss: true });
+        this.otpVerified = true;
+      },
+      err => {
+        this.toastr.error(err.error.message || 'OTP verification failed', 'Error', { progressBar: true, tapToDismiss: true });
+      }
+    );
+  }
 
 
 }

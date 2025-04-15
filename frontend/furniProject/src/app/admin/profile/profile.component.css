@@ -216,3 +216,29 @@ a:hover {
   color: black;
 }
 
+
+
+
+
+/* Logout toastr effect */
+/* Custom Toastr Style */
+.custom-toast {
+  background: linear-gradient(135deg, #ff416c, #ff4b2b);
+  color: #fff !important;
+  font-weight: 500;
+  border-radius: 10px !important;
+  box-shadow: 0 5px 15px rgba(0, 0, 0, 0.3);
+  animation: slideInFade 0.6s ease-out;
+}
+
+/* Smooth slide in */
+@keyframes slideInFade {
+  from {
+    transform: translateY(20px);
+    opacity: 0;
+  }
+  to {
+    transform: translateY(0);
+    opacity: 1;
+  }
+}

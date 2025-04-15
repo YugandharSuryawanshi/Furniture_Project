@@ -77,6 +77,10 @@ export class AdminApiService {
         }
       });
     }
+    else
+    {
+      this.router.navigate(['/admin/dashboard']);
+    }
   }
 
   // Fetch or getting admin Details
@@ -430,6 +434,14 @@ export class AdminApiService {
   deleteWishlistItem(id: any)
   {
     return this.http.delete(`${this.adminUrl}/delete_wishlist_item/${id}`);
+  }
+
+  sendOtp(data: any) {
+    return this.http.post(`${this.adminUrl}/send-otp`, data);
+  }
+  
+  verifyOtp(data: any) {
+    return this.http.post(`${this.adminUrl}/verify-otp`, data);
   }
 
 
