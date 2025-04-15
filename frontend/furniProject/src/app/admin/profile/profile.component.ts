@@ -22,7 +22,6 @@ export class ProfileComponent implements OnInit {
       admin_name: '',
       admin_mobile: '',
       admin_email: '',
-      old_password: '',
       new_password: '',
       confirm_password: '',
       otp:'',
@@ -130,19 +129,17 @@ export class ProfileComponent implements OnInit {
       return;
     }
 
-    if (!this.formData.old_password || !this.formData.new_password || !this.formData.confirm_password) {
+    if (!this.formData.new_password || !this.formData.confirm_password) {
       this.toastr.warning('All fields are required!', "Warning", { disableTimeOut: false, progressBar: true, closeButton: true });
       return;
     }
 
     const formData = new FormData();
-    formData.append('old_password', this.formData.old_password);
     formData.append('new_password', this.formData.new_password);
 
     this.adminApi.updatePassword(formData).subscribe((res: any) => {
       if (res.success) {
         this.toastr.success('Password updated successfully', "Success", { disableTimeOut: false, progressBar: true, closeButton: true });
-        this.formData.old_password = '';
         this.formData.new_password = '';
         this.formData.confirm_password = '';
       }
