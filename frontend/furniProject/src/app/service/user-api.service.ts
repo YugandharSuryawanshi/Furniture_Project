@@ -285,11 +285,12 @@ export class UserApiService {
     return this.http.get(`${this.userUrl}/most_viewed?limit=${limit}`);
   }
 
-
+  // Send OTP
   sendOtp(data: any) {
     return this.http.post(`${this.userUrl}/send-otp`, data);
   }
   
+  //Varify sended OTP
   verifyOtp(data: any) {
     return this.http.post(`${this.userUrl}/verify-otp`, data);
   }

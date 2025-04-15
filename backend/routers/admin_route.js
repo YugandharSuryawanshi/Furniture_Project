@@ -3,6 +3,7 @@ import express from 'express';
 import jwt from 'jsonwebtoken';
 import { config } from '../config/config.js';
 import { exe } from '../connection.js';
+import nodemailer from 'nodemailer';
 const router = express.Router();
 const blacklist = new Set();
 
@@ -143,7 +144,7 @@ router.put('/update_admin_profile', authenticateToken, async (req, res) => {
 // Update Admin Password
 router.put('/update_password', authenticateToken, async (req, res) => {
     try {
-        const { old_password, new_password } = req.body;
+        const { new_password } = req.body;
         const admin_id = req.admin.id;
 
         var sql = `SELECT * FROM admins WHERE admin_id = ?`;
@@ -151,13 +152,6 @@ router.put('/update_password', authenticateToken, async (req, res) => {
 
         if (admin_details.length === 0) {
             return res.status(401).json({ success: false, message: 'Invalid admin ID' });
-        }
-        const hashedOldPassword = admin_details[0].admin_password;
-        // Compare passwords
-        const isMatchPassword = await bcrypt.compare(old_password, hashedOldPassword);
-
-        if (!isMatchPassword) {
-            return res.status(400).json({ success: false, message: 'Current  password is incorrect' });
         }
 
         // Hash new password
@@ -1576,7 +1570,6 @@ router.get('/get_wishlist', async (req, res) => {
     JOIN product_type ON product.product_type_id = product_type.product_type_id
     ORDER BY wishlist.date_added DESC`;
         const data = await exe(sql);
-        console.log(data);
         
         if (data.length > 0) {
             res.status(200).json({ success: true, data });
@@ -1605,6 +1598,76 @@ router.delete('/delete_wishlist_item/:id', async (req, res) => {
     }
 });
 
+// Send OTP
+router.post('/send-otp', async (req, res) => {
+    const { email } = req.body;
+    const otp = Math.floor(100000 + Math.random() * 900000);
+    const expiry = new Date(Date.now() + 5 * 60 * 1000); // 5 mins Valid
+
+    const emailHtml = `<!DOCTYPE html><html>
+    <body>...
+    <h3>Your OTP to verify your identity As Admin on Furni Store is: <strong>${otp}</strong></h3>
+    <h4>This OTP will expire in 5 minutes.</h4>
+    ...
+    <p>&copy; @yogi Furni Store. All rights reserved.</p>
+    </body></html>`;
+    try {
+        await exe('UPDATE admins SET otp = ?, otp_created_at = NOW(), otp_expiry = ? WHERE admin_email = ?', [otp, expiry, email]);
+        const transporter = nodemailer.createTransport({
+            host: config.EMAIL_HOST,
+            port: config.EMAIL_PORT,
+            auth: {
+                user: config.EMAIL_USER,
+                pass: config.EMAIL_PASS
+            }
+        });
+
+        await transporter.sendMail({
+            from: config.EMAIL_USER,
+            to: email,
+            subject: 'Your OTP for Password Change',
+            html: emailHtml
+        });
+
+        res.json({ status: 'success', message: 'OTP sent to email Successfully', otp: otp });
+    } catch (err) {
+        console.log(err);
+        res.status(500).json({ status: 'error', message: 'Failed to send OTP' });
+    }
+});
+
+// Verify OTP
+router.post('/verify-otp', async (req, res) => {
+    const { email, otp } = req.body;
+
+    try {
+        const d = await exe('SELECT * FROM admins WHERE admin_email = ?', [email]);
+
+        if (d.length === 0) {
+            return res.status(404).json({ status: 'error', message: 'Admin not found' });
+        }
+        const admin = d[0];
+        const now = new Date();
+        const otpExpiry = new Date(admin.otp_expiry);
+
+        // Check if OTP matches
+        if (admin.otp !== otp) {
+            return res.status(400).json({ status: 'error', message: 'OTP does not match Please Enter Valid OTP' });
+        }
+
+        // Check if OTP is expired
+        if (now > otpExpiry) {
+            return res.status(400).json({ status: 'error', message: 'OTP has expired' });
+        }
+
+        // If OTP matched and not expired
+        return res.status(200).json({ status: 'success', message: 'OTP verified successfully' });
+
+    } catch (err) {
+        console.error('Error verifying OTP:', err);
+        return res.status(500).json({ status: 'error', message: 'Server error' });
+    }
+});
 
 
 export { router as adminRoute };
