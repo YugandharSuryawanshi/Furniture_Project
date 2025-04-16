@@ -1,72 +1,162 @@
-<div class="d-flex flex-column min-vh-100">
-    <section class="gradient-custom">
-        <div class="container py-5 h-100">
-            <div class="row d-flex align-items-center justify-content-center h-100">
-                <div class="col-md-8 col-lg-7 col-xl-6">
-                    <img src="https://mdbcdn.b-cdn.net/img/Photos/new-templates/bootstrap-login-form/draw2.svg"
-                        class="img-fluid floating" alt="Login illustration">
+<body>
+    <div class="d-flex flex-column min-vh-100 w-100">
+
+        <div class="container-fluid py-5 h-100">
+            <div class="row">
+                <div class="col-md-6">
+                    <div class="col-lg-12 col-xl-12 p-5">
+                        <img src="https://mdbcdn.b-cdn.net/img/Photos/new-templates/bootstrap-login-form/draw2.svg"
+                            class="img-fluid floating" alt="Login illustration">
+                    </div>
                 </div>
-                <div class="col-md-7 col-lg-5 col-xl-5 offset-xl-1">
-                    <div class="card glassmorphism-card shadow-lg">
-                        <div class="card-body p-5">
-                            <h3 class="text-center mb-4 fw-bold text-primary">Welcome Back! 👋</h3>
-                            <form (ngSubmit)="login()" class="needs-validation" novalidate>
-                                <div class="form-outline mb-4">
-                                    <label class="form-label fw-medium">Email Address</label>
-                                    <div class="input-group">
-                                        <input type="email" id="admin_email" [(ngModel)]="admin_email"
-                                            name="admin_email" class="form-control form-control-lg" required
-                                            pattern="[a-z0-9._%+-]+@[a-z0-9.-]+\.[a-z]{2,4}$"
-                                            (input)="onEmailInput()">
-                                        <div class="invalid-feedback d-block" *ngIf="emailTouched && !emailValid()">
-                                            Please enter a valid email address
+                <div class="col-md-6">
+                    <div class="login-container mt-3">
+                        <!-- Floating background elements -->
+
+                        <div
+                            style="position: absolute; top: -50px; left: -50px; width: 200px; height: 200px; background: radial-gradient(circle, rgba(108,92,231,0.1) 0%, rgba(108,92,231,0) 70%); border-radius: 50%; animation: float 8s ease-in-out infinite;">
+                        </div>
+                        <div
+                            style="position: absolute; bottom: -30px; right: -30px; width: 150px; height: 150px; background: radial-gradient(circle, rgba(0,184,148,0.1) 0%, rgba(0,184,148,0) 70%); border-radius: 50%; animation: float 6s ease-in-out infinite 1s;">
+                        </div>
+
+                        <!-- Step Indicator -->
+                        <div class="step-indicator mb-4">
+                            <div class="step active">1</div>
+                            <div class="step-line"></div>
+                            <div class="step">2</div>
+                            <div class="step-line"></div>
+                            <div class="step">3</div>
+                        </div>
+
+                        <!-- Login Card -->
+                        <div class="login-card animate__animated animate__fadeIn">
+                            <!-- Login Header -->
+                            <div class="login-header">
+                                <h2>Welcome Back! 👋</h2>
+                                <p>Secure access to Furni Admin Panel</p>
+                                <h4>
+                                    <i class="fas fa-door-open text-danger"></i> Login Now
+                                </h4>
+                            </div>
+
+                            <!-- Multi-step Admin Login UI (HTML) -->
+                            <div class="login-body" id="email-step">
+                                <form (ngSubmit)="goToPasswordStep()">
+                                    <div class="form-group">
+                                        <div class="input-group">
+                                            <input type="email" id="admin_email" [(ngModel)]="admin_email"
+                                                name="admin_email" class="form-control form-control-lg" required
+                                                pattern="[a-z0-9._%+-]+@[a-z0-9.-]+\.[a-z]{2,4}$"
+                                                (input)="onEmailInput()" placeholder="Enter your email address">
+                                            <div class="invalid-feedback d-block" *ngIf="emailTouched && !emailValid()">
+                                                Please enter a valid email address
+                                            </div>
+                                            <span class="input-group-text">
+                                                <i class="fas fa-envelope"></i>
+                                            </span>
                                         </div>
-                                        <span class="input-group-text">
-                                            <i class="fas fa-envelope"></i>
-                                        </span>
                                     </div>
+                                    <button type="submit" class="btn btn-login">
+                                        Continue <i class="fas fa-arrow-right ms-2"></i>
+                                    </button>
+                                </form>
+                            </div>
+
+                            <!-- Password Step -->
+                            <div class="login-body" id="password-step" style="display: none;">
+                                <div class="text-center mb-4">
+                                    <h4 class="animate__animated animate__fadeInDown">Enter Your Password</h4>
+                                    <p class="text-muted animate__animated animate__fadeInUp">For security, please enter
+                                        your password</p>
                                 </div>
 
-                                <div class="form-outline mb-4">
-                                    <label class="form-label fw-medium">Password</label>
-                                    <div class="input-group">
-                                        <input type="password" id="admin_password" [(ngModel)]="admin_password"
-                                            name="admin_password" class="form-control form-control-lg" required
-                                            minlength="6"
-                                            (input)="onPasswordInput()">
-                                        <button type="button" class="input-group-text toggle-password"
-                                            (click)="togglePasswordVisibility()">
-                                            <i class="fas fa-eye"></i>
-                                        </button>
+                                <form (ngSubmit)="goToOtpStep()">
+                                    <div class="form-group">
+                                        <div class="input-group">
+                                            <input type="password" id="admin_password" [(ngModel)]="admin_password"
+                                                name="admin_password" class="form-control form-control-lg" required
+                                                minlength="6" (input)="onPasswordInput()"
+                                                placeholder="Enter your password">
+                                            <button type="button" class="input-group-text toggle-password"
+                                                (click)="togglePasswordVisibility()">
+                                                <i class="fas fa-eye"></i>
+                                            </button>
+                                        </div>
                                         <div class="invalid-feedback d-block"
                                             *ngIf="passwordTouched && admin_password.length < 6">
                                             Password must be at least 6 characters
                                         </div>
                                     </div>
+                                    <button type="submit" class="btn btn-login">
+                                        Verify Password <i class="fas fa-lock-open ms-2"></i>
+                                    </button>
+                                </form>
+                            </div>
+
+                            <!-- OTP Step -->
+                            <div class="login-body" id="otp-step" style="display: none;">
+                                <div class="text-center mb-4">
+                                    <h4 class="animate__animated animate__fadeInDown">Verify Your Identity</h4>
+                                    <p class="text-muted animate__animated animate__fadeInUp">
+                                        We've sended a 6-digit OTP to <strong>{{admin_email}}</strong>
+                                    </p>
                                 </div>
 
-                                <div class="d-flex justify-content-between align-items-center mb-4">
-                                    <a href="#!" class="text-decoration-none small text-muted">Forgot password?</a>
-                                    <div class="text-end">
-                                        <span class="text-muted small">New Admin? </span>
-                                        <a routerLink="/admin/register" class="text-decoration-none fw-medium">
-                                            Create Account
-                                        </a>
+                                <form (ngSubmit)="login()">
+                                    <div class="otp-input-group">
+                                        <input type="password" id="otp" [(ngModel)]="otp" name="otp"
+                                            class="form-control form-control-lg" required minlength="6"
+                                            placeholder="Enter OTP">
+                                        <button type="button" class="input-group-text toggle-password"
+                                            (click)="toggleOtpVisibility()">
+                                            <i class="fas fa-eye"></i>
+                                        </button>
                                     </div>
-                                </div>
 
-                                <button type="submit" class="btn btn-primary btn-lg btn-block rounded-pill w-100">
-                                    <span *ngIf="!loading">Sign In</span>
-                                    <div *ngIf="loading" class="spinner-border spinner-border-sm" role="status">
-                                        <span class="visually-hidden">Loading...</span>
+                                    <button type="submit" class="btn btn-login mb-3 animate__animated animate__fadeIn"
+                                        style="animation-delay: 0.7s;">
+                                        Verify & Login <i class="fas fa-sign-in-alt ms-2"></i>
+                                    </button>
+
+                                    <div class="resend-otp">
+                                        <p>Didn't receive OTP? <a (click)="resendOtp()" style="cursor: pointer;">Resend OTP</a></p>
                                     </div>
-                                </button>
-                            </form>
+                                </form>
+                            </div>
+
+                            <div class="d-flex justify-content-between align-items-center mb-4 m-4">
+                                <a routerLink="/admin/login" class="text-decoration-none small text-muted">Forgot password?</a>
+                                <div class="text-end">
+                                    <span class="text-muted small">New Admin? </span>
+                                    <a routerLink="/admin/register" class="text-decoration-none fw-medium text-danger">
+                                        Create Account
+                                    </a>
+                                </div>
+                            </div>
+
+                            <!-- Success Step (initially hidden) -->
+                            <div class="login-body success-screen" id="success-step" style="display: none;">
+                                <div class="success-icon animate__animated animate__bounceIn">
+                                    <i class="fas fa-check-circle"></i>
+                                </div>
+                                <h3 class="mb-3 animate__animated animate__fadeIn" style="animation-delay: 0.3s;">Login
+                                    Successful!
+                                </h3>
+                                <p class="animate__animated animate__fadeIn" style="animation-delay: 0.5s;">You're being
+                                    redirected
+                                    to the admin dashboard...</p>
+                                <div class="spinner-border text-danger mt-3 animate__animated animate__fadeIn"
+                                    style="animation-delay: 0.7s;" role="status">
+                                    <span class="visually-hidden">Loading...</span>
+                                </div>
+                            </div>
                         </div>
+
                     </div>
                 </div>
             </div>
+
         </div>
-    </section>
-</div>
-<br>
+    </div>
+</body>

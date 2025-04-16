@@ -45,7 +45,7 @@ router.post('/adminRegister', async (req, res) => {
 });
 
 //Login
-router.post('/adminLogin', async (req, res) => {
+router.post('/verifyAdminPass', async (req, res) => {
     const { admin_email, admin_password } = req.body;
 
     if (!admin_email || !admin_password) {
@@ -62,14 +62,49 @@ router.post('/adminLogin', async (req, res) => {
 
         const admin = results[0];
         const isPasswordValid = await bcrypt.compare(admin_password, admin.admin_password);
+        if (isPasswordValid)
+        {
+            res.status(200).send({ message: 'Password Match', success: true, });
+        }
+        else {
+            return res.status(401).send({ message: 'Invalid Email or password' });
+        }
 
-        if (!isPasswordValid) return res.status(401).send({ message: 'Invalid admin Email or Password, Please Enter Valid Email or Password' });
-        const adminToken = jwt.sign(
-            { id: admin.admin_id, admin_email: admin.admin_email },
-            config.adminJwtSecret,
-            { expiresIn: config.adminJwtExpire }
-        );
-        res.status(200).send({ message: 'Login successful', success: true, adminToken });
+    } catch (err) {
+        console.error(err);
+        return res.status(500).send({ message: 'Database error' });
+    }
+});
+
+router.post('/adminLogin', async (req, res) => {
+    const { admin_email, admin_password , otp } = req.body;
+
+    if (!admin_email || !admin_password || !otp) {
+        return res.status(400).send({ message: 'Email and password Both Fields are required' });
+    }
+
+    const sql = 'SELECT * FROM admins WHERE admin_email = ?';
+    try {
+        const results = await exe(sql, [admin_email]);
+
+        if (results.length === 0) {
+            return res.status(401).send({ message: 'Invalid Email or password' });
+        }
+
+        const admin = results[0];
+        const isPasswordValid = await bcrypt.compare(admin_password, admin.admin_password);
+
+        if (admin.otp == otp) {
+            const adminToken = jwt.sign(
+                { id: admin.admin_id, admin_email: admin.admin_email },
+                config.adminJwtSecret,
+                { expiresIn: config.adminJwtExpire }
+            );
+            res.status(200).send({ message: 'Login successful', success: true, adminToken });
+        }
+        else {
+            return res.status(401).send({ message: 'Invalid OTP' });
+        }
 
     } catch (err) {
         console.error(err);

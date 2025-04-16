@@ -171,3 +171,621 @@
         </section>
     </div>
 </body>
+
+
+
+
+
+
+
+
+
+
+
+
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Furni Admin Registration</title>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/4.1.1/animate.min.css">
+    <style>
+        :root {
+            --primary-color: #6c5ce7;
+            --secondary-color: #a29bfe;
+            --dark-color: #2d3436;
+            --light-color: #f5f6fa;
+            --success-color: #00b894;
+            --warning-color: #fdcb6e;
+            --danger-color: #d63031;
+        }
+
+        body {
+            background: linear-gradient(135deg, #ff7d7d 0%, #ffd1d1 100%);
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            min-height: 100vh;
+            overflow-x: hidden;
+        }
+
+        .register-wrapper {
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+        }
+
+        .register-container {
+            max-width: 1200px;
+            width: 100%;
+            margin: 0 auto;
+            padding: 20px;
+            position: relative;
+        }
+
+        .register-card {
+            background: linear-gradient(135deg, #ffd1d1 0%, #ff7d7d 100%);
+            border-radius: 20px;
+            box-shadow: 0 25px 50px rgba(0, 0, 0, 0.15);
+            overflow: hidden;
+            transition: all 0.8s cubic-bezier(0.68, -0.55, 0.265, 1.55);
+            transform-style: preserve-3d;
+            position: relative;
+            backface-visibility: hidden;
+        }
+
+        .register-header {
+            background: linear-gradient(135deg, var(--primary-color), var(--secondary-color));
+            color: black;
+            padding: 30px;
+            text-align: center;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .register-header::before {
+            content: "";
+            position: absolute;
+            top: -50%;
+            left: -50%;
+            width: 200%;
+            height: 200%;
+            background: radial-gradient(circle, rgba(255, 255, 255, 0.1) 0%, rgba(255, 255, 255, 0) 70%);
+            animation: pulse 8s infinite linear;
+        }
+
+        .register-header h1 {
+            font-weight: 700;
+            margin-bottom: 5px;
+            position: relative;
+            animation: fadeInDown 0.8s both;
+            font-size: 2.2rem;
+            text-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+        }
+
+        .text-gradient {
+            background: linear-gradient(135deg, #fff, #e0e0e0);
+            -webkit-background-clip: text;
+            background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+
+        .register-body {
+            padding: 30px;
+            transform-style: preserve-3d;
+        }
+
+        .form-group {
+            margin-bottom: 25px;
+            position: relative;
+        }
+
+        .form-group.delay-1 {
+            animation: fadeIn 0.8s both 0.2s;
+        }
+
+        .form-group.delay-2 {
+            animation: fadeIn 0.8s both 0.3s;
+        }
+
+        .form-group.delay-3 {
+            animation: fadeIn 0.8s both 0.4s;
+        }
+
+        .form-group.delay-4 {
+            animation: fadeIn 0.8s both 0.5s;
+        }
+
+        .form-group.delay-5 {
+            animation: fadeIn 0.8s both 0.6s;
+        }
+
+        .form-group.delay-6 {
+            animation: fadeIn 0.8s both 0.7s;
+        }
+
+        .form-label {
+            font-weight: 600;
+            margin-bottom: 8px;
+            display: block;
+            color: var(--dark-color);
+        }
+
+        .input-group {
+            position: relative;
+            perspective: 1000px;
+        }
+
+        .form-control {
+            height: 50px;
+            border-radius: 12px;
+            border: 1px solid rgba(255, 255, 255, 0.3);
+            padding-left: 45px;
+            transition: all 0.4s cubic-bezier(0.68, -0.55, 0.265, 1.55);
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+            transform: translateZ(30px);
+            background-color: rgba(255, 255, 255, 0.9);
+            font-size: 1rem;
+        }
+
+        .form-control:focus {
+            box-shadow: 0 8px 25px rgba(108, 92, 231, 0.2);
+            border-color: var(--primary-color);
+            transform: translateZ(40px) scale(1.02);
+        }
+
+        .input-group-text {
+            position: absolute;
+            left: 15px;
+            top: 15px;
+            color: var(--primary-color);
+            transition: all 0.3s;
+            transform: translateZ(40px);
+            font-size: 1.2rem;
+            background: transparent;
+            border: none;
+            z-index: 5;
+        }
+
+        .toggle-password {
+            position: absolute;
+            right: 15px;
+            top: 15px;
+            color: var(--primary-color);
+            transition: all 0.3s;
+            transform: translateZ(40px);
+            font-size: 1.2rem;
+            background: transparent;
+            border: none;
+            z-index: 5;
+            cursor: pointer;
+        }
+
+        .toggle-password:hover {
+            color: var(--secondary-color);
+            transform: translateZ(50px) scale(1.1);
+        }
+
+        .form-control:focus~.input-group-text {
+            color: var(--secondary-color);
+            transform: translateZ(50px) scale(1.1);
+        }
+
+        .invalid-feedback {
+            color: var(--danger-color);
+            font-size: 0.85rem;
+            margin-top: 5px;
+            display: none;
+        }
+
+        .form-control.is-invalid~.invalid-feedback {
+            display: block;
+            animation: fadeIn 0.3s both;
+        }
+
+        .form-control.is-invalid {
+            border-color: var(--danger-color);
+        }
+
+        .btn-register {
+            /* background: linear-gradient(135deg, var(--primary-color), var(--secondary-color)); */
+            background: linear-gradient(135deg, #ff7d7d 0%, #ffd1d1 100%);
+            border: none;
+            color: white;
+            height: 50px;
+            border-radius: 12px;
+            font-weight: 600;
+            width: 100%;
+            max-width: 300px;
+            transition: all 0.4s cubic-bezier(0.68, -0.55, 0.265, 1.55);
+            box-shadow: 0 8px 10px rgba(255, 71, 71, 1);
+            transform: translateZ(40px);
+            position: relative;
+            overflow: hidden;
+            font-size: 1rem;
+            letter-spacing: 0.5px;
+            text-transform: uppercase;
+            padding: 0 30px;
+        }
+
+        .btn-register::before {
+            content: "";
+            position: absolute;
+            top: 0;
+            left: -100%;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.3), transparent);
+            transition: 0.5s;
+        }
+
+        .btn-register:hover {
+            background: linear-gradient(135deg, var(--secondary-color), var(--primary-color));
+            transform: translateZ(50px) translateY(-3px);
+            /* box-shadow: 0 12px 30px rgba(255, 81, 75, 0.8); */
+            box-shadow: 0 8px 10px rgba(255, 71, 71, 2);
+        }
+
+        .btn-register:hover::before {
+            left: 100%;
+        }
+
+        .login-link {
+            color: var(--primary-color);
+            text-decoration: none;
+            font-weight: 600;
+            transition: all 0.3s;
+        }
+
+        .login-link:hover {
+            color: var(--secondary-color);
+            text-decoration: underline;
+        }
+
+        /* Floating background elements */
+        .floating-bg {
+            position: absolute;
+            border-radius: 50%;
+            animation: float 8s ease-in-out infinite;
+            z-index: -1;
+        }
+
+        .bg-1 {
+            top: -50px;
+            left: -50px;
+            width: 200px;
+            height: 200px;
+            background: radial-gradient(circle, rgba(108, 92, 231, 0.1) 0%, rgba(108, 92, 231, 0) 70%);
+        }
+
+        .bg-2 {
+            bottom: -30px;
+            right: -30px;
+            width: 150px;
+            height: 150px;
+            background: radial-gradient(circle, rgba(0, 184, 148, 0.1) 0%, rgba(0, 184, 148, 0) 70%);
+            animation-delay: 1s;
+        }
+
+        /* Animation classes */
+        @keyframes slideIn {
+            from {
+                transform: translateX(100%) rotateY(90deg);
+                opacity: 0;
+            }
+
+            to {
+                transform: translateX(0) rotateY(0deg);
+                opacity: 1;
+            }
+        }
+
+        @keyframes slideOut {
+            from {
+                transform: translateX(0) rotateY(0deg);
+                opacity: 1;
+            }
+
+            to {
+                transform: translateX(-100%) rotateY(-90deg);
+                opacity: 0;
+            }
+        }
+
+        @keyframes fadeIn {
+            from {
+                opacity: 0;
+                transform: scale(0.9) translateZ(20px);
+            }
+
+            to {
+                opacity: 1;
+                transform: scale(1) translateZ(0);
+            }
+        }
+
+        @keyframes bounceIn {
+            0% {
+                transform: scale(0.5) translateZ(50px);
+                opacity: 0;
+            }
+
+            60% {
+                transform: scale(1.1) translateZ(80px);
+                opacity: 1;
+            }
+
+            100% {
+                transform: scale(1) translateZ(0);
+            }
+        }
+
+        @keyframes pulse {
+            0% {
+                transform: rotate(0deg);
+            }
+
+            100% {
+                transform: rotate(360deg);
+            }
+        }
+
+        @keyframes ripple {
+            0% {
+                transform: scale(0.5);
+                opacity: 0.5;
+            }
+
+            100% {
+                transform: scale(2);
+                opacity: 0;
+            }
+        }
+
+        @keyframes float {
+
+            0%,
+            100% {
+                transform: translateY(0) translateZ(20px);
+            }
+
+            50% {
+                transform: translateY(-10px) translateZ(30px);
+            }
+        }
+
+        @keyframes fadeInDown {
+            from {
+                opacity: 0;
+                transform: translateY(-20px) translateZ(20px);
+            }
+
+            to {
+                opacity: 1;
+                transform: translateY(0) translateZ(0);
+            }
+        }
+
+        @keyframes fadeInUp {
+            from {
+                opacity: 0;
+                transform: translateY(20px) translateZ(20px);
+            }
+
+            to {
+                opacity: 1;
+                transform: translateY(0) translateZ(0);
+            }
+        }
+
+        /* Responsive adjustments */
+        @media (max-width: 992px) {
+            .register-header h1 {
+                font-size: 2rem;
+            }
+
+            .register-body {
+                padding: 25px;
+            }
+        }
+
+        @media (max-width: 768px) {
+            .register-header h1 {
+                font-size: 1.8rem;
+            }
+
+            .register-body {
+                padding: 20px;
+            }
+
+            .form-group {
+                margin-bottom: 20px;
+            }
+        }
+
+        @media (max-width: 576px) {
+            .register-container {
+                padding: 15px;
+            }
+
+            .register-header {
+                padding: 20px;
+            }
+
+            .register-header h1 {
+                font-size: 1.6rem;
+            }
+
+            .register-body {
+                padding: 15px;
+            }
+
+            .form-control,
+            .btn-register {
+                height: 45px;
+            }
+
+            .input-group-text,
+            .toggle-password {
+                top: 13px;
+            }
+
+            .btn-register {
+                max-width: 100%;
+            }
+        }
+    </style>
+</head>
+
+<body>
+    <div class="register-wrapper">
+        <div class="register-container">
+            <!-- Floating background elements -->
+            <div class="floating-bg bg-1"></div>
+            <div class="floating-bg bg-2"></div>
+
+            <div class="row justify-content-center">
+                <div class="col-lg-10">
+                    <div class="register-card animate__animated animate__fadeInUp">
+                        <!-- Register Header -->
+                        <div class="register-header">
+                            <h1 class="text-gradient">Create Admin Account</h1>
+                            <p>Secure access to Furni Admin Panel</p>
+                        </div>
+
+                        <!-- Register Body -->
+                        <div class="register-body">
+                            <form class="needs-validation" novalidate>
+                                <div class="row">
+                                    <!-- Full Name -->
+                                    <div class="col-md-6 col-lg-4">
+                                        <div class="form-group delay-1">
+                                            <label class="form-label">Full Name</label>
+                                            <div class="input-group">
+                                                <input class="form-control" id="admin_name" name="admin_name" required
+                                                    minlength="3" pattern="[A-Za-z ]+"
+                                                    placeholder="Enter your full name" />
+                                                <span class="input-group-text"><i class="fas fa-user"></i></span>
+                                                <div class="invalid-feedback">
+                                                    Please enter a valid name (min 3 characters, letters only)
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                    <!-- Mobile Number -->
+                                    <div class="col-md-6 col-lg-4">
+                                        <div class="form-group delay-2">
+                                            <label class="form-label">Mobile Number</label>
+                                            <div class="input-group">
+                                                <input class="form-control" id="admin_mobile" name="admin_mobile"
+                                                    required pattern="[0-9]{10}" maxlength="10"
+                                                    placeholder="Enter your mobile number" />
+                                                <span class="input-group-text"><i class="fas fa-mobile-alt"></i></span>
+                                                <div class="invalid-feedback">
+                                                    Please enter a valid 10-digit mobile number
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                    <!-- Email -->
+                                    <div class="col-md-6 col-lg-4">
+                                        <div class="form-group delay-3">
+                                            <label class="form-label">Email Address</label>
+                                            <div class="input-group">
+                                                <input class="form-control" id="admin_email" name="admin_email" required
+                                                    placeholder="Enter your email address"
+                                                    pattern="[a-z0-9._%+-]+@[a-z0-9.-]+\.[a-z]{2,4}$" />
+                                                <span class="input-group-text"><i class="fas fa-envelope"></i></span>
+                                                <div class="invalid-feedback">
+                                                    Please enter a valid email address
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                    <!-- Password -->
+                                    <div class="col-md-6 col-lg-4">
+                                        <div class="form-group delay-4">
+                                            <label class="form-label">Password</label>
+                                            <div class="input-group">
+                                                <input type="password" class="form-control" id="admin_password"
+                                                    name="admin_password" required minlength="8"
+                                                    placeholder="Create a password"
+                                                    pattern="(?=.*\d)(?=.*[a-z])(?=.*[A-Z]).{8,}" />
+                                                <button type="button" class="toggle-password">
+                                                    <i class="fas fa-eye"></i>
+                                                </button>
+                                                <div class="invalid-feedback">
+                                                    Password must have 8+ chars, 1 uppercase, 1 lowercase, 1 number
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                    <!-- Confirm Password -->
+                                    <div class="col-md-6 col-lg-4">
+                                        <div class="form-group delay-5">
+                                            <label class="form-label">Confirm Password</label>
+                                            <div class="input-group">
+                                                <input type="password" class="form-control" id="confirmPassword"
+                                                    name="confirmPassword" placeholder="Confirm your password"
+                                                    required />
+                                                <button type="button" class="toggle-password">
+                                                    <i class="fas fa-eye"></i>
+                                                </button>
+                                                <div class="invalid-feedback">
+                                                    Passwords do not match
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                    <!-- Secret Key -->
+                                    <div class="col-md-6 col-lg-4">
+                                        <div class="form-group delay-6">
+                                            <label class="form-label">
+                                                Secret Key <span class="text-muted small">(Provided by Owner)</span>
+                                            </label>
+                                            <div class="input-group">
+                                                <input type="password" class="form-control" id="secret_key"
+                                                    name="secret_key" required minlength="8"
+                                                    placeholder="Enter the secret key" />
+                                                <button type="button" class="toggle-password">
+                                                    <i class="fas fa-eye"></i>
+                                                </button>
+                                                <div class="invalid-feedback">
+                                                    Secret key must be at least 8 characters
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <div class="row mt-4">
+                                    <div class="col-12 text-center">
+                                        <button type="submit"
+                                            class="btn-register animate__animated animate__fadeIn delay-6">
+                                            <i class="fas fa-user-plus me-2"></i> Register Now
+                                        </button>
+                                    </div>
+
+                                    <div class="col-12 text-center mt-3 animate__animated animate__fadeIn delay-7">
+                                        <span class="text-muted small">Already Registered?</span>
+                                        <a href="#" class="login-link ms-1">
+                                            Login Here
+                                        </a>
+                                    </div>
+                                </div>
+                            </form>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</body>
+
+</html>
