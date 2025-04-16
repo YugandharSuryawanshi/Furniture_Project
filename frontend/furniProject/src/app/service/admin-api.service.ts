@@ -46,9 +46,17 @@ export class AdminApiService {
   }
 
   // Admin login method
-  adminLogin(admin: {
+  verifyAdminPassword(admin: {
     admin_email: any;
     admin_password: any
+  }): Observable<any> {
+    return this.http.post(`${this.adminUrl}/verifyAdminPass`, admin);
+  }
+
+  adminLogin(admin: {
+    admin_email: any;
+    admin_password: any,
+    otp: any
   }): Observable<any> {
     return this.http.post(`${this.adminUrl}/adminLogin`, admin);
   }
