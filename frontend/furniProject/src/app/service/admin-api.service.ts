@@ -40,7 +40,8 @@ export class AdminApiService {
     admin_name: string;
     admin_mobile: any;
     admin_email: any;
-    admin_password: string
+    admin_password: string,
+    otp: any
   }): Observable<any> {
     return this.http.post(`${this.adminUrl}/adminRegister`, admin);
   }

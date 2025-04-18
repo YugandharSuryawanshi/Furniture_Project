@@ -1,9 +1,9 @@
 import bcrypt from 'bcryptjs';
 import express from 'express';
 import jwt from 'jsonwebtoken';
+import nodemailer from 'nodemailer';
 import { config } from '../config/config.js';
 import { exe } from '../connection.js';
-import nodemailer from 'nodemailer';
 const router = express.Router();
 const blacklist = new Set();
 
@@ -29,13 +29,14 @@ function authenticateToken(req, res, next) {
 
 //Register New Admin
 router.post('/adminRegister', async (req, res) => {
-    const { admin_name, admin_mobile, admin_email, admin_password } = req.body;
+    const { admin_name, admin_mobile, admin_email, admin_password, otp } = req.body;
+    const expiry = new Date(Date.now() + 5 * 60 * 1000); // 5 mins Valid
 
     try {
         const hashedPassword = await bcrypt.hash(admin_password, 10);
 
-        const sql = `INSERT INTO admins (admin_name, admin_mobile, admin_email, admin_password) VALUES (?, ?, ?, ?)`;
-        const data = await exe(sql, [admin_name, admin_mobile, admin_email, hashedPassword]);
+        const sql = `INSERT INTO admins (admin_name, admin_mobile, admin_email, admin_password, otp, otp_created_at, otp_expiry) VALUES (?, ?, ?, ?, ?, NOW(), ?)`;
+        const data = await exe(sql, [admin_name, admin_mobile, admin_email, hashedPassword, otp, expiry]);
 
         res.status(201).send({ message: 'Admin registered successfully!', data });
     } catch (err) {
