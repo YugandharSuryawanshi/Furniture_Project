@@ -45,12 +45,19 @@
 <body>
     <div class="sidebar sidebar-dark sidebar-fixed" id="sidebar">
         <div class="sidebar-brand d-none d-md-flex">
-            <svg class="sidebar-brand-full" width="118" height="46" alt="CoreUI Logo">
+            <div class="sidebar-brand-full">
+                <img src="images/logo.png" alt="" width="118" height="76">
+            </div>
+            <div class="sidebar-brand-narrow">
+                <img src="images/logo.png" alt="" width="46" height="46">
+            </div>
+            <!-- <svg class="sidebar-brand-full" width="118" height="46" alt="CoreUI Logo">
+                <use xlink:href="/images/logo.png"></use>
                 <use xlink:href="/admin/assets/brand/coreui.svg#full"></use>
-            </svg>
-            <svg class="sidebar-brand-narrow" width="46" height="46" alt="CoreUI Logo">
-                <use xlink:href="/admin/assets/brand/coreui.svg#signet"></use>
-            </svg>
+            </svg> -->
+            <!-- <svg class="sidebar-brand-narrow" width="46" height="46" alt="CoreUI Logo">
+            <use xlink:href="/admin/assets/brand/coreui.svg#signet"></use>
+            </svg> -->
         </div>
         <ul class="sidebar-nav" data-coreui="navigation" data-simplebar="">
             <li class="nav-item">
@@ -221,10 +228,9 @@
                     </svg>
                 </button>
 
-                <a class="header-brand d-md-none" href="#">
-                    <svg width="118" height="46" alt="CoreUI Logo">
-                        <use xlink:href="/admin/assets/brand/coreui.svg#full"></use>
-                    </svg></a>
+                <a class="header-brand d-md-none" routerLink="/admin/dashboard">
+                    <img src="/images/logo.png" width="118" height="46" alt="Yogi Furni Logo">
+                </a>
                 <ul class="header-nav ms-3">
                     <button class="btn btn-dark" routerLink="/admin/login" *ngIf="!adminApi.isAdminLoggedIn()">Login
                         Now </button>
@@ -247,7 +253,25 @@
                                 </div>
                                 <i class="ml-5"></i>
                             </a>
-                            <div class="dropdown-menu dropdown-menu-end pt-0" [class.show]="dropdownOpen">
+                            <div class="dropdown-menu dropdown-menu-end pt-0" [class.show]="dropdownOpen"
+                                (mouseenter)="dropdownOpen = true" (mouseleave)="dropdownOpen = false">
+                                <a class="dropdown-item" routerLink="/admin/profile" (click)="dropdownOpen = false">
+                                    <svg class="icon me-2">
+                                        <use xlink:href="/admin/vendors/@coreui/icons/svg/free.svg#cil-user"></use>
+                                    </svg>
+                                    Profile
+                                </a>
+
+                                <a class="dropdown-item" (click)="logout(); dropdownOpen = false" style="cursor: pointer;">
+                                    <svg class="icon me-2">
+                                        <use xlink:href="/admin/vendors/@coreui/icons/svg/free.svg#cil-account-logout">
+                                        </use>
+                                    </svg>
+                                    Logout
+                                </a>
+                            </div>
+
+                            <!-- <div class="dropdown-menu dropdown-menu-end pt-0" [class.show]="dropdownOpen">
                                 <a class="dropdown-item" routerLink="/admin/profile">
                                     <svg class="icon me-2">
                                         <use xlink:href="/admin/vendors/@coreui/icons/svg/free.svg#cil-user"></use>
@@ -261,7 +285,7 @@
                                     </svg>
                                     Logout
                                 </a>
-                            </div>
+                            </div> -->
                         </li>
                     </div>
                 </ul>

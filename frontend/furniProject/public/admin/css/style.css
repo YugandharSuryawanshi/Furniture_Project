@@ -96,7 +96,8 @@ body {
   line-height: var(--cui-body-line-height);
   color: var(--cui-body-color);
   text-align: var(--cui-body-text-align);
-  background-color: var(--cui-body-bg);
+  /* background-color: var(--cui-body-bg); */
+  background: linear-gradient(135deg, #ffc4c4 0%, #ffd1d1 100%);
   -webkit-text-size-adjust: 100%;
   -webkit-tap-highlight-color: rgba(0, 0, 21, 0);
 }
@@ -8070,8 +8071,10 @@ html:not([dir=rtl]) .header-nav {
   order: -1;
   width: var(--cui-sidebar-width);
   padding: var(--cui-sidebar-padding-y) var(--cui-sidebar-padding-x);
-  color: var(--cui-sidebar-color);
-  background: var(--cui-sidebar-bg);
+  /* color: var(--cui-sidebar-color); */
+  /* background: var(--cui-sidebar-bg); */
+  background: linear-gradient(135deg, #ff7d7d 0%, #ffd1d1 100%);
+  color: black;
   box-shadow: none;
   transition: margin-left 0.15s, margin-right 0.15s, box-shadow 0.075s, transform 0.15s, width 0.15s, z-index 0s ease 0.15s;
 }
@@ -8422,7 +8425,10 @@ html:not([dir=rtl]) .sidebar-close {
   flex: 1;
   align-items: center;
   padding: var(--cui-sidebar-nav-link-padding-y) var(--cui-sidebar-nav-link-padding-x);
-  color: var(--cui-sidebar-nav-link-color);
+  /* color: var(--cui-sidebar-nav-link-color); */
+  color: black;
+  font-weight: 500;   /* More bold */
+  /* font-size: 16px; */
   text-decoration: none;
   white-space: nowrap;
   background: var(--cui-sidebar-nav-link-bg);
@@ -8436,11 +8442,13 @@ html:not([dir=rtl]) .sidebar-close {
   }
 }
 .sidebar-nav .nav-link.active {
-  color: var(--cui-sidebar-nav-link-active-color);
+  /* color: var(--cui-sidebar-nav-link-active-color); */
+  color: black;
   background: var(--cui-sidebar-nav-link-active-bg);
 }
 .sidebar-nav .nav-link.active .nav-icon {
-  color: var(--cui-sidebar-nav-link-active-icon-color);
+  /* color: var(--cui-sidebar-nav-link-active-icon-color); */
+  color:black;
 }
 .sidebar-nav .nav-link.disabled {
   color: var(--cui-sidebar-nav-link-disabled-color);
@@ -8477,7 +8485,8 @@ html:not([dir=rtl]) .sidebar-close {
   flex: 0 0 var(--cui-sidebar-nav-icon-width);
   height: var(--cui-sidebar-nav-icon-height);
   font-size: var(--cui-sidebar-nav-icon-font-size);
-  color: var(--cui-sidebar-nav-link-icon-color);
+  /* color: var(--cui-sidebar-nav-link-icon-color); */
+  color: black;
   text-align: center;
   pointer-events: none;
   fill: currentcolor;
@@ -8540,6 +8549,7 @@ html:not([dir=rtl]) .sidebar-nav .nav-icon:first-child {
   height: 12px;
   content: "";
   background-image: var(--cui-sidebar-nav-group-indicator);
+  font-size: 20px;
   background-repeat: no-repeat;
   background-position: center;
   transition: transform 0.15s;
