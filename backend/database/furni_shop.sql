@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Generation Time: Apr 11, 2025 at 05:29 PM
+-- Generation Time: Apr 21, 2025 at 07:31 PM
 -- Server version: 10.4.32-MariaDB
 -- PHP Version: 8.2.12
 
@@ -33,19 +33,23 @@ CREATE TABLE `admins` (
   `admin_mobile` varchar(15) DEFAULT NULL,
   `admin_email` varchar(200) NOT NULL,
   `admin_password` varchar(350) NOT NULL,
-  `admin_profile` text DEFAULT NULL
+  `admin_profile` text DEFAULT NULL,
+  `otp` varchar(10) DEFAULT NULL,
+  `otp_created_at` datetime DEFAULT NULL,
+  `otp_expiry` datetime DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 --
 -- Dumping data for table `admins`
 --
 
-INSERT INTO `admins` (`admin_id`, `admin_name`, `admin_mobile`, `admin_email`, `admin_password`, `admin_profile`) VALUES
-(2, 'Yugandhar Suryawanshi', '9359087068', 'yugandhar@gmail.com', '$2b$10$FYnMTx547qVgQHyIMOvMGOuSJu8NgjmlRBSCIqD/BRb/IeyypDDn2', '1743517326401study.jpg'),
-(3, 'Chaitanya Kodre', '9359087069', 'chaitu@gmail.com', '$2a$10$7q1Z3nvV1HcsfvG6amkgueXZLxKOSWTQYW0h2t8qKYAnzyMiQ7Nqq', '1736446596106IMG_20220623_152031.jpg'),
-(5, 'Radha Krishna', '9359087068', 'radhekrishna@gmail.com', '$2a$10$alD6Qg58fLjR9bH96gkE5uNhqgeNYMIGd0CDmulbdin9cxRQYXxWC', '1736420229774RadheKrishna.jpg'),
-(8, 'Shahadev Warkhede', '1234567891', 'shahadev@gmail.com', '$2b$10$4U16zOJ3/krd0S8ivVCUxOpPm9EbB78IqiFG7sqvxKuphMu1v3/Lu', '17404872113151697381295688.jpg'),
-(10, 'Chaitanya Kodre', '1234567890', 'chaitanya@gmail.com', '$2b$10$PW3EWjsPPs8wjLn0FgiUBeOCoLn4tBWZG/T5i/ZfSuuRy/A6oRA1e', '1741610784840IMG_20241217_215310.jpg');
+INSERT INTO `admins` (`admin_id`, `admin_name`, `admin_mobile`, `admin_email`, `admin_password`, `admin_profile`, `otp`, `otp_created_at`, `otp_expiry`) VALUES
+(2, 'Yugandhar Suryawanshi', '9359087068', 'yugandharsuryawanshi1@gmail.com', '$2b$10$sclfBurIOP1aRvIgsSeYKeDRD0DKHmk/vhXpEwBX.SpaMfRl2FTE6', '1743517326401study.jpg', '862405', '2025-04-19 11:19:44', '2025-04-19 11:24:44'),
+(3, 'Chaitanya Kodre', '9359087069', 'chaitu@gmail.com', '$2a$10$7q1Z3nvV1HcsfvG6amkgueXZLxKOSWTQYW0h2t8qKYAnzyMiQ7Nqq', '1736446596106IMG_20220623_152031.jpg', NULL, NULL, NULL),
+(5, 'Radha Krishna', '9359087068', 'radhekrishna@gmail.com', '$2a$10$alD6Qg58fLjR9bH96gkE5uNhqgeNYMIGd0CDmulbdin9cxRQYXxWC', '1736420229774RadheKrishna.jpg', NULL, NULL, NULL),
+(8, 'Shahadev Warkhede', '1234567891', 'shahadev@gmail.com', '$2b$10$4U16zOJ3/krd0S8ivVCUxOpPm9EbB78IqiFG7sqvxKuphMu1v3/Lu', '17404872113151697381295688.jpg', NULL, NULL, NULL),
+(10, 'Chaitanya Kodre', '1234567890', 'chaitanya@gmail.com', '$2b$10$PW3EWjsPPs8wjLn0FgiUBeOCoLn4tBWZG/T5i/ZfSuuRy/A6oRA1e', '1741610784840IMG_20241217_215310.jpg', NULL, NULL, NULL),
+(14, 'Yugandhar Marathe', '9359087068', 'yugandharsuryawanshi0@gmail.com', '$2b$10$IbCorv8Tzk4eXilSy1VCc.yXxvrQHiAp2tIApfMsGewkZT1EREuJ.', NULL, '232611', '2025-04-19 01:55:07', '2025-04-19 02:00:07');
 
 -- --------------------------------------------------------
 
@@ -434,7 +438,7 @@ INSERT INTO `users` (`user_id`, `user_name`, `user_mobile`, `user_email`, `user_
 (7, 'Rushikesh Pathade', '1234567893', 'rushi@gmail.com', 'Pathardi, Nagar', NULL, '$2b$10$nZ5o5tsHnpwBTQ30hwSqaujMsoiEjiP00OvPfncxAf26uZY5Mm9Ri', NULL, NULL, NULL),
 (8, 'Jagdish Gawali', '1234567894', 'jagdish@gmail.com', 'Velhane, Tal and Dist. Dhule', NULL, '$2b$10$eMVVPM9u/ZRKY6lHR/7gX./bemdbVy0wmxlopcIJbYkrc3pmFggra', NULL, NULL, NULL),
 (9, 'Akshay Pawar', '1234567895', 'akshu@gmail.com', 'Velhane, Tal. and Dist. Dhule', NULL, '$2b$10$J7C1/VvEicMfNWJZ09qF/e.8bP7EA8ylV3o2KzlAgnOslyL8E2HuK', NULL, NULL, NULL),
-(10, 'Yugandhar Suryawanshi', '9359087068', 'yugandharmarathe123@gmail.com', 'Shree Lok Nivas, In front of Mahadev Temple Fagane, Tal & Dist Dhule.', '1744201539494-study.jpg', '$2b$10$Ai1GrwMAt0m7trp3ySCvxu81O8HGtXt11sjLJnwRjVyhw3Q7TW7XW', '109176', '2025-04-09 18:10:35', '2025-04-09 18:15:35'),
+(10, 'Yugandhar Marathe', '9359087068', 'yugandharmarathe123@gmail.com', 'Shree Lok Nivas, In front of Mahadev Temple Fagane, Tal & Dist Dhule.', '1744201539494-study.jpg', '$2b$10$8t/x6GfLoe/fEsRP2vV0uuo/5.zrXWovZNGEggAa44tn7Bn41Thta', '109176', '2025-04-09 18:10:35', '2025-04-09 18:15:35'),
 (16, 'Yugandhar Suryawanshi', '9359087068', 'yugandharsuryawanshi1@gmail.com', 'Amdad Tal. & Dist. Dhule.', NULL, '$2b$10$8aYiCnTfSF9EOd0wXOLOaOJyP.lhPW8.HsfK/qjtTNgl4hxxdas1K', '289246', '2025-04-10 21:36:37', '2025-04-10 21:41:37');
 
 -- --------------------------------------------------------
@@ -679,7 +683,7 @@ ALTER TABLE `wishlist`
 -- AUTO_INCREMENT for table `admins`
 --
 ALTER TABLE `admins`
-  MODIFY `admin_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=12;
+  MODIFY `admin_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=15;
 
 --
 -- AUTO_INCREMENT for table `banner`
