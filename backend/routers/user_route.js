@@ -5,9 +5,7 @@ import jwt from 'jsonwebtoken';
 import Razorpay from 'razorpay';
 import { config } from '../config/config.js';
 import { exe } from '../connection.js';
-
-import nodemailer from 'nodemailer';
-
+import nodemailer from 'nodemailer'; // Nodemailer install for use otp service
 
 const router = express.Router();
 const blacklist = new Set();
