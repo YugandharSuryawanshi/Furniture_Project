@@ -2,10 +2,10 @@ import bcrypt from 'bcryptjs';
 import crypto from 'crypto';
 import express from 'express';
 import jwt from 'jsonwebtoken';
+import nodemailer from 'nodemailer'; // Nodemailer install for use otp service
 import Razorpay from 'razorpay';
 import { config } from '../config/config.js';
 import { exe } from '../connection.js';
-import nodemailer from 'nodemailer'; // Nodemailer install for use otp service
 
 const router = express.Router();
 const blacklist = new Set();
@@ -1088,8 +1088,6 @@ router.post('/verify-otp', async (req, res) => {
         return res.status(500).json({ status: 'error', message: 'Server error' });
     }
 });
-
-
 
 
 
