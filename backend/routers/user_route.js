@@ -1090,7 +1090,5 @@ router.post('/verify-otp', async (req, res) => {
 });
 
 
-
-
 export { router as userRoute };
 
