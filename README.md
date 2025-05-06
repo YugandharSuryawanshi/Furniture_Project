@@ -37,6 +37,12 @@
 <br>6) Start xampp then start apache and mysql and open phpMyAdmin server
 <br>7) Create new database with furni_shop name and import database using in backend/database/furni_shop.db file.
 <br>8) OTP Feature.
+<br> Add Secret and configuration in .env file
+
+<br> EMAIL_HOST=smtp.gmail.com
+<br> EMAIL_PORT=587
+<br> EMAIL_USER=your_company_mail
+<br> EMAIL_PASS=your_company_mail_created_password
 <br>
 <hr>
 _______________________________________________________________________________________________________________
