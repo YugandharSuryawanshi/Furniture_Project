@@ -38,13 +38,14 @@
 <br>7) Create new database with furni_shop name and import database using in backend/database/furni_shop.db file.
 <br>8) OTP Feature.
 <br>
-<li># .env file containing secrets and configurations
+<ul?><li># .env file containing secrets and configurations
 
 <br> EMAIL_HOST=smtp.gmail.com
 <br> EMAIL_PORT=587
 <br> EMAIL_USER=your_company_mail
 <br> EMAIL_PASS=your_company_mail_created_password
-</li> //Replace your info here
+</li> <br>//Replace your info here
+</ul>
 <br>
 <hr>
 _______________________________________________________________________________________________________________
