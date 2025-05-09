@@ -3,6 +3,14 @@
 {
     background: linear-gradient(135deg, #c4b5fd 0%, #8b5cf6 100%); color: #4c1d95;
 }
+.cssClass1
+{
+    background: linear-gradient(135deg, #ff55a7 0%, #f6b150 100%); color: #de1919;
+}
+.cssClass2
+{
+    background: linear-gradient(135deg, #ffbf0e 0%, #02ffd9 100%); color: #000000;
+}
 
 /* Start Cart Css */
 .order-card {
@@ -131,7 +139,7 @@
 
 
 /* Close Button */
-.close-btn {
+/* .close-btn {
     position: absolute;
     top: 10px;
     right: 10px;
@@ -139,6 +147,30 @@
     border: none;
     font-size: 20px;
     cursor: pointer;
+} */
+/* Close Button */
+.close-btn {
+    position: absolute;
+    top: 10px;
+    right: 10px;
+    background: transparent;
+    border: none;
+    font-size: 15px; /* Increase size for better click area */
+    cursor: pointer;
+    padding: 1px; /* Optional: Adds a better clickable area */
+    line-height: 1;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+/* Optional: Remove focus outline and improve hover effect */
+.close-btn:focus {
+    outline: none;
+}
+
+.close-btn:hover {
+    color: red; /* Add any hover effect you want */
 }
 
 

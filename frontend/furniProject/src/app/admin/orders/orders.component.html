@@ -91,6 +91,9 @@
                     <button class="status-btn btn btn-outline-danger px-3"
                         [class.active]="selectedStatus === 'Cancelled'"
                         (click)="setStatus('Cancelled')">Cancelled</button>
+                    <button class="status-btn btn btn-outline-dark px-3"
+                        [class.active]="selectedStatus === 'Rejected'"
+                        (click)="setStatus('Rejected')">Rejected</button>
                 </div>
             </div>
         </div><br>
@@ -149,9 +152,10 @@
                                 <span class="badge" [ngClass]="{
                                 'bg-success': order.order_status === 'Delivered',
                                 'bg-warning': order.order_status === 'Pending',
-                                'bg-info': order.order_status === 'Confirmed',
+                                'cssClass2': order.order_status === 'Confirmed',
                                 'cssClass': order.order_status === 'Dispatched',
-                                'bg-danger': order.order_status === 'Cancelled'
+                                'bg-danger': order.order_status === 'Cancelled',
+                                'cssClass1': order.order_status === 'Rejected'
                             }">
                                     {{ order.order_status }}
                                 </span>
