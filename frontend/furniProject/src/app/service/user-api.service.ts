@@ -47,7 +47,7 @@ export class UserApiService {
     const token = this.getToken();
     const headers = new HttpHeaders().set('Authorization', `Bearer ${token}`);
 
-    return this.http.get('http://localhost:1000/userProtected', { headers });
+    return this.http.get(`${this.userUrl}/userProtected`, { headers });
   }
 
   // Protect Routes by checking if the token exists
@@ -64,7 +64,7 @@ export class UserApiService {
   userLogout() {
     const token = this.getToken();
     const headers = new HttpHeaders().set('Authorization', `Bearer ${token}`);
-    this.http.post('http://localhost:1000/userLogout', {}, { headers }).subscribe({
+    this.http.post(`${this.userUrl}/userLogout`, {}, { headers }).subscribe({
       next: () => {
         this.clearToken();
         localStorage.removeItem(this.tokenKey);

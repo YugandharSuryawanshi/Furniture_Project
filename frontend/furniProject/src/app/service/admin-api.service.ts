@@ -1,7 +1,7 @@
+import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { Router } from '@angular/router';
 import { BehaviorSubject, Observable } from 'rxjs';
-import { HttpClient, HttpHeaders } from '@angular/common/http';
 
 @Injectable({
   providedIn: 'root'
@@ -73,7 +73,7 @@ export class AdminApiService {
       const token = this.getToken();
       const headers = new HttpHeaders().set('Authorization', `Bearer ${token}`);
 
-      this.http.post('http://localhost:1000/admin/adminLogout', {}, { headers }).subscribe({
+      this.http.post(`${this.adminUrl}/admin/adminLogout`, {}, { headers }).subscribe({
         next: () => {
           this.clearToken();
           localStorage.removeItem(this.tokenKey);
