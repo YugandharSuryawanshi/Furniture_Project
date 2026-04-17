@@ -1,9 +1,9 @@
-import { Component, HostListener } from '@angular/core';
-import { Router, RouterModule } from '@angular/router';
 import { CommonModule } from '@angular/common';
+import { Component, HostListener } from '@angular/core';
 import { FormsModule } from '@angular/forms';
-import { UserApiService } from '../../service/user-api.service';
+import { Router, RouterModule } from '@angular/router';
 import { ToastrService } from 'ngx-toastr';
+import { UserApiService } from '../../service/user-api.service';
 
 @Component({
   selector: 'app-home',

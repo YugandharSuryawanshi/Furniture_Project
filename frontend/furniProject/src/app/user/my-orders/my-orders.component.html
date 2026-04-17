@@ -1,6 +1,5 @@
-
 <div class="container mt-4">
-    <h3 class="mb-4">🛍️ My Orders</h3>
+    <h3 class="mb-4">My Orders</h3>
     <div class="col-md-12 text-center" *ngIf="orders.length == 0">
         <h3>Your Order History are Empty</h3>
         <h4>
@@ -43,7 +42,7 @@
                             (click)="openTrackingModal(order.order_id, order.order_status)">
                             <i class="fas fa-truck"></i> Track Order
                         </button>
-                        <span *ngIf="order.order_status !=='Delivered'">
+                        <span *ngIf="order.order_status !=='Delivered' && order.payment_status !=='Paid'">
                             <button *ngIf="order.order_status === 'Pending' || order.order_status === 'Confirmed'"
                             class="btn btn-danger btn-sm" (click)="cancelOrder(order.order_id)">
                             <i class="fas fa-times"></i> Cancel Order
@@ -65,7 +64,7 @@
 <div class="tracking-modal" *ngIf="showTracking">
     <div class="tracking-content">
         <button class="close-btn" (click)="closeTrackingModal()">❌</button>
-        <h4 class="text-center mb-4">📦 Order Tracking</h4>
+        <h4 class="text-center mb-4"> Order Tracking</h4>
 
         <div class="tracking-steps">
             <div *ngFor="let step of trackingSteps" class="tracking-step"
