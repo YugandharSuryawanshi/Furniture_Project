@@ -120,13 +120,17 @@
                                     </button>
 
                                     <div class="resend-otp">
-                                        <p>Didn't receive OTP? <a (click)="resendOtp()" style="cursor: pointer;">Resend OTP</a></p>
+                                        <p>Didn't receive OTP? <a (click)="resendOtp()" style="cursor: pointer;">Resend
+                                                OTP</a></p>
                                     </div>
                                 </form>
                             </div>
 
                             <div class="d-flex justify-content-between align-items-center mb-4 m-4">
-                                <a routerLink="/admin/login" class="text-decoration-none small text-muted">Forgot password?</a>
+                                <!-- <a routerLink="/admin/forgot-password" class="text-decoration-none small ">Forgot password?</a> -->
+                                <a routerLink="/admin/forgot-password" class="forgot-link">
+                                    Forgot password?
+                                </a>
                                 <div class="text-end">
                                     <span class="text-muted small">New Admin? </span>
                                     <a routerLink="/admin/register" class="text-decoration-none fw-medium text-danger">
@@ -135,7 +139,7 @@
                                 </div>
                             </div>
 
-                            <!-- Success Step (initially hidden) -->
+                            <!-- Success Login -->
                             <div class="login-body success-screen" id="success-step" style="display: none;">
                                 <div class="success-icon animate__animated animate__bounceIn">
                                     <i class="fas fa-check-circle"></i>

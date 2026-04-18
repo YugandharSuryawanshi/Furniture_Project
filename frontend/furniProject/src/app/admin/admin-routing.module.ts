@@ -24,11 +24,13 @@ import { UpdateOrderComponent } from './update-order/update-order.component';
 import { SubscriberComponent } from './subscriber/subscriber.component';
 import { ManageReviewComponent } from './manage-review/manage-review.component';
 import { ManageWishlistComponent } from './manage-wishlist/manage-wishlist.component';
+import { ForgotPasswordComponent } from './forgot-password/forgot-password.component';
 
 const routes: Routes = [
   { path: 'login', component: AdminLoginComponent }, // Allow login without authentication
   { path: '', redirectTo: 'dashboard', pathMatch: 'full' },
   { path:'register', component: RegisterComponent },
+  { path: 'forgot-password', component: ForgotPasswordComponent},
   { path: 'dashboard', component: DashboardComponent, canActivate: [AuthGuard], data: { role: 'admin',requiresLogin: true } },
   { path: 'home', component: HomeComponent, canActivate: [AuthGuard], data: { role: 'admin' , requiresLogin: true } },
   { path: 'profile', component: ProfileComponent, canActivate: [AuthGuard], data: { role: 'admin' , requiresLogin: true } },

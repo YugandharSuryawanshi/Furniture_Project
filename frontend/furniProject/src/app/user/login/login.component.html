@@ -1,33 +1,54 @@
-<section class="mb-5">
+<section class="login-section">
     <div class="container py-5 mt-5">
-        <div class="row d-flex align-items-center justify-content-center h-100">
-            <div class="col-md-8 col-lg-7 col-xl-6">
+        <div class="row align-items-center justify-content-center">
+
+            <!-- Left Image -->
+            <div class="col-md-8 col-lg-7 col-xl-6 text-center">
                 <img src="https://mdbcdn.b-cdn.net/img/Photos/new-templates/bootstrap-login-form/draw2.svg"
-                    class="img-fluid" alt="Phone image">
+                    class="img-fluid login-img" alt="Login Image">
             </div>
+
+            <!-- Right Panel -->
             <div class="col-md-7 col-lg-5 col-xl-5 offset-xl-1">
-                <form (ngSubmit)="login()">
-                    <div data-mdb-input-init class="form-outline mb-4">
-                        <label class="form-label">User Email </label>
-                        <input type="email" id="user_email" [(ngModel)]="formData.user_email" name="user_email" class="form-control" required/>
-                    </div>
-                    <div data-mdb-input-init class="form-outline mb-4">
-                        <label class="form-label" >Password</label>
-                        <input ngModel type="password" id="user_password" [(ngModel)]="formData.user_password" name="user_password" class="form-control" required />
-                    </div>
 
-                    <div class="d-flex justify-content-around align-items-center mb-4">
-                        <div class="form-check">
-                            <label class="form-check-label"> New User! </label>
-                            <a routerLink="/user/register"> Create Account </a>
+                <div class="login-card">
+                    <h3 class="text-center mb-4">User Login</h3>
+
+                    <form (ngSubmit)="login()">
+
+                        <!-- Email -->
+                        <div class="form-group mb-4">
+                            <label>User Email</label>
+                            <input type="email" [(ngModel)]="formData.user_email" name="user_email"
+                                class="form-control custom-input" required />
                         </div>
-                    </div>
 
-                    <!-- Submit button -->
-                    <button type="submit" class="btn btn-primary btn-lg btn-block mb-5" >Login</button>
-                </form>
+                        <!-- Pass -->
+                        <div class="form-group mb-3">
+                            <label>Password</label>
+                            <input type="password" [(ngModel)]="formData.user_password" name="user_password"
+                                class="form-control custom-input" required />
+                        </div>
+
+                        <!-- Links -->
+                        <div class="d-flex justify-content-between align-items-center mb-4 small-links">
+                            <div>
+                                <span>New User? </span>
+                                <a routerLink="/user/register">Create Account</a>
+                            </div>
+
+                            <a routerLink="/user/forgot-password">Forgot password?</a>
+                        </div>
+
+                        <!-- Button -->
+                        <button type="submit" class="btn btn-gradient w-100 mb-3">
+                            Login
+                        </button>
+
+                    </form>
+                </div>
+
             </div>
         </div>
     </div>
 </section>
-

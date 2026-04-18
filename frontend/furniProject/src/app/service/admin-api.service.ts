@@ -62,6 +62,11 @@ export class AdminApiService {
     return this.http.post(`${this.adminUrl}/adminLogin`, admin);
   }
 
+  // ✅ RESET PASSWORD
+  resetPassword(email: string, password: string): Observable<any> {
+    return this.http.post(`${this.adminUrl}/reset-password`, { email, password });
+  }
+
   // Check if the admin is logged in
   isAdminLoggedIn(): boolean {
     return !!localStorage.getItem(this.tokenKey);

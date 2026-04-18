@@ -22,6 +22,11 @@ export class UserApiService {
     return this.http.post(`${this.userUrl}/login`, formData);
   }
 
+  // Forgot Password
+  resetPassword(data: any) {
+  return this.http.post(`${this.userUrl}/reset-password`, data);
+}
+
   // Check if the user is logged in
   isUserLoggedIn(): boolean {
     return !!localStorage.getItem(this.tokenKey);
@@ -46,7 +51,6 @@ export class UserApiService {
   getProtectedData(): Observable<any> {
     const token = this.getToken();
     const headers = new HttpHeaders().set('Authorization', `Bearer ${token}`);
-
     return this.http.get(`${this.userUrl}/userProtected`, { headers });
   }
 
