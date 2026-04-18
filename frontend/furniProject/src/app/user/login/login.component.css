@@ -1,0 +1,78 @@
+/* Background */
+.login-section {
+    background: linear-gradient(135deg, #1d2b64, #f8cdda);
+    min-height: 100vh;
+    margin-top: -50px;
+}
+
+/* Image */
+.login-img {
+    max-height: 400px;
+    transition: transform 0.3s;
+}
+
+.login-img:hover {
+    transform: scale(1.05);
+}
+
+/* Card */
+.login-card {
+    background: rgba(255, 255, 255, 0.95);
+    padding: 35px;
+    border-radius: 15px;
+    box-shadow: 0 15px 40px rgba(0, 0, 0, 0.2);
+    animation: fadeIn 0.5s ease;
+}
+
+/* Input */
+.custom-input {
+    border-radius: 8px;
+    padding: 10px;
+    transition: 0.3s;
+}
+
+.custom-input:focus {
+    border-color: #cb1124;
+    box-shadow: 0 0 5px rgba(106, 17, 203, 0.5);
+}
+
+/* Links */
+.small-links a {
+    text-decoration: none;
+    color: #cb1117;
+    font-weight: 500;
+    transition: 0.3s;
+}
+
+.small-links a:hover {
+    text-decoration: underline;
+    color: #cb1117;
+}
+
+/* Button */
+.btn-gradient {
+    background: linear-gradient(45deg, #cb1111, #fc2525);
+    color: #fff;
+    border-radius: 8px;
+    padding: 10px;
+    font-weight: 600;
+    transition: 0.3s;
+}
+
+.btn-gradient:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 5px 15px rgba(0, 0, 0, 0.3);
+}
+
+/* Animation */
+@keyframes fadeIn {
+    from {
+        opacity: 0;
+        transform: translateY(30px);
+    }
+
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}

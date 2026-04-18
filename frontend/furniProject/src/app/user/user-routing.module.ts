@@ -16,6 +16,7 @@ import { MyOrdersComponent } from './my-orders/my-orders.component';
 import { PrintReceiptComponent } from './print-receipt/print-receipt.component';
 import { CheckoutComponent } from './checkout/checkout.component';
 import { WishlistComponent } from './wishlist/wishlist.component';
+import { ForgotPasswordComponent } from './forgot-password/forgot-password.component';
 
 const routes: Routes = [
   { path: 'home', component: HomeComponent },
@@ -34,6 +35,7 @@ const routes: Routes = [
   { path: 'print_receipt/:order_id', component: PrintReceiptComponent, canActivate: [UserAuthGuard], data: { role: 'user' , requiresLogin: true}},
   { path: 'checkout', component: CheckoutComponent, canActivate: [UserAuthGuard], data: { role: 'user' , requiresLogin: true}},
   { path: 'wishlist', component: WishlistComponent},
+  { path: 'forgot-password', component: ForgotPasswordComponent},
   { path: '', redirectTo: 'home', pathMatch: 'full' },
   { path: '**', redirectTo: 'home', pathMatch: 'full'}
 ];

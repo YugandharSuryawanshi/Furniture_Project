@@ -94,6 +94,19 @@ router.post('/login', (req, res) => {
     });
 });
 
+// Reset / Forgot Password
+router.post('/reset-password', async (req, res) => {
+    const { email, password } = req.body;
+    try {
+        const hashedPassword = bcrypt.hashSync(password, 10);
+        await exe('UPDATE users SET user_password = ? WHERE user_email = ?', [hashedPassword, email]);
+        res.status(200).json({ status: 'success', message: 'Password reset successfully' });
+    } catch (err) {
+        console.error('Error resetting password:', err);
+        res.status(500).json({ status: 'error', message: 'Server error' });
+    }
+})
+
 // Protected route example (requires authentication)
 router.get('/userProtected', authenticateToken, (req, res) => {
     res.json({
