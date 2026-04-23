@@ -74,7 +74,6 @@ export class AdminApiService {
 
   // Admin logout method
   adminLogout() {
-    if (confirm('Are you sure!! You want to logout?')) {
       const token = this.getToken();
       const headers = new HttpHeaders().set('Authorization', `Bearer ${token}`);
 
@@ -90,11 +89,6 @@ export class AdminApiService {
           this.router.navigate(['/admin/login']); // Redirect to login page
         }
       });
-    }
-    else
-    {
-      this.router.navigate(['/admin/dashboard']);
-    }
   }
 
   // Fetch or getting admin Details
@@ -127,13 +121,6 @@ export class AdminApiService {
     const token = localStorage.getItem('adminToken');
     const headers = new HttpHeaders().set('Authorization', `Bearer ${token}`);
     return this.http.put(`${this.adminUrl}/update_password`, formData, { headers });
-  }
-
-  // Delete admin Account
-  deleteAdminAccount(): Observable<any> {
-    const token = localStorage.getItem('adminToken');
-    const headers = new HttpHeaders().set('Authorization', `Bearer ${token}`);
-    return this.http.delete<any>(`${this.adminUrl}/delete_admin`, { headers });
   }
 
   // Get the JWT token from localStorage

@@ -1,10 +1,9 @@
 import { CommonModule } from '@angular/common';
-import { HttpHeaders } from '@angular/common/http';
 import { Component, OnInit } from '@angular/core';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { Router, RouterModule } from '@angular/router';
-import { AdminApiService } from '../../service/admin-api.service';
 import { ToastrService } from 'ngx-toastr';
+import { AdminApiService } from '../../service/admin-api.service';
 
 @Component({
   selector: 'app-profile',
@@ -24,11 +23,11 @@ export class ProfileComponent implements OnInit {
       admin_email: '',
       new_password: '',
       confirm_password: '',
-      otp:'',
+      otp: '',
       admin_profile: null
     }
-    otpSent = false;
-    otpVerified = false;
+  otpSent = false;
+  otpVerified = false;
 
   ngOnInit() {
     this.getAdminProfile();
@@ -161,40 +160,29 @@ export class ProfileComponent implements OnInit {
 
   // Logout User
   logout() {
-    this.adminApi.adminLogout();
-    this.toastr.success(
-      'You have been successfully logged out!',
-      'Goodbye 👋',
-      {
-        timeOut: 4000,
-        progressBar: true,
-        progressAnimation: 'decreasing',
-        closeButton: true,
-        enableHtml: true,
-        toastClass: 'ngx-toastr custom-toast',
-        easing: 'ease-in-out',
-        easeTime: 700
-      }
-    );
-    this.router.navigate(['/admin/login']);
-  }
-
-  // Delete Admin Account
-  deleteAccount() {
-    if (confirm('Are you sure you want to delete your account?')) {
-      this.adminApi.deleteAdminAccount().subscribe((res: any) => {
-        this.toastr.success('Account Deleted Succcessfully..!', 'Success', { progressBar: true, disableTimeOut: false, closeButton: true });
-        this.adminApi.adminLogout();
-        this.router.navigate(['/admin/login']);
-      },
-        (error) => {
-          console.error('Error deleting account:', error);
-          this.toastr.error('Error deleting account', 'Error', { progressBar: true, disableTimeOut: false, closeButton: true });
+    if (confirm('Are you sure!! You want to logout?')) {
+      this.adminApi.adminLogout();
+      this.toastr.success(
+        'You have been successfully logged out!',
+        'Goodbye 👋',
+        {
+          timeOut: 4000,
+          progressBar: true,
+          progressAnimation: 'decreasing',
+          closeButton: true,
+          enableHtml: true,
+          toastClass: 'ngx-toastr custom-toast',
+          easing: 'ease-in-out',
+          easeTime: 700
         }
       );
+      this.router.navigate(['/admin/login']);
+    }
+    else {
+      this.router.navigate(['/admin/profile']);
     }
   }
-  
+
   //Send otp
   sendOtp() {
     if (!this.formData.admin_email) {
@@ -233,6 +221,5 @@ export class ProfileComponent implements OnInit {
       }
     );
   }
-
 
 }

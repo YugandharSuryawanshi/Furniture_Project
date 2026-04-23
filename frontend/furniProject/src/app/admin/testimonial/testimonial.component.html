@@ -11,7 +11,7 @@
     </div>
 </div>
 
-<div class="col-md-12 " style="background-color: rgb(247, 216, 221);" *ngIf="displayAdd">
+<div class="col-md-12 bg-light" *ngIf="displayAdd">
     <div>
         <div>
             <form (ngSubmit)="saveTestimonial()" enctype="multipart/form-data">
@@ -38,7 +38,7 @@
                             class="form-control"></textarea>
                     </div>
                     <div class="col-md-12 mt-3 mb-3 text-center">
-                        <button class="btn btn-warning">Save</button>
+                        <button class="btn btn-danger text-white">Save</button>
                     </div>
                 </div>
             </form>

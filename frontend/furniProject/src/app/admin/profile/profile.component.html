@@ -30,7 +30,7 @@
                                     </div>
                                     <br>
                                     <button type="submit"
-                                        class="btn btn-warning animate__animated animate__pulse animate__infinite animate__slow">
+                                        class="btn btn-danger text-white animate__animated animate__pulse animate__infinite animate__slow">
                                         <i class="bi bi-check-circle me-2"></i> Save Profile
                                     </button>
                                 </form>
@@ -44,7 +44,7 @@
                                 <div class="card-body p-4">
                                     <ul class="nav nav-tabs" id="profileTab" role="tablist">
                                         <li class="nav-item" role="presentation">
-                                            <button class="bg-warning nav-link text-dark ml-1 mt-1 active"
+                                            <button class="bg-danger nav-link text-white ml-1 mt-1 active"
                                                 id="overview-tab" data-bs-toggle="tab"
                                                 data-bs-target="#overview-tab-pane" type="button" role="tab"
                                                 aria-controls="overview-tab-pane" aria-selected="true">
@@ -52,22 +52,16 @@
                                             </button>
                                         </li>
                                         <li class="nav-item" role="presentation">
-                                            <button class="bg-warning text-dark nav-link ml-1 mt-1" id="password-tab"
+                                            <button class="bg-danger text-white nav-link ml-1 mt-1" id="password-tab"
                                                 data-bs-toggle="tab" data-bs-target="#password-tab-pane" type="button"
                                                 role="tab" aria-controls="password-tab-pane" aria-selected="false">
                                                 <i class="fas fa-key me-2"></i> Password
                                             </button>
                                         </li>
                                         <li class="nav-item" role="presentation">
-                                            <button class="text-dark bg-warning nav-link ml-1 mt-1" type="button"
-                                                role="tab" (click)="logout()">
+                                            <button class="text-dark bg-danger text-white nav-link ml-1 mt-1"
+                                                type="button" role="tab" (click)="logout()">
                                                 <i class="fas fa-sign-out-alt me-2"></i> Logout
-                                            </button>
-                                        </li>
-                                        <li class="nav-item" role="presentation">
-                                            <button class="text-dark bg-danger nav-link ml-1 mt-1" type="button"
-                                                role="tab" (click)="deleteAccount()">
-                                                <i class="fas fa-trash me-2"></i> Delete Account
                                             </button>
                                         </li>
                                     </ul>
@@ -121,7 +115,8 @@
                                                     </div>
 
                                                     <div class="col-md-12 mt-4">
-                                                        <button type="submit" class="btn btn-warning px-4 py-2">
+                                                        <button type="submit"
+                                                            class="btn btn-danger text-white px-4 py-2">
                                                             <i class="fas fa-save me-2"></i> Update Profile
                                                         </button>
                                                     </div>
@@ -143,7 +138,7 @@
                                                             [(ngModel)]="formData.admin_email" class="form-control"
                                                             required>
                                                         <button type="button" (click)="sendOtp()"
-                                                            class="btn btn-primary mt-2">
+                                                            class="btn btn-danger text-white mt-2">
                                                             <i class="fas fa-paper-plane me-2"></i>Get OTP</button>
                                                     </div>
                                                 </div>
@@ -157,12 +152,12 @@
                                                         <input type="text" name="otp" [(ngModel)]="formData.otp"
                                                             class="form-control" required>
                                                         <button type="button" (click)="verifyOtp()"
-                                                            class="btn btn-success mt-2">
+                                                            class="btn btn-danger text-white mt-2">
                                                             <i class="fas fa-check-circle me-2"></i>Verify OTP</button>
                                                     </div>
                                                 </div>
-                                                <div class="row gy-3 gy-xxl-4" *ngIf="otpVerified">
 
+                                                <div class="row gy-3 gy-xxl-4" *ngIf="otpVerified">
                                                     <div class="col-md-12 row">
                                                         <div class="col-md-4">
                                                             <label for="new_password" class="mt-3 form-label">
@@ -188,7 +183,8 @@
                                                         </div>
                                                     </div>
                                                     <div class="col-md-12 mt-4">
-                                                        <button type="submit" class="btn btn-danger px-4 py-2">
+                                                        <button type="submit"
+                                                            class="btn btn-danger text-white px-4 py-2">
                                                             <i class="fas fa-lock me-2"></i> Reset Password
                                                         </button>
                                                     </div>

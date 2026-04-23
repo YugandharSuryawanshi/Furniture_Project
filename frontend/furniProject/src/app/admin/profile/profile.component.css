@@ -128,7 +128,6 @@ a:hover {
 }
 
 .nav-tabs .nav-link.active {
-  background-color: #ff9500 !important;
   color: white !important;
   transform: translateY(-3px);
   box-shadow: 0 4px 12px rgba(255, 149, 0, 0.3);
