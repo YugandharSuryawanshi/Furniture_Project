@@ -7,7 +7,6 @@ import { exe } from '../connection.js';
 const router = express.Router();
 const blacklist = new Set();
 
-
 function authenticateToken(req, res, next) {
     const adminToken = req.headers['authorization']?.split(' ')[1];
     if (!adminToken) {
@@ -204,25 +203,6 @@ router.put('/update_password', authenticateToken, async (req, res) => {
     }
 });
 
-// DELETE Admin Account
-router.delete('/delete_admin', authenticateToken, async (req, res) => {
-    const admin_id = req.admin.id;
-
-    try {
-        const sql = `DELETE FROM admins WHERE admin_id = ?`;
-        const result = await exe(sql, [admin_id]);
-
-        if (result.affectedRows === 0) {
-            return res.status(404).send({ success: false, message: 'Admin not found' });
-        }
-        res.status(200).send({ success: true, message: 'Admin account deleted successfully' });
-    }
-    catch (err) {
-        console.error('Error deleting admin account:', err);
-        res.status(500).send({ success: false, message: 'An error occurred while deleting the account' });
-    }
-});
-
 //Getting Users
 router.get('/get_users', async (req, res) => {
     try {
@@ -287,57 +267,6 @@ router.delete('/delete_user/:id', async (req, res) => {
         res.status(500).json({ success: false, message: 'An error occurred while deleting the user.' });
     }
 });
-
-// Save the Banner in banner table
-// router.post('/save_banner', async (req, res) => {
-//     try {
-//         const { banner_title, banner_details, banner_link } = req.body;
-//         let banner_image = null;
-
-//         // Check if file upload exists
-//         if (req.files && req.files.banner_image) {
-//             const uploadedFile = req.files.banner_image;
-
-//             // Generate unique filename
-//             banner_image = new Date().getTime() + '_' + uploadedFile.name.replace(/\s+/g, '_');
-
-//             // Ensure upload directory exists
-//             const uploadDir = 'public/uploads/';
-//             const fs = require('fs');
-//             if (!fs.existsSync(uploadDir)) {
-//                 fs.mkdirSync(uploadDir, { recursive: true });
-//             }
-
-//             // Move file to uploads folder
-//             uploadedFile.mv(uploadDir + banner_image, (err) => {
-//                 if (err) {
-//                     console.error('Error moving file:', err);
-//                     return res.status(500).json({ success: false, message: 'File upload failed' });
-//                 }
-//             });
-//         }
-
-//         // Update DB
-//         const sql = banner_image
-//             ? `UPDATE banner SET banner_title = ?, banner_details = ?, banner_link = ?, banner_image = ? WHERE banner_id = 1`
-//             : `UPDATE banner SET banner_title = ?, banner_details = ?, banner_link = ? WHERE banner_id = 1`;
-
-//         const params = banner_image
-//             ? [banner_title, banner_details, banner_link, banner_image]
-//             : [banner_title, banner_details, banner_link];
-
-//         const result = await exe(sql, params);
-
-//         if (result.affectedRows > 0) {
-//             return res.status(200).json({ success: true, message: 'Banner updated successfully' });
-//         } else {
-//             return res.status(404).json({ success: false, message: 'Banner not found' });
-//         }
-//     } catch (error) {
-//         console.error('Error updating banner:', error);
-//         return res.status(500).json({ success: false, message: 'Server error' });
-//     }
-// });
 
 // UPDATE banner
 router.put("/save_banner", async (req, res) => {
@@ -652,95 +581,6 @@ router.delete('/product_delete/:id', async (req, res) => {
         });
     }
 });
-
-// Save Interior Route
-// router.post('/save_interior', async (req, res) => {
-//     try {
-//         // Extract form data
-//         const { heading, interior_details, first_key, second_key, third_key, forth_key } = req.body;
-//         const d = req.files; // `req.files` will contain the uploaded files
-
-//         console.log("Form data:", { heading, interior_details, first_key, second_key, third_key, forth_key });
-//         console.log("Uploaded files:", d);
-
-//         // Ensure all required images are uploaded
-//         if (!d || !d.first_image || !d.second_image || !d.third_image) {
-//             return res.status(400).json({ success: false, message: "Missing required image files" });
-//         }
-
-//         // File upload and renaming logic
-//         let file_names = [];
-
-//         // Save first image
-//         if (d.first_image) {
-//             let fn = new Date().getTime() + "_" + d.first_image.name;
-//             d.first_image.mv("public/uploads/" + fn, (err) => {
-//                 if (err) {
-//                     console.error("Error moving first image:", err);
-//                     return res.status(500).json({ success: false, message: "Failed to upload first image" });
-//                 }
-//             });
-//             file_names.push(fn);
-//         }
-
-//         // Save second image
-//         if (d.second_image) {
-//             let fn = new Date().getTime() + "_" + d.second_image.name;
-//             d.second_image.mv("public/uploads/" + fn, (err) => {
-//                 if (err) {
-//                     console.error("Error moving second image:", err);
-//                     return res.status(500).json({ success: false, message: "Failed to upload second image" });
-//                 }
-//             });
-//             file_names.push(fn);
-//         }
-
-//         // Save third image
-//         if (d.third_image) {
-//             let fn = new Date().getTime() + "_" + d.third_image.name;
-//             d.third_image.mv("public/uploads/" + fn, (err) => {
-//                 if (err) {
-//                     console.error("Error moving third image:", err);
-//                     return res.status(500).json({ success: false, message: "Failed to upload third image" });
-//                 }
-//             });
-//             file_names.push(fn);
-//         }
-
-//         // SQL query to insert interior design data into the database
-//         const sql = `
-//             INSERT INTO interior (heading, interior_details, first_key, second_key, third_key, forth_key, first_image, second_image, third_image)
-//             VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)
-//         `;
-
-//         // Prepare the data for the query
-//         const queryData = [
-//             heading,
-//             interior_details,
-//             first_key,
-//             second_key,
-//             third_key,
-//             forth_key,
-//             file_names[0] || null,
-//             file_names[1] || null,
-//             file_names[2] || null
-//         ];
-
-
-//         var data = await(sql, queryData, (err, result) => {
-//             if (err) {
-//                 console.error("Error inserting data:", err.message);
-//                 return res.status(500).json({ success: false, message: "Error inserting data into the table" });
-//             }
-//             console.log("Data inserted successfully:", result);
-//             return res.status(200).json({ success: true, message: "Data inserted successfully!" });
-//         });
-
-//     } catch (err) {
-//         console.error("Error in /save_interior:", err.message);
-//         res.status(500).json({ success: false, message: 'Internal Server Error', error: err.message });
-//     }
-// });
 
 // Update Interior
 router.put('/update_interior', async (req, res) => {
@@ -1720,3 +1560,4 @@ router.post('/reset-password', async (req, res) => {
 
 
 export { router as adminRoute };
+

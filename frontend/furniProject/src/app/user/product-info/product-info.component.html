@@ -3,13 +3,24 @@
         <div class="row">
             <!-- Main Image & Thumbnails -->
             <div class="col-md-5 pl-4 position-relative mt-2">
-                <!-- Main Large Image -->
-                <div class="main-image-container">
+
+                <!-- Main Image + Zoom Wrapper -->
+                <div class="main-image-container bg-danger" (mousemove)="onMouseMove($event)"
+                    (mouseenter)="onMouseEnter()" (mouseleave)="onMouseLeave()">
                     <a [href]="'http://localhost:1000/uploads/' + selectedImage" target="_blank">
                         <img [src]="'http://localhost:1000/uploads/' + selectedImage" alt="Product Image"
-                            class="img-fluid big-image" (mousemove)="onMouseMove($event)" (mouseenter)="onMouseEnter()"
-                            (mouseleave)="onMouseLeave()">
+                            class="img-fluid big-image">
                     </a>
+                </div>
+
+                <!-- Zoom Preview -->
+                <div class="preview-container bg-warning" *ngIf="isDesktop && showZoom">
+                    <div class="zoom-preview" [ngStyle]="{
+                            'background-image': 'url(http://localhost:1000/uploads/' + selectedImage + ')',
+                            'background-position': backgroundPosX + ' ' + backgroundPosY,
+                            'background-size': '200% 200%'
+                            }">
+                    </div>
                 </div>
 
                 <!-- small Images (Scrollable) -->
@@ -24,21 +35,35 @@
             <!-- Product Details -->
             <div class="col-md-6 mt-3" *ngIf="!showZoom">
                 <h1 class="text-dark">{{ product.product_name }}</h1>
+
                 <div class="row">
                     <h5 class="text-success ml-2 mt-1">-{{ discount }}% off</h5>
-                    <h4 class="text-dark ml-2"> {{ product_price | currency: 'INR':'symbol':'1.0-0' }} /-</h4>
+                    <h4 class="text-dark ml-2">
+                        {{ product_price | currency: 'INR':'symbol':'1.0-0' }} /-
+                    </h4>
                 </div>
+
                 <p> M.R.P. : <del> ₹{{ product.duplicate_price }} </del></p>
+
                 <div class="badge bg-primary">Trending</div>
+
                 <p>Inclusive of all taxes</p>
+
                 <p>Product Dimension : {{product.product_size}}</p>
+
                 <div class="row d-flex align-items-center">
                     <div class="col-auto">Product Color:</div>
-                    <div class="col-auto"
-                        [ngStyle]="{ 'height':'18px', 'width':'50px', 'background-color': product.product_color, 'border': '1px solid #000' }">
+                    <div class="col-auto" [ngStyle]="{
+                            'height':'18px',
+                            'width':'50px',
+                            'background-color': product.product_color,
+                            'border': '1px solid #000'
+                        }">
                     </div>
                 </div>
+
                 <p [innerHTML]="product_details"></p>
+
                 <div *ngIf="gotocart">
                     <button routerLink="/user/cart" class="btn btn-warning">
                         <i class="fas fa-shopping-cart"></i> Go to Cart
@@ -47,34 +72,29 @@
 
                 <div class="col-md-12">
                     <div class="row align-items-center">
+
                         <div class="col-auto m-1" *ngIf="!gotocart">
                             <button (click)="addToCart(product.product_id)" class="btn btn-warning">
                                 <i class="fas fa-shopping-cart"></i> Add to Cart
                             </button>
                         </div>
-                
+
                         <div class="col-auto m-1" *ngIf="!isWishlistAdded">
                             <button (click)="addToWishlist(product.product_id)" class="btn btn-warning wishlist-btn">
                                 <i class="fas fa-heart wishlist-icon"></i> Add to Wishlist
                             </button>
                         </div>
-                
+
                         <div class="col-auto m-1" *ngIf="isWishlistAdded">
                             <button (click)="addToWishlist(product.product_id)" class="btn btn-warning">
                                 <i class="fas fa-heart" style="color: red;"></i> Added in Wishlist
                             </button>
                         </div>
+
                     </div>
                 </div>
-                
 
-            <!-- Zoom Preview Section (bg-warning div) -->
-            <div class="col-md-7 preview-container" *ngIf="isDesktop && showZoom">
-                <div class="zoom-preview" *ngIf="showZoom" [ngStyle]="{'background-image': 'url(http://localhost:1000/uploads/' + selectedImage + ')', 
-                    'background-position': backgroundPosX + ' ' + backgroundPosY}">
-                </div>
             </div>
-
         </div>
     </div>
 </div>

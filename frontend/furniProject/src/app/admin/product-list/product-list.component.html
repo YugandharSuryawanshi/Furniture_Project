@@ -7,11 +7,11 @@
             <form (submit)="searchProducts()" class="float-end d-flex align-items-center">
                 <input type="text" [(ngModel)]="searchStr" class="form-control w-75 me-2"
                     placeholder="Search products..." style="height: 35px;" name="search" (keyup)="searchProducts()" />
-                <button type="submit" class="btn btn-success">
+                <button type="submit" class="btn btn-danger text-white">
                     <i class="fa fa-search"></i>
                 </button>
             </form>
-            <button class="float-end mr-3 mt-1 btn btn-warning fw-bold" routerLink="/admin/product"><i
+            <button class="float-end mr-3 mt-1 btn btn-danger text-white fw-bold" routerLink="/admin/product"><i
                     class="fa fa-plus"></i> ADD New</button>
         </div>
         <div class="col-md-12">
@@ -214,7 +214,7 @@
 
                 <!-- Submit Button -->
                 <div class="col-md-12 mb-3 text-center">
-                    <button type="submit" class="btn btn-primary">Update Product</button>
+                    <button type="submit" class="btn btn-danger text-white">Update Product</button>
                 </div>
             </div>
         </div>
