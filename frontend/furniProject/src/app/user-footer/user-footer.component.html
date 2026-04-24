@@ -1,143 +1,88 @@
 <footer class="footer-section">
-    <div class="container relative">
+    <div class="container">
 
-        <div class="sofa-img">
-            <img src="/images/sofa.png" alt="Image" class="img-fluid">
-        </div>
+        <div class="row align-items-start">
 
-        <div class="row">
-            <div class="col-lg-8">
-                <div class="subscription-form">
-                    <h3 class="d-flex align-items-center"><span class="me-1"><img src="/images/envelope-outline.svg"
-                                alt="Image" class="img-fluid"></span><span>Subscribe to Newsletter</span></h3>
+            <!-- Left Section -->
+            <div class="col-lg-4 mb-4">
+                <img src="/images/FurnitureLogo.png" class="footer-logo" alt="logo">
 
-                    <form [formGroup]="userForm" (ngSubmit)="onSubmit()" class="row g-3">
-                        <div class="col-auto">
-                            <input type="text" formControlName="name" class="form-control"
-                                placeholder="Enter your name">
-                        </div>
-                        <div class="col-auto">
-                            <input type="email" formControlName="email" class="form-control"
-                                placeholder="Enter your email">
-                        </div>
-                        <div class="col-auto">
-                            <button class="btn btn-warning" type="submit" [disabled]="userForm.invalid">
-                                <span class="fa fa-paper-plane"></span>
-                            </button>
-                        </div>
-                    </form>
+                <p class="footer-text">
+                    Modern furniture designed to bring comfort and elegance to your home.
+                </p>
 
-                </div>
-            </div>
-        </div>
-
-        <div class="row g-5 mb-5">
-            <div class="col-lg-4">
-                <div class="mb-4 footer-logo-wrap">
-                    <a routerLink="/" class="footer-logo" (click)="scrollToTop()">
-                        <img src="/images/logo.png" style="height: 100px;" alt="">
-                        <span>.</span>
+                <div class="social-icons">
+                    <a href="#"><i class="fab fa-facebook-f"></i></a>
+                    <a href="#"><i class="fab fa-twitter"></i></a>
+                    <a href="https://www.instagram.com/yugandhar_marathe/" target="_blank">
+                        <i class="fab fa-instagram"></i>
+                    </a>
+                    <a href="https://www.linkedin.com/in/yugandhar-suryawanshi-028311228/" target="_blank">
+                        <i class="fab fa-linkedin"></i>
+                    </a>
+                    <a href="https://github.com/YugandharSuryawanshi" target="_blank">
+                        <i class="fab fa-github"></i>
                     </a>
                 </div>
-                <p class="mb-4">At Furni, we bring warmth and style to your home with furniture that fits your
-                    lifestyle—shipped fast, built to last.</p>
+            </div>
 
-                <ul class="list-unstyled custom-social">
-                    <li>
-                        <a href="Link Are not Available" title="This link are not Available">
-                            <span class="fa fa-brands fa-facebook-f"></span>
-                        </a>
-                    </li>
-                    <li>
-                        <a href="Link Are not Available" title="This link are not Available">
-                            <span class="fa fa-brands fa-twitter"></span>
-                        </a>
-                    </li>
-                    <li>
-                        <a href="https://www.instagram.com/yugandhar_marathe/" target="_blank">
-                            <span class="fa fa-brands fa-instagram"></span>
-                        </a>
-                    </li>
-                    <li>
-                        <a href="https://www.linkedin.com/in/yugandhar-suryawanshi-028311228/" target="_blank">
-                            <span class="fa fa-brands fa-linkedin"></span>
-                        </a>
-                    </li>
-                    <li>
-                        <a href="https://github.com/YugandharSuryawanshi" target="_blank">
-                            <span class="fa fa-brands fa-github"></span>
-                        </a>
-                    </li>
+            <!-- Links -->
+            <div class="col-6 col-md-3 col-lg-2 mb-4">
+                <h6>Company</h6>
+                <ul>
+                    <li><a routerLink="/user/about">About</a></li>
+                    <li><a routerLink="/user/service">Services</a></li>
+                    <li><a routerLink="/user/blog">Blog</a></li>
+                    <li><a routerLink="/user/contact">Contact</a></li>
                 </ul>
             </div>
 
-            <div class="col-lg-8">
-                <div class="row links-wrap">
-                    <div class="col-6 col-sm-6 col-md-3">
-                        <ul class="list-unstyled">
-                            <li><a routerLink="/user/about" (click)="scrollToTop()">About us</a></li>
-                            <li><a routerLink="/user/service" (click)="scrollToTop()">Services</a></li>
-                            <li><a routerLink="/user/blog" (click)="scrollToTop()">Blog</a></li>
-                            <li><a routerLink="/user/contact" (click)="scrollToTop()">Contact us</a></li>
-                        </ul>
-                    </div>
+            <div class="col-6 col-md-3 col-lg-2 mb-4">
+                <h6>Support</h6>
+                <ul>
+                    <li><a href="#">Help</a></li>
+                    <li><a href="#">FAQ</a></li>
+                    <li><a href="#">Live Chat</a></li>
+                </ul>
+            </div>
 
-                    <div class="col-6 col-sm-6 col-md-3">
-                        <ul class="list-unstyled">
-                            <li><a routerLink="#" title="This facility coming Soon">Support</a></li>
-                            <li><a routerLink="#" title="This facility coming Soon">Knowledge base</a></li>
-                            <li><a routerLink="#" title="This facility coming Soon">Live chat</a></li>
-                        </ul>
-                    </div>
+            <div class="col-6 col-md-3 col-lg-2 mb-4">
+                <h6>Products</h6>
+                <ul>
+                    <li><a href="#">Chair</a></li>
+                    <li><a href="#">Sofa</a></li>
+                    <li><a href="#">Beds</a></li>
+                </ul>
+            </div>
 
-                    <div class="col-6 col-sm-6 col-md-3">
-                        <ul class="list-unstyled">
-                            <li><a routerLink="#" title="This facility coming Soon">Jobs</a></li>
-                            <li><a routerLink="#" title="This facility coming Soon">Our team</a></li>
-                            <li><a routerLink="#" title="This facility coming Soon">Leadership</a></li>
-                            <li><a routerLink="#" title="This facility coming Soon">Privacy Policy</a></li>
-                        </ul>
-                    </div>
+            <!-- Newsletter -->
+            <div class="col-md-6 col-lg-2 mb-4">
+                <h6>Subscribe</h6>
 
-                    <div class="col-6 col-sm-6 col-md-3">
-                        <ul class="list-unstyled">
-                            <li><a routerLink="#" title="This facility coming Soon">Nordic Chair</a></li>
-                            <li><a routerLink="#" title="This facility coming Soon">Sofa</a></li>
-                            <li><a routerLink="#" title="This facility coming Soon">Sona Beds</a></li>
-                        </ul>
-                    </div>
-                </div>
+                <form [formGroup]="userForm" (ngSubmit)="onSubmit()">
+
+                    <!-- NAME FIELD -->
+                    <input type="text" name="name" formControlName="name" class="form-control mb-2"
+                        placeholder="Enter your name">
+
+                    <!-- EMAIL FIELD -->
+                    <input type="email" name="email" formControlName="email" class="form-control mb-2"
+                        placeholder="Enter your email">
+
+                    <!-- BUTTON -->
+                    <button class="btn btn-custom w-100" type="submit" [disabled]="userForm.invalid">
+                        Send
+                    </button>
+
+                </form>
             </div>
 
         </div>
 
-        <div class="border-top copyright py-4">
-            <div class="row align-items-center">
-                <div class="col-lg-6 text-center text-lg-start mb-2 mb-lg-0">
-                    <p class="mb-0">
-                        &copy;
-                        <script>document.write(new Date().getFullYear());</script>
-                        All Rights Reserved. —
-                        Designed with ❤️ by
-                        <a href="https://www.linkedin.com/in/yugandhar-suryawanshi-028311228/" target="_blank"
-                            style="font-family: Verdana, Geneva, Tahoma, sans-serif;">Yugandhar
-                            Suryawanshi</a> |
-                        Distributed by <a routerLink="/user/home" (click)="scrollToTop()">Furni</a>
-                    </p>
-                </div>
-
-                <div class="col-lg-6 text-center text-lg-end">
-                    <ul class="list-unstyled d-flex justify-content-center justify-content-lg-end mb-0">
-                        <li><a href="#">Terms &amp; Conditions</a></li>
-                        <li><a href="#">Privacy Policy</a></li>
-                    </ul>
-                </div>
-            </div>
+        <!-- Bottom -->
+        <div class="footer-bottom text-center">
+            <p>© {{ currentYear }} All Rights Reserved | Designed by <a routerLink="#">Yugandhar Suryawanshi</a></p>
         </div>
 
     </div>
 </footer>
-<!-- End Footer Section -->
-<script src="/js/bootstrap.bundle.min.js"></script>
-<script src="/js/tiny-slider.js"></script>
-<script src="/js/custom.js"></script>

@@ -867,15 +867,21 @@ router.post('/contact_us', async (req, res) => {
 // Save Subscriber information
 router.post('/subscribe', async (req, res) => {
     try {
-        var d = req.body;
-        var sql = `INSERT INTO user_subscriber (name, email) VALUES ('${d.name}', '${d.email}')`;
-        await exe(sql);
+        const d = req.body;
+        const sql = `INSERT INTO user_subscriber (name, email) VALUES (?, ?)`;
+        await exe(sql, [d.name, d.email]);
+
         res.status(200).json({ success: true, message: 'Thank you for subscribing to our newsletter.' });
+
     } catch (err) {
-        console.error('Error saving subscriber information:', err);
-        res.status(500).json({ success: false, message: 'Error saving subscriber information' });
+        //Handle Duplicate Email Error
+        if (err.code === 'ER_DUP_ENTRY') {
+            return res.status(400).json({ success: false, message: 'This email is already subscribed!' });
+        }
+        // OTHER ERRORS
+        res.status(500).json({ success: false, message: 'Something went wrong. Please try again later.' });
     }
-})
+});
 
 // Add Product in Wishlist
 router.post('/add_to_wishlist', authenticateToken, async (req, res) => {

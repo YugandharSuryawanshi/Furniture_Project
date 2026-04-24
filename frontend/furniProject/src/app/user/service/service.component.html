@@ -5,11 +5,13 @@
             <div class="col-lg-5">
                 <div class="intro-excerpt">
                     <h1>Services</h1>
-                    <p class="mb-4">Explore our wide range of services designed to help you create your dream
-                        space. From custom furniture designs to expert repairs, we have you covered.</p>
+                    <p class="mb-4">We provide a wide range of furniture services designed to make your home more
+                        comfortable and stylish.
+                        From customized furniture solutions to expert interior design guidance, our services are focused
+                        on delivering quality, functionality, and customer satisfaction.</p>
                     <p>
-                        <a routerLink="/user/shop" class="btn btn-secondary me-2">Shop Now</a>
-                        <a routerLink="#" class="btn btn-white-outline">Explore</a>
+                        <a routerLink="/user/shop" class="btn btn-danger text-white me-2">Shop Now</a>
+                        <a routerLink="#" class="btn btn-white-outline text-white">Explore</a>
                     </p>
                 </div>
             </div>
@@ -26,22 +28,22 @@
 <!-- Start Cart Section -->
 <div class="cart-section">
     <div class="container">
+        <h2 class="section-title text-center mb-5">Why Choose Us</h2>
+
         <div class="row">
-            <!-- Loop through the cart products -->
-            <div class="col-12 col-md-6 col-lg-3 mb-4" *ngFor="let about_point of about_points let i = index">
-                <div class="cart-item card shadow-sm">
-                    <!-- Product Image -->
-                    <div class="cart-item-img text-center">
-                        <img [src]="'http://localhost:1000/uploads/' + about_point.why_choose_points_img"
-                            alt="Image" class="img-fluid">
+            <div class="col-12 col-sm-6 col-lg-3 mb-4" *ngFor="let about_point of about_points">
+
+                <div class="cart-card">
+                    <div class="cart-img">
+                        <img [src]="'http://localhost:1000/uploads/' + about_point.why_choose_points_img" alt="Image">
+                    </div>
+                    <div class="cart-content">
+                        <h5>{{about_point.why_choose_points_name}}</h5>
+                        <p>{{about_point.why_choose_points_details}}</p>
                     </div>
 
-                    <!-- Product Details -->
-                    <div class="card-body">
-                        <h5 class="product-title">{{about_point.why_choose_points_name}}</h5>
-                        <p class="product-description">{{about_point.why_choose_points_details}}</p>
-                    </div>
                 </div>
+
             </div>
         </div>
     </div>
@@ -52,27 +54,30 @@
 <!-- Start Popular Product -->
 <div class="popular-product">
     <div class="container">
-        <h2 class="mb-3">Our Latest Product</h2><br>
+        <h2 class="section-title text-center">Our Latest Products</h2>
         <div class="row">
-            <div class="col-12 col-md-12 col-lg-4 mb-4 mb-lg-0 text-center" *ngFor="let product of products">
-                <div class="product-item-sm d-flex">
-                    <div class="thumbnail">
-                        <img [src]="product.firstImage" style="height: 120px; width: auto;" alt="Image"
-                            class="img-fluid">
-                    </div>
-                    <div class="pt-3 text-center">
-                        <h3>
-                            {{product.product_name}}
-                        </h3>
-                        <p class="text-center">
-                            <a [routerLink]="['/user/product_info', product.product_id]">
-                                <button class="btn btn-warning">Read More</button>
+            <div class="col-12 col-md-6 col-lg-4 mb-4" *ngFor="let product of products">
+
+                <div class="product-card">
+
+                    <!-- Image -->
+                    <div class="product-img">
+                        <img [src]="product.firstImage" alt="Image">
+                        <div class="overlay">
+                            <a [routerLink]="['/user/product_info', product.product_id]" class="view-btn">
+                                View Product
                             </a>
-                        </p>
+                        </div>
+                    </div>
+
+                    <!-- Content -->
+                    <div class="product-content">
+                        <h3>{{ product.product_name }}</h3>
                     </div>
                 </div>
             </div>
         </div>
+
     </div>
 </div>
 <!-- End Popular Product -->
@@ -85,8 +90,9 @@
     <div id="carouselExample" class="carousel slide" data-bs-ride="carousel">
         <!-- Indicators/Dots -->
         <div class="carousel-indicators">
-            <button *ngFor="let slide of testimonial; let i = index" type="button" data-bs-target="#carouselExample"
-                [attr.data-bs-slide-to]="i" [class.active]="i === 0" [attr.aria-label]="'Slide ' + (i + 1)">
+            <button *ngFor="let slide of testimonial; let i = index" type="button" class="carousel-button"
+                data-bs-target="#carouselExample" [attr.data-bs-slide-to]="i" [class.active]="i === 0"
+                [attr.aria-label]="'Slide ' + (i + 1)">
             </button>
         </div>
 
@@ -126,5 +132,4 @@
 <!-- End Testimonial Slider -->
 
 <br><br><br><br><br>
-<br><br>
-
+<br><br><br><br><br><br>

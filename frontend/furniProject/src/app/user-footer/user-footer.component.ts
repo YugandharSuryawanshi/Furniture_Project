@@ -15,7 +15,7 @@ import { ToastrService } from 'ngx-toastr';
 export class UserFooterComponent {
 
   userForm!: FormGroup;
-
+  currentYear: number = new Date().getFullYear();
   constructor(private fb: FormBuilder, private userApi: UserApiService, private toastr: ToastrService) { }
 
   ngOnInit(): void {
@@ -27,21 +27,34 @@ export class UserFooterComponent {
 
   onSubmit() {
     if (this.userForm.valid) {
-      console.log(this.userForm.value);
-      this.userApi.addSubscriber(this.userForm.value).subscribe((res: any) => {
-        if (res.success) {
-          this.toastr.success('Thank you for subscribing!', 'Success', { progressBar: true, closeButton: true, disableTimeOut: false });
-          this.userForm.reset();
+
+      const formData = this.userForm.value;
+
+      this.userApi.addSubscriber(formData).subscribe({
+        next: (res: any) => {
+          if (res && res.success) {
+            this.toastr.success('Thank you for subscribing!', 'Success', {
+              progressBar: true,
+              closeButton: true
+            });
+            this.userForm.reset();
+          } else {
+            this.toastr.error('Subscription failed! ' + res.message, 'Error');
+          }
+        },
+        error: (err) => {
+          console.error(err);
+
+          const errorMessage = err?.error?.message || 'Server error!';
+
+          this.toastr.error(errorMessage, 'Error');
         }
-        else {
-          this.toastr.error('Error subscribing', 'Error', { progressBar: true, closeButton: true, disableTimeOut: false });
-        }
-      })
+      });
+
     } else {
-      this.toastr.error('Please fill out the form correctly!', 'Error', { progressBar: true, closeButton: true, disableTimeOut: false });
+      this.toastr.error('Please fill all fields correctly!', 'Error');
     }
   }
-
 
   scrollToTop() {
     window.scrollTo({ top: 0, behavior: 'smooth' });

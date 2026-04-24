@@ -21,7 +21,7 @@
                     {{ order.order_status }} Order
                     <span *ngIf="order.order_status !== 'Delivered'">
                         <a class="float-end" [routerLink]="['/user/print_receipt/',order.order_id]" style="text-decoration: none;">
-                            <button class="btn btn-success btn-sm fw-bold">
+                            <button class="btn btn-danger btn-sm fw-bold">
                                 <i class="fas fa-receipt"></i> Get Receipt
                             </button>
                         </a>
@@ -38,7 +38,7 @@
                     </div>
 
                     <div class="d-flex justify-content-between mt-3">
-                        <button class="btn btn-warning btn-sm"
+                        <button class="btn btn-danger btn-sm"
                             (click)="openTrackingModal(order.order_id, order.order_status)">
                             <i class="fas fa-truck"></i> Track Order
                         </button>
@@ -50,7 +50,7 @@
                         </span>
                         <span *ngIf="order.order_status === 'Delivered'">
                             <a [routerLink]="['/user/print_receipt/',order.order_id]" style="text-decoration: none;">
-                                <button class="btn btn-success btn-sm" disabled>Print Receipt</button>
+                                <button class="btn btn-danger btn-sm" disabled>Print Receipt</button>
                             </a>
                         </span>
                     </div>

@@ -19,18 +19,20 @@
                         <div class="col-md-7 p-4 p-lg-5 position-relative">
                             <div class="animate__animated animate__fadeIn animate__delay-1s">
                                 <span
-                                    class="badge bg-warning bg-opacity-10 text-dark mb-3 animate__animated animate__fadeIn">Oops! YOUR
+                                    class="badge bg-warning bg-opacity-10 text-dark mb-3 animate__animated animate__fadeIn">Oops!
+                                    YOUR
                                     CART IS EMPTY</span>
                                 <h2 class="fw-bold mb-3">Missing your <span class="highlight-text">favorite
                                         items?</span></h2>
-                                <p class="text-muted mb-4">Start exploring our furniture collection and add amazing products to
+                                <p class="text-muted mb-4">Start exploring our furniture collection and add amazing
+                                    products to
                                     your cart</p>
 
                                 <div class="d-flex flex-wrap gap-3 mb-4">
-                                    <button class="btn btn-warning pulse" routerLink="/user/shop">
+                                    <button class="btn btn-danger pulse" routerLink="/user/shop">
                                         <i class="fas fa-shopping-cart me-2"></i> Start Shopping
                                     </button>
-                                    <button class="btn btn-warning" routerLink="/" >
+                                    <button class="btn btn-danger" routerLink="/">
                                         <i class="fas fa-bolt me-2"></i> Today's Deals
                                     </button>
                                 </div>
@@ -48,10 +50,10 @@
                                     </div>
 
                                     <div class="d-flex flex-wrap gap-2">
-                                        <button class="btn btn-outline-dark" routerLink="/user/login">
+                                        <button class="btn btn-outline-danger" routerLink="/user/login">
                                             <i class="fas fa-sign-in-alt me-2"></i> Login
                                         </button>
-                                        <button class="btn btn-warning" routerLink="/user/register">
+                                        <button class="btn btn-danger" routerLink="/user/register">
                                             <i class="fas fa-user-plus me-2"></i> Register
                                         </button>
                                     </div>
@@ -141,17 +143,18 @@
         </div>
 
         <!-- Cart Footer -->
+
         <div class="row">
             <div class="col-md-6">
                 <div class="row mb-5">
                     <div class="col-md-6">
                         <a routerLink="/user/shop">
-                            <button class="btn btn-warning btn-block">Continue Shopping</button>
+                            <button class="btn btn-danger btn-block">Continue Shopping</button>
                         </a>
                     </div>
                 </div>
             </div>
-            <div class="col-md-6 pl-5">
+            <div class="col-md-6 pl-5" *ngIf="products.length !=0">
                 <div class="row justify-content-end">
                     <div class="col-md-7">
                         <div class="row">
@@ -171,7 +174,7 @@
                         <div class="row">
                             <div class="col-md-12">
                                 <a routerLink="/user/checkout">
-                                    <button class="btn btn-warning btn-lg py-3 btn-block">Proceed To Checkout (item
+                                    <button class="btn btn-danger btn-lg py-3 btn-block">Proceed To Checkout (item
                                         {{products.length}})</button>
                                 </a>
                             </div>
