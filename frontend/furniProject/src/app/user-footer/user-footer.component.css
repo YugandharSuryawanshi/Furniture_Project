@@ -1,40 +1,114 @@
-.copyright {
-    background: #ffeded;
-    font-size: 0.95rem;
-    color: #6c757d;
-    animation: fadeInUp 1.2s ease-in-out;
-    border-top: 2px solid #dee2e6;
+.footer-section {
+    background: #600000;
+    color: #fff;
+    padding: 40px 0 15px;
+    /* controlled spacing */
 }
 
-.copyright a {
-    color: #343a40;
-    font-weight: 500;
+/* Logo */
+.footer-logo {
+    height: 200px;
+    margin-bottom: 10px;
+}
+
+/* Text */
+.footer-text {
+    font-size: 14px;
+    color: #ffffff;
+    line-height: 1.6;
+}
+
+/* Headings */
+.footer-section h6 {
+    font-weight: 600;
+    margin-bottom: 12px;
+}
+
+/* Links */
+.footer-section ul {
+    list-style: none;
+    padding: 0;
+}
+
+.footer-section ul li {
+    margin-bottom: 8px;
+}
+
+.footer-section ul li a {
+    color: #ffffff;
     text-decoration: none;
-    transition: color 0.3s ease, transform 0.3s ease;
+    font-size: 14px;
+    transition: 0.3s;
 }
 
-.copyright a:hover {
-    color: #ff7b00;
-    transform: scale(1.05);
+.footer-section ul li a:hover {
+    color: #ff2525;
+    padding-left: 4px;
 }
 
-.copyright ul li {
-    display: inline;
-    margin-right: 1.5rem;
+/* Social Icons */
+.social-icons a {
+    display: inline-flex;
+    height: 36px;
+    width: 36px;
+    align-items: center;
+    justify-content: center;
+    background: #ff4646;
+    border-radius: 50%;
+    margin-right: 8px;
+    color: #fff;
+    transition: 0.3s;
 }
 
-.copyright ul li:last-child {
-    margin-right: 0;
+.social-icons a:hover {
+    background: #ff0f0f;
+    transform: translateY(-3px);
 }
 
-@keyframes fadeInUp {
-    0% {
-        opacity: 0;
-        transform: translateY(20px);
+/* Newsletter */
+.footer-section input {
+    border-radius: 20px;
+    padding: 8px 12px;
+    border: none;
+    font-size: 14px;
+}
+
+.btn-custom {
+    background: #ff4646;
+    color: #fff;
+    border-radius: 20px;
+    padding: 6px;
+    font-size: 14px;
+    transition: 0.3s;
+}
+
+.btn-custom:hover {
+    background: #ff0f0f;
+}
+
+/* Bottom */
+.footer-bottom {
+    border-top: 1px solid rgba(255, 255, 255, 0.1);
+    margin-top: 20px;
+    padding-top: 10px;
+    font-size: 13px;
+    color: #dddddd;
+}
+.footer-bottom p a {
+    color: #fe3838;
+}
+
+/* Responsive */
+@media (max-width: 768px) {
+    .footer-section {
+        text-align: center;
     }
 
-    100% {
-        opacity: 1;
-        transform: translateY(0);
+    .social-icons {
+        margin-top: 10px;
+    }
+
+    .footer-section input {
+        margin-bottom: 10px;
     }
 }

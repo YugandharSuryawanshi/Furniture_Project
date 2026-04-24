@@ -1,6 +1,6 @@
 /* Background */
 .login-section {
-    background: linear-gradient(135deg, #1d2b64, #f8cdda);
+    background: linear-gradient(135deg, #600000, #f4a2a2);
     min-height: 100vh;
     margin-top: -50px;
 }
@@ -17,7 +17,7 @@
 
 /* Card */
 .login-card {
-    background: rgba(255, 255, 255, 0.95);
+    background: rgba(234, 147, 147, 0.95);
     padding: 35px;
     border-radius: 15px;
     box-shadow: 0 15px 40px rgba(0, 0, 0, 0.2);

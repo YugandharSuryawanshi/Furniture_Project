@@ -43,11 +43,11 @@ body {
 
 /* Wishlist Header */
 .wishlist-header {
-    background: linear-gradient(135deg, #f06f6f, #ff9b9b);
+    background: #600000;
     color: white;
     padding: 4rem 0;
     margin-bottom: 3rem;
-    border-radius: 0 0 30px 30px;
+    border-radius: 0 0 25px 25px;
     box-shadow: 0 10px 30px rgba(122, 111, 240, 0.3);
     position: relative;
     overflow: hidden;
@@ -146,8 +146,8 @@ body {
 }
 
 .btn-outline-wishlist {
-    border: 2px solid #7a6ff0;
-    color: #7a6ff0;
+    border: 2px solid #600000;
+    color: #600000;
     background-color: transparent;
     border-radius: 10px;
     padding: 8px 18px;
@@ -156,7 +156,7 @@ body {
 }
 
 .btn-outline-wishlist:hover {
-    background-color: #7a6ff0;
+    background-color: #600000;
     color: white;
     transform: translateY(-3px);
     box-shadow: 0 8px 15px rgba(122, 111, 240, 0.2);
@@ -322,7 +322,7 @@ body {
 .product-price {
     font-size: 16px;
     font-weight: bold;
-    color: rgb(255, 33, 33);
+    color: #600000;
 }
 
 /* Add to Cart Button */

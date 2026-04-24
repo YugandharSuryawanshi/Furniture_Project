@@ -24,7 +24,7 @@
     <nav class="custom-navbar navbar navbar-expand-md navbar-dark bg-dark" aria-label="Furni navigation bar">
         <div class="container">
             <a class="navbar-brand" routerLink="/">
-                <img src="/images/logo.png" style="height: 100px;" alt="">
+                <img src="/images/FurnitureLogo.png" style="height: 180px;" alt="">
                 <span>.</span></a>
 
             <!-- Toggle Button -->
@@ -51,7 +51,7 @@
                         <a class="nav-link" routerLink="/user/profile"><img src="/images/user.svg"></a>
                     </li>
                     <li *ngIf="!userApi.isUserLoggedIn()">
-                        <a class="nav-link border ps-3 pe-3" style="color: white; border-radius: 50px;"
+                        <a class="nav-link ps-3 pe-3 btn btn-white-outline" style="color: white; border-radius: 50px;"
                             routerLink="/user/login">Login / Signup</a>
                     </li>
                     <li>

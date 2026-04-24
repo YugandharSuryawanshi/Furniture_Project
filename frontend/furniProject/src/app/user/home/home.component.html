@@ -1,19 +1,18 @@
 <!-- Start Hero Section Here -->
 <div class="hero">
-    <div class="container-fluid p-5">
-        <div>
-            <div class="row justify-content-between">
-                <div class="col-lg-5">
-                    <div class="intro-excerpt">
+    <div class="container">
+        <div class="row justify-content-between">
+            <div class="col-lg-5">
+                <div class="intro-excerpt">
                         <h1>
                             {{banner_info?.banner_title}}
                         </h1>
                         <p class="mb-4">
                             {{banner_info?.banner_details}}
                         </p>
-                        <p><a routerLink="/user/shop" class="btn btn-secondary me-2">Shop
+                        <p><a routerLink="/user/shop" class="btn btn-danger me-2">Shop
                                 Now</a>
-                            <a routerLink="/user/service" class="btn btn-white-outline">Explore</a>
+                            <a routerLink="/user/service" class="btn btn-white-outline text-white">Explore</a>
                         </p>
                     </div>
                 </div>
@@ -25,76 +24,91 @@
             </div>
         </div>
     </div>
-</div>
 <!-- End Hero Section -->
 
 <!-- Start Product Section -->
 <div class="product-section">
-    <div class="container-fluid p-5 text-center">
-        <div class="row">
+    <div class="container-fluid">
 
-            <!-- Section Title and Details -->
-            <div class="col-md-12 col-lg-3 mb-5 mb-lg-0">
-                <h2 class="mb-4 section-title">
+        <div class="row align-items-center">
+
+            <div class="col-lg-3 mb-5 mb-lg-0 text-center text-lg-start">
+                <h2 class="section-title mb-3">
                     {{ products[0]?.product_name }}
                 </h2>
-                <p class="mb-4">
+
+                <p class="section-desc">
                     {{ products[0]?.product_details }}
                 </p>
-                <p><a routerLink="/user/shop" class="btn">Explore</a></p>
+
+                <a routerLink="/user/shop" class="explore-btn">
+                    Explore More
+                </a>
             </div>
 
-            <!-- Products Grid -->
-            <div class="col-12 col-md-4 col-lg-3 mb-5 mb-md-0" *ngFor="let product of products">
-                <a class="product-item" routerLink="/user/shop">
-                    <img style="height: 320px; width: 300px;" [src]="product?.firstImage" alt="image"
-                        class="img-fluid product-thumbnail bg-light" />
-                    <h3 class="product-title">{{ product?.product_name }}</h3>
-                    <strong class="product-price">&#8377; {{ product?.product_price }}</strong>
+            <!-- PRODUCT CARDS -->
+            <div class="col-sm-6 col-md-4 col-lg-3 mb-4" *ngFor="let product of products">
 
-                    <span class="icon-cross">
-                        <img src="images/cross.svg" alt="icon" class="img-fluid" />
-                    </span>
-                </a>
+                <div class="product-card">
+                    <div class="product-img">
+                        <img [src]="product?.firstImage" alt="product">
+                    </div>
+
+                    <div class="product-content">
+                        <h3>{{ product?.product_name }}</h3>
+                        <p class="price">₹ {{ product?.product_price }}</p>
+                    </div>
+
+                </div>
             </div>
 
         </div>
     </div>
 </div>
-
 <!-- End Product Section -->
 
 <!-- Start Why Choose Us Section -->
-<div class="why-choose-section container-fluid p-5">
-    <div class="col-md-12">
-        <div class="row justify-content-between">
+<div class="why-glass-section py-5">
+    <div class="container">
+
+        <div class="row align-items-center">
+
+            <!-- LEFT CONTENT -->
             <div class="col-lg-6">
-                <h2 class="section-title">Why Choose Us</h2>
-                <p>
-                    {{about?.heading}}
+                <h2 class="glass-title mb-3">Why Choose Us</h2>
+                <p class="glass-subtitle">
+                    {{ about?.heading }}
                 </p>
 
-                <div class="row my-5">
-                    <div class="col-6 col-md-6" *ngFor="let about_point of about_points let i = index">
-                        <div class="feature">
-                            <div class="icon">
-                                <img [src]="'http://localhost:1000/uploads/' + about_point?.why_choose_points_img"
-                                    alt="Image" class="imf-fluid">
+                <div class="row g-4 mt-4">
+                    <div class="col-12 col-md-6" *ngFor="let about_point of about_points">
+
+                        <div class="glass-card">
+
+                            <!-- ICON -->
+                            <div class="glass-icon">
+                                <img [src]="'http://localhost:1000/uploads/' + about_point?.why_choose_points_img">
                             </div>
-                            <h3>{{about_point?.why_choose_points_name}}</h3>
-                            <p>{{about_point?.why_choose_points_details}}</p>
+
+                            <!-- TEXT -->
+                            <h4>{{ about_point?.why_choose_points_name }}</h4>
+                            <p>{{ about_point?.why_choose_points_details }}</p>
+
                         </div>
+
                     </div>
                 </div>
             </div>
 
-            <div class="col-lg-5">
-                <div class="img-wrap">
-                    <img [src]="about_image" alt="Image" class="img-fluid">
+            <!-- RIGHT IMAGE -->
+            <div class="col-lg-6 text-center mt-5 mt-lg-0">
+                <div class="image-wrapper">
+                    <img [src]="about_image" alt="Image" class="img-fluid main-img">
                 </div>
             </div>
 
         </div>
+
     </div>
 </div>
 <!-- End Why Choose Us Section -->
@@ -145,25 +159,39 @@
 <!-- Start Popular Product -->
 <div class="popular-product">
     <div class="container">
-        <div class="row">
-            <div class="col-12 col-md-12 col-lg-4 mb-4 mb-lg-0 text-center" *ngFor="let product of products">
-                <div class="product-item-sm d-flex">
-                    <div class="thumbnail">
-                        <img [src]="product.firstImage" style="height: 120px; width: 120px;" alt="Image"
-                            class="img-fluid">
+
+        <div class="row g-4">
+
+            <div class="col-12 col-md-6 col-lg-4" *ngFor="let product of products">
+
+                <div class="product-card">
+
+                    <!-- IMAGE -->
+                    <div class="product-img">
+                        <img [src]="product.firstImage" alt="Image">
                     </div>
-                    <div class="pt-3">
-                        <h3>
-                            {{product?.product_name}}
-                        </h3>
-                        <p>
-                            {{product?.product_details}}
+
+                    <!-- CONTENT -->
+                    <div class="product-content">
+
+                        <h3>{{ product?.product_name }}</h3>
+
+                        <p class="desc">
+                            {{ product?.product_details }}
                         </p>
-                        <p><a routerLink="/user/shop">Read More</a></p>
+
+                        <a routerLink="/user/shop" class="read-btn">
+                            Read More →
+                        </a>
+
                     </div>
+
                 </div>
+
             </div>
+
         </div>
+
     </div>
 </div>
 <!-- End Popular Product -->
@@ -176,8 +204,9 @@
     <div id="carouselExample" class="carousel slide" data-bs-ride="carousel">
         <!-- Indicators/Dots -->
         <div class="carousel-indicators">
-            <button *ngFor="let slide of testimonial; let i = index" type="button" data-bs-target="#carouselExample"
-                [attr.data-bs-slide-to]="i" [class.active]="i === 0" [attr.aria-label]="'Slide ' + (i + 1)">
+            <button *ngFor="let slide of testimonial; let i = index" type="button" class="carousel-button"
+                data-bs-target="#carouselExample" [attr.data-bs-slide-to]="i" [class.active]="i === 0"
+                [attr.aria-label]="'Slide ' + (i + 1)">
             </button>
         </div>
 
@@ -187,16 +216,16 @@
                 <div class="row">
                     <!-- First part: Image Section -->
                     <div class="col-md-4 d-flex justify-content-center align-items-center">
-                        <img [src]="'http://localhost:1000/uploads/' + slide?.customer_image" alt="Image"
+                        <img [src]="'http://localhost:1000/uploads/' + slide.customer_image" alt="Image"
                             class="rounded-circle" style="width: 250px; height: 250px;">
                     </div>
 
                     <!-- Second part: Heading Section -->
                     <div class="col-md-8 d-flex justify-content-center align-items-center">
                         <div class="col-md-12">
-                            <h3 class="text-center text-dark">{{ slide?.customer_name }}</h3>
-                            <h3 class="text-center">{{ slide?.customer_position }}</h3>
-                            <p class="text-center">{{ slide?.customer_massage }}</p>
+                            <h3 class="text-center text-dark">{{ slide.customer_name }}</h3>
+                            <h3 class="text-center">{{ slide.customer_position }}</h3>
+                            <p class="text-center">{{ slide.customer_massage }}</p>
                         </div>
                     </div>
                 </div>
@@ -214,40 +243,46 @@
         </button>
     </div>
 </div>
-
 <!-- End Testimonial Slider -->
 
 <!-- Start Blog Section -->
 <div class="blog-section">
     <div class="container">
-        <div class="row mb-5">
-            <div class="col-md-6">
-                <h2 class="section-title">Recent Blog</h2>
-            </div>
-            <div class="col-md-6 text-start text-md-end">
-                <a routerLink="/user/blog" class="more">View All Posts</a>
+
+        <!-- Header -->
+        <div class="row mb-5 align-items-center">
+            <div class="col-md-12 row">
+                <h2 class="section-title col-md-2">Recent Blogs</h2>
+                <a routerLink="/user/blog" class="view-all-btn col-md-2 col-sm-2 col-lg-2 text-center h-25">View All
+                    Posts</a>
             </div>
         </div>
 
+        <!-- Blog Cards -->
         <div class="row">
-            <div class="col-12 col-sm-6 col-md-4 mb-5" *ngFor="let blog of blogs; let i = index">
-                <div class="post-entry">
-                    <a routerLink="#" class="post-thumbnail">
-                        <img style="height: 350px; width: 450px;"
-                            [src]="'http://localhost:1000/uploads/' + blog?.blog_image" alt="Image" class="img-fluid">
-                    </a>
-                    <div class="post-content-entry">
-                        <h3><a routerLink="#">{{blog?.blog_title}}</a></h3>
-                        <div class="meta">
-                            <span>by <a routerLink="#">{{blog?.blog_post_by}}</a></span>
-                            <span>on <a routerLink="#">{{blog?.blog_post_date}}</a>,time
-                                <a routerLink="">{{blog?.blog_post_time}}</a>
-                            </span>
-                        </div>
-                    </div>
-                </div>
-            </div>
+            <div class="col-12 col-sm-6 col-lg-4 mb-4" *ngFor="let blog of blogs">
 
+                <div class="blog-card">
+
+                    <!-- Image -->
+                    <div class="blog-img">
+                        <img [src]="'http://localhost:1000/uploads/' + blog.blog_image" alt="Blog Image">
+                    </div>
+
+                    <!-- Content -->
+                    <div class="blog-content">
+                        <h3>{{blog.blog_title}}</h3>
+
+                        <div class="meta">
+                            <span>By {{blog.blog_post_by}}</span>
+                            <span>{{blog.blog_post_date}} • {{blog.blog_post_time}}</span>
+                        </div>
+
+                    </div>
+
+                </div>
+
+            </div>
         </div>
     </div>
 </div>

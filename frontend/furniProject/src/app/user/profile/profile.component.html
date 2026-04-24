@@ -19,7 +19,7 @@
                                     </div>
                                 </div>
                                 <br>
-                                <button class="btn btn-warning" (click)="UpdateProfile()">
+                                <button class="btn btn-danger" (click)="UpdateProfile()">
                                     <i class="bi bi-check-circle"></i> Save Profile
                                 </button>
                             </div>
@@ -31,15 +31,15 @@
                                 <div class="card-body p-4">
                                     <ul class="nav nav-tabs" id="profileTab" role="tablist">
                                         <li class="nav-item" role="presentation">
-                                            <button class="bg-warning nav-link text-dark ml-1 mt-1 active"
+                                            <button class="bg-danger nav-link text-white ml-1 mt-1 active"
                                                 id="overview-tab" data-bs-toggle="tab"
                                                 data-bs-target="#overview-tab-pane" type="button" role="tab"
                                                 aria-controls="overview-tab-pane" aria-selected="true">
-                                                <i class="fas fa-edit text-dark"></i> Overview
+                                                <i class="fas fa-edit text-white"></i> Overview
                                             </button>
                                         </li>
                                         <li class="nav-item" role="presentation">
-                                            <button class="bg-warning text-dark nav-link ml-1 mt-1" id="password-tab"
+                                            <button class="bg-danger text-white nav-link ml-1 mt-1" id="password-tab"
                                                 data-bs-toggle="tab" data-bs-target="#password-tab-pane" type="button"
                                                 role="tab" aria-controls="password-tab-pane" aria-selected="false">
                                                 <i class=" fas fa-key"></i> Password
@@ -47,18 +47,19 @@
                                         </li>
                                         <li class="nav-item" role="presentation">
                                             <button routerLink="/user/orders"
-                                                class="bg-warning text-dark nav-link ml-1 mt-1" type="button">
+                                                class="bg-danger text-white nav-link ml-1 mt-1" type="button">
                                                 <i class="fas fa-shopping-cart"></i> My Orders
                                             </button>
                                         </li>
                                         <li class="nav-item" role="presentation">
                                             <button routerLink="/user/wishlist"
-                                                class="bg-warning text-dark nav-link ml-1 mt-1" type="button">
-                                                <i class="fas fa-heart" style="color: red;"></i> My Wishlist
+                                                class="bg-danger text-white nav-link ml-1 mt-1" type="button">
+                                                <i class="fas fa-heart" style="color: rgb(255, 255, 255);"></i> My
+                                                Wishlist
                                             </button>
                                         </li>
                                         <li class="nav-item" role="presentation">
-                                            <button class="text-dark bg-warning nav-link ml-1 mt-1" type="button"
+                                            <button class="text-white bg-danger nav-link ml-1 mt-1" type="button"
                                                 role="tab" (click)="logout()">
                                                 <i class="fas fa-sign-out-alt"></i> LogOut
                                             </button>
@@ -127,7 +128,7 @@
                                                     </div>
 
                                                     <div class="col-md-12 ">
-                                                        <button type="submit" class="btn btn-warning"> Update </button>
+                                                        <button type="submit" class="btn btn-danger"> Update </button>
                                                     </div>
                                                 </div>
                                             </form>
@@ -150,7 +151,7 @@
                                                             [(ngModel)]="formData.user_email" class="form-control"
                                                             required>
                                                         <button type="button" (click)="sendOtp()"
-                                                            class="btn btn-primary mt-2">Get OTP</button>
+                                                            class="btn btn-danger mt-2">Get OTP</button>
                                                     </div>
                                                 </div>
 
@@ -163,7 +164,7 @@
                                                         <input type="text" name="otp" [(ngModel)]="formData.otp"
                                                             class="form-control" required>
                                                         <button type="button" (click)="verifyOtp()"
-                                                            class="btn btn-success mt-2">Verify OTP</button>
+                                                            class="btn btn-danger mt-2">Verify OTP</button>
                                                     </div>
                                                 </div>
 

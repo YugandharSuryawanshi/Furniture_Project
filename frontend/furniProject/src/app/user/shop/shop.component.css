@@ -3,3 +3,21 @@
     border: 1px solid black;
     color: black;
 }
+
+.product-item {
+    transition: all 0.3s ease;
+}
+
+.product-item:hover {
+    background-color: #d53030;
+}
+
+.product-item:hover h3,  .product-item:hover strong{
+    color: white;
+}
+
+.shop-description {
+    color: #ecdbdb;
+    margin-bottom: 30px;
+    max-width: 600px;
+}
