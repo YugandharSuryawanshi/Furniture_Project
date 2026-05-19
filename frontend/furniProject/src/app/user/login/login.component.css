@@ -1,6 +1,8 @@
 /* Background */
 .login-section {
-    background: linear-gradient(135deg, #600000, #f4a2a2);
+    background: linear-gradient(135deg, rgb(141, 64, 64), #f4a2a2);
+    background: rgb(141, 64, 64) !important;
+
     min-height: 100vh;
     margin-top: -50px;
 }
@@ -51,7 +53,7 @@
 
 /* Button */
 .btn-gradient {
-    background: linear-gradient(45deg, #cb1111, #fc2525);
+    background: linear-gradient(45deg, rgb(195, 57, 57), rgb(206, 48, 48));
     color: #fff;
     border-radius: 8px;
     padding: 10px;

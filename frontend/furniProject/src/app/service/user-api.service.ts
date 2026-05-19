@@ -299,8 +299,4 @@ export class UserApiService {
     return this.http.post(`${this.userUrl}/verify-otp`, data);
   }
   
-
-
-
-
 }

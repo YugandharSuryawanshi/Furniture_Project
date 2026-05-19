@@ -1,5 +1,5 @@
 .footer-section {
-    background: #600000;
+    background: rgb(141, 64, 64) !important;
     color: #fff;
     padding: 40px 0 15px;
     /* controlled spacing */
@@ -94,6 +94,7 @@
     font-size: 13px;
     color: #dddddd;
 }
+
 .footer-bottom p a {
     color: #fe3838;
 }

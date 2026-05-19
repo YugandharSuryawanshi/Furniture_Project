@@ -1,8 +1,9 @@
 /* Product Section */
-.product-section{
+.product-section {
     padding-left: 20px;
     padding-right: 20px;
 }
+
 /* TITLE */
 .section-title {
     font-size: 25px;
@@ -35,7 +36,7 @@
 /* CARD */
 .product-card {
     position: relative;
-    background: rgba(255,255,255,0.8);
+    background: rgba(255, 255, 255, 0.8);
     backdrop-filter: blur(10px);
     border-radius: 15px;
     overflow: hidden;
@@ -111,7 +112,7 @@
 /* CARD HOVER EFFECT */
 .product-card:hover {
     transform: translateY(-10px);
-    box-shadow: 0 15px 35px rgba(0,0,0,0.2);
+    box-shadow: 0 15px 35px rgba(0, 0, 0, 0.2);
 }
 
 /* Tablet */
@@ -164,7 +165,7 @@
     background: rgba(255, 255, 255, 0.6);
     border: 1px solid rgba(255, 255, 255, 0.3);
 
-    box-shadow: 0 8px 25px rgba(0,0,0,0.08);
+    box-shadow: 0 8px 25px rgba(0, 0, 0, 0.08);
     transition: all 0.4s ease;
     overflow: hidden;
 }
@@ -175,7 +176,7 @@
     position: absolute;
     width: 120%;
     height: 120%;
-    background: linear-gradient(120deg, transparent, rgba(96,0,0,0.2), transparent);
+    background: linear-gradient(120deg, transparent, rgba(96, 0, 0, 0.2), transparent);
     top: -100%;
     left: -100%;
     transition: 0.6s;
@@ -189,7 +190,7 @@
 
 .glass-card:hover {
     transform: translateY(-10px) scale(1.02);
-    box-shadow: 0 20px 40px rgba(0,0,0,0.15);
+    box-shadow: 0 20px 40px rgba(0, 0, 0, 0.15);
 }
 
 /* ICON */
@@ -199,8 +200,7 @@
     margin-bottom: 15px;
 
     border-radius: 50%;
-    background: #600000;
-
+    background: rgb(141, 64, 64) !important;
     display: flex;
     align-items: center;
     justify-content: center;
@@ -274,7 +274,7 @@
     transition: all 0.3s ease;
     position: relative;
 
-    box-shadow: 0 5px 20px rgba(0,0,0,0.05);
+    box-shadow: 0 5px 20px rgba(0, 0, 0, 0.05);
 }
 
 /* BORDER ANIMATION */
@@ -297,7 +297,7 @@
 
 .product-card:hover {
     transform: translateY(-5px);
-    box-shadow: 0 15px 35px rgba(0,0,0,0.1);
+    box-shadow: 0 15px 35px rgba(0, 0, 0, 0.1);
 }
 
 /* IMAGE */
@@ -397,6 +397,7 @@
     text-align: center;
     background-color: #ff1414;
 }
+
 .carousel-control-prev:hover,
 .carousel-control-next:hover {
     background-color: #600000;
@@ -431,9 +432,10 @@
         width: 40px;
     }
 
-    .carousel-indicators{
+    .carousel-indicators {
         bottom: -40px;
     }
+
     .carousel-indicators button {
         height: 6px;
     }
@@ -467,7 +469,7 @@
         right: 0px;
     }
 
-    .carousel-indicators{
+    .carousel-indicators {
         bottom: -40px;
     }
 }
@@ -518,7 +520,7 @@
     position: relative;
     border-radius: 15px;
     overflow: hidden;
-    background: rgba(255,255,255,0.8);
+    background: rgba(255, 255, 255, 0.8);
     backdrop-filter: blur(10px);
     transition: all 0.4s ease;
     cursor: pointer;
@@ -592,7 +594,7 @@
 /* CARD HOVER LIFT */
 .blog-card:hover {
     transform: translateY(-10px);
-    box-shadow: 0 15px 35px rgba(0,0,0,0.2);
+    box-shadow: 0 15px 35px rgba(0, 0, 0, 0.2);
 }
 
 /* ================= RESPONSIVE ================= */

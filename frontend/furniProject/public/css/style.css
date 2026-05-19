@@ -38,14 +38,17 @@ a.more {
 /* ________________________________________________________________________________________ */
 /* Navbar styles */
 .custom-navbar {
-  background: #600000 !important;
+  background: rgb(141, 64, 64) !important;
   padding-top: 20px;
   padding-bottom: 20px;
   color: white;
 }
 
 .hero {
-  background: #600000 !important;
+  /* background: #600000 !important; */
+    background: rgb(141, 64, 64) !important;
+
+
   color: black;
   padding: calc(4rem - 30px) 0 0rem 0;
 }
