@@ -21,6 +21,7 @@
     "jsonwebtoken": "^9.0.2",
     "mysql2": "^3.12.0",
     "nodemailer": "^6.10.0",
+    "pg": "^8.21.0",
     "razorpay": "^2.9.5"
   }
 }
