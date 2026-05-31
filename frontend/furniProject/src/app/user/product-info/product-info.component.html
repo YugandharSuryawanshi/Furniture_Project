@@ -7,8 +7,8 @@
                 <!-- Main Image + Zoom Wrapper -->
                 <div class="main-image-container bg-danger" (mousemove)="onMouseMove($event)"
                     (mouseenter)="onMouseEnter()" (mouseleave)="onMouseLeave()">
-                    <a [href]="'http://localhost:1000/uploads/' + selectedImage" target="_blank">
-                        <img [src]="'http://localhost:1000/uploads/' + selectedImage" alt="Product Image"
+                    <a [href]="imageService.getImageUrl(selectedImage)" target="_blank">
+                        <img [src]="imageService.getImageUrl(selectedImage)" alt="Product Image"
                             class="img-fluid big-image">
                     </a>
                 </div>
@@ -16,16 +16,16 @@
                 <!-- Zoom Preview -->
                 <div class="preview-container bg-warning" *ngIf="isDesktop && showZoom">
                     <div class="zoom-preview" [ngStyle]="{
-                            'background-image': 'url(http://localhost:1000/uploads/' + selectedImage + ')',
-                            'background-position': backgroundPosX + ' ' + backgroundPosY,
-                            'background-size': '200% 200%'
-                            }">
+    'background-image': 'url(' + imageService.getImageUrl(selectedImage) + ')',
+    'background-position': backgroundPosX + ' ' + backgroundPosY,
+    'background-size': '200% 200%'
+}">
                     </div>
                 </div>
 
                 <!-- small Images (Scrollable) -->
                 <div class="thumbnail-images">
-                    <img *ngFor="let image of images" [src]="'http://localhost:1000/uploads/' + image"
+                    <img *ngFor="let image of images" [src]="imageService.getImageUrl(image)"
                         [class.active]="selectedImage === image" class="img-thumbnail small-image"
                         (click)="changeImage(image)">
                 </div>
@@ -147,15 +147,14 @@
         <div class="col-md-6">
             <h2 class="text-dark"> Details </h2>
             <div class="image-collage">
-                <a [href]="'http://localhost:1000/uploads/' + images[0]" target="_blank">
-                    <img [src]="'http://localhost:1000/uploads/' + images[0]" class="small-img"
-                        data-fslightbox="mygalley" class="rounded-4" target="_blank" data-type="image">
+                <a [href]="imageService.getImageUrl(images[0])" target="_blank">
+                    <img [src]="imageService.getImageUrl(images[0])" class="small-img">
                 </a>
-                <a [href]="'http://localhost:1000/uploads/' + images[1]" target="_blank">
-                    <img *ngIf="images[1]" [src]="'http://localhost:1000/uploads/' + images[1]" class="large-img">
+                <a [href]="imageService.getImageUrl(images[1])" target="_blank">
+                    <img *ngIf="images[1]" [src]="imageService.getImageUrl(images[1])" class="large-img">
                 </a>
-                <a [href]="'http://localhost:1000/uploads/' + images[2]" target="_blank">
-                    <img *ngIf="images[2]" [src]="'http://localhost:1000/uploads/' + images[2]" class="small-img">
+                <a [href]="imageService.getImageUrl(images[2])" target="_blank">
+                    <img *ngIf="images[2]" [src]="imageService.getImageUrl(images[2])" class="small-img">
                 </a>
             </div>
 
@@ -260,7 +259,7 @@
                         <!-- User Profile -->
                         <div class="d-flex align-items-center mb-2">
                             <ng-container *ngIf="review.user_profile; else initialsTemplate">
-                                <img [src]="'http://localhost:1000/uploads/' + review.user_profile" alt="User Profile"
+                                <img [src]="imageService.getImageUrl(review.user_profile)" alt="User Profile"
                                     class="rounded-circle border"
                                     style="height: 40px; width: 40px; margin-right: 10px;">
                             </ng-container>
@@ -290,7 +289,7 @@
 
                         <p>{{ review.comment }}</p>
                         <div *ngIf="review.reviewImages.length > 0" class="review-images d-flex flex-wrap">
-                            <img *ngFor="let img of review.reviewImages" [src]="'http://localhost:1000/uploads/' + img"
+                            <img *ngFor="let img of review.reviewImages" [src]="imageService.getImageUrl(img)"
                                 class="img-thumbnail m-1" alt="Review Image" width="100">
                         </div>
                     </div>
@@ -308,7 +307,7 @@
                             <!-- User Profile -->
                             <div class="d-flex align-items-center mb-2">
                                 <ng-container *ngIf="review.user_profile; else initialsTemplate">
-                                    <img [src]="'http://localhost:1000/uploads/' + review.user_profile"
+                                    <img [src]="imageService.getImageUrl(review.user_profile)"
                                         alt="User Profile" class="rounded-circle border"
                                         style="height: 40px; width: 40px; margin-right: 10px;">
                                 </ng-container>
@@ -348,4 +347,55 @@
             </div>
         </div>
     </div>
+</div>
+
+
+<hr>
+
+<div class="container mt-5"
+    *ngIf="recentlyViewedProducts.length > 0">
+
+    <h3 class="mb-4">
+        Recently Viewed Products
+    </h3>
+
+    <div class="row">
+
+        <div class="col-md-3 mb-4"
+            *ngFor="let item of recentlyViewedProducts">
+
+            <div class="card h-100 shadow-sm">
+
+                <img
+                    [src]="imageService.getImageUrl(item.product_image)"
+                    class="card-img-top"
+                    style="height:220px; object-fit:cover;"
+                    alt="{{ item.product_name }}">
+
+                <div class="card-body">
+
+                    <h6 class="card-title">
+                        {{ item.product_name }}
+                    </h6>
+
+                    <p class="text-danger fw-bold">
+                        ₹ {{ item.product_price }}
+                    </p>
+
+                    <button
+                        class="btn btn-warning btn-sm"
+                        (click)="viewProduct(item.product_id)">
+
+                        View Product
+
+                    </button>
+
+                </div>
+
+            </div>
+
+        </div>
+
+    </div>
+
 </div>

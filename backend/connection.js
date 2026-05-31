@@ -26,8 +26,8 @@
 // export { exe };
 
 import mysql from 'mysql2';
-import { config } from './config/config.js';
 import { promisify } from 'util';
+import { config } from './config/config.js';
 
 // CREATE CONNECTION (OLD STYLE KEPT)
 const conn = mysql.createConnection({
@@ -56,3 +56,4 @@ const exe = promisify(conn.query).bind(conn);
 
 // IMPORTANT FIX: proper export
 export { conn, exe };
+

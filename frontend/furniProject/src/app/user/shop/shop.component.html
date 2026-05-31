@@ -21,29 +21,49 @@
 
 <div class="untree_co-section product-section before-footer-section">
     <div class="container">
+
         <div class="row">
+
             <div *ngFor="let product of products" class="col-12 col-md-4 col-lg-3 mb-5">
+
                 <a class="product-item" [routerLink]="['/user/product_info', product.product_id]">
-                    <img [src]="'http://localhost:1000/uploads/' + product.product_image.split(',')[0]"
-                        class="img-fluid product-thumbnail">
-                    <h3 class="product-title">{{ product.product_name }}</h3>
-                    <strong class="product-price">&#8377;{{ product.product_price }}</strong>
+
+                    <img [src]="product.firstImageUrl" class="img-fluid product-thumbnail"
+                        alt="{{ product.product_name }}" loading="lazy" decoding="async">
+
+                    <h3 class="product-title">
+                        {{ product.product_name }}
+                    </h3>
+
+                    <strong class="product-price">
+                        &#8377;{{ product.product_price }}
+                    </strong>
 
                     <span class="icon-cross">
-                        <img src="images/cross.svg" class="img-fluid">
+                        <img src="images/cross.svg" class="img-fluid" loading="lazy" decoding="async">
                     </span>
+
                 </a>
+
             </div>
+
         </div>
 
         <div class="row">
+
             <div class="col-12 text-center">
+
                 <button *ngFor="let page of [].constructor(totalPages); let i = index" (click)="fetchProducts(i + 1)"
                     [class.btn-danger]="currentPage === (i + 1)" [class.btn_light]="currentPage !== (i + 1)"
                     class="btn btn-danger m-1">
+
                     {{ i + 1 }}
+
                 </button>
+
             </div>
+
         </div>
+
     </div>
 </div>

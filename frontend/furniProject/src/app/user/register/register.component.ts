@@ -120,22 +120,57 @@ export class RegisterComponent {
 
   // Send Otp on Email
   sendOtp() {
-    if (!this.formData.user_email) {
-      this.toastr.warning('Please enter your email!', 'Warning', { progressBar: true, tapToDismiss: true });
-      return;
-    }
-
-    this.userApi.sendOtp({ email: this.formData.user_email }).subscribe(
-      (res: any) => {
-        this.backendCameOtp = res.otp;
-        this.otpSent = true;
-        this.toastr.success(res.message || 'OTP sent to your email', 'Success', { progressBar: true, tapToDismiss: true });
-      },
-      err => {
-        this.toastr.error(err.error.message || 'Error sending OTP', 'Error', { progressBar: true, tapToDismiss: true });
+  if (!this.formData.user_email) {
+    this.toastr.warning(
+      'Please enter your email!',
+      'Warning',
+      {
+        progressBar: true,
+        tapToDismiss: true
       }
     );
+    return;
   }
+
+  console.log('Sending OTP to:', this.formData.user_email);
+
+  this.userApi.sendOtp({
+    email: this.formData.user_email
+  }).subscribe(
+    (res: any) => {
+
+      console.log('OTP Response:', res);
+
+      this.backendCameOtp = res.otp;
+      this.otpSent = true;
+
+      this.toastr.success(
+        res.message || 'OTP sent to your email',
+        'Success',
+        {
+          progressBar: true,
+          tapToDismiss: true
+        }
+      );
+    },
+    (err) => {
+
+      console.error('OTP Error:', err);
+      console.error('Error Body:', err.error);
+
+      this.toastr.error(
+        err?.error?.message ||
+        err?.message ||
+        'Error sending OTP',
+        'Error',
+        {
+          progressBar: true,
+          tapToDismiss: true
+        }
+      );
+    }
+  );
+}
 
   // Register New User
   register() {

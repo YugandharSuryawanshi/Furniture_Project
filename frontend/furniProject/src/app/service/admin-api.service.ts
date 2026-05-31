@@ -9,7 +9,8 @@ import { BehaviorSubject, Observable } from 'rxjs';
 export class AdminApiService {
 
   private tokenKey = 'adminToken'; // Key to store JWT token
-  private adminUrl = 'http://localhost:1000/admin'; // URL for admin login
+  // private adminUrl = 'http://localhost:1000/admin'; // URL for admin login
+  private adminUrl = 'https://furniture-backend-ssa5.onrender.com';
   private adminState = new BehaviorSubject<any>(null); // Tracks admin details
   adminState$ = this.adminState.asObservable(); // Observable for components to subscribe to
 
@@ -444,6 +445,5 @@ export class AdminApiService {
   verifyOtp(data: any) {
     return this.http.post(`${this.adminUrl}/verify-otp`, data);
   }
-
 
 }

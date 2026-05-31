@@ -9,7 +9,8 @@ import { catchError, Observable, throwError } from 'rxjs';
 export class UserApiService {
 
   private tokenKey = 'userToken';  // Local storage key to store JWT token
-  private userUrl = 'http://localhost:1000';
+  // private userUrl = 'http://localhost:1000';
+  private userUrl = 'https://furniture-backend-ssa5.onrender.com';
   constructor(private http: HttpClient, private router: Router) { }
 
   //Register Route

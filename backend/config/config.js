@@ -29,11 +29,12 @@
 
 
 import dotenv from 'dotenv';
+
 dotenv.config({ path: './config/config.env' });
 
 export const config = {
     server: {
-        port: process.env.PORT || 5000
+        port: process.env.DB_PORT || 4000
     },
 
     userJwtSecret: process.env.USER_JWT_SECRET,

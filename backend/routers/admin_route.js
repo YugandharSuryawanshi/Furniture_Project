@@ -62,8 +62,7 @@ router.post('/verifyAdminPass', async (req, res) => {
 
         const admin = results[0];
         const isPasswordValid = await bcrypt.compare(admin_password, admin.admin_password);
-        if (isPasswordValid)
-        {
+        if (isPasswordValid) {
             res.status(200).send({ message: 'Password Match', success: true, });
         }
         else {
@@ -77,7 +76,7 @@ router.post('/verifyAdminPass', async (req, res) => {
 });
 
 router.post('/adminLogin', async (req, res) => {
-    const { admin_email, admin_password , otp } = req.body;
+    const { admin_email, admin_password, otp } = req.body;
 
     if (!admin_email || !admin_password || !otp) {
         return res.status(400).send({ message: 'Email and password Both Fields are required' });
@@ -1446,7 +1445,7 @@ router.get('/get_wishlist', async (req, res) => {
     JOIN product_type ON product.product_type_id = product_type.product_type_id
     ORDER BY wishlist.date_added DESC`;
         const data = await exe(sql);
-        
+
         if (data.length > 0) {
             res.status(200).json({ success: true, data });
         } else {
@@ -1477,71 +1476,153 @@ router.delete('/delete_wishlist_item/:id', async (req, res) => {
 // Send OTP
 router.post('/send-otp', async (req, res) => {
     const { email } = req.body;
-    const otp = Math.floor(100000 + Math.random() * 900000);
-    const expiry = new Date(Date.now() + 5 * 60 * 1000); // 5 mins Valid
-
-    const emailHtml = `<!DOCTYPE html><html>
-    <body>...
-    <h3>Your OTP to verify your identity As Admin on Furni Store is: <strong>${otp}</strong></h3>
-    <h4>This OTP will expire in 5 minutes.</h4>
-    ...
-    <p>&copy; @yogi Furni Store. All rights reserved.</p>
-    </body></html>`;
     try {
-        await exe('UPDATE admins SET otp = ?, otp_created_at = NOW(), otp_expiry = ? WHERE admin_email = ?', [otp, expiry, email]);
+
+        if (!email) {
+            return res.status(400).json({
+                status: 'error',
+                message: 'Email is required'
+            });
+        }
+
+        const adminData = await exe(
+            'SELECT * FROM admins WHERE admin_email = ?',
+            [email]
+        );
+
+        if (adminData.length === 0) {
+            return res.status(404).json({
+                status: 'error',
+                message: 'Admin not found'
+            });
+        }
+
+        const otp = Math.floor(100000 + Math.random() * 900000);
+        const expiry = new Date(Date.now() + 5 * 60 * 1000);
+        const emailHtml = `
+        <!DOCTYPE html>
+        <html>
+        <body>
+            <h2>Furniture Store Admin Verification</h2>
+            <h3>Your OTP is: <strong>${otp}</strong></h3>
+            <h4>This OTP will expire in 5 minutes.</h4>
+            <p>Please do not share this OTP with anyone.</p>
+            <br>
+            <p>&copy; @yogi Furni Store. All rights reserved.</p>
+        </body>
+        </html>
+        `;
+
+        await exe(
+            'UPDATE admins SET otp = ?, otp_created_at = NOW(), otp_expiry = ? WHERE admin_email = ?',
+            [otp, expiry, email]
+        );
+
         const transporter = nodemailer.createTransport({
-            host: config.EMAIL_HOST,
-            port: config.EMAIL_PORT,
+            host: config.email.host,
+            port: Number(config.email.port),
+            secure: false,
             auth: {
-                user: config.EMAIL_USER,
-                pass: config.EMAIL_PASS
+                user: config.email.user,
+                pass: config.email.pass
             }
         });
 
+        await transporter.verify();
+
         await transporter.sendMail({
-            from: config.EMAIL_USER,
+            from: `"Furniture Store Admin" <${config.email.user}>`,
             to: email,
-            subject: 'Your OTP for Password Change',
+            subject: 'Admin OTP Verification',
             html: emailHtml
         });
 
-        res.json({ status: 'success', message: 'OTP sent to email Successfully', otp: otp });
+        res.status(200).json({
+            status: 'success',
+            message: 'OTP sent successfully'
+        });
+
     } catch (err) {
-        console.log(err);
-        res.status(500).json({ status: 'error', message: 'Failed to send OTP' });
+
+        console.error('ADMIN OTP SEND ERROR:', err);
+
+        res.status(500).json({
+            status: 'error',
+            message: 'Failed to send OTP',
+            error: err.message
+        });
     }
 });
 
-// Verify OTP
+// Varify OTP
 router.post('/verify-otp', async (req, res) => {
-    const { email, otp } = req.body;
 
+    const { email, otp } = req.body;
     try {
-        const d = await exe('SELECT * FROM admins WHERE admin_email = ?', [email]);
+
+        if (!email || !otp) {
+            return res.status(400).json({
+                status: 'error',
+                message: 'Email and OTP are required'
+            });
+        }
+
+        const d = await exe(
+            'SELECT * FROM admins WHERE admin_email = ?',
+            [email]
+        );
 
         if (d.length === 0) {
-            return res.status(404).json({ status: 'error', message: 'Admin not found' });
+            return res.status(404).json({
+                status: 'error',
+                message: 'Admin not found'
+            });
         }
+
         const admin = d[0];
+
+        if (!admin.otp || !admin.otp_expiry) {
+            return res.status(400).json({
+                status: 'error',
+                message: 'No OTP found. Please request a new OTP.'
+            });
+        }
+
         const now = new Date();
         const otpExpiry = new Date(admin.otp_expiry);
 
-        // Check if OTP matches
-        if (admin.otp !== otp) {
-            return res.status(400).json({ status: 'error', message: 'OTP does not match Please Enter Valid OTP' });
+        if (String(admin.otp) !== String(otp)) {
+            return res.status(400).json({
+                status: 'error',
+                message: 'OTP does not match. Please enter a valid OTP.'
+            });
         }
 
-        // Check if OTP is expired
         if (now > otpExpiry) {
-            return res.status(400).json({ status: 'error', message: 'OTP has expired' });
+            return res.status(400).json({
+                status: 'error',
+                message: 'OTP has expired'
+            });
         }
 
-        // If OTP matched and not expired
-        return res.status(200).json({ status: 'success', message: 'OTP verified successfully' });
+        await exe(
+            'UPDATE admins SET otp = NULL, otp_created_at = NULL, otp_expiry = NULL WHERE admin_email = ?',
+            [email]
+        );
+
+        return res.status(200).json({
+            status: 'success',
+            message: 'OTP verified successfully'
+        });
 
     } catch (err) {
-        console.error('Error verifying OTP:', err);
-        return res.status(500).json({ status: 'error', message: 'Server error' });
+
+        console.error('ADMIN OTP VERIFY ERROR:', err);
+
+        return res.status(500).json({
+            status: 'error',
+            message: 'Server error'
+        });
     }
 });
 

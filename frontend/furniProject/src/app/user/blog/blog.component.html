@@ -50,7 +50,7 @@
 
                     <!-- Image -->
                     <div class="blog-img">
-                        <img [src]="'http://localhost:1000/uploads/' + blog.blog_image" alt="Blog Image">
+                        <img [src]="blog.imageUrl" loading="lazy" alt="Blog Image">
                     </div>
 
                     <!-- Content -->
@@ -91,8 +91,8 @@
                 <div class="row">
                     <!-- First part: Image Section -->
                     <div class="col-md-4 d-flex justify-content-center align-items-center">
-                        <img [src]="'http://localhost:1000/uploads/' + slide.customer_image" alt="Image"
-                            class="rounded-circle" style="width: 250px; height: 250px;">
+                        <img [src]="slide.imageUrl" loading="lazy" alt="Image" class="rounded-circle"
+                            style="width: 250px; height: 250px;">
                     </div>
 
                     <!-- Second part: Heading Section -->
@@ -120,5 +120,4 @@
 </div>
 <!-- End Testimonial Slider -->
 
-<br><br><br><br><br><br><br>
 <br><br><br>

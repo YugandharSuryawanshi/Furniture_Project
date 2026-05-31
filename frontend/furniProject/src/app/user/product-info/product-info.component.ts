@@ -4,6 +4,8 @@ import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { ActivatedRoute, Router, RouterModule } from '@angular/router';
 import { ToastrService } from 'ngx-toastr';
 import { UserApiService } from '../../service/user-api.service';
+import { ImageService } from '../../service/image.service';
+import { Subscription } from 'rxjs';
 
 @Component({
   selector: 'app-product-info',
@@ -27,6 +29,8 @@ export class ProductInfoComponent {
   product_price: any;
   discount: any = 0;
 
+  recentlyViewedProducts: any[] = [];
+
   showZoom: boolean = false;
   backgroundPosX: string = '50%';
   backgroundPosY: string = '50%';
@@ -37,46 +41,80 @@ export class ProductInfoComponent {
   addReview: any = false;
   topReviewsDisplay: any = true;
   isWishlistAdded: boolean = false;
+  routeSubscription!: Subscription;
 
   constructor(
     private route: ActivatedRoute,
     private userApi: UserApiService,
     public router: Router,
-    public toastr: ToastrService
+    public toastr: ToastrService,
+    public imageService: ImageService
   ) { }
 
   ngOnInit(): void {
+
     this.checkDeviceType();
 
-    const id = this.route.snapshot.paramMap.get('id');
-    if (id) {
-      this.came_product_id = id;
-      this.fetchProductDetails(id);
-      this.getReviews();
-      this.getWishlistStatus(id);
+    this.routeSubscription =
+      this.route.params.subscribe(params => {
+
+        const id = params['id'];
+
+        if (id) {
+          this.came_product_id = id;
+          this.fetchProductDetails(id);
+          this.getReviews();
+          this.getWishlistStatus(id);
+        }
+
+      });
+  }
+
+  ngOnDestroy(): void {
+    if (this.routeSubscription) {
+      this.routeSubscription.unsubscribe();
     }
   }
 
   fetchProductDetails(id: string) {
     this.userApi.getProductById(id).subscribe((data: any) => {
       this.getCartStatus(id);
+
       this.product = data;
 
-      this.product_details = this.product.product_details.replace(/\.\s*/g, ".<br>");
-      this.additional_details = this.product.additional_details.replace(/\.\s*/g, ".<br>");
+      this.product_details =
+        this.product.product_details.replace(/\.\s*/g, ".<br>");
 
-      this.product_price = Math.floor(Number(this.product.product_price));
+      this.additional_details =
+        this.product.additional_details.replace(/\.\s*/g, ".<br>");
+
+      this.product_price = Math.floor(
+        Number(this.product.product_price)
+      );
 
       this.discount =
-        ((this.product.duplicate_price - this.product.product_price) /
-          this.product.duplicate_price) * 100;
+        (
+          (this.product.duplicate_price -
+            this.product.product_price) /
+          this.product.duplicate_price
+        ) * 100;
 
-      this.discount = parseFloat(this.discount.toFixed(2));
+      this.discount = parseFloat(
+        this.discount.toFixed(2)
+      );
 
       if (this.product.product_image) {
-        this.images = this.product.product_image.split(',');
+        this.images =
+          this.product.product_image.split(',');
+
         this.selectedImage = this.images[0];
       }
+
+      // Recently Viewed Product Save
+      this.saveRecentlyViewedProduct(this.product);
+
+      // Reload List
+      this.loadRecentlyViewedProducts();
     });
   }
 
@@ -99,7 +137,6 @@ export class ProductInfoComponent {
     this.backgroundPosX = `${xPercent}%`;
     this.backgroundPosY = `${yPercent}%`;
   }
-
 
   onMouseEnter(): void {
     if (this.isDesktop) {
@@ -315,5 +352,64 @@ export class ProductInfoComponent {
         console.error("Error:", error);
       }
     );
+  }
+
+  saveRecentlyViewedProduct(product: any) {
+
+    if (!product || !product.product_id) return;
+
+    let recentlyViewed = JSON.parse(
+      localStorage.getItem('recentlyViewedProducts') || '[]'
+    );
+
+    recentlyViewed = recentlyViewed.filter(
+      (item: any) => item.product_id !== product.product_id
+    );
+
+    recentlyViewed.unshift({
+      product_id: product.product_id,
+      product_name: product.product_name,
+      product_price: product.product_price,
+
+      // Save only first image
+      product_image: product.product_image
+        ? product.product_image.split(',')[0]
+        : ''
+    });
+
+    recentlyViewed = recentlyViewed.slice(0, 10);
+
+    localStorage.setItem(
+      'recentlyViewedProducts',
+      JSON.stringify(recentlyViewed)
+    );
+  }
+
+  loadRecentlyViewedProducts() {
+    this.recentlyViewedProducts = JSON.parse(
+      localStorage.getItem('recentlyViewedProducts') || '[]'
+    );
+
+    this.recentlyViewedProducts =
+      this.recentlyViewedProducts.filter(
+        (item: any) =>
+          item.product_id != this.came_product_id
+      );
+  }
+
+  viewProduct(productId: any) {
+    if (productId == this.came_product_id) {
+      return;
+    }
+
+    this.router.navigateByUrl('/', { skipLocationChange: true }).then(() => {
+
+      this.router.navigate(
+        ['/user/product-info', productId]
+      );
+
+      window.scrollTo({ top: 0, behavior: 'smooth' });
+
+    });
   }
 }

@@ -27,21 +27,25 @@ const routes: Routes = [
   { path: 'about', component: AboutComponent },
   { path: 'service', component: ServiceComponent },
   { path: 'blog', component: BlogComponent },
-  { path: 'product_info/:id', component: ProductInfoComponent},
+  { path: 'product_info/:id', component: ProductInfoComponent },
+  {
+    path: 'product-info/:id', loadComponent: () =>
+      import('./product-info/product-info.component').then(m => m.ProductInfoComponent)
+  },
   { path: 'cart', component: CartComponent },
-  { path: 'profile', component: ProfileComponent, canActivate: [UserAuthGuard], data: { role: 'user' , requiresLogin: true } },
-  { path: 'contact', component: ContactComponent, canActivate: [UserAuthGuard], data: { role: 'user' , requiresLogin: true } },
-  { path: 'orders', component: MyOrdersComponent, canActivate: [UserAuthGuard], data: { role: 'user' , requiresLogin: true}},
-  { path: 'print_receipt/:order_id', component: PrintReceiptComponent, canActivate: [UserAuthGuard], data: { role: 'user' , requiresLogin: true}},
-  { path: 'checkout', component: CheckoutComponent, canActivate: [UserAuthGuard], data: { role: 'user' , requiresLogin: true}},
-  { path: 'wishlist', component: WishlistComponent},
-  { path: 'forgot-password', component: ForgotPasswordComponent},
+  { path: 'profile', component: ProfileComponent, canActivate: [UserAuthGuard], data: { role: 'user', requiresLogin: true } },
+  { path: 'contact', component: ContactComponent, canActivate: [UserAuthGuard], data: { role: 'user', requiresLogin: true } },
+  { path: 'orders', component: MyOrdersComponent, canActivate: [UserAuthGuard], data: { role: 'user', requiresLogin: true } },
+  { path: 'print_receipt/:order_id', component: PrintReceiptComponent, canActivate: [UserAuthGuard], data: { role: 'user', requiresLogin: true } },
+  { path: 'checkout', component: CheckoutComponent, canActivate: [UserAuthGuard], data: { role: 'user', requiresLogin: true } },
+  { path: 'wishlist', component: WishlistComponent },
+  { path: 'forgot-password', component: ForgotPasswordComponent },
   { path: '', redirectTo: 'home', pathMatch: 'full' },
-  { path: '**', redirectTo: 'home', pathMatch: 'full'}
+  { path: '**', redirectTo: 'home', pathMatch: 'full' }
 ];
 
 @NgModule({
   imports: [RouterModule.forChild(routes)],
   exports: [RouterModule],
 })
-export class UserRoutingModule {}
+export class UserRoutingModule { }

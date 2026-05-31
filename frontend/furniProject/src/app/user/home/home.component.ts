@@ -4,6 +4,7 @@ import { FormsModule } from '@angular/forms';
 import { Router, RouterModule } from '@angular/router';
 import { ToastrService } from 'ngx-toastr';
 import { UserApiService } from '../../service/user-api.service';
+import { ImageService } from '../../service/image.service';
 
 @Component({
   selector: 'app-home',
@@ -14,75 +15,116 @@ import { UserApiService } from '../../service/user-api.service';
 })
 export class HomeComponent {
 
-  private inactivityTimeout: any;
-  private logoutTime = 2 * 60 * 60 * 1000; // 2 hours = 2 * 60 minutes * 60 seconds * 1000 milliseconds
+  readonly IMAGE_BASE_URL = 'https://furniture-backend-ssa5.onrender.com/uploads/';
 
-  constructor(public userApi: UserApiService, public router: Router, public toastr: ToastrService) {
+  private inactivityTimeout: any;
+  private logoutTime = 2 * 60 * 60 * 1000;
+
+  constructor(
+    public userApi: UserApiService,
+    public router: Router,
+    public toastr: ToastrService,
+    public imageService: ImageService
+  ) {
     this.resetTimer();
   }
-  
 
-  // Detect user activity (mouse, keyboard, click)
   @HostListener('window:mousemove') onMouseMove() { this.resetTimer(); }
   @HostListener('window:keypress') onKeyPress() { this.resetTimer(); }
   @HostListener('window:click') onClick() { this.resetTimer(); }
 
   resetTimer() {
-    clearTimeout(this.inactivityTimeout);// clear timeout when any activity is happen
-    this.inactivityTimeout = setTimeout(() => {
-      this.autoLogout();
-    }, this.logoutTime);
+    clearTimeout(this.inactivityTimeout);
+    this.inactivityTimeout = setTimeout(() => this.autoLogout(), this.logoutTime);
   }
 
   autoLogout() {
     this.userApi.userLogout();
     alert('Logged out Due to Inactivity timeout..! , Login Again!');
-    this.toastr.warning('You have been logged out due to inactivity', "Session Expired", { disableTimeOut: false, progressBar:true ,closeButton: true });
+    this.toastr.warning('Session Expired', 'You have been logged out', {
+      disableTimeOut: false,
+      progressBar: true,
+      closeButton: true
+    });
     this.router.navigate(['/user/login']);
   }
 
   ngOnInit() {
     this.getHomeData();
   }
+
   banner_info: any = [];
   banner_image: any;
-  products: any[] = []; // Array to hold all product data
-  productImages: any[] = []; // Array to store product images
+  products: any[] = [];
   about: any = [];
   about_image: any;
   about_points: any = [];
   interior: any = [];
   testimonial: any[] = [];
   blogs: any[] = [];
-  customer_image: any = [];
+  customer_image: any[] = [];
 
   getHomeData() {
     this.userApi.gethomeData().subscribe((res: any) => {
+
       this.banner_info = res.banner_info[0];
-      this.banner_image = `http://localhost:1000/uploads/${this.banner_info.banner_image}`;
-      // Process product Store data
+      this.banner_image = this.imageService.getImageUrl(
+        this.banner_info.banner_image
+      );
+
       this.products = res.products;
+
       this.products.forEach((product) => {
-        const images = product.product_image.split(","); // split product image
-        const img = images.find((image: string) => image.trim() !== "") || ""; //for get first image
-        product.firstImage = `http://localhost:1000/uploads/${img}`; // Append the image
+        const images = product.product_image.split(",");
+        const img = images.find((i: string) => i.trim() !== "") || "";
+
+        product.firstImage = this.imageService.getImageUrl(img);
       });
 
-      // Process about data
       this.about = res.about[0];
-      this.about_image = `http://localhost:1000/uploads/${this.about.why_choose_img}`;
+      this.about_image = this.imageService.getImageUrl(
+        this.about.why_choose_img
+      );
+
       this.about_points = res.about_points;
 
+      this.about_points.forEach((point: any) => {
+        point.imageUrl = this.imageService.getImageUrl(
+          point.why_choose_points_img
+        );
+      });
+
       this.interior = res.interior;
-      this.testimonial = res.testimonial;
 
-      for (let i = 0; i < this.testimonial.length; i++) {
-        this.customer_image.push(`http://localhost:1000/uploads/` + this.testimonial[i].customer_image);
+      if (this.interior.length > 0) {
+        this.interior[0].firstImageUrl = this.imageService.getImageUrl(
+          this.interior[0].first_image
+        );
 
+        this.interior[0].secondImageUrl = this.imageService.getImageUrl(
+          this.interior[0].second_image
+        );
+
+        this.interior[0].thirdImageUrl = this.imageService.getImageUrl(
+          this.interior[0].third_image
+        );
       }
 
-      this.blogs = res.blog;
-    })
-  }
+      this.testimonial = res.testimonial;
 
+      this.testimonial.forEach((item: any) => {
+        item.imageUrl = this.imageService.getImageUrl(
+          item.customer_image
+        );
+      });
+
+      this.blogs = res.blog;
+
+      this.blogs.forEach((blog: any) => {
+        blog.imageUrl = this.imageService.getImageUrl(
+          blog.blog_image
+        );
+      });
+    });
+  }
 }

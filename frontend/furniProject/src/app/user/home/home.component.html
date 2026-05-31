@@ -4,26 +4,26 @@
         <div class="row justify-content-between">
             <div class="col-lg-5">
                 <div class="intro-excerpt">
-                        <h1>
-                            {{banner_info?.banner_title}}
-                        </h1>
-                        <p class="mb-4">
-                            {{banner_info?.banner_details}}
-                        </p>
-                        <p><a routerLink="/user/shop" class="btn btn-danger me-2">Shop
-                                Now</a>
-                            <a routerLink="/user/service" class="btn btn-white-outline text-white">Explore</a>
-                        </p>
-                    </div>
+                    <h1>
+                        {{banner_info?.banner_title}}
+                    </h1>
+                    <p class="mb-4">
+                        {{banner_info?.banner_details}}
+                    </p>
+                    <p><a routerLink="/user/shop" class="btn btn-danger me-2">Shop
+                            Now</a>
+                        <a routerLink="/user/service" class="btn btn-white-outline text-white">Explore</a>
+                    </p>
                 </div>
-                <div class="col-lg-7">
-                    <div class="hero-img-wrap">
-                        <img [src]="banner_image" class="img-fluid">
-                    </div>
+            </div>
+            <div class="col-lg-7">
+                <div class="hero-img-wrap">
+                    <img [src]="banner_image" class="img-fluid" loading="eager" decoding="async">
                 </div>
             </div>
         </div>
     </div>
+</div>
 <!-- End Hero Section -->
 
 <!-- Start Product Section -->
@@ -51,7 +51,7 @@
 
                 <div class="product-card">
                     <div class="product-img">
-                        <img [src]="product?.firstImage" alt="product">
+                        <img [src]="product?.firstImage" alt="product" loading="lazy" decoding="async">
                     </div>
 
                     <div class="product-content">
@@ -87,7 +87,7 @@
 
                             <!-- ICON -->
                             <div class="glass-icon">
-                                <img [src]="'http://localhost:1000/uploads/' + about_point?.why_choose_points_img">
+                                <img [src]="about_point.imageUrl" loading="lazy" decoding="async">
                             </div>
 
                             <!-- TEXT -->
@@ -103,7 +103,7 @@
             <!-- RIGHT IMAGE -->
             <div class="col-lg-6 text-center mt-5 mt-lg-0">
                 <div class="image-wrapper">
-                    <img [src]="about_image" alt="Image" class="img-fluid main-img">
+                    <img [src]="about_image" alt="Image" class="img-fluid main-img" loading="lazy" decoding="async">
                 </div>
             </div>
 
@@ -119,12 +119,15 @@
         <div class="row justify-content-between">
             <div class="col-lg-7 mb-5 mb-lg-0">
                 <div class="imgs-grid">
-                    <div class="grid grid-1"><img [src]="'http://localhost:1000/uploads/' + interior[0]?.first_image"
-                            alt="Untree.co"></div>
-                    <div class="grid grid-2"><img [src]="'http://localhost:1000/uploads/' + interior[0]?.second_image"
-                            alt="Untree.co"></div>
-                    <div class="grid grid-3"><img [src]="'http://localhost:1000/uploads/' + interior[0]?.third_image"
-                            alt="Untree.co"></div>
+                    <div class="grid grid-1">
+                        <img [src]="interior[0]?.firstImageUrl" alt="Interior" loading="lazy" decoding="async">
+                    </div>
+                    <div class="grid grid-2">
+                        <img [src]="interior[0]?.secondImageUrl" alt="Interior" loading="lazy" decoding="async">
+                    </div>
+                    <div class="grid grid-3">
+                        <img [src]="interior[0]?.thirdImageUrl" alt="Interior" loading="lazy" decoding="async">
+                    </div>
                 </div>
             </div>
             <div class="col-lg-5 ps-lg-5">
@@ -149,7 +152,7 @@
                         {{interior[0]?.forth_key}}
                     </li>
                 </ul>
-                <p><a herf="/user/shop" class="btn">Explore</a></p>
+                <p><a routerLink="/user/shop" class="btn">Explore</a></p>
             </div>
         </div>
     </div>
@@ -168,7 +171,7 @@
 
                     <!-- IMAGE -->
                     <div class="product-img">
-                        <img [src]="product.firstImage" alt="Image">
+                        <img [src]="product.firstImage" alt="Image" loading="lazy" decoding="async">
                     </div>
 
                     <!-- CONTENT -->
@@ -216,8 +219,8 @@
                 <div class="row">
                     <!-- First part: Image Section -->
                     <div class="col-md-4 d-flex justify-content-center align-items-center">
-                        <img [src]="'http://localhost:1000/uploads/' + slide.customer_image" alt="Image"
-                            class="rounded-circle" style="width: 250px; height: 250px;">
+                        <img [src]="slide.imageUrl" alt="Image" class="rounded-circle" style="width:250px;height:250px"
+                            loading="lazy" decoding="async">
                     </div>
 
                     <!-- Second part: Heading Section -->
@@ -266,7 +269,7 @@
 
                     <!-- Image -->
                     <div class="blog-img">
-                        <img [src]="'http://localhost:1000/uploads/' + blog.blog_image" alt="Blog Image">
+                        <img [src]="blog.imageUrl" alt="Blog Image" loading="lazy" decoding="async">
                     </div>
 
                     <!-- Content -->

@@ -4,6 +4,7 @@ import { ToastrService } from 'ngx-toastr';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { RouterModule } from '@angular/router';
+import { ImageService } from '../../service/image.service';
 
 @Component({
   selector: 'app-blog',
@@ -14,32 +15,67 @@ import { RouterModule } from '@angular/router';
 })
 export class BlogComponent {
 
-  constructor(private userApi:UserApiService, private toastr:ToastrService){}
-    
-      ngOnInit() {
-        this.getHomeData();
-      }
-      products: any[] = []; // Array to hold all product data
-      productImages: any[] = []; // Array to store product images
-      testimonial: any[] = [];
-      blogs: any[] = [];
-      team: any[] = [];
-    
-      getHomeData() {
-        this.userApi.gethomeData().subscribe((res: any) => {
-          // Process product Store data
-          this.products = res.products;
-          this.products.forEach((product) => {
-            const images = product.product_image.split(","); // split product image
-            const img = images.find((image: string) => image.trim() !== "") || ""; //for get first image
-            product.firstImage = `http://localhost:1000/uploads/${img}`; // Append the image
-          });
-          this.testimonial = res.testimonial;
-    
-          this.blogs = res.blogs;
-          this.team = res.team;
-    
-        })
-      }
+  constructor(
+    private userApi: UserApiService,
+    private toastr: ToastrService,
+    public imageService: ImageService
+  ) { }
+
+  ngOnInit() {
+    this.getHomeData();
+  }
+
+  products: any[] = [];
+  productImages: any[] = [];
+
+  testimonial: any[] = [];
+  blogs: any[] = [];
+  team: any[] = [];
+
+  getHomeData() {
+
+    this.userApi.gethomeData().subscribe((res: any) => {
+
+      this.products = res.products;
+
+      this.products.forEach((product) => {
+
+        const images = product.product_image.split(",");
+
+        const img =
+          images.find((image: string) => image.trim() !== "") || "";
+
+        product.firstImage =
+          this.imageService.getImageUrl(img);
+
+      });
+
+      this.testimonial = res.testimonial;
+
+      this.testimonial.forEach((item: any) => {
+
+        item.imageUrl =
+          this.imageService.getImageUrl(
+            item.customer_image
+          );
+
+      });
+
+      this.blogs = res.blogs || res.blog;
+
+      this.blogs.forEach((blog: any) => {
+
+        blog.imageUrl =
+          this.imageService.getImageUrl(
+            blog.blog_image
+          );
+
+      });
+
+      this.team = res.team;
+
+    });
+
+  }
 
 }
