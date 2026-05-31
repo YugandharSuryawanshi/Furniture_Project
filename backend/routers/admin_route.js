@@ -1520,13 +1520,22 @@ router.post('/send-otp', async (req, res) => {
 
         const transporter = nodemailer.createTransport({
             host: config.email.host,
-            port: Number(config.email.port),
-            secure: false,
+            port: 465,
+            secure: true,
             auth: {
                 user: config.email.user,
                 pass: config.email.pass
             }
         });
+        // const transporter = nodemailer.createTransport({
+        //     host: config.email.host,
+        //     port: Number(config.email.port),
+        //     secure: false,
+        //     auth: {
+        //         user: config.email.user,
+        //         pass: config.email.pass
+        //     }
+        // });
 
         await transporter.verify();
 

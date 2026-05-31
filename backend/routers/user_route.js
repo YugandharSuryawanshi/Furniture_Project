@@ -1043,30 +1043,33 @@ router.post('/send-otp', async (req, res) => {
     const otp = Math.floor(100000 + Math.random() * 900000);
     const expiry = new Date(Date.now() + 5 * 60 * 1000); // 5 mins Valid
 
-    const emailHtml = `
-    <!DOCTYPE html>
-    <html>
-    <body>
-        <h2>Furniture Store OTP Verification</h2>
-        <h3>Your OTP is: <strong>${otp}</strong></h3>
-        <h4>This OTP will expire in 5 minutes.</h4>
-        <p>Please do not share this OTP with anyone.</p>
-        <br>
-        <p>&copy; @yogi Furni Store. All rights reserved.</p>
-    </body>
-    </html>
-    `;
+    const emailHtml = `<!DOCTYPE html><html>
+    <body>...
+    <h3>Your OTP to verify your identity on FurnitureStore is: <strong>${otp}</strong></h3>
+    <h4>This OTP will expire in 5 minutes.</h4>
+    ...
+    <p>&copy; @yogi Furni Store. All rights reserved.</p>
+    </body></html>`;
     try {
         await exe('UPDATE users SET otp = ?, otp_created_at = NOW(), otp_expiry = ? WHERE user_email = ?', [otp, expiry, email]);
         const transporter = nodemailer.createTransport({
             host: config.email.host,
-            port: Number(config.email.port),
-            secure: false,
+            port: 465,
+            secure: true,
             auth: {
                 user: config.email.user,
                 pass: config.email.pass
             }
         });
+        // const transporter = nodemailer.createTransport({
+        //     host: config.email.host,
+        //     port: Number(config.email.port),
+        //     secure: false,
+        //     auth: {
+        //         user: config.email.user,
+        //         pass: config.email.pass
+        //     }
+        // });
 
         await transporter.sendMail({
             from: config.EMAIL_USER,
