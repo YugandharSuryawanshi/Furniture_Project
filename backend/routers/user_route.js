@@ -1285,6 +1285,12 @@ router.post('/send-otp', async (req, res) => {
         });
 
         await transporter.verify();
+        console.log('SMTP Connected Successfully');
+        console.log('Sending OTP email to:', email);
+        console.log('Config email user', config.email.user);
+        console.log('Config.email.pass', config.email.pass);
+        
+        
 
         await transporter.sendMail({
             from: config.email.user,

@@ -53,9 +53,6 @@ import { userRoute } from './routers/user_route.js';
 
 dotenv.config({ path: './config/config.env' });
 
-// 🔥 FIX FOR TiDB SSL ISSUE
-process.env.NODE_TLS_REJECT_UNAUTHORIZED = "0";
-
 const app = express();
 
 // Middlewares
