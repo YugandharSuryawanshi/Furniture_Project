@@ -42,20 +42,23 @@ router.post('/register', async (req, res) => {
     const { user_name, user_mobile, user_email, user_address, user_password, otp } = req.body;
     const expiry = new Date(Date.now() + 5 * 60 * 1000); //5 min otp expire
 
-    if (!user_name || !user_mobile || !user_email || !user_password || !otp) {
+    if (!user_name || !user_mobile || !user_email || !user_password) {
         return res.status(400).json({ status: 'failed', message: 'All fields are required' });
     }
 
     try {
         const hashedPassword = await bcrypt.hash(user_password, 10); // Hash the password
         const query = 'INSERT INTO users (user_name, user_mobile, user_email, user_password, otp, otp_expiry, otp_created_at) VALUES (?, ?, ?, ?, ?, ?,NOW())';
-        exe(query, [user_name, user_mobile, user_email, hashedPassword, otp, expiry], (err, result) => {
+        await exe(query, [user_name, user_mobile, user_email, hashedPassword, otp, expiry], (err, result) => {
             if (err) {
                 console.error('Error during user registration:', err);
                 return res.status(500).json({ status: 'failed', message: 'Error registering user' });
             }
-            res.status(200).json({ status: 'success', message: 'User registered successfully' });
+            else {
+                res.status(200).json({ status: 'success', message: 'User registered successfully' });
+            }
         });
+        await exe('DELETE FROM user_registration_otp WHERE user_email=?', [user_email]);
     } catch (err) {
         console.error('Error hashing password:', err);
         res.status(500).json({ status: 'failed', error: err.message });
@@ -1038,123 +1041,420 @@ router.get('/most_viewed', async (req, res) => {
 });
 
 // Send OTP
-router.post('/send-otp', async (req, res) => {
-    const { email } = req.body;
-    const otp = Math.floor(100000 + Math.random() * 900000);
-    const expiry = new Date(Date.now() + 5 * 60 * 1000); // 5 mins Valid
+// router.post('/send-otp', async (req, res) => {
+//     const { email } = req.body;
+//     const otp = Math.floor(100000 + Math.random() * 900000);
+//     const expiry = new Date(Date.now() + 5 * 60 * 1000); // 5 mins Valid
 
-    const emailHtml = `<!DOCTYPE html><html>
-    <body>...
-    <h3>Your OTP to verify your identity on FurnitureStore is: <strong>${otp}</strong></h3>
-    <h4>This OTP will expire in 5 minutes.</h4>
-    ...
-    <p>&copy; @yogi Furni Store. All rights reserved.</p>
-    </body></html>`;
+//     const emailHtml = `<!DOCTYPE html><html>
+//     <body>...
+//     <h3>Your OTP to verify your identity on FurnitureStore is: <strong>${otp}</strong></h3>
+//     <h4>This OTP will expire in 5 minutes.</h4>
+//     ...
+//     <p>&copy; @yogi Furni Store. All rights reserved.</p>
+//     </body></html>`;
+//     try {
+//         await exe('UPDATE users SET otp = ?, otp_created_at = NOW(), otp_expiry = ? WHERE user_email = ?', [otp, expiry, email]);
+//         const transporter = nodemailer.createTransport({
+//             host: config.email.host,
+//             port: 465,
+//             secure: true,
+//             auth: {
+//                 user: config.email.user,
+//                 pass: config.email.pass
+//             }
+//         });
+//         // const transporter = nodemailer.createTransport({
+//         //     host: config.email.host,
+//         //     port: Number(config.email.port),
+//         //     secure: false,
+//         //     auth: {
+//         //         user: config.email.user,
+//         //         pass: config.email.pass
+//         //     }
+//         // });
+
+//         await transporter.sendMail({
+//             from: config.EMAIL_USER,
+//             to: email,
+//             subject: 'Your OTP for Password Change',
+//             html: emailHtml
+//         });
+
+//         res.json({ status: 'success', message: 'OTP sent to email', otp: otp });
+//     } catch (err) {
+//         console.log(err);
+//         res.status(500).json({ status: 'error', message: 'Failed to send OTP' });
+//     }
+// });
+
+
+router.post('/register-send-otp', async (req, res) => {
+
+    const { email } = req.body;
+
     try {
-        await exe('UPDATE users SET otp = ?, otp_created_at = NOW(), otp_expiry = ? WHERE user_email = ?', [otp, expiry, email]);
-        const transporter = nodemailer.createTransport({
-            host: config.email.host,
-            port: 465,
-            secure: true,
-            auth: {
-                user: config.email.user,
-                pass: config.email.pass
-            }
-        });
+
+        if (!email) {
+            return res.status(400).json({
+                status: 'error',
+                message: 'Email is required'
+            });
+        }
+
+        const existingUser = await exe(
+            'SELECT user_id FROM users WHERE user_email = ?',
+            [email]
+        );
+
+        if (existingUser.length > 0) {
+            return res.status(400).json({
+                status: 'error',
+                message: 'Email already registered'
+            });
+        }
+
+        const otp = Math.floor(
+            100000 + Math.random() * 900000
+        );
+
+        const expiry = new Date(
+            Date.now() + 5 * 60 * 1000
+        );
+
+        await exe(`
+            INSERT INTO user_registration_otp
+            (user_email, otp, otp_expiry)
+            VALUES (?, ?, ?)
+            ON DUPLICATE KEY UPDATE
+            otp = VALUES(otp),
+            otp_expiry = VALUES(otp_expiry),
+            is_verified = 0
+        `, [email, otp, expiry]);
+
         // const transporter = nodemailer.createTransport({
         //     host: config.email.host,
-        //     port: Number(config.email.port),
-        //     secure: false,
+        //     port: 465,
+        //     secure: true,
         //     auth: {
         //         user: config.email.user,
         //         pass: config.email.pass
         //     }
         // });
 
-        await transporter.sendMail({
-            from: config.EMAIL_USER,
-            to: email,
-            subject: 'Your OTP for Password Change',
-            html: emailHtml
+        const transporter = nodemailer.createTransport({
+            service: "gmail",
+            auth: {
+                user: config.email.user,
+                pass: config.email.pass
+            }
         });
 
-        res.json({ status: 'success', message: 'OTP sent to email', otp: otp });
+        await transporter.verify();
+
+        await transporter.sendMail({
+            from: `"Furniture Store" <${config.email.user}>`,
+            to: email,
+            subject: 'Registration OTP',
+            html: `
+                <h2>Furniture Store Registration</h2>
+                <h3>Your OTP is ${otp}</h3>
+                <p>Valid for 5 minutes.</p>
+            `
+        });
+
+        res.status(200).json({
+            status: 'success',
+            message: 'OTP sent successfully'
+        });
+
     } catch (err) {
+
         console.log(err);
-        res.status(500).json({ status: 'error', message: 'Failed to send OTP' });
+
+        res.status(500).json({
+            status: 'error',
+            message: 'Failed to send OTP'
+        });
     }
 });
 
-// Verify OTP
-router.post('/verify-otp', async (req, res) => {
+router.post('/register-verify-otp', async (req, res) => {
+
     const { email, otp } = req.body;
+
     try {
 
-        if (!email || !otp) {
-            return res.status(400).json({
-                status: 'error',
-                message: 'Email and OTP are required'
-            });
-        }
-
-        const d = await exe(
-            'SELECT * FROM users WHERE user_email = ?',
+        const data = await exe(
+            'SELECT * FROM user_registration_otp WHERE user_email = ?',
             [email]
         );
 
-        if (d.length === 0) {
-            return res.status(404).json({
+        if (data.length === 0) {
+            return res.status(400).json({
                 status: 'error',
-                message: 'User not found'
+                message: 'OTP not found'
             });
         }
 
-        const user = d[0];
+        const record = data[0];
 
-        if (!user.otp || !user.otp_expiry) {
+        if (String(record.otp) !== String(otp)) {
             return res.status(400).json({
                 status: 'error',
-                message: 'No OTP found. Please request a new OTP.'
+                message: 'Invalid OTP'
             });
         }
 
-        const now = new Date();
-        const otpExpiry = new Date(user.otp_expiry);
-
-        if (String(user.otp) !== String(otp)) {
+        if (new Date() > new Date(record.otp_expiry)) {
             return res.status(400).json({
                 status: 'error',
-                message: 'OTP does not match'
-            });
-        }
-
-        if (now > otpExpiry) {
-            return res.status(400).json({
-                status: 'error',
-                message: 'OTP has expired'
+                message: 'OTP expired'
             });
         }
 
         await exe(
-            'UPDATE users SET otp = NULL, otp_created_at = NULL, otp_expiry = NULL WHERE user_email = ?',
+            'UPDATE user_registration_otp SET is_verified = 1 WHERE user_email = ?',
             [email]
         );
 
-        return res.status(200).json({
+        res.status(200).json({
             status: 'success',
             message: 'OTP verified successfully'
         });
 
     } catch (err) {
 
-        console.error('Error verifying OTP:', err);
+        console.log(err);
 
-        return res.status(500).json({
+        res.status(500).json({
             status: 'error',
-            message: 'Server error'
+            message: 'Server Error'
         });
     }
 });
+
+router.post('/send-otp', async (req, res) => {
+
+    try {
+
+        const { email } = req.body;
+
+        if (!email) {
+            return res.status(400).json({
+                status: "error",
+                message: "Email is required"
+            });
+        }
+
+        const user = await exe(
+            "SELECT * FROM users WHERE user_email=?",
+            [email]
+        );
+
+        if (user.length === 0) {
+            return res.status(404).json({
+                status: "error",
+                message: "User not found"
+            });
+        }
+
+        const otp = Math.floor(
+            100000 + Math.random() * 900000
+        );
+
+        const expiry = new Date(
+            Date.now() + 5 * 60 * 1000
+        );
+
+        await exe(
+            `UPDATE users
+             SET otp=?,
+                 otp_created_at=NOW(),
+                 otp_expiry=?
+             WHERE user_email=?`,
+            [otp, expiry, email]
+        );
+
+        const transporter = nodemailer.createTransport({
+            service: "gmail",
+            auth: {
+                user: config.email.user,
+                pass: config.email.pass
+            }
+        });
+
+        await transporter.verify();
+
+        await transporter.sendMail({
+            from: config.email.user,
+            to: email,
+            subject: "OTP Verification",
+            html: `
+                <h2>Furniture Store</h2>
+                <h3>Your OTP is ${otp}</h3>
+                <p>Valid for 5 minutes</p>
+            `
+        });
+
+        return res.status(200).json({
+            status: "success",
+            message: "OTP sent successfully"
+        });
+
+    } catch (err) {
+
+        console.error(err);
+
+        return res.status(500).json({
+            status: "error",
+            message: err.message
+        });
+    }
+});
+
+// verify OTP
+router.post('/verify-otp', async (req, res) => {
+
+    try {
+
+        const { email, otp } = req.body;
+
+        if (!email || !otp) {
+
+            return res.status(400).json({
+                status: "error",
+                message: "Email and OTP required"
+            });
+        }
+
+        const userData = await exe(
+            "SELECT * FROM users WHERE user_email=?",
+            [email]
+        );
+
+        if (userData.length === 0) {
+
+            return res.status(404).json({
+                status: "error",
+                message: "User not found"
+            });
+        }
+
+        const user = userData[0];
+
+        if (!user.otp) {
+
+            return res.status(400).json({
+                status: "error",
+                message: "Please request OTP first"
+            });
+        }
+
+        if (String(user.otp) !== String(otp)) {
+
+            return res.status(400).json({
+                status: "error",
+                message: "Invalid OTP"
+            });
+        }
+
+        if (new Date() > new Date(user.otp_expiry)) {
+
+            return res.status(400).json({
+                status: "error",
+                message: "OTP expired"
+            });
+        }
+
+        await exe(`UPDATE users SET otp=NULL, otp_created_at=NULL, otp_expiry=NULL WHERE user_email=?`, [email]);
+
+        return res.status(200).json({
+            status: "success",
+            message: "OTP verified successfully"
+        });
+
+    } catch (err) {
+
+        console.error(err);
+
+        return res.status(500).json({
+            status: "error",
+            message: err.message
+        });
+    }
+});
+
+// Verify OTP
+// router.post('/verify-otp', async (req, res) => {
+//     const { email, otp } = req.body;
+//     try {
+
+//         if (!email || !otp) {
+//             return res.status(400).json({
+//                 status: 'error',
+//                 message: 'Email and OTP are required'
+//             });
+//         }
+
+//         const d = await exe(
+//             'SELECT * FROM users WHERE user_email = ?',
+//             [email]
+//         );
+
+//         if (d.length === 0) {
+//             return res.status(404).json({
+//                 status: 'error',
+//                 message: 'User not found'
+//             });
+//         }
+
+//         const user = d[0];
+
+//         if (!user.otp || !user.otp_expiry) {
+//             return res.status(400).json({
+//                 status: 'error',
+//                 message: 'No OTP found. Please request a new OTP.'
+//             });
+//         }
+
+//         const now = new Date();
+//         const otpExpiry = new Date(user.otp_expiry);
+
+//         if (String(user.otp) !== String(otp)) {
+//             return res.status(400).json({
+//                 status: 'error',
+//                 message: 'OTP does not match'
+//             });
+//         }
+
+//         if (now > otpExpiry) {
+//             return res.status(400).json({
+//                 status: 'error',
+//                 message: 'OTP has expired'
+//             });
+//         }
+
+//         await exe(
+//             'UPDATE users SET otp = NULL, otp_created_at = NULL, otp_expiry = NULL WHERE user_email = ?',
+//             [email]
+//         );
+
+//         return res.status(200).json({
+//             status: 'success',
+//             message: 'OTP verified successfully'
+//         });
+
+//     } catch (err) {
+
+//         console.error('Error verifying OTP:', err);
+
+//         return res.status(500).json({
+//             status: 'error',
+//             message: 'Server error'
+//         });
+//     }
+// });
 
 
 export { router as userRoute };

@@ -29,31 +29,24 @@ import mysql from 'mysql2';
 import { promisify } from 'util';
 import { config } from './config/config.js';
 
-// CREATE CONNECTION (OLD STYLE KEPT)
-const conn = mysql.createConnection({
+const pool = mysql.createPool({
     host: config.db.host,
     user: config.db.user,
     password: config.db.password,
     database: config.db.database,
     port: config.db.port,
 
+    waitForConnections: true,
+    connectionLimit: 10,
+    queueLimit: 0,
+
     ssl: {
         rejectUnauthorized: false
     }
 });
 
-// CONNECT
-conn.connect((err) => {
-    if (err) {
-        console.error('Error connecting to database:', err);
-    } else {
-        console.log('Database connected successfully!');
-    }
-});
+const exe = promisify(pool.query).bind(pool);
 
-// PROMISIFY QUERY
-const exe = promisify(conn.query).bind(conn);
+console.log("Database Pool Connected");
 
-// IMPORTANT FIX: proper export
-export { conn, exe };
-
+export { pool, exe };

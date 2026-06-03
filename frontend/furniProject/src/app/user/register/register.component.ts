@@ -33,7 +33,6 @@ export class RegisterComponent {
   confirmPasswordFieldType: string = 'password';
 
   otpSent: boolean = false;
-  backendCameOtp: any;
   otpVerified: boolean = false;
 
   constructor(private userApi: UserApiService, private router: Router, private toastr: ToastrService) { }
@@ -120,92 +119,198 @@ export class RegisterComponent {
 
   // Send Otp on Email
   sendOtp() {
-  if (!this.formData.user_email) {
-    this.toastr.warning(
-      'Please enter your email!',
-      'Warning',
-      {
-        progressBar: true,
-        tapToDismiss: true
+
+    this.validateEmail();
+
+    if (this.emailError) {
+      this.toastr.warning('Please enter a valid email address', 'Validation',
+        {
+          progressBar: true,
+          tapToDismiss: true
+        }
+      );
+      return;
+    }
+
+    this.otpVerified = false;
+
+    this.userApi.registerSendOtp({
+      email: this.formData.user_email
+    }).subscribe({
+      next: (res: any) => {
+        this.otpSent = true;
+        this.toastr.success(res.message || 'OTP sent successfully', 'Success',
+          {
+            progressBar: true,
+            tapToDismiss: true
+          }
+        );
+      },
+
+      error: (err) => {
+        this.otpSent = false;
+        this.otpVerified = false;
+        this.toastr.error(err?.error?.message || 'Failed to send OTP', 'Error',
+          {
+            progressBar: true,
+            tapToDismiss: true
+          }
+        );
       }
-    );
-    return;
+    });
   }
 
-  console.log('Sending OTP to:', this.formData.user_email);
-
-  this.userApi.sendOtp({
-    email: this.formData.user_email
-  }).subscribe(
-    (res: any) => {
-
-      console.log('OTP Response:', res);
-
-      this.backendCameOtp = res.otp;
-      this.otpSent = true;
-
-      this.toastr.success(
-        res.message || 'OTP sent to your email',
-        'Success',
-        {
-          progressBar: true,
-          tapToDismiss: true
-        }
-      );
-    },
-    (err) => {
-
-      console.error('OTP Error:', err);
-      console.error('Error Body:', err.error);
-
-      this.toastr.error(
-        err?.error?.message ||
-        err?.message ||
-        'Error sending OTP',
-        'Error',
-        {
-          progressBar: true,
-          tapToDismiss: true
-        }
-      );
+  verifyOtp() {
+    this.validateEmail();
+    this.validateOtp();
+    if (this.emailError || this.otpError) {
+      return;
     }
-  );
-}
+
+    if (!this.otpSent) {
+      this.toastr.warning('Please send OTP first', 'Warning',
+        {
+          progressBar: true,
+          tapToDismiss: true
+        }
+      );
+      return;
+    }
+
+    this.userApi.registerVerifyOtp({
+      email: this.formData.user_email,
+      otp: this.formData.otp
+    }).subscribe({
+      next: (res: any) => {
+        this.otpVerified = true;
+        this.toastr.success(res.message || 'OTP verified successfully', 'Success',
+          {
+            progressBar: true,
+            tapToDismiss: true
+          }
+        );
+      },
+
+      error: (err) => {
+        this.otpVerified = false;
+        this.toastr.error(err?.error?.message || 'OTP verification failed', 'Error',
+          {
+            progressBar: true,
+            tapToDismiss: true
+          }
+        );
+      }
+    });
+  }
 
   // Register New User
   register() {
-    // Check all validations on submit also
+
     this.validateName();
     this.validateMobile();
     this.validateEmail();
     this.validatePassword();
     this.validateConfirmPassword();
 
-    // If any error, prevent submit
-    if (this.nameError || this.mobileError || this.emailError || this.passwordError || this.confirmPasswordError) {
-      this.toastr.error('Please Enter valid data before submitting.', 'Requirement Not Full fill', { progressBar: true, tapToDismiss: true });
+    if (
+      this.nameError ||
+      this.mobileError ||
+      this.emailError ||
+      this.passwordError ||
+      this.confirmPasswordError
+    ) {
+
+      this.toastr.error(
+        'Please Enter valid data before submitting.',
+        'Requirement Not Full fill',
+        {
+          progressBar: true,
+          tapToDismiss: true
+        }
+      );
+
       return;
     }
 
-    if (this.backendCameOtp == this.formData.otp) {
-      
-      const formData = new FormData();
-      formData.append('user_name', this.formData.user_name);
-      formData.append('user_mobile', this.formData.user_mobile);
-      formData.append('user_email', this.formData.user_email);
-      formData.append('user_password', this.formData.user_password);
-      formData.append('otp', this.formData.otp);
+    // Check OTP verification
+    if (!this.otpVerified) {
 
-      this.userApi.register(this.formData).subscribe((res: any) => {
+      this.toastr.error(
+        'Please verify OTP first',
+        'Error',
+        {
+          progressBar: true,
+          tapToDismiss: true
+        }
+      );
+
+      return;
+    }
+
+    const formData = new FormData();
+
+    formData.append(
+      'user_name',
+      this.formData.user_name
+    );
+
+    formData.append(
+      'user_mobile',
+      this.formData.user_mobile
+    );
+
+    formData.append(
+      'user_email',
+      this.formData.user_email
+    );
+
+    formData.append(
+      'user_password',
+      this.formData.user_password
+    );
+
+    this.userApi.register(formData).subscribe({
+
+      next: (res: any) => {
+
         if (res.status === 'success') {
-          this.toastr.success('User registered successfully!', 'Success', { progressBar: true, tapToDismiss: true });
+
+          this.toastr.success(
+            'User registered successfully!',
+            'Success',
+            {
+              progressBar: true,
+              tapToDismiss: true
+            }
+          );
+
           this.router.navigate(['/user/login']);
         }
-      });
-    }
-    else {
-      this.otpError = 'Please Enter Correct OTP';
-    }
+        else {
+
+          this.toastr.error(
+            res.message || 'Registration Failed',
+            'Error',
+            {
+              progressBar: true,
+              tapToDismiss: true
+            }
+          );
+        }
+      },
+
+      error: (err) => {
+
+        this.toastr.error(
+          err?.error?.message || 'Registration Failed',
+          'Error',
+          {
+            progressBar: true,
+            tapToDismiss: true
+          }
+        );
+      }
+    });
   }
 
 }

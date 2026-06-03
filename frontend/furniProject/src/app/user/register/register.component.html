@@ -130,17 +130,37 @@
                                             </div>
 
                                             <!-- Submit Button -->
-                                            <div
-                                                class="row d-flex justify-content-between align-items-center mt-4 animated fadeIn">
+                                            <div class="row d-flex justify-content-between align-items-center mt-4 animated fadeIn">
                                                 <div class="col-md-12 text-center mb-2">
-                                                    <button (click)="sendOtp()" *ngIf="!otpSent"
+
+                                                    <!-- Send OTP -->
+                                                    <button type="button" (click)="sendOtp()" *ngIf="!otpSent"
                                                         class="btn btn-gradient btn-lg rounded-pill px-5 shadow-sm">
-                                                        <i class="fas fa-user-plus me-2"></i> Send OTP
+
+                                                        <i class="fas fa-paper-plane me-2"></i>
+                                                        Send OTP
+
                                                     </button>
-                                                    <button type="submit"
-                                                        class="btn btn-gradient btn-lg rounded-pill px-5 shadow-sm" *ngIf="otpSent">
-                                                        <i class="fas fa-user-plus me-2"></i> Register Now
+
+                                                    <!-- Verify OTP -->
+                                                    <button type="button" (click)="verifyOtp()"
+                                                        *ngIf="otpSent && !otpVerified"
+                                                        class="btn btn-success btn-lg rounded-pill px-5 shadow-sm">
+
+                                                        <i class="fas fa-check-circle me-2"></i>
+                                                        Verify OTP
+
                                                     </button>
+
+                                                    <!-- Register -->
+                                                    <button type="submit" *ngIf="otpVerified"
+                                                        class="btn btn-gradient btn-lg rounded-pill px-5 shadow-sm">
+
+                                                        <i class="fas fa-user-plus me-2"></i>
+                                                        Register Now
+
+                                                    </button>
+
                                                 </div>
 
                                                 <div class="col-md-12 text-center">

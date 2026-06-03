@@ -25,8 +25,8 @@ export class UserApiService {
 
   // Forgot Password
   resetPassword(data: any) {
-  return this.http.post(`${this.userUrl}/reset-password`, data);
-}
+    return this.http.post(`${this.userUrl}/reset-password`, data);
+  }
 
   // Check if the user is logged in
   isUserLoggedIn(): boolean {
@@ -294,10 +294,20 @@ export class UserApiService {
   sendOtp(data: any) {
     return this.http.post(`${this.userUrl}/send-otp`, data);
   }
-  
+
   //Varify sended OTP
   verifyOtp(data: any) {
     return this.http.post(`${this.userUrl}/verify-otp`, data);
   }
-  
+
+  // Registration OTP Send
+  registerSendOtp(data: any): Observable<any> {
+    return this.http.post(`${this.userUrl}/register-send-otp`, data);
+  }
+
+  // Registration OTP Verify
+  registerVerifyOtp(data: any): Observable<any> {
+    return this.http.post(`${this.userUrl}/register-verify-otp`, data);
+  }
+
 }
