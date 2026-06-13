@@ -200,33 +200,36 @@
                                     </p>
 
                                     <div class="otp-input-group">
-                                        <input type="text" class="otp-input animate__animated animate__bounceIn"
+                                        <input type="text" inputmode="numeric" class="otp-input animate__animated animate__bounceIn"
                                             maxlength="1" pattern="[0-9]" style="animation-delay: 0.1s;"
                                             [(ngModel)]="otp[0]" name="otp1" #otp1="ngModel"
                                             (keyup)="moveToNext(1, $event)">
-                                        <input type="text" class="otp-input animate__animated animate__bounceIn"
+                                        <input type="text" inputmode="numeric" class="otp-input animate__animated animate__bounceIn"
                                             maxlength="1" pattern="[0-9]" style="animation-delay: 0.2s;"
                                             [(ngModel)]="otp[1]" name="otp2" #otp2="ngModel"
                                             (keyup)="moveToNext(2, $event)">
-                                        <input type="text" class="otp-input animate__animated animate__bounceIn"
+                                        <input type="text" inputmode="numeric" class="otp-input animate__animated animate__bounceIn"
                                             maxlength="1" pattern="[0-9]" style="animation-delay: 0.3s;"
                                             [(ngModel)]="otp[2]" name="otp3" #otp3="ngModel"
                                             (keyup)="moveToNext(3, $event)">
-                                        <input type="text" class="otp-input animate__animated animate__bounceIn"
+                                        <input type="text" inputmode="numeric" class="otp-input animate__animated animate__bounceIn"
                                             maxlength="1" pattern="[0-9]" style="animation-delay: 0.4s;"
                                             [(ngModel)]="otp[3]" name="otp4" #otp4="ngModel"
                                             (keyup)="moveToNext(4, $event)">
-                                        <input type="text" class="otp-input animate__animated animate__bounceIn"
+                                        <input type="text" inputmode="numeric" class="otp-input animate__animated animate__bounceIn"
                                             maxlength="1" pattern="[0-9]" style="animation-delay: 0.5s;"
                                             [(ngModel)]="otp[4]" name="otp5" #otp5="ngModel"
                                             (keyup)="moveToNext(5, $event)">
-                                        <input type="text" class="otp-input animate__animated animate__bounceIn"
+                                        <input type="text" inputmode="numeric" class="otp-input animate__animated animate__bounceIn"
                                             maxlength="1" pattern="[0-9]" style="animation-delay: 0.6s;"
                                             [(ngModel)]="otp[5]" name="otp6" #otp6="ngModel">
                                     </div>
 
                                     <div class="resend-otp">
-                                        <p>Didn't receive code? <a href="#" (click)="resendOTP($event)">Resend OTP</a>
+                                        <p>Didn't receive code?
+                                            <a href="javascript:void(0)" (click)="resendOTP($event)">
+                                                Resend OTP
+                                            </a>
                                         </p>
                                     </div>
 

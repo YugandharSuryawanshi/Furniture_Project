@@ -31,7 +31,6 @@ export class RegisterComponent {
   confirmPasswordError: string = '';
   passwordFieldType: string = 'password';
   confirmPasswordFieldType: string = 'password';
-
   otpSent: boolean = false;
   otpVerified: boolean = false;
 
@@ -119,7 +118,6 @@ export class RegisterComponent {
 
   // Send Otp on Email
   sendOtp() {
-
     this.validateEmail();
 
     if (this.emailError) {
@@ -205,7 +203,6 @@ export class RegisterComponent {
 
   // Register New User
   register() {
-
     this.validateName();
     this.validateMobile();
     this.validateEmail();
@@ -219,91 +216,54 @@ export class RegisterComponent {
       this.passwordError ||
       this.confirmPasswordError
     ) {
-
-      this.toastr.error(
-        'Please Enter valid data before submitting.',
-        'Requirement Not Full fill',
+      this.toastr.error('Please Enter valid data before submitting.', 'Requirement Not Full fill',
         {
           progressBar: true,
           tapToDismiss: true
-        }
-      );
-
+        });
       return;
     }
 
-    // Check OTP verification
+    // OTP Verification Required
     if (!this.otpVerified) {
-
-      this.toastr.error(
-        'Please verify OTP first',
-        'Error',
+      this.toastr.error('Please verify OTP first', 'Error',
         {
           progressBar: true,
           tapToDismiss: true
-        }
-      );
-
+        });
       return;
     }
 
-    const formData = new FormData();
+    const registerData = {
+      user_name: this.formData.user_name,
+      user_mobile: this.formData.user_mobile,
+      user_email: this.formData.user_email,
+      user_password: this.formData.user_password
+    };
 
-    formData.append(
-      'user_name',
-      this.formData.user_name
-    );
-
-    formData.append(
-      'user_mobile',
-      this.formData.user_mobile
-    );
-
-    formData.append(
-      'user_email',
-      this.formData.user_email
-    );
-
-    formData.append(
-      'user_password',
-      this.formData.user_password
-    );
-
-    this.userApi.register(formData).subscribe({
+    this.userApi.register(registerData).subscribe({
 
       next: (res: any) => {
 
         if (res.status === 'success') {
-
-          this.toastr.success(
-            'User registered successfully!',
-            'Success',
+          this.toastr.success('User registered successfully!', 'Success',
             {
               progressBar: true,
               tapToDismiss: true
-            }
-          );
-
+            });
           this.router.navigate(['/user/login']);
         }
         else {
-
-          this.toastr.error(
-            res.message || 'Registration Failed',
-            'Error',
+          this.toastr.error(res.message || 'Registration Failed', 'Error',
             {
               progressBar: true,
               tapToDismiss: true
-            }
-          );
+            });
         }
       },
 
       error: (err) => {
-
-        this.toastr.error(
-          err?.error?.message || 'Registration Failed',
-          'Error',
+        this.toastr.error(err?.error?.message || 'Registration Failed', 'Error',
           {
             progressBar: true,
             tapToDismiss: true

@@ -29,34 +29,81 @@ export class ForgotPasswordComponent {
   });
 
   otpForm = this.fb.group({
-    otp: ['', [Validators.required]]
+    otp: [
+      '',
+      [
+        Validators.required,
+        Validators.pattern(/^[0-9]{6}$/)
+      ]
+    ]
   });
 
   passwordForm = this.fb.group({
-    password: ['', [Validators.required, Validators.minLength(6)]],
-    confirmPassword: ['', [Validators.required]]
+    password: [
+      '',
+      [
+        Validators.required,
+        Validators.minLength(8)
+      ]
+    ],
+    confirmPassword: ['', Validators.required]
   });
 
-  // Send Otp
+  // Send OTP
   sendOtp() {
-    if (this.emailForm.invalid) return;
+    if (this.emailForm.invalid) {
+      this.toastr.warning('Please enter a valid email address', 'Validation',
+        {
+          progressBar: true,
+          tapToDismiss: true
+        }
+      );
 
-    this.email = this.emailForm.value.email!;
+      return;
+    }
 
-    const data = { email: this.email };
+    this.email = this.emailForm.value.email || '';
+
+    const data = {
+      email: this.email
+    };
 
     this.userApi.sendOtp(data).subscribe({
-      next: () => {
-        this.toastr.success('OTP sent');
+
+      next: (res: any) => {
+        this.toastr.success(res?.message || 'OTP sent successfully', 'Success',
+          {
+            progressBar: true,
+            tapToDismiss: true
+          }
+        );
+
         this.step = 2;
       },
-      error: () => this.toastr.error('Failed to send OTP')
+
+      error: (err: any) => {
+        this.toastr.error(err?.error?.message || 'Failed to send OTP', 'Error',
+          {
+            progressBar: true,
+            tapToDismiss: true
+          }
+        );
+      }
     });
   }
 
-  // Verify Otp
+  // Verify OTP
   verifyOtp() {
-    if (this.otpForm.invalid) return;
+    if (this.otpForm.invalid) {
+      this.toastr.warning('Please enter a valid 6 digit OTP', 'Validation',
+        {
+          progressBar: true,
+          tapToDismiss: true
+        }
+      );
+
+      return;
+    }
 
     const data = {
       email: this.email,
@@ -64,22 +111,51 @@ export class ForgotPasswordComponent {
     };
 
     this.userApi.verifyOtp(data).subscribe({
-      next: () => {
-        this.toastr.success('OTP verified');
+
+      next: (res: any) => {
+        this.toastr.success(res?.message || 'OTP verified successfully', 'Success',
+          {
+            progressBar: true,
+            tapToDismiss: true
+          }
+        );
+
         this.step = 3;
       },
-      error: () => this.toastr.error('Invalid OTP')
+
+      error: (err: any) => {
+        this.toastr.error(err?.error?.message || 'Invalid OTP', 'Error',
+          {
+            progressBar: true,
+            tapToDismiss: true
+          }
+        );
+      }
     });
   }
 
   // Reset Password
   resetPassword() {
-    if (this.passwordForm.invalid) return;
+    if (this.passwordForm.invalid) {
+      this.toastr.warning('Please enter valid password details', 'Validation',
+        {
+          progressBar: true,
+          tapToDismiss: true
+        }
+      );
+      return;
+    }
 
-    const { password, confirmPassword } = this.passwordForm.value;
+    const password = this.passwordForm.value.password;
+    const confirmPassword = this.passwordForm.value.confirmPassword;
 
     if (password !== confirmPassword) {
-      this.toastr.error('Passwords do not match');
+      this.toastr.error('Passwords do not match', 'Error',
+        {
+          progressBar: true,
+          tapToDismiss: true
+        }
+      );
       return;
     }
 
@@ -89,12 +165,24 @@ export class ForgotPasswordComponent {
     };
 
     this.userApi.resetPassword(data).subscribe({
-      next: () => {
-        this.toastr.success('Password reset successful');
+      next: (res: any) => {
+        this.toastr.success(res?.message || 'Password reset successfully', 'Success',
+          {
+            progressBar: true,
+            tapToDismiss: true
+          }
+        );
         this.router.navigate(['/user/login']);
       },
-      error: () => this.toastr.error('Reset failed')
+
+      error: (err: any) => {
+        this.toastr.error(err?.error?.message || 'Password reset failed', 'Error',
+          {
+            progressBar: true,
+            tapToDismiss: true
+          }
+        );
+      }
     });
   }
-
 }

@@ -13,7 +13,7 @@
 //     EMAIL_PORT: process.env.EMAIL_PORT,
 //     EMAIL_USER: process.env.EMAIL_USER,
 //     EMAIL_PASS: process.env.EMAIL_PASS,
-    
+
 //     db: {
 //         host: process.env.DB_HOST,
 //         user: process.env.DB_USER,
@@ -27,32 +27,34 @@
 
 
 
-
 import dotenv from 'dotenv';
 
 dotenv.config({ path: './config/config.env' });
 
 export const config = {
+
     server: {
-        port: process.env.DB_PORT || 4000
+        port: process.env.PORT || 4000
     },
 
+    // User JWT
     userJwtSecret: process.env.USER_JWT_SECRET,
     userJwtExpire: process.env.USER_JWT_EXPIRE,
 
+    // Admin JWT
     adminJwtSecret: process.env.ADMIN_JWT_SECRET,
     adminJwtExpire: process.env.ADMIN_JWT_EXPIRE,
 
+    // Razorpay
     razorpayKeyId: process.env.RAZORPAY_KEY_ID,
     razorpayKeySecret: process.env.RAZORPAY_KEY_SECRET,
 
-    email: {
-        host: process.env.EMAIL_HOST,
-        port: process.env.EMAIL_PORT,
-        user: process.env.EMAIL_USER,
-        pass: process.env.EMAIL_PASS
+    // Resend
+    resend: {
+        apiKey: process.env.RESEND_API_KEY
     },
 
+    // Database
     db: {
         host: process.env.DB_HOST,
         user: process.env.DB_USER,

@@ -1,7 +1,7 @@
 import bcrypt from 'bcryptjs';
 import express from 'express';
 import jwt from 'jsonwebtoken';
-import nodemailer from 'nodemailer';
+import { sendEmail } from '../utils/sendEmail.js';
 import { config } from '../config/config.js';
 import { exe } from '../connection.js';
 const router = express.Router();
@@ -26,21 +26,43 @@ function authenticateToken(req, res, next) {
     });
 }
 
-//Register New Admin
+// Register New Admin
 router.post('/adminRegister', async (req, res) => {
-    const { admin_name, admin_mobile, admin_email, admin_password, otp } = req.body;
-    const expiry = new Date(Date.now() + 5 * 60 * 1000); // 5 mins Valid
-
+    const { admin_name, admin_mobile, admin_email, admin_password } = req.body;
     try {
+        // Validation
+        if (!admin_name || !admin_mobile || !admin_email || !admin_password) {
+            return res.status(400).json({ status: 'error', message: 'All fields are required' });
+        }
+
+        // Check OTP Verification
+        const otpData = await exe(`SELECT * FROM admin_registration_otp WHERE admin_email = ? AND is_verified = 1`, [admin_email]);
+
+        if (otpData.length === 0) {
+            return res.status(400).json({ status: 'error', message: 'Please verify OTP first' });
+        }
+
+        // Check Existing Admin
+        const existingAdmin = await exe(`SELECT admin_id FROM admins WHERE admin_email = ?`, [admin_email]);
+
+        if (existingAdmin.length > 0) {
+            return res.status(400).json({ status: 'error', message: 'Admin already registered' });
+        }
+
+        // Hash Password
         const hashedPassword = await bcrypt.hash(admin_password, 10);
 
-        const sql = `INSERT INTO admins (admin_name, admin_mobile, admin_email, admin_password, otp, otp_created_at, otp_expiry) VALUES (?, ?, ?, ?, ?, NOW(), ?)`;
-        const data = await exe(sql, [admin_name, admin_mobile, admin_email, hashedPassword, otp, expiry]);
+        // Insert Admin
+        await exe(`INSERT INTO admins(admin_name,admin_mobile,admin_email,admin_password)VALUES (?, ?, ?, ?)`,
+            [admin_name, admin_mobile, admin_email, hashedPassword]);
 
-        res.status(201).send({ message: 'Admin registered successfully!', data });
+        // Remove OTP Record
+        await exe(`DELETE FROM admin_registration_otp WHERE admin_email = ?`, [admin_email]);
+
+        return res.status(201).json({ status: 'success', message: 'Admin registered successfully' });
     } catch (err) {
-        console.error(err);
-        res.status(500).send({ error: 'An error occurred while registering admin.' });
+        console.error('Admin Registration Error:', err);
+        return res.status(500).json({ status: 'error', message: err.message || 'Registration Failed' });
     }
 });
 
@@ -79,35 +101,54 @@ router.post('/adminLogin', async (req, res) => {
     const { admin_email, admin_password, otp } = req.body;
 
     if (!admin_email || !admin_password || !otp) {
-        return res.status(400).send({ message: 'Email and password Both Fields are required' });
+        return res.status(400).json({ status: 'error', message: 'Email, Password and OTP are required' });
     }
 
-    const sql = 'SELECT * FROM admins WHERE admin_email = ?';
     try {
-        const results = await exe(sql, [admin_email]);
+        const results = await exe('SELECT * FROM admins WHERE admin_email = ?', [admin_email]);
 
         if (results.length === 0) {
-            return res.status(401).send({ message: 'Invalid Email or password' });
+            return res.status(401).json({ status: 'error', message: 'Invalid Email or Password' });
         }
 
         const admin = results[0];
         const isPasswordValid = await bcrypt.compare(admin_password, admin.admin_password);
 
-        if (admin.otp == otp) {
-            const adminToken = jwt.sign(
-                { id: admin.admin_id, admin_email: admin.admin_email },
-                config.adminJwtSecret,
-                { expiresIn: config.adminJwtExpire }
-            );
-            res.status(200).send({ message: 'Login successful', success: true, adminToken });
-        }
-        else {
-            return res.status(401).send({ message: 'Invalid OTP' });
+        if (!isPasswordValid) {
+            return res.status(401).json({ status: 'error', message: 'Invalid Email or Password' });
         }
 
+        if (!admin.otp || !admin.otp_expiry) {
+            return res.status(400).json({ status: 'error', message: 'Please request a new OTP' });
+        }
+
+        if (String(admin.otp) !== String(otp)) {
+            return res.status(400).json({ status: 'error', message: 'Invalid OTP' });
+        }
+
+        if (new Date() > new Date(admin.otp_expiry)) {
+            return res.status(400).json({ status: 'error', message: 'OTP has expired' });
+        }
+
+        await exe(`UPDATE admins SET otp = NULL, otp_created_at = NULL, otp_expiry = NULL WHERE admin_email = ?`, [admin_email]);
+
+        const adminToken = jwt.sign(
+            {
+                id: admin.admin_id,
+                admin_email: admin.admin_email
+            },
+            config.adminJwtSecret,
+            {
+                expiresIn: config.adminJwtExpire
+            }
+        );
+
+        return res.status(200).json({ status: 'success', success: true, message: 'Login successful', adminToken });
     } catch (err) {
         console.error(err);
-        return res.status(500).send({ message: 'Database error' });
+        return res.status(500).json({
+            status: 'error', message: 'Database error'
+        });
     }
 });
 
@@ -1647,6 +1688,81 @@ router.post('/reset-password', async (req, res) => {
         res.status(500).json({ status: 'error', message: 'Server error' });
     }
 });
+
+// Admin Register
+router.post('/admin-register-send-otp', async (req, res) => {
+    const { email } = req.body;
+    try {
+        if (!email) {
+            return res.status(400).json({ status: 'error', message: 'Email is required' });
+        }
+
+        const existingAdmin = await exe('SELECT admin_id FROM admins WHERE admin_email = ?', [email]);
+
+        if (existingAdmin.length > 0) {
+            return res.status(400).json({ status: 'error', message: 'Email already registered' });
+        }
+
+        const otp = Math.floor(100000 + Math.random() * 900000).toString();
+        const expiry = new Date(Date.now() + 5 * 60 * 1000);
+
+        await exe(`INSERT INTO admin_registration_otp(admin_email,otp,otp_expiry,is_verified)VALUES (?, ?, ?, 0)
+            ON DUPLICATE KEY UPDATE otp = VALUES(otp), otp_expiry = VALUES(otp_expiry), is_verified = 0`,
+            [email, otp, expiry]);
+
+        await sendEmail(
+            email,
+            'Admin Registration OTP',
+            `
+            <div style="font-family:Arial,sans-serif;padding:20px;">
+                <h2>Furniture Store Admin Registration</h2>
+                <p>Your OTP is:</p>
+                <h1 style="color:#0d6efd;">
+                    ${otp}
+                </h1>
+                <p>
+                    Valid for 5 minutes.
+                </p>
+            </div>
+            `
+        );
+        return res.status(200).json({ status: 'success', message: 'OTP sent successfully' });
+    } catch (err) {
+        console.error(err);
+        return res.status(500).json({ status: 'error', message: err.message });
+    }
+});
+
+router.post('/admin-register-verify-otp', async (req, res) => {
+    const { email, otp } = req.body;
+    try {
+        if (!email || !otp) {
+            return res.status(400).json({ status: 'error', message: 'Email and OTP are required' });
+        }
+
+        const data = await exe('SELECT * FROM admin_registration_otp WHERE admin_email = ?', [email]);
+
+        if (data.length === 0) {
+            return res.status(400).json({ status: 'error', message: 'OTP not found' });
+        }
+
+        const record = data[0];
+        if (String(record.otp) !== String(otp)) {
+            return res.status(400).json({ status: 'error', message: 'Invalid OTP' });
+        }
+
+        if (new Date() > new Date(record.otp_expiry)) {
+            return res.status(400).json({ status: 'error', message: 'OTP expired' });
+        }
+
+        await exe(`UPDATE admin_registration_otp SET is_verified = 1 WHERE admin_email = ?`, [email]);
+        return res.status(200).json({ status: 'success', message: 'OTP verified successfully' });
+    } catch (err) {
+        console.error(err);
+        return res.status(500).json({ status: 'error', message: err.message });
+    }
+});
+
 
 
 export { router as adminRoute };

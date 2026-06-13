@@ -12,38 +12,62 @@ import { AdminApiService } from '../../service/admin-api.service';
   templateUrl: './register.component.html',
   styleUrl: './register.component.css'
 })
-
 export class RegisterComponent {
+
   currentStep = 1;
+
   admin_name = '';
   admin_mobile = '';
   admin_email = '';
   admin_password = '';
   confirmPassword = '';
+
   secret_key = '';
   predifined_secret_key = 'yogi_marathe';
-  loading = false;
-  otp: string[] = ['', '', '', '', '', ''];
-  generatedOTP = '';
 
-  constructor(private router: Router, private adminApi: AdminApiService, private toastr: ToastrService) {
-  }
+  loading = false;
+
+  otp: string[] = ['', '', '', '', '', ''];
+
+  otpVerified = false;
+
+  constructor(
+    private router: Router,
+    private adminApi: AdminApiService,
+    private toastr: ToastrService
+  ) { }
+
+  // Send Otp
 
   generateOTP() {
-    this.adminApi.sendOtp({ email: this.admin_email }).subscribe((res: any) => {
-      this.generatedOTP = res.otp;
-      this.toastr.success('Otp is sent', 'Success', {
-        progressBar: true, disableTimeOut: false, closeButton: true
-      });
-    },
-      err => {
-        this.toastr.error(err.error.message || 'Failed to resend OTP', 'Error', { progressBar: true, tapToDismiss: true });
-      });
+    this.adminApi.adminRegisterSendOtp({
+      email: this.admin_email
+    }).subscribe({
+
+      next: (res: any) => {
+        this.toastr.success(res.message || 'OTP sent successfully', 'Success',
+          {
+            progressBar: true,
+            closeButton: true
+          }
+        );
+      },
+
+      error: (err: any) => {
+        this.toastr.error(err?.error?.message || 'Failed to send OTP', 'Error',
+          {
+            progressBar: true,
+            closeButton: true
+          }
+        );
+      }
+    });
   }
 
-  // Navigation between steps
+  // Next Step
+
   nextStep() {
-    this.currentStep++;
+    this.currentStep = 2;
     this.generateOTP();
   }
 
@@ -51,105 +75,201 @@ export class RegisterComponent {
     this.currentStep = step;
   }
 
-  //validation
+  // Step 1 Validation
+
   validateStep1() {
     if (!this.nameValid()) {
-      this.toastr.error('Please enter a valid name (min 3 characters, letters only)', 'Error' , { progressBar: true, disableTimeOut: false, closeButton: true });
+      this.toastr.error('Please enter a valid name (minimum 3 characters)', 'Error',
+        {
+          progressBar: true,
+          closeButton: true
+        }
+      );
       return;
     }
 
     if (!this.mobileValid()) {
-      this.toastr.error('Please enter a valid 10-digit mobile number', 'Error', { progressBar: true, disableTimeOut: false, closeButton: true });
+      this.toastr.error('Please enter a valid 10-digit mobile number', 'Error',
+        {
+          progressBar: true,
+          closeButton: true
+        }
+      );
       return;
     }
 
     if (!this.emailValid()) {
-      this.toastr.error('Please enter a valid email address', 'Error', { progressBar: true, disableTimeOut: false, closeButton: true });
+      this.toastr.error('Please enter a valid email address', 'Error',
+        {
+          progressBar: true,
+          closeButton: true
+        }
+      );
       return;
     }
 
     if (!this.passwordValid()) {
-      this.toastr.error('Password must contain: 8+ chars, 1 uppercase, 1 lowercase, 1 number', 'Error', { progressBar: true, disableTimeOut: false, closeButton: true });
+      this.toastr.error('Password must contain 8+ characters, 1 uppercase, 1 lowercase and 1 number', 'Error',
+        {
+          progressBar: true,
+          closeButton: true
+        }
+      );
       return;
     }
 
     if (!this.passwordsMatch()) {
-      this.toastr.error('Password and Confirm Password do not match', 'Error', { progressBar: true, disableTimeOut: false, closeButton: true });
+      this.toastr.error('Password and Confirm Password do not match', 'Error',
+        {
+          progressBar: true,
+          closeButton: true
+        }
+      );
       return;
     }
 
     if (this.secret_key.length < 8) {
-      this.toastr.error('Secret key must be at least 8 characters', 'Error', { progressBar: true, disableTimeOut: false, closeButton: true });
+      this.toastr.error('Secret key must be at least 8 characters', 'Error',
+        {
+          progressBar: true,
+          closeButton: true
+        }
+      );
       return;
     }
 
     if (this.secret_key !== this.predifined_secret_key) {
-      this.toastr.warning('Invalid Secret Key. Please try again or contact the administrator.', 'Warning', { progressBar: true, disableTimeOut: false, closeButton: true });
+      this.toastr.warning('Invalid Secret Key', 'Warning',
+        {
+          progressBar: true,
+          closeButton: true
+        }
+      );
+
       return;
     }
 
-    // If all validations are done then, proceed to send OTP
     this.nextStep();
   }
 
-  //validation (OTP)
+  // Verify Otp
   validateOTP() {
     const enteredOTP = this.otp.join('');
 
     if (enteredOTP.length !== 6) {
-      this.toastr.error('Please enter the complete 6-digit OTP', 'Error', { progressBar: true, disableTimeOut: false, closeButton: true });
+      this.toastr.error('Please enter complete 6 digit OTP', 'Error',
+        {
+          progressBar: true,
+          closeButton: true
+        }
+      );
       return;
     }
 
-    // If OTP is valid, proceed to register
-    if (enteredOTP == this.generatedOTP) {
-      this.register();
-    }
-    else {
-      this.toastr.error('Invalid OTP. Please try again.', 'Error', { progressBar: true, disableTimeOut: false, closeButton: true });
-    }
-  }
-
-  // Final registration
-  register() {
     this.loading = true;
-    this.adminApi.adminRegister({
-      admin_name: this.admin_name,
-      admin_mobile: this.admin_mobile,
-      admin_email: this.admin_email,
-      admin_password: this.admin_password,
-      otp: this.generatedOTP
+
+    this.adminApi.adminRegisterVerifyOtp({
+      email: this.admin_email,
+      otp: enteredOTP
     }).subscribe({
       next: (res: any) => {
-        this.toastr.success('Registered Successfully! Login Now...', 'Success',
-          { progressBar: true, disableTimeOut: false, closeButton: true });
-        this.router.navigate(['/admin/login']);
         this.loading = false;
+        this.otpVerified = true;
+
+        this.toastr.success(res.message || 'OTP verified successfully', 'Success',
+          {
+            progressBar: true,
+            closeButton: true
+          }
+        );
+
+        this.register();
       },
+
       error: (err: any) => {
-        console.error(err);
-        this.toastr.error(err.error.message || 'Registration failed. Please try again.', 'Error', { progressBar: true, tapToDismiss: true });
         this.loading = false;
-        this.backToStep(1);
+        this.otpVerified = false;
+
+        this.toastr.error(err?.error?.message || 'Invalid OTP', 'Error',
+          {
+            progressBar: true,
+            closeButton: true
+          }
+        );
       }
     });
   }
 
-  // Helper methods
+  // Register
+
+  register() {
+    if (!this.otpVerified) {
+      this.toastr.error('Please verify OTP first', 'Error',
+        {
+          progressBar: true,
+          closeButton: true
+        });
+      return;
+    }
+
+    this.loading = true;
+
+    this.adminApi.adminRegister({
+      admin_name: this.admin_name,
+      admin_mobile: this.admin_mobile,
+      admin_email: this.admin_email,
+      admin_password: this.admin_password
+    }).subscribe({
+      next: (res: any) => {
+        this.loading = false;
+
+        this.toastr.success(res.message || 'Admin registered successfully', 'Success',
+          {
+            progressBar: true,
+            closeButton: true
+          }
+        );
+        this.router.navigate(['/admin/login']);
+      },
+
+      error: (err: any) => {
+        this.loading = false;
+        this.toastr.error(err?.error?.message || 'Registration failed', 'Error',
+          {
+            progressBar: true,
+            closeButton: true
+          }
+        );
+      }
+    });
+  }
+
+  // Resend Otp
+
   resendOTP(event: Event) {
     event.preventDefault();
     this.generateOTP();
-    this.toastr.success('New OTP has been sent to your email', 'Success', { progressBar: true, disableTimeOut: false, closeButton: true });
+
+    this.toastr.success('OTP resent successfully', 'Success',
+      {
+        progressBar: true,
+        closeButton: true
+      }
+    );
   }
+
+  // OTP Input Auto Focus
 
   moveToNext(index: number, event: any) {
     const nextInput = event.target.nextElementSibling;
+
     if (event.target.value.length === 1 && nextInput) {
       nextInput.focus();
     }
   }
 
-  // Validation methods
+  // Validations
+
   nameValid() {
     return /^[A-Za-z ]{3,}$/.test(this.admin_name);
   }
@@ -159,7 +279,7 @@ export class RegisterComponent {
   }
 
   emailValid() {
-    return /^[a-z0-9._%+-]+@[a-z0-9.-]+\.[a-z]{2,4}$/.test(this.admin_email);
+    return /^[a-z0-9._%+-]+@[a-z0-9.-]+\.[a-z]{2,4}$/i.test(this.admin_email);
   }
 
   passwordValid() {
@@ -179,7 +299,8 @@ export class RegisterComponent {
 
   onEmailInput() {
     if (this.admin_email) {
-      this.admin_email = this.admin_email.toLowerCase();
+      this.admin_email =
+        this.admin_email.toLowerCase();
     }
   }
 }

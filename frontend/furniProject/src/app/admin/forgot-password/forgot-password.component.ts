@@ -3,7 +3,7 @@ import { FormBuilder, FormsModule, ReactiveFormsModule, Validators } from '@angu
 import { ToastrService } from 'ngx-toastr';
 import { AdminApiService } from '../../service/admin-api.service';
 import { CommonModule } from '@angular/common';
-import { Router, RouterLink, RouterModule } from '@angular/router';
+import { Router, RouterModule } from '@angular/router';
 
 @Component({
   selector: 'app-forgot-password',
@@ -13,8 +13,13 @@ import { Router, RouterLink, RouterModule } from '@angular/router';
   styleUrl: './forgot-password.component.css'
 })
 export class ForgotPasswordComponent {
+
   step = 1;
   email: string = '';
+  loading = false;
+
+  passwordFieldType: string = 'password';
+  confirmPasswordFieldType: string = 'password';
 
   constructor(
     private fb: FormBuilder,
@@ -30,83 +35,257 @@ export class ForgotPasswordComponent {
 
   // OTP Form
   otpForm = this.fb.group({
-    otp: ['', [Validators.required]]
+    otp: [
+      '',
+      [
+        Validators.required,
+        Validators.pattern(/^\d{6}$/)
+      ]
+    ]
   });
 
   // Password Form
   passwordForm = this.fb.group({
-    password: ['', [Validators.required, Validators.minLength(6)]],
+    password: [
+      '',
+      [
+        Validators.required,
+        Validators.pattern(/^(?=.*\d)(?=.*[a-z])(?=.*[A-Z]).{8,}$/)
+      ]
+    ],
     confirmPassword: ['', [Validators.required]]
   });
 
-  // Send Otp
-  sendOtp() {
-    if (this.emailForm.invalid) return;
-    this.email = this.emailForm.value.email!;
-    const data = {
-      email: this.email
-    };
+  // Password Visibility
+  togglePasswordVisibility() {
+    this.passwordFieldType =
+      this.passwordFieldType === 'password'
+        ? 'text'
+        : 'password';
+  }
 
-    this.adminApi.sendOtp(data).subscribe({
-      next: () => {
-        this.toastr.success('OTP sent successfully');
+  toggleConfirmPasswordVisibility() {
+    this.confirmPasswordFieldType =
+      this.confirmPasswordFieldType === 'password'
+        ? 'text'
+        : 'password';
+  }
+
+  // Send OTP
+  sendOtp() {
+
+    if (this.emailForm.invalid) {
+
+      this.toastr.error(
+        'Please enter a valid email address',
+        'Validation Error'
+      );
+
+      return;
+    }
+
+    this.email = this.emailForm.value.email!;
+
+    this.loading = true;
+
+    this.adminApi.sendOtp({
+      email: this.email
+    }).subscribe({
+
+      next: (res: any) => {
+
+        this.loading = false;
+
+        this.toastr.success(
+          res?.message || 'OTP sent successfully',
+          'Success',
+          {
+            progressBar: true,
+            closeButton: true
+          }
+        );
+
         this.step = 2;
       },
-      error: () => {
-        this.toastr.error('Failed to send OTP');
+
+      error: (err) => {
+
+        this.loading = false;
+
+        this.toastr.error(
+          err?.error?.message || 'Failed to send OTP',
+          'Error',
+          {
+            progressBar: true,
+            closeButton: true
+          }
+        );
       }
     });
   }
 
-  // Verify Otp
+  // Resend OTP
+  resendOtp() {
+
+    this.adminApi.sendOtp({
+      email: this.email
+    }).subscribe({
+
+      next: (res: any) => {
+
+        this.toastr.success(
+          res?.message || 'OTP resent successfully',
+          'Success',
+          {
+            progressBar: true,
+            closeButton: true
+          }
+        );
+      },
+
+      error: (err) => {
+
+        this.toastr.error(
+          err?.error?.message || 'Failed to resend OTP',
+          'Error',
+          {
+            progressBar: true,
+            closeButton: true
+          }
+        );
+      }
+    });
+  }
+
+  // Verify OTP
   verifyOtp() {
-    if (this.otpForm.invalid) return;
+
+    if (this.otpForm.invalid) {
+
+      this.toastr.error(
+        'Please enter a valid 6-digit OTP',
+        'Validation Error'
+      );
+
+      return;
+    }
 
     const data = {
       email: this.email,
       otp: this.otpForm.value.otp
     };
 
+    this.loading = true;
+
     this.adminApi.verifyOtp(data).subscribe({
-      next: () => {
-        this.toastr.success('OTP verified');
+
+      next: (res: any) => {
+
+        this.loading = false;
+
+        this.toastr.success(
+          res?.message || 'OTP verified successfully',
+          'Success',
+          {
+            progressBar: true,
+            closeButton: true
+          }
+        );
+
         this.step = 3;
       },
-      error: () => {
-        this.toastr.error('Invalid OTP');
+
+      error: (err) => {
+
+        this.loading = false;
+
+        this.toastr.error(
+          err?.error?.message || 'Invalid OTP',
+          'Error',
+          {
+            progressBar: true,
+            closeButton: true
+          }
+        );
       }
     });
   }
 
   // Reset Password
   resetPassword() {
-    if (this.passwordForm.invalid) return;
 
-    const { password, confirmPassword } = this.passwordForm.value;
+    if (this.passwordForm.invalid) {
 
-    if (password !== confirmPassword) {
-      this.toastr.error('Passwords do not match');
+      this.toastr.error(
+        'Password must contain 8+ characters, 1 uppercase, 1 lowercase and 1 number',
+        'Validation Error'
+      );
+
       return;
     }
 
-    this.adminApi.resetPassword(this.email, password!).subscribe({
-      next: () => {
-        this.toastr.success('Password reset successful');
+    const { password, confirmPassword } =
+      this.passwordForm.value;
+
+    if (password !== confirmPassword) {
+
+      this.toastr.error(
+        'Passwords do not match',
+        'Validation Error'
+      );
+
+      return;
+    }
+
+    this.loading = true;
+
+    this.adminApi.resetPassword(
+      this.email,
+      password!
+    ).subscribe({
+
+      next: (res: any) => {
+
+        this.loading = false;
+
+        this.toastr.success(
+          res?.message || 'Password reset successful',
+          'Success',
+          {
+            progressBar: true,
+            closeButton: true
+          }
+        );
+
         this.resetAll();
+
         this.router.navigate(['/admin/login']);
       },
-      error: () => {
-        this.toastr.error('Reset failed');
+
+      error: (err) => {
+
+        this.loading = false;
+
+        this.toastr.error(
+          err?.error?.message || 'Reset failed',
+          'Error',
+          {
+            progressBar: true,
+            closeButton: true
+          }
+        );
       }
     });
   }
 
   // Reset All
   resetAll() {
+
     this.step = 1;
+    this.email = '';
+
     this.emailForm.reset();
     this.otpForm.reset();
     this.passwordForm.reset();
   }
-
 }

@@ -36,15 +36,23 @@ export class AdminApiService {
     return this.http.delete(`${this.adminUrl}/delete_user/${id}`);
   }
 
-  // Register a new admin
+  // Register New Admin
   adminRegister(admin: {
     admin_name: string;
     admin_mobile: any;
     admin_email: any;
-    admin_password: string,
-    otp: any
+    admin_password: string;
   }): Observable<any> {
     return this.http.post(`${this.adminUrl}/adminRegister`, admin);
+  }
+
+  // Admin Login
+  adminLogin(admin: {
+    admin_email: any;
+    admin_password: any;
+    otp: any;
+  }): Observable<any> {
+    return this.http.post(`${this.adminUrl}/adminLogin`, admin);
   }
 
   // Admin login method
@@ -53,14 +61,6 @@ export class AdminApiService {
     admin_password: any
   }): Observable<any> {
     return this.http.post(`${this.adminUrl}/verifyAdminPass`, admin);
-  }
-
-  adminLogin(admin: {
-    admin_email: any;
-    admin_password: any,
-    otp: any
-  }): Observable<any> {
-    return this.http.post(`${this.adminUrl}/adminLogin`, admin);
   }
 
   // ✅ RESET PASSWORD
@@ -75,21 +75,21 @@ export class AdminApiService {
 
   // Admin logout method
   adminLogout() {
-      const token = this.getToken();
-      const headers = new HttpHeaders().set('Authorization', `Bearer ${token}`);
+    const token = this.getToken();
+    const headers = new HttpHeaders().set('Authorization', `Bearer ${token}`);
 
-      this.http.post(`${this.adminUrl}/admin/adminLogout`, {}, { headers }).subscribe({
-        next: () => {
-          this.clearToken();
-          localStorage.removeItem(this.tokenKey);
-          this.router.navigate(['/admin/login']);
-        },
-        error: (err) => {
-          this.clearToken();
-          localStorage.removeItem(this.tokenKey); // Remove token from localStorage
-          this.router.navigate(['/admin/login']); // Redirect to login page
-        }
-      });
+    this.http.post(`${this.adminUrl}/admin/adminLogout`, {}, { headers }).subscribe({
+      next: () => {
+        this.clearToken();
+        localStorage.removeItem(this.tokenKey);
+        this.router.navigate(['/admin/login']);
+      },
+      error: (err) => {
+        this.clearToken();
+        localStorage.removeItem(this.tokenKey); // Remove token from localStorage
+        this.router.navigate(['/admin/login']); // Redirect to login page
+      }
+    });
   }
 
   // Fetch or getting admin Details
@@ -427,23 +427,43 @@ export class AdminApiService {
   }
 
   //Get All Wishlist
-  getAllWishlist()
-  {
+  getAllWishlist() {
     return this.http.get(`${this.adminUrl}/get_wishlist`);
   }
 
   // Delete Selected Wishlist product
-  deleteWishlistItem(id: any)
-  {
+  deleteWishlistItem(id: any) {
     return this.http.delete(`${this.adminUrl}/delete_wishlist_item/${id}`);
   }
 
-  sendOtp(data: any) {
+  // Forgot Password - Send OTP
+  sendOtp(data: any): Observable<any> {
     return this.http.post(`${this.adminUrl}/send-otp`, data);
   }
-  
-  verifyOtp(data: any) {
+
+  // Forgot Password - Verify OTP
+  verifyOtp(data: any): Observable<any> {
     return this.http.post(`${this.adminUrl}/verify-otp`, data);
+  }
+
+  // ===============================
+  // ADMIN REGISTRATION OTP
+  // ===============================
+
+  // Send Registration OTP
+  adminRegisterSendOtp(data: any): Observable<any> {
+    return this.http.post(
+      `${this.adminUrl}/admin-register-send-otp`,
+      data
+    );
+  }
+
+  // Verify Registration OTP
+  adminRegisterVerifyOtp(data: any): Observable<any> {
+    return this.http.post(
+      `${this.adminUrl}/admin-register-verify-otp`,
+      data
+    );
   }
 
 }

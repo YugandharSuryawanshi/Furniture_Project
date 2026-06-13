@@ -13,19 +13,39 @@ export class UserApiService {
   private userUrl = 'https://furniture-backend-ssa5.onrender.com';
   constructor(private http: HttpClient, private router: Router) { }
 
-  //Register Route
-  register(formData: FormData): Observable<any> {
-    return this.http.post(`${this.userUrl}/register`, formData)
+  // Register User
+  register(data: any): Observable<any> {
+    return this.http.post(`${this.userUrl}/register`, data);
   }
 
   // User Login
-  userLogin(formData: any): Observable<any> {
-    return this.http.post(`${this.userUrl}/login`, formData);
+  userLogin(data: any): Observable<any> {
+    return this.http.post(`${this.userUrl}/login`, data);
   }
 
   // Forgot Password
-  resetPassword(data: any) {
+  resetPassword(data: any): Observable<any> {
     return this.http.post(`${this.userUrl}/reset-password`, data);
+  }
+
+  // Send OTP (Forgot Password)
+  sendOtp(data: any): Observable<any> {
+    return this.http.post(`${this.userUrl}/send-otp`, data);
+  }
+
+  // Verify OTP (Forgot Password)
+  verifyOtp(data: any): Observable<any> {
+    return this.http.post(`${this.userUrl}/verify-otp`, data);
+  }
+
+  // Registration OTP Send
+  registerSendOtp(data: any): Observable<any> {
+    return this.http.post(`${this.userUrl}/register-send-otp`, data);
+  }
+
+  // Registration OTP Verify
+  registerVerifyOtp(data: any): Observable<any> {
+    return this.http.post(`${this.userUrl}/register-verify-otp`, data);
   }
 
   // Check if the user is logged in
@@ -290,24 +310,5 @@ export class UserApiService {
     return this.http.get(`${this.userUrl}/most_viewed?limit=${limit}`);
   }
 
-  // Send OTP
-  sendOtp(data: any) {
-    return this.http.post(`${this.userUrl}/send-otp`, data);
-  }
-
-  //Varify sended OTP
-  verifyOtp(data: any) {
-    return this.http.post(`${this.userUrl}/verify-otp`, data);
-  }
-
-  // Registration OTP Send
-  registerSendOtp(data: any): Observable<any> {
-    return this.http.post(`${this.userUrl}/register-send-otp`, data);
-  }
-
-  // Registration OTP Verify
-  registerVerifyOtp(data: any): Observable<any> {
-    return this.http.post(`${this.userUrl}/register-verify-otp`, data);
-  }
 
 }

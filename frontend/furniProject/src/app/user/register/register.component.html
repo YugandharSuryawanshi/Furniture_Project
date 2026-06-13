@@ -9,106 +9,182 @@
                             <div class="col-md-12">
                                 <div class="card glass-card animated fadeInUp">
                                     <div class="card-body p-4">
-                                        <h1 class="text-center mb-4 fw-bold text-gradient">Create Account</h1>
-                                        <p class="text-center text-muted mb-4">Join us! It takes only a few seconds</p>
+
+                                        <h1 class="text-center mb-4 fw-bold text-gradient">
+                                            Create Account
+                                        </h1>
+
+                                        <p class="text-center text-muted mb-4">
+                                            Join us! It takes only a few seconds
+                                        </p>
 
                                         <form (ngSubmit)="register()" class="needs-validation" novalidate>
+
                                             <div class="row">
 
                                                 <!-- Full Name -->
                                                 <div class="col-md-4">
                                                     <div class="form-group mb-4">
-                                                        <label class="form-label fw-medium">Full Name</label>
+
+                                                        <label class="form-label fw-medium">
+                                                            Full Name
+                                                        </label>
+
                                                         <div class="input-group input-group-lg animated fadeIn">
                                                             <input type="text" class="form-control"
                                                                 [(ngModel)]="formData.user_name" name="user_name"
                                                                 (blur)="validateName()" (input)="validateName()"
                                                                 placeholder="ABC XYZ" required />
-                                                            <span class="input-group-text"><i
-                                                                    class="fas fa-user"></i></span>
+
+                                                            <span class="input-group-text">
+                                                                <i class="fas fa-user"></i>
+                                                            </span>
                                                         </div>
-                                                        <small *ngIf="nameError" class="text-warning">{{ nameError
-                                                            }}</small>
+
+                                                        <small *ngIf="nameError" class="text-warning">
+                                                            {{ nameError }}
+                                                        </small>
+
                                                     </div>
                                                 </div>
 
-                                                <!-- Mobile Number -->
+                                                <!-- Mobile -->
                                                 <div class="col-md-4">
                                                     <div class="form-group mb-4">
-                                                        <label class="form-label fw-medium">Mobile Number</label>
+
+                                                        <label class="form-label fw-medium">
+                                                            Mobile Number
+                                                        </label>
+
                                                         <div class="input-group input-group-lg animated fadeIn">
                                                             <input type="text" class="form-control"
                                                                 [(ngModel)]="formData.user_mobile" name="user_mobile"
                                                                 (blur)="validateMobile()" (input)="validateMobile()"
                                                                 placeholder="+1 234 567 890" required />
-                                                            <span class="input-group-text"><i
-                                                                    class="fas fa-mobile-alt"></i></span>
+
+                                                            <span class="input-group-text">
+                                                                <i class="fas fa-mobile-alt"></i>
+                                                            </span>
                                                         </div>
-                                                        <small *ngIf="mobileError" class="text-warning">{{ mobileError
-                                                            }}</small>
+
+                                                        <small *ngIf="mobileError" class="text-warning">
+                                                            {{ mobileError }}
+                                                        </small>
+
                                                     </div>
                                                 </div>
 
                                                 <!-- Email -->
                                                 <div class="col-md-4">
                                                     <div class="form-group mb-4">
-                                                        <label class="form-label fw-medium">Email Address</label>
+
+                                                        <label class="form-label fw-medium">
+                                                            Email Address
+                                                        </label>
+
                                                         <div class="input-group input-group-lg animated fadeIn">
                                                             <input type="email" class="form-control"
                                                                 [(ngModel)]="formData.user_email" name="user_email"
                                                                 (blur)="validateEmail()" (input)="validateEmail()"
                                                                 placeholder="name@example.com" required />
-                                                            <span class="input-group-text"><i
-                                                                    class="fas fa-envelope"></i></span>
+
+                                                            <span class="input-group-text">
+                                                                <i class="fas fa-envelope"></i>
+                                                            </span>
                                                         </div>
-                                                        <small *ngIf="emailError" class="text-warning">{{ emailError
-                                                            }}</small>
+
+                                                        <small *ngIf="emailError" class="text-warning">
+                                                            {{ emailError }}
+                                                        </small>
+
                                                     </div>
                                                 </div>
 
                                                 <!-- OTP -->
                                                 <div class="col-md-4">
                                                     <div class="form-group mb-4">
-                                                        <label class="form-label fw-medium">OTP</label>
+
+                                                        <label class="form-label fw-medium">
+                                                            OTP
+                                                        </label>
+
                                                         <div class="input-group input-group-lg animated fadeIn">
-                                                            <input type="password" class="form-control"
-                                                                [(ngModel)]="formData.otp" name="otp"
+
+                                                            <input type="text" class="form-control"
+                                                                [(ngModel)]="formData.otp" name="otp" maxlength="6"
                                                                 (blur)="validateOtp()" (input)="validateOtp()"
-                                                                placeholder="123456" required />
-                                                            <span class="input-group-text"><i
-                                                                    class="fas fa-envelope"></i></span>
+                                                                placeholder="Enter OTP" required />
+
+                                                            <span class="input-group-text">
+                                                                <i class="fas fa-key"></i>
+                                                            </span>
+
                                                         </div>
-                                                        <small *ngIf="otpError" class="text-warning">{{ otpError
-                                                            }}</small>
+
+                                                        <small *ngIf="otpError" class="text-warning">
+                                                            {{ otpError }}
+                                                        </small>
+
+                                                        <!-- Resend OTP -->
+                                                        <div class="mt-2" *ngIf="otpSent && !otpVerified">
+
+                                                            <a href="javascript:void(0)"
+                                                                class="text-primary text-decoration-none"
+                                                                (click)="sendOtp()">
+
+                                                                Resend OTP
+
+                                                            </a>
+
+                                                        </div>
+
                                                     </div>
                                                 </div>
 
                                                 <!-- Password -->
                                                 <div class="col-md-4">
                                                     <div class="form-group mb-4">
-                                                        <label class="form-label fw-medium">Password</label>
+
+                                                        <label class="form-label fw-medium">
+                                                            Password
+                                                        </label>
+
                                                         <div class="input-group input-group-lg animated fadeIn">
+
                                                             <input [type]="passwordFieldType" class="form-control"
                                                                 [(ngModel)]="formData.user_password"
                                                                 name="user_password" (blur)="validatePassword()"
                                                                 (input)="validatePassword()" placeholder="********"
                                                                 required />
+
                                                             <button type="button"
                                                                 class="input-group-text toggle-password"
                                                                 (click)="togglePasswordVisibility()">
+
                                                                 <i class="fas fa-eye"></i>
+
                                                             </button>
+
                                                         </div>
-                                                        <small *ngIf="passwordError" class="text-warning">{{
-                                                            passwordError }}</small>
+
+                                                        <small *ngIf="passwordError" class="text-warning">
+                                                            {{ passwordError }}
+                                                        </small>
+
                                                     </div>
                                                 </div>
 
                                                 <!-- Confirm Password -->
                                                 <div class="col-md-4 animated fadeIn confirm-password">
+
                                                     <div class="form-group mb-4">
-                                                        <label class="form-label fw-medium">Confirm Password</label>
+
+                                                        <label class="form-label fw-medium">
+                                                            Confirm Password
+                                                        </label>
+
                                                         <div class="input-group input-group-lg">
+
                                                             <input [type]="confirmPasswordFieldType"
                                                                 class="form-control"
                                                                 [(ngModel)]="formData.confirmPassword"
@@ -116,21 +192,31 @@
                                                                 (blur)="validateConfirmPassword()"
                                                                 (input)="validateConfirmPassword()"
                                                                 placeholder="********" required />
+
                                                             <button type="button"
                                                                 class="input-group-text toggle-password"
                                                                 (click)="toggleConfirmPasswordVisibility()">
+
                                                                 <i class="fas fa-eye"></i>
+
                                                             </button>
+
                                                         </div>
-                                                        <small *ngIf="confirmPasswordError" class="text-warning">{{
-                                                            confirmPasswordError }}</small>
+
+                                                        <small *ngIf="confirmPasswordError" class="text-warning">
+                                                            {{ confirmPasswordError }}
+                                                        </small>
+
                                                     </div>
+
                                                 </div>
 
                                             </div>
 
-                                            <!-- Submit Button -->
-                                            <div class="row d-flex justify-content-between align-items-center mt-4 animated fadeIn">
+                                            <!-- Buttons -->
+                                            <div
+                                                class="row d-flex justify-content-between align-items-center mt-4 animated fadeIn">
+
                                                 <div class="col-md-12 text-center mb-2">
 
                                                     <!-- Send OTP -->
@@ -164,13 +250,22 @@
                                                 </div>
 
                                                 <div class="col-md-12 text-center">
-                                                    <span class="text-muted small">Already Registered?</span>
+
+                                                    <span class="text-muted small">
+                                                        Already Registered?
+                                                    </span>
+
                                                     <a routerLink="/user/login"
                                                         class="text-decoration-none fw-medium ms-1 loginHere">
+
                                                         Login Here
+
                                                     </a>
+
                                                 </div>
+
                                             </div>
+
                                         </form>
 
                                     </div>

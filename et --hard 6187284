@@ -1,0 +1,8 @@
+[33m52c8e11[m[33m ([m[1;36mHEAD[m[33m -> [m[1;32mmain[m[33m)[m HEAD@{0}: reset: moving to HEAD~2
+[33m6187284[m[33m ([m[1;31morigin/main[m[33m, [m[1;31morigin/HEAD[m[33m, [m[1;32mbackup-main[m[33m)[m HEAD@{1}: commit: fix
+[33mc6ef8f4[m HEAD@{2}: commit: Update Otp Facility and add registration with otp validation
+[33m52c8e11[m[33m ([m[1;36mHEAD[m[33m -> [m[1;32mmain[m[33m)[m HEAD@{3}: commit: Try TO fix OTP varification
+[33m6623bb6[m HEAD@{4}: commit: OTP Validation are added In deployed code
+[33m6f5f32d[m HEAD@{5}: commit: Code Ready to Deploy
+[33mdb73c23[m HEAD@{6}: commit: Original Code run on Local Host
+[33m5543a69[m HEAD@{7}: commit: Update Packages
