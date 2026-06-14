@@ -50,6 +50,7 @@ import { config } from './config/config.js';
 import { exe } from './connection.js'; // ✅ KEEP YOUR OLD SYSTEM
 import { adminRoute } from './routers/admin_route.js';
 import { userRoute } from './routers/user_route.js';
+import { transporter } from './utils/sendEmail.js';
 
 dotenv.config({ path: './config/config.env' });
 
@@ -96,6 +97,16 @@ app.get("/db-test", async (req, res) => {
 // Routes
 app.use('/', userRoute);
 app.use('/admin', adminRoute);
+
+transporter.verify(function (error, success) {
+
+    if (error) {
+        console.log("SMTP ERROR:", error);
+    } else {
+        console.log("SMTP READY");
+    }
+
+});
 
 // Server
 const PORT = config.server.port;
