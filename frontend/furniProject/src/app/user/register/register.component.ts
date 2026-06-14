@@ -13,6 +13,7 @@ import { ToastrService } from 'ngx-toastr';
   styleUrl: './register.component.css'
 })
 export class RegisterComponent {
+
   formData: any = {
     user_name: '',
     user_mobile: '',
@@ -22,187 +23,280 @@ export class RegisterComponent {
     otp: ''
   };
 
-  // Input Fields error messages
-  nameError: string = '';
-  mobileError: string = '';
-  emailError: string = '';
-  passwordError: string = '';
-  otpError: string = '';
-  confirmPasswordError: string = '';
-  passwordFieldType: string = 'password';
-  confirmPasswordFieldType: string = 'password';
-  otpSent: boolean = false;
-  otpVerified: boolean = false;
+  nameError = '';
+  mobileError = '';
+  emailError = '';
+  passwordError = '';
+  otpError = '';
+  confirmPasswordError = '';
 
-  constructor(private userApi: UserApiService, private router: Router, private toastr: ToastrService) { }
+  passwordFieldType = 'password';
+  confirmPasswordFieldType = 'password';
 
-  // Name validation
+  otpSent = false;
+  otpVerified = false;
+  loading = false;
+
+  constructor(
+    private userApi: UserApiService,
+    private router: Router,
+    private toastr: ToastrService
+  ) { }
+
+  // =========================
+  // NAME VALIDATION
+  // =========================
+
   validateName() {
-    const statusName = /^[A-Za-z ]{3,}$/;
+
+    const pattern = /^[A-Za-z ]{3,}$/;
+
     if (!this.formData.user_name) {
       this.nameError = 'Full name is required.';
-    } else if (!statusName.test(this.formData.user_name)) {
+    }
+    else if (!pattern.test(this.formData.user_name)) {
       this.nameError = 'Name must be at least 3 letters long.';
-    } else {
+    }
+    else {
       this.nameError = '';
     }
   }
 
-  // Mobile validation
+  // =========================
+  // MOBILE VALIDATION
+  // =========================
+
   validateMobile() {
-    const statusMob = /^[0-9]{10}$/;
+
+    const pattern = /^[0-9]{10}$/;
+
     if (!this.formData.user_mobile) {
       this.mobileError = 'Mobile number is required.';
-    } else if (!statusMob.test(this.formData.user_mobile)) {
+    }
+    else if (!pattern.test(this.formData.user_mobile)) {
       this.mobileError = 'Enter a valid 10-digit mobile number.';
-    } else {
+    }
+    else {
       this.mobileError = '';
     }
   }
 
-  // Email validation
+  // =========================
+  // EMAIL VALIDATION
+  // =========================
+
   validateEmail() {
-    const statusEmail = /^[a-z0-9._%+-]+@[a-z0-9.-]+\.[a-z]{2,4}$/;
+
+    if (this.formData.user_email) {
+      this.formData.user_email =
+        this.formData.user_email.toLowerCase().trim();
+    }
+
+    const pattern =
+      /^[a-z0-9._%+-]+@[a-z0-9.-]+\.[a-z]{2,4}$/;
+
     if (!this.formData.user_email) {
       this.emailError = 'Email is required.';
-    } else if (!statusEmail.test(this.formData.user_email)) {
+    }
+    else if (!pattern.test(this.formData.user_email)) {
       this.emailError = 'Enter a valid email address.';
-    } else {
+    }
+    else {
       this.emailError = '';
     }
   }
 
-  // OTP validation
+  // =========================
+  // OTP VALIDATION
+  // =========================
+
   validateOtp() {
-    const statusOtp = /^\d{6}$/;
+
+    const pattern = /^\d{6}$/;
+
     if (!this.formData.otp) {
       this.otpError = 'OTP is required.';
-    } else if (!statusOtp.test(this.formData.otp)) {
-      this.otpError = 'Enter a valid OTP'
-    } else {
-      this.otpError = ''
+    }
+    else if (!pattern.test(this.formData.otp)) {
+      this.otpError = 'Enter a valid 6-digit OTP.';
+    }
+    else {
+      this.otpError = '';
     }
   }
 
-  // Password validation
+  // =========================
+  // PASSWORD VALIDATION
+  // =========================
+
   validatePassword() {
-    const statusPass = /^(?=.*\d)(?=.*[a-z])(?=.*[A-Z]).{8,}$/;
+
+    const pattern =
+      /^(?=.*\d)(?=.*[a-z])(?=.*[A-Z]).{8,}$/;
+
     if (!this.formData.user_password) {
       this.passwordError = 'Password is required.';
-    } else if (!statusPass.test(this.formData.user_password)) {
-      this.passwordError = 'At least 8 characters, 1 uppercase letter, and 1 number.';
-    } else {
+    }
+    else if (!pattern.test(this.formData.user_password)) {
+      this.passwordError =
+        'At least 8 characters, 1 uppercase letter and 1 number.';
+    }
+    else {
       this.passwordError = '';
     }
   }
 
-  // Confirm Password validation
+  // =========================
+  // CONFIRM PASSWORD
+  // =========================
+
   validateConfirmPassword() {
+
     if (!this.formData.confirmPassword) {
-      this.confirmPasswordError = 'Confirm password is required.';
-    } else if (this.formData.user_password !== this.formData.confirmPassword) {
-      this.confirmPasswordError = 'Passwords do not match.';
-    } else {
+      this.confirmPasswordError =
+        'Confirm password is required.';
+    }
+    else if (
+      this.formData.user_password !==
+      this.formData.confirmPassword
+    ) {
+      this.confirmPasswordError =
+        'Passwords do not match.';
+    }
+    else {
       this.confirmPasswordError = '';
     }
   }
 
-  // Toggle password visibility
+  // =========================
+  // PASSWORD VISIBILITY
+  // =========================
+
   togglePasswordVisibility() {
-    this.passwordFieldType = this.passwordFieldType === 'password' ? 'text' : 'password';
+    this.passwordFieldType =
+      this.passwordFieldType === 'password'
+        ? 'text'
+        : 'password';
   }
 
   toggleConfirmPasswordVisibility() {
-    this.confirmPasswordFieldType = this.confirmPasswordFieldType === 'password' ? 'text' : 'password';
+    this.confirmPasswordFieldType =
+      this.confirmPasswordFieldType === 'password'
+        ? 'text'
+        : 'password';
   }
 
-  // Send Otp on Email
+  // =========================
+  // SEND OTP
+  // =========================
+
   sendOtp() {
+
     this.validateEmail();
 
     if (this.emailError) {
-      this.toastr.warning('Please enter a valid email address', 'Validation',
-        {
-          progressBar: true,
-          tapToDismiss: true
-        }
+
+      this.toastr.warning(
+        'Please enter a valid email address',
+        'Validation'
       );
+
       return;
     }
 
+    this.loading = true;
     this.otpVerified = false;
 
     this.userApi.registerSendOtp({
       email: this.formData.user_email
     }).subscribe({
+
       next: (res: any) => {
+
+        this.loading = false;
         this.otpSent = true;
-        this.toastr.success(res.message || 'OTP sent successfully', 'Success',
-          {
-            progressBar: true,
-            tapToDismiss: true
-          }
+
+        this.toastr.success(
+          res.message || 'OTP sent successfully',
+          'Success'
         );
       },
 
-      error: (err) => {
+      error: (err: any) => {
+
+        this.loading = false;
         this.otpSent = false;
         this.otpVerified = false;
-        this.toastr.error(err?.error?.message || 'Failed to send OTP', 'Error',
-          {
-            progressBar: true,
-            tapToDismiss: true
-          }
+
+        this.toastr.error(
+          err?.error?.message || 'Failed to send OTP',
+          'Error'
         );
       }
     });
   }
 
+  // =========================
+  // VERIFY OTP
+  // =========================
+
   verifyOtp() {
+
     this.validateEmail();
     this.validateOtp();
+
     if (this.emailError || this.otpError) {
       return;
     }
 
     if (!this.otpSent) {
-      this.toastr.warning('Please send OTP first', 'Warning',
-        {
-          progressBar: true,
-          tapToDismiss: true
-        }
+
+      this.toastr.warning(
+        'Please send OTP first',
+        'Warning'
       );
+
       return;
     }
+
+    this.loading = true;
 
     this.userApi.registerVerifyOtp({
       email: this.formData.user_email,
       otp: this.formData.otp
     }).subscribe({
+
       next: (res: any) => {
+
+        this.loading = false;
         this.otpVerified = true;
-        this.toastr.success(res.message || 'OTP verified successfully', 'Success',
-          {
-            progressBar: true,
-            tapToDismiss: true
-          }
+
+        this.toastr.success(
+          res.message || 'OTP verified successfully',
+          'Success'
         );
       },
 
-      error: (err) => {
+      error: (err: any) => {
+
+        this.loading = false;
         this.otpVerified = false;
-        this.toastr.error(err?.error?.message || 'OTP verification failed', 'Error',
-          {
-            progressBar: true,
-            tapToDismiss: true
-          }
+
+        this.toastr.error(
+          err?.error?.message ||
+          'OTP verification failed',
+          'Error'
         );
       }
     });
   }
 
-  // Register New User
+  // =========================
+  // REGISTER
+  // =========================
+
   register() {
+
     this.validateName();
     this.validateMobile();
     this.validateEmail();
@@ -216,23 +310,26 @@ export class RegisterComponent {
       this.passwordError ||
       this.confirmPasswordError
     ) {
-      this.toastr.error('Please Enter valid data before submitting.', 'Requirement Not Full fill',
-        {
-          progressBar: true,
-          tapToDismiss: true
-        });
+
+      this.toastr.error(
+        'Please enter valid information',
+        'Validation Error'
+      );
+
       return;
     }
 
-    // OTP Verification Required
     if (!this.otpVerified) {
-      this.toastr.error('Please verify OTP first', 'Error',
-        {
-          progressBar: true,
-          tapToDismiss: true
-        });
+
+      this.toastr.error(
+        'Please verify OTP first',
+        'Error'
+      );
+
       return;
     }
+
+    this.loading = true;
 
     const registerData = {
       user_name: this.formData.user_name,
@@ -245,32 +342,26 @@ export class RegisterComponent {
 
       next: (res: any) => {
 
-        if (res.status === 'success') {
-          this.toastr.success('User registered successfully!', 'Success',
-            {
-              progressBar: true,
-              tapToDismiss: true
-            });
-          this.router.navigate(['/user/login']);
-        }
-        else {
-          this.toastr.error(res.message || 'Registration Failed', 'Error',
-            {
-              progressBar: true,
-              tapToDismiss: true
-            });
-        }
+        this.loading = false;
+
+        this.toastr.success(
+          res.message || 'User registered successfully',
+          'Success'
+        );
+
+        this.router.navigate(['/user/login']);
       },
 
-      error: (err) => {
-        this.toastr.error(err?.error?.message || 'Registration Failed', 'Error',
-          {
-            progressBar: true,
-            tapToDismiss: true
-          }
+      error: (err: any) => {
+
+        this.loading = false;
+
+        this.toastr.error(
+          err?.error?.message ||
+          'Registration failed',
+          'Error'
         );
       }
     });
   }
-
 }

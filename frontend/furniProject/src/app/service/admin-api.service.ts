@@ -446,24 +446,15 @@ export class AdminApiService {
     return this.http.post(`${this.adminUrl}/verify-otp`, data);
   }
 
-  // ===============================
-  // ADMIN REGISTRATION OTP
-  // ===============================
-
   // Send Registration OTP
   adminRegisterSendOtp(data: any): Observable<any> {
-    return this.http.post(
-      `${this.adminUrl}/admin-register-send-otp`,
-      data
-    );
+    return this.http.post(`${this.adminUrl}/admin-register-send-otp`, data);
   }
 
   // Verify Registration OTP
+
   adminRegisterVerifyOtp(data: any): Observable<any> {
-    return this.http.post(
-      `${this.adminUrl}/admin-register-verify-otp`,
-      data
-    );
+    return this.http.post(`${this.adminUrl}/admin-register-verify-otp`, data);
   }
 
 }

@@ -1,5 +1,11 @@
 import { Component } from '@angular/core';
-import { FormBuilder, FormsModule, ReactiveFormsModule, Validators } from '@angular/forms';
+import {
+  FormBuilder,
+  FormsModule,
+  ReactiveFormsModule,
+  Validators
+} from '@angular/forms';
+
 import { ToastrService } from 'ngx-toastr';
 import { AdminApiService } from '../../service/admin-api.service';
 import { CommonModule } from '@angular/common';
@@ -8,18 +14,25 @@ import { Router, RouterModule } from '@angular/router';
 @Component({
   selector: 'app-forgot-password',
   standalone: true,
-  imports: [CommonModule, FormsModule, ReactiveFormsModule, RouterModule],
+  imports: [
+    CommonModule,
+    FormsModule,
+    ReactiveFormsModule,
+    RouterModule
+  ],
   templateUrl: './forgot-password.component.html',
   styleUrl: './forgot-password.component.css'
 })
 export class ForgotPasswordComponent {
 
   step = 1;
-  email: string = '';
+
+  email = '';
+
   loading = false;
 
-  passwordFieldType: string = 'password';
-  confirmPasswordFieldType: string = 'password';
+  passwordFieldType = 'password';
+  confirmPasswordFieldType = 'password';
 
   constructor(
     private fb: FormBuilder,
@@ -28,12 +41,20 @@ export class ForgotPasswordComponent {
     private router: Router
   ) { }
 
-  // Email Form
+  // EMAIL FORM
+
   emailForm = this.fb.group({
-    email: ['', [Validators.required, Validators.email]]
+    email: [
+      '',
+      [
+        Validators.required,
+        Validators.email
+      ]
+    ]
   });
 
-  // OTP Form
+  // OTP FORM
+
   otpForm = this.fb.group({
     otp: [
       '',
@@ -44,20 +65,28 @@ export class ForgotPasswordComponent {
     ]
   });
 
-  // Password Form
+  // PASSWORD FORM
+
   passwordForm = this.fb.group({
     password: [
       '',
       [
         Validators.required,
-        Validators.pattern(/^(?=.*\d)(?=.*[a-z])(?=.*[A-Z]).{8,}$/)
+        Validators.pattern(
+          /^(?=.*\d)(?=.*[a-z])(?=.*[A-Z]).{8,}$/
+        )
       ]
     ],
-    confirmPassword: ['', [Validators.required]]
+    confirmPassword: [
+      '',
+      [Validators.required]
+    ]
   });
 
-  // Password Visibility
+  // PASSWORD VISIBILITY
+
   togglePasswordVisibility() {
+
     this.passwordFieldType =
       this.passwordFieldType === 'password'
         ? 'text'
@@ -65,26 +94,39 @@ export class ForgotPasswordComponent {
   }
 
   toggleConfirmPasswordVisibility() {
+
     this.confirmPasswordFieldType =
       this.confirmPasswordFieldType === 'password'
         ? 'text'
         : 'password';
   }
 
-  // Send OTP
+  // SEND OTP
+
   sendOtp() {
+
+    if (this.loading) {
+      return;
+    }
 
     if (this.emailForm.invalid) {
 
       this.toastr.error(
         'Please enter a valid email address',
-        'Validation Error'
+        'Validation Error',
+        {
+          progressBar: true,
+          closeButton: true
+        }
       );
 
       return;
     }
 
-    this.email = this.emailForm.value.email!;
+    this.email =
+      this.emailForm.value.email!
+        .trim()
+        .toLowerCase();
 
     this.loading = true;
 
@@ -108,12 +150,13 @@ export class ForgotPasswordComponent {
         this.step = 2;
       },
 
-      error: (err) => {
+      error: (err: any) => {
 
         this.loading = false;
 
         this.toastr.error(
-          err?.error?.message || 'Failed to send OTP',
+          err?.error?.message ||
+          'Failed to send OTP',
           'Error',
           {
             progressBar: true,
@@ -124,8 +167,15 @@ export class ForgotPasswordComponent {
     });
   }
 
-  // Resend OTP
+  // RESEND OTP
+
   resendOtp() {
+
+    if (this.loading) {
+      return;
+    }
+
+    this.loading = true;
 
     this.adminApi.sendOtp({
       email: this.email
@@ -133,8 +183,11 @@ export class ForgotPasswordComponent {
 
       next: (res: any) => {
 
+        this.loading = false;
+
         this.toastr.success(
-          res?.message || 'OTP resent successfully',
+          res?.message ||
+          'OTP resent successfully',
           'Success',
           {
             progressBar: true,
@@ -143,10 +196,13 @@ export class ForgotPasswordComponent {
         );
       },
 
-      error: (err) => {
+      error: (err: any) => {
+
+        this.loading = false;
 
         this.toastr.error(
-          err?.error?.message || 'Failed to resend OTP',
+          err?.error?.message ||
+          'Failed to resend OTP',
           'Error',
           {
             progressBar: true,
@@ -157,14 +213,23 @@ export class ForgotPasswordComponent {
     });
   }
 
-  // Verify OTP
+  // VERIFY OTP
+
   verifyOtp() {
+
+    if (this.loading) {
+      return;
+    }
 
     if (this.otpForm.invalid) {
 
       this.toastr.error(
-        'Please enter a valid 6-digit OTP',
-        'Validation Error'
+        'Please enter a valid 6 digit OTP',
+        'Validation Error',
+        {
+          progressBar: true,
+          closeButton: true
+        }
       );
 
       return;
@@ -177,61 +242,79 @@ export class ForgotPasswordComponent {
 
     this.loading = true;
 
-    this.adminApi.verifyOtp(data).subscribe({
+    this.adminApi.verifyOtp(data)
+      .subscribe({
 
-      next: (res: any) => {
+        next: (res: any) => {
 
-        this.loading = false;
+          this.loading = false;
 
-        this.toastr.success(
-          res?.message || 'OTP verified successfully',
-          'Success',
-          {
-            progressBar: true,
-            closeButton: true
-          }
-        );
+          this.toastr.success(
+            res?.message ||
+            'OTP verified successfully',
+            'Success',
+            {
+              progressBar: true,
+              closeButton: true
+            }
+          );
 
-        this.step = 3;
-      },
+          this.step = 3;
+        },
 
-      error: (err) => {
+        error: (err: any) => {
 
-        this.loading = false;
+          this.loading = false;
 
-        this.toastr.error(
-          err?.error?.message || 'Invalid OTP',
-          'Error',
-          {
-            progressBar: true,
-            closeButton: true
-          }
-        );
-      }
-    });
+          this.toastr.error(
+            err?.error?.message ||
+            'Invalid OTP',
+            'Error',
+            {
+              progressBar: true,
+              closeButton: true
+            }
+          );
+        }
+      });
   }
 
-  // Reset Password
+  // RESET PASSWORD
+
   resetPassword() {
+
+    if (this.loading) {
+      return;
+    }
 
     if (this.passwordForm.invalid) {
 
       this.toastr.error(
         'Password must contain 8+ characters, 1 uppercase, 1 lowercase and 1 number',
-        'Validation Error'
+        'Validation Error',
+        {
+          progressBar: true,
+          closeButton: true
+        }
       );
 
       return;
     }
 
-    const { password, confirmPassword } =
-      this.passwordForm.value;
+    const {
+      password,
+      confirmPassword
+    } = this.passwordForm.value;
 
     if (password !== confirmPassword) {
 
       this.toastr.error(
         'Passwords do not match',
-        'Validation Error'
+        'Validation Error',
+        {
+          progressBar: true,
+          closeButton: true
+        }
       );
 
       return;
@@ -249,7 +332,8 @@ export class ForgotPasswordComponent {
         this.loading = false;
 
         this.toastr.success(
-          res?.message || 'Password reset successful',
+          res?.message ||
+          'Password reset successful',
           'Success',
           {
             progressBar: true,
@@ -259,15 +343,18 @@ export class ForgotPasswordComponent {
 
         this.resetAll();
 
-        this.router.navigate(['/admin/login']);
+        this.router.navigate([
+          '/admin/login'
+        ]);
       },
 
-      error: (err) => {
+      error: (err: any) => {
 
         this.loading = false;
 
         this.toastr.error(
-          err?.error?.message || 'Reset failed',
+          err?.error?.message ||
+          'Reset failed',
           'Error',
           {
             progressBar: true,
@@ -278,10 +365,12 @@ export class ForgotPasswordComponent {
     });
   }
 
-  // Reset All
+  // RESET FORM
+
   resetAll() {
 
     this.step = 1;
+
     this.email = '';
 
     this.emailForm.reset();

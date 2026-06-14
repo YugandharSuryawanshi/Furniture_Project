@@ -19,6 +19,7 @@ export class AdminLoginComponent {
   otp = '';
 
   loading = false;
+
   emailTouched = false;
   passwordTouched = false;
 
@@ -29,9 +30,12 @@ export class AdminLoginComponent {
   ) { }
 
   togglePasswordVisibility() {
-    const passwordField = document.getElementById('admin_password');
+
+    const passwordField =
+      document.getElementById('admin_password');
 
     if (passwordField) {
+
       const type =
         passwordField.getAttribute('type') === 'password'
           ? 'text'
@@ -42,9 +46,12 @@ export class AdminLoginComponent {
   }
 
   toggleOtpVisibility() {
-    const otpField = document.getElementById('otp');
+
+    const otpField =
+      document.getElementById('otp');
 
     if (otpField) {
+
       const type =
         otpField.getAttribute('type') === 'password'
           ? 'text'
@@ -55,17 +62,20 @@ export class AdminLoginComponent {
   }
 
   emailValid(): boolean {
+
     const emailPattern =
-      /^[a-z0-9._%+-]+@[a-z0-9.-]+\.[a-z]{2,4}$/;
+      /^[a-z0-9._%+-]+@[a-z0-9.-]+\.[a-z]{2,4}$/i;
 
     return emailPattern.test(this.admin_email);
   }
 
   onEmailInput() {
+
     this.emailTouched = true;
 
     if (this.admin_email) {
-      this.admin_email = this.admin_email.toLowerCase();
+      this.admin_email =
+        this.admin_email.toLowerCase();
     }
   }
 
@@ -73,11 +83,16 @@ export class AdminLoginComponent {
     this.passwordTouched = true;
   }
 
-  // Step Animation
-  private switchStep(hideId: string, showId: string) {
+  private switchStep(
+    hideId: string,
+    showId: string
+  ) {
 
-    const hideEl = document.getElementById(hideId);
-    const showEl = document.getElementById(showId);
+    const hideEl =
+      document.getElementById(hideId);
+
+    const showEl =
+      document.getElementById(showId);
 
     if (hideEl && showEl) {
 
@@ -100,7 +115,8 @@ export class AdminLoginComponent {
     }
   }
 
-  // Step 1 -> Email
+  // STEP 1 → EMAIL
+
   goToPasswordStep() {
 
     this.emailTouched = true;
@@ -115,7 +131,10 @@ export class AdminLoginComponent {
       return;
     }
 
-    this.switchStep('email-step', 'password-step');
+    this.switchStep(
+      'email-step',
+      'password-step'
+    );
 
     document
       .querySelector('.step:nth-child(1)')
@@ -130,12 +149,20 @@ export class AdminLoginComponent {
       ?.classList.add('completed');
   }
 
-  // Step 2 -> Password Verification + Send OTP
+  // STEP 2 → PASSWORD VERIFY + SEND OTP
+
   goToOtpStep() {
+
+    if (this.loading) {
+      return;
+    }
 
     this.passwordTouched = true;
 
-    if (!this.admin_password || this.admin_password.length < 6) {
+    if (
+      !this.admin_password ||
+      this.admin_password.length < 6
+    ) {
 
       this.toastr.error(
         'Password must be at least 6 characters',
@@ -152,85 +179,117 @@ export class AdminLoginComponent {
 
     this.loading = true;
 
-    this.adminApi.verifyAdminPassword(admin).subscribe({
+    this.adminApi.verifyAdminPassword(admin)
+      .subscribe({
 
-      next: (res: any) => {
+        next: (res: any) => {
 
-        if (res?.success) {
+          if (res?.success) {
 
-          this.adminApi.sendOtp({
-            email: this.admin_email
-          }).subscribe({
+            this.adminApi.sendOtp({
+              email: this.admin_email
+            }).subscribe({
 
-            next: (otpRes: any) => {
+              next: (otpRes: any) => {
 
-              this.switchStep(
-                'password-step',
-                'otp-step'
-              );
+                this.loading = false;
 
-              document
-                .querySelector('.step:nth-child(3)')
-                ?.classList.add('completed');
+                this.switchStep(
+                  'password-step',
+                  'otp-step'
+                );
 
-              document
-                .querySelector('.step:nth-child(5)')
-                ?.classList.add('active');
+                document
+                  .querySelector('.step:nth-child(3)')
+                  ?.classList.add('completed');
 
-              document
-                .querySelectorAll('.step-line')[1]
-                ?.classList.add('completed');
+                document
+                  .querySelector('.step:nth-child(5)')
+                  ?.classList.add('active');
 
-              this.toastr.success(
-                otpRes.message || 'OTP sent successfully',
-                'Success',
-                {
-                  progressBar: true,
-                  closeButton: true
-                }
-              );
+                document
+                  .querySelectorAll('.step-line')[1]
+                  ?.classList.add('completed');
 
-              this.loading = false;
-            },
+                this.toastr.success(
+                  otpRes.message ||
+                  'OTP sent successfully',
+                  'Success',
+                  {
+                    progressBar: true,
+                    closeButton: true
+                  }
+                );
+              },
 
-            error: (err) => {
+              error: (err: any) => {
 
-              this.loading = false;
+                this.loading = false;
 
-              this.toastr.error(
-                err?.error?.message || 'Failed to send OTP',
-                'Error',
-                {
-                  progressBar: true,
-                  closeButton: true
-                }
-              );
-            }
-          });
-        }
-      },
-
-      error: (err) => {
-
-        this.loading = false;
-
-        this.toastr.error(
-          err?.error?.message || 'Invalid credentials',
-          'Login Failed',
-          {
-            progressBar: true,
-            closeButton: true
+                this.toastr.error(
+                  err?.error?.message ||
+                  'Failed to send OTP',
+                  'Error',
+                  {
+                    progressBar: true,
+                    closeButton: true
+                  }
+                );
+              }
+            });
           }
-        );
-      }
-    });
+        },
+
+        error: (err: any) => {
+
+          this.loading = false;
+
+          this.toastr.error(
+            err?.error?.message ||
+            'Invalid credentials',
+            'Login Failed',
+            {
+              progressBar: true,
+              closeButton: true
+            }
+          );
+        }
+      });
   }
 
-  // Step 3 -> Verify OTP
+  // STEP 3 → LOGIN
+
   login() {
 
+    if (this.loading) {
+      return;
+    }
+
     if (!this.otp) {
-      this.toastr.error('Please enter OTP', 'Error', { progressBar: true, tapToDismiss: true });
+
+      this.toastr.error(
+        'Please enter OTP',
+        'Error',
+        {
+          progressBar: true,
+          closeButton: true
+        }
+      );
+
+      return;
+    }
+
+    if (!/^\d{6}$/.test(this.otp)) {
+
+      this.toastr.error(
+        'OTP must be 6 digits',
+        'Error',
+        {
+          progressBar: true,
+          closeButton: true
+        }
+      );
+
       return;
     }
 
@@ -243,32 +302,77 @@ export class AdminLoginComponent {
     this.loginNow(admin);
   }
 
-  // Final Login
+  // FINAL LOGIN
+
   loginNow(admin: any) {
+
     this.loading = true;
-    this.adminApi.adminLogin(admin).subscribe({
-      next: (res: any) => {
-        this.loading = false;
-        this.toastr.success(res.message || 'Login Successful', 'Success');
 
-        if (res?.adminToken) {
-          localStorage.setItem('adminToken', res.adminToken);
-          localStorage.setItem('adminEmail', this.admin_email);
-          this.adminApi.setToken(res.adminToken);
+    this.adminApi.adminLogin(admin)
+      .subscribe({
 
-          this.router.navigate(['/admin/dashboard']);
+        next: (res: any) => {
+
+          this.loading = false;
+
+          this.toastr.success(
+            res.message ||
+            'Login Successful',
+            'Success',
+            {
+              progressBar: true,
+              closeButton: true
+            }
+          );
+
+          if (res?.adminToken) {
+
+            localStorage.setItem(
+              'adminToken',
+              res.adminToken
+            );
+
+            localStorage.setItem(
+              'adminEmail',
+              this.admin_email
+            );
+
+            this.adminApi.setToken(
+              res.adminToken
+            );
+
+            this.router.navigate([
+              '/admin/dashboard'
+            ]);
+          }
+        },
+
+        error: (err: any) => {
+
+          this.loading = false;
+
+          this.toastr.error(
+            err?.error?.message ||
+            'Login Failed',
+            'Error',
+            {
+              progressBar: true,
+              closeButton: true
+            }
+          );
         }
-      },
-
-      error: (err) => {
-        this.loading = false;
-        this.toastr.error(err?.error?.message || 'Login Failed', 'Error');
-      }
-    });
+      });
   }
 
-  // Resend OTP
+  // RESEND OTP
+
   resendOtp() {
+
+    if (this.loading) {
+      return;
+    }
+
+    this.loading = true;
 
     this.adminApi.sendOtp({
       email: this.admin_email
@@ -276,8 +380,11 @@ export class AdminLoginComponent {
 
       next: (res: any) => {
 
+        this.loading = false;
+
         this.toastr.success(
-          res.message || 'OTP resent successfully',
+          res.message ||
+          'OTP resent successfully',
           'Success',
           {
             progressBar: true,
@@ -286,14 +393,17 @@ export class AdminLoginComponent {
         );
       },
 
-      error: (err) => {
+      error: (err: any) => {
+
+        this.loading = false;
 
         this.toastr.error(
-          err?.error?.message || 'Failed to resend OTP',
+          err?.error?.message ||
+          'Failed to resend OTP',
           'Error',
           {
             progressBar: true,
-            tapToDismiss: true
+            closeButton: true
           }
         );
       }

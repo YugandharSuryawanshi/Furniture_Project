@@ -8,43 +8,149 @@ import { UserApiService } from '../../service/user-api.service';
 @Component({
   selector: 'app-login',
   standalone: true,
-  imports: [CommonModule, FormsModule, RouterModule],
+  imports: [
+    CommonModule,
+    FormsModule,
+    RouterModule
+  ],
   templateUrl: './login.component.html',
   styleUrl: './login.component.css'
 })
 export class LoginComponent {
 
-  formData: any =
-    {
-      user_email: '',
-      user_password: ''
-    }
+  formData = {
+    user_email: '',
+    user_password: ''
+  };
 
-  constructor(private userApi: UserApiService, private router: Router, private toastr: ToastrService) { }
+  loading = false;
+
+  constructor(
+    private userApi: UserApiService,
+    private router: Router,
+    private toastr: ToastrService
+  ) { }
+
+  // Email Validation
+  emailValid(): boolean {
+    return /^[a-z0-9._%+-]+@[a-z0-9.-]+\.[a-z]{2,4}$/i.test(
+      this.formData.user_email
+    );
+  }
+
+  // Convert Email To Lowercase
+  onEmailInput() {
+    if (this.formData.user_email) {
+      this.formData.user_email =
+        this.formData.user_email.toLowerCase();
+    }
+  }
 
   login() {
 
-    if (!this.formData.user_email || !this.formData.user_password) {
-      this.toastr.error('Enter Email and Password', "Error", { disableTimeOut: false, progressBar: true, closeButton: true });
+    // Email Required
+    if (!this.formData.user_email) {
+      this.toastr.error(
+        'Please enter email address',
+        'Validation Error',
+        {
+          progressBar: true,
+          closeButton: true
+        }
+      );
       return;
     }
 
-    const formData = new FormData();
-    formData.append('user_email', this.formData.user_email);
-    formData.append('user_password', this.formData.user_password);
+    // Email Format Check
+    if (!this.emailValid()) {
+      this.toastr.error(
+        'Please enter a valid email address',
+        'Validation Error',
+        {
+          progressBar: true,
+          closeButton: true
+        }
+      );
+      return;
+    }
 
-    this.userApi.userLogin(this.formData).subscribe((response: any) => {
-      if (response && response.userToken) {
-        localStorage.setItem('userToken', response.userToken);
-        localStorage.setItem('userEmail', this.formData.user_email);
+    // Password Required
+    if (!this.formData.user_password) {
+      this.toastr.error(
+        'Please enter password',
+        'Validation Error',
+        {
+          progressBar: true,
+          closeButton: true
+        }
+      );
+      return;
+    }
 
-        this.userApi.setToken(response.userToken);
-        this.toastr.success("Login successfully", "Success", { disableTimeOut: false, progressBar: true, closeButton: true });
-        this.router.navigate(['/user/home']);
-      } else {
-        this.toastr.error("Login Error - Invalid User Details", "Error", { disableTimeOut: false, progressBar: true, closeButton: true });
+    this.loading = true;
+
+    this.userApi.userLogin(this.formData).subscribe({
+
+      next: (response: any) => {
+
+        this.loading = false;
+
+        if (response?.userToken) {
+
+          localStorage.setItem(
+            'userToken',
+            response.userToken
+          );
+
+          localStorage.setItem(
+            'userEmail',
+            this.formData.user_email
+          );
+
+          this.userApi.setToken(
+            response.userToken
+          );
+
+          this.toastr.success(
+            response?.message || 'Login successful',
+            'Success',
+            {
+              progressBar: true,
+              closeButton: true
+            }
+          );
+
+          this.router.navigate([
+            '/user/home'
+          ]);
+
+        } else {
+
+          this.toastr.error(
+            'Invalid email or password',
+            'Login Failed',
+            {
+              progressBar: true,
+              closeButton: true
+            }
+          );
+        }
+      },
+
+      error: (err: any) => {
+
+        this.loading = false;
+
+        this.toastr.error(
+          err?.error?.message ||
+          'Invalid email or password',
+          'Login Failed',
+          {
+            progressBar: true,
+            closeButton: true
+          }
+        );
       }
     });
   }
-
 }

@@ -1514,183 +1514,113 @@ router.delete('/delete_wishlist_item/:id', async (req, res) => {
     }
 });
 
+// Send Otp
 router.post('/send-otp', async (req, res) => {
     const { email } = req.body;
 
-    console.log('Came Email is :- ' + email);
-
     try {
         if (!email) {
-            return res.status(400).json({
-                status: 'error',
-                message: 'Email is required'
-            });
+            return res.status(400).json({ status: 'error', message: 'Email is required' });
         }
 
-        // Check admin exists
-        const adminData = await exe(
-            'SELECT admin_id FROM admins WHERE admin_email = ?',
-            [email]
-        );
+        const adminData = await exe('SELECT admin_id FROM admins WHERE admin_email = ?', [email]);
 
         if (adminData.length === 0) {
-            return res.status(404).json({
-                status: 'error',
-                message: 'Admin not found'
-            });
+            return res.status(404).json({ status: 'error', message: 'Admin not found' });
         }
 
-        // Generate OTP
         const otp = Math.floor(100000 + Math.random() * 900000).toString();
+
         const expiry = new Date(Date.now() + 5 * 60 * 1000);
 
-        console.log('OTP is :- ' + otp);
-        console.log('OTP Expiry is :- ' + expiry);
+        await exe(`UPDATE admins SET otp = ?, otp_created_at = NOW(), otp_expiry = ? WHERE admin_email = ?`,
+            [otp, expiry, email]);
 
-        // ✅ ONLY UPDATE (not insert)
-        await exe(
-            `UPDATE admins 
-             SET otp = ?, otp_expiry = ? 
-             WHERE admin_email = ?`,
-            [otp, expiry, email]
-        );
-
-        // Send email
         const response = await sendEmail(
             email,
-            'Password Reset OTP Verification',
+            'Admin OTP Verification',
             `
             <div style="font-family:Arial,sans-serif;padding:20px;">
-                <h2>Furniture Store</h2>
+                <h2>Furniture Store Admin Panel</h2>
 
-                <p>Your OTP for password reset is:</p>
+                <p>Your OTP is:</p>
 
                 <h1 style="color:#0d6efd;letter-spacing:5px;">
                     ${otp}
                 </h1>
 
-                <p>This OTP will expire in <strong>5 minutes</strong>.</p>
+                <p>
+                    This OTP will expire in
+                    <strong>5 minutes</strong>.
+                </p>
 
-                <p>If you did not request this OTP, ignore this email.</p>
+                <p>
+                    If you did not request this OTP,
+                    please ignore this email.
+                </p>
             </div>
             `
         );
 
-        console.log("Resend Response:", response);
-
-        if (response?.error) {
-            return res.status(500).json({
-                status: 'error',
-                message: response.error.message
-            });
+        if (!response.success) {
+            return res.status(500).json({ status: 'error', message: response.error || 'Failed to send email' });
         }
-
-        return res.status(200).json({
-            status: 'success',
-            message: 'OTP sent successfully'
-        });
-
+        return res.status(200).json({ status: 'success', message: 'OTP sent successfully' });
     } catch (err) {
         console.error('ADMIN OTP SEND ERROR:', err);
-        return res.status(500).json({
-            status: 'error',
-            message: 'Failed to send OTP',
-            error: err.message
-        });
+        return res.status(500).json({ status: 'error', message: err.message || 'Failed to send OTP' });
     }
 });
 
+// Verify Otp
 router.post('/verify-otp', async (req, res) => {
 
     const { email, otp } = req.body;
 
     try {
         if (!email || !otp) {
-            return res.status(400).json({
-                status: 'error',
-                message: 'Email and OTP are required'
-            });
+            return res.status(400).json({ status: 'error', message: 'Email and OTP are required' });
         }
 
-        const result = await exe(
-            'SELECT otp, otp_expiry FROM admins WHERE admin_email = ?',
-            [email]
-        );
+        const result = await exe('SELECT otp, otp_expiry FROM admins WHERE admin_email = ?', [email]);
 
         if (result.length === 0) {
-            return res.status(404).json({
-                status: 'error',
-                message: 'Admin not found'
-            });
+            return res.status(404).json({ status: 'error', message: 'Admin not found' });
         }
 
-        const record = result[0];
+        const admin = result[0];
 
-        const now = new Date();
-        const expiry = new Date(record.otp_expiry);
-
-        console.log('OTP from DB :-', record.otp);
-        console.log('Entered OTP :-', otp);
-        console.log('Now :-', now);
-        console.log('Expiry :-', expiry);
-
-        // Check OTP match
-        if (String(record.otp) !== String(otp)) {
-            return res.status(400).json({
-                status: 'error',
-                message: 'Invalid OTP'
-            });
+        if (!admin.otp || !admin.otp_expiry) {
+            return res.status(400).json({ status: 'error', message: 'Please request OTP first' });
         }
 
-        // Check expiry
-        if (now > expiry) {
-            return res.status(400).json({
-                status: 'error',
-                message: 'OTP expired'
-            });
+        if (String(admin.otp) !== String(otp)) {
+            return res.status(400).json({ status: 'error', message: 'Invalid OTP' });
         }
 
-        // ✅ CLEAR OTP AFTER SUCCESS (VERY IMPORTANT)
-        await exe(
-            `UPDATE admins 
-             SET otp = NULL, otp_expiry = NULL 
-             WHERE admin_email = ?`,
-            [email]
-        );
+        if (new Date() > new Date(admin.otp_expiry)) {
 
-        return res.status(200).json({
-            status: 'success',
-            message: 'OTP verified successfully'
-        });
+            await exe(`UPDATE admins SET otp = NULL, otp_created_at = NULL, otp_expiry = NULL WHERE admin_email = ?`, [email]);
+
+            return res.status(400).json({ status: 'error', message: 'OTP expired' });
+        }
+
+        await exe(`UPDATE admins SET otp = NULL, otp_created_at = NULL, otp_expiry = NULL WHERE admin_email = ?`,
+            [email]);
+
+        return res.status(200).json({ status: 'success', message: 'OTP verified successfully' });
 
     } catch (err) {
         console.error('ADMIN OTP VERIFY ERROR:', err);
-
-        return res.status(500).json({
-            status: 'error',
-            message: 'Server error',
-            error: err.message
-        });
+        return res.status(500).json({ status: 'error', message: err.message || 'Server Error' });
     }
 });
 
-// Forgot Password
-router.post('/reset-password', async (req, res) => {
-    const { email, password } = req.body;
-    try {
-        const hashedPassword = bcrypt.hashSync(password, 10);
-        await exe('UPDATE admins SET admin_password = ? WHERE admin_email = ?', [hashedPassword, email]);
-        res.status(200).json({ status: 'success', message: 'Password reset successfully' });
-    } catch (err) {
-        console.error('Error resetting password:', err);
-        res.status(500).json({ status: 'error', message: 'Server error' });
-    }
-});
-
-// Admin Register
+// Registration Otp send
 router.post('/admin-register-send-otp', async (req, res) => {
+
     const { email } = req.body;
-    console.log('Came Email Is :- ' + email);
+
     try {
         if (!email) {
             return res.status(400).json({ status: 'error', message: 'Email is required' });
@@ -1698,38 +1628,44 @@ router.post('/admin-register-send-otp', async (req, res) => {
 
         const existingAdmin = await exe('SELECT admin_id FROM admins WHERE admin_email = ?', [email]);
 
-        console.log('is Admin Exists : ' + existingAdmin);
-
         if (existingAdmin.length > 0) {
             return res.status(400).json({ status: 'error', message: 'Email already registered' });
         }
 
         const otp = Math.floor(100000 + Math.random() * 900000).toString();
-        console.log("OTP IS :- " + otp);
-        const expiry = new Date(Date.now() + 5 * 60 * 1000);
-        console.log("Expiry is " + expiry);
 
-        await exe(`INSERT INTO admin_registration_otp(admin_email,otp,otp_expiry,is_verified)VALUES (?, ?, ?, 0)
-            ON DUPLICATE KEY UPDATE otp = VALUES(otp), otp_expiry = VALUES(otp_expiry), is_verified = 0`,
+        const expiry = new Date(Date.now() + 5 * 60 * 1000);
+
+        await exe(`INSERT INTO admin_registration_otp
+            ( admin_email, otp, otp_expiry, is_verified) VALUES (?, ?, ?, 0)
+            ON DUPLICATE KEY UPDATE
+                otp = VALUES(otp),
+                otp_expiry = VALUES(otp_expiry),
+                is_verified = 0`,
             [email, otp, expiry]);
 
-        await sendEmail(
+        const response = await sendEmail(
             email,
             'Admin Registration OTP',
             `
             <div style="font-family:Arial,sans-serif;padding:20px;">
                 <h2>Furniture Store Admin Registration</h2>
+
                 <p>Your OTP is:</p>
+
                 <h1 style="color:#0d6efd;">
                     ${otp}
                 </h1>
-                <p>
-                    Valid for 5 minutes.
-                </p>
+
+                <p>Valid for 5 minutes.</p>
             </div>
             `
         );
-        console.log("OTP SEND SUccessfully");
+
+        if (!response.success) {
+            return res.status(500).json({ status: 'error', message: response.error || 'Failed to send email' });
+        }
+
         return res.status(200).json({ status: 'success', message: 'OTP sent successfully' });
     } catch (err) {
         console.error(err);
@@ -1737,8 +1673,11 @@ router.post('/admin-register-send-otp', async (req, res) => {
     }
 });
 
+// Registration Otp Varify
 router.post('/admin-register-verify-otp', async (req, res) => {
+
     const { email, otp } = req.body;
+
     try {
         if (!email || !otp) {
             return res.status(400).json({ status: 'error', message: 'Email and OTP are required' });
@@ -1751,19 +1690,47 @@ router.post('/admin-register-verify-otp', async (req, res) => {
         }
 
         const record = data[0];
+
         if (String(record.otp) !== String(otp)) {
             return res.status(400).json({ status: 'error', message: 'Invalid OTP' });
         }
 
         if (new Date() > new Date(record.otp_expiry)) {
+
+            await exe('DELETE FROM admin_registration_otp WHERE admin_email = ?', [email]);
+
             return res.status(400).json({ status: 'error', message: 'OTP expired' });
         }
 
-        await exe(`UPDATE admin_registration_otp SET is_verified = 1 WHERE admin_email = ?`, [email]);
+        await exe('UPDATE admin_registration_otp SET is_verified = 1 WHERE admin_email = ?', [email]);
+
         return res.status(200).json({ status: 'success', message: 'OTP verified successfully' });
+
     } catch (err) {
         console.error(err);
         return res.status(500).json({ status: 'error', message: err.message });
+    }
+});
+
+// Reset Password
+router.post('/reset-password', async (req, res) => {
+
+    const { email, password } = req.body;
+
+    try {
+        if (!email || !password) {
+            return res.status(400).json({ status: 'error', message: 'Email and password are required' });
+        }
+
+        const hashedPassword = await bcrypt.hash(password, 10);
+
+        await exe('UPDATE admins SET admin_password = ? WHERE admin_email = ?', [hashedPassword, email]);
+
+        return res.status(200).json({ status: 'success', message: 'Password reset successfully' });
+
+    } catch (err) {
+        console.error('Error resetting password:', err);
+        return res.status(500).json({ status: 'error', message: 'Server error' });
     }
 });
 

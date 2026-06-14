@@ -49,9 +49,10 @@ export const config = {
     razorpayKeyId: process.env.RAZORPAY_KEY_ID,
     razorpayKeySecret: process.env.RAZORPAY_KEY_SECRET,
 
-    // Resend
-    resend: {
-        apiKey: process.env.RESEND_API_KEY
+    // Email
+    email: {
+        user: process.env.EMAIL_USER,
+        pass: process.env.EMAIL_PASS
     },
 
     // Database
