@@ -5,7 +5,8 @@ import { Injectable } from '@angular/core';
 })
 export class ImageService {
 
-  readonly IMAGE_BASE_URL = 'https://furniture-backend-ssa5.onrender.com/uploads/';
+  // readonly IMAGE_BASE_URL = 'https://furniture-backend-ssa5.onrender.com/uploads/';
+  IMAGE_BASE_URL = 'http://localhost:4000/uploads/';
 
   getImageUrl(imageName: string | null | undefined): string {
 

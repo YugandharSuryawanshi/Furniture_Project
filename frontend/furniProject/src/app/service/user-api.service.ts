@@ -9,8 +9,9 @@ import { catchError, Observable, throwError } from 'rxjs';
 export class UserApiService {
 
   private tokenKey = 'userToken';  // Local storage key to store JWT token
-  // private userUrl = 'http://localhost:4000';
-  private userUrl = 'https://furniture-backend-ssa5.onrender.com';
+  // THis url also working but free email otp service is not available thats why its suspended for some time
+  // private userUrl = 'https://furniture-backend-ssa5.onrender.com';
+  private userUrl = 'http://localhost:4000';
   constructor(private http: HttpClient, private router: Router) { }
 
   // Register User

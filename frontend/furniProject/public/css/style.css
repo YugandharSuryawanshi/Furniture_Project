@@ -512,7 +512,7 @@ a.more {
 @supports (-ms-ime-align: auto) {
   .we-help-section .imgs-grid {
     display: -ms-grid;
-    -ms-grid-columns: (1fr)[27];
+    -ms-grid-columns: (1fr , 27);
   }
 }
 
