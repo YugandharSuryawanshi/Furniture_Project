@@ -50,22 +50,17 @@ export class LoginComponent {
 
     // Email Required
     if (!this.formData.user_email) {
-      this.toastr.error(
-        'Please enter email address',
-        'Validation Error',
+      this.toastr.error('Please enter email address', 'Validation Error',
         {
           progressBar: true,
           closeButton: true
-        }
-      );
+        });
       return;
     }
 
     // Email Format Check
     if (!this.emailValid()) {
-      this.toastr.error(
-        'Please enter a valid email address',
-        'Validation Error',
+      this.toastr.error('Please enter a valid email address', 'Validation Error',
         {
           progressBar: true,
           closeButton: true
@@ -76,9 +71,7 @@ export class LoginComponent {
 
     // Password Required
     if (!this.formData.user_password) {
-      this.toastr.error(
-        'Please enter password',
-        'Validation Error',
+      this.toastr.error('Please enter password', 'Validation Error',
         {
           progressBar: true,
           closeButton: true

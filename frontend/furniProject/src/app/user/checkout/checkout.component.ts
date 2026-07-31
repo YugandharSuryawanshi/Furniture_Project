@@ -40,7 +40,7 @@ export class CheckoutComponent implements OnInit {
       c_postal_zip: ['', Validators.required],
       c_email: ['', [Validators.required, Validators.email]],
       c_phone: ['', [Validators.required, Validators.pattern('^[0-9]{10}$')]], // ✅ Ensured valid phone number pattern
-      payment_mode: ['online', Validators.required]  // Default to online
+      payment_mode: ['Online', Validators.required]  // Default to online
     });
   }
 
@@ -94,6 +94,8 @@ export class CheckoutComponent implements OnInit {
 
     // Final Total Payable Amount IS
     this.finalTotal = (this.subtotal + this.totalGST) - this.totalDiscount;
+    console.log('Final total is :- '+this.finalTotal);
+    
   }
 
   getRazorPay_key() {
@@ -102,7 +104,7 @@ export class CheckoutComponent implements OnInit {
         if (res.status === 'success' && res.key_id) {
           this.payment_Key_id = res.key_id;
         } else {
-          this.toastr.error('Failed to fetch payment key.', 'Error', {disableTimeOut: false,progressBar: true,closeButton: true});
+          this.toastr.error('Failed to fetch payment key.', 'Error', { disableTimeOut: false, progressBar: true, closeButton: true });
         }
       },
       (err) => {
@@ -132,7 +134,7 @@ export class CheckoutComponent implements OnInit {
       totalAmount: this.finalTotal
     };
 
-    if (orderData.payment_mode === 'cod') {
+    if (orderData.payment_mode === 'COD') {
       this.paymentService.placeCODOrder(orderData).subscribe(
         (res: any) => {
           if (res.status === 'success') {

@@ -1,67 +1,143 @@
 import { CommonModule } from '@angular/common';
-import { Component } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import { RouterModule } from '@angular/router';
-import { UserApiService } from '../../service/user-api.service';
 import { ToastrService } from 'ngx-toastr';
+
+import { UserApiService } from '../../service/user-api.service';
+import { ImageService } from '../../service/image.service';
 
 @Component({
   selector: 'app-service',
   standalone: true,
-  imports: [CommonModule, FormsModule, RouterModule],
+  imports: [
+    CommonModule,
+    FormsModule,
+    RouterModule
+  ],
   templateUrl: './service.component.html',
   styleUrl: './service.component.css'
 })
-export class ServiceComponent {
+export class ServiceComponent implements OnInit {
 
-  constructor(private userApi:UserApiService, private toastr:ToastrService){}
-  
-    ngOnInit() {
-      this.getHomeData();
-    }
-    banner_info: any = [];
-    banner_image: any;
-    products: any[] = []; // Array to hold all product data
-    productImages: any[] = []; // Array to store product images
-    about: any = [];
-    about_image: any;
-    about_points: any = [];
-    interior: any = [];
-    testimonial: any[] = [];
-    blogs: any[] = [];
-    customer_image: any = [];
-    team: any[] = [];
-    services: any[] = [];
-  
-    getHomeData() {
-      this.userApi.gethomeData().subscribe((res: any) => {
-        this.banner_info = res.banner_info[0];
-        this.banner_image = `http://localhost:1000/uploads/${this.banner_info.banner_image}`;
-        // Process product Store data
-        this.products = res.products;
-        this.products.forEach((product) => {
-          const images = product.product_image.split(","); // split product image
-          const img = images.find((image: string) => image.trim() !== "") || ""; //for get first image
-          product.firstImage = `http://localhost:1000/uploads/${img}`; // Append the image
+  constructor(
+    private userApi: UserApiService,
+    private toastr: ToastrService,
+    public imageUrl: ImageService
+  ) { }
+
+  ngOnInit(): void {
+    this.getHomeData();
+  }
+
+  // Banner
+  banner_info: any = {};
+  banner_image: string = '';
+
+  // Products
+  products: any[] = [];
+
+  // About
+  about: any = {};
+  about_image: string = '';
+  about_points: any[] = [];
+
+  // Interior
+  interior: any[] = [];
+
+  // Testimonials
+  testimonial: any[] = [];
+
+  // Blogs
+  blogs: any[] = [];
+
+  // Team
+  team: any[] = [];
+
+  // Load Home Data
+  getHomeData(): void {
+
+    this.userApi.gethomeData().subscribe({
+      next: (res: any) => {
+
+        // Banner
+        this.banner_info = res?.banner_info?.[0] || {};
+
+        this.banner_image = this.banner_info?.banner_image
+          ? this.imageUrl.getImageUrl(this.banner_info.banner_image)
+          : '';
+
+        // Products
+
+        this.products = res?.products || [];
+
+        this.products.forEach(product => {
+
+          if (product.product_image) {
+            const images = product.product_image
+              .split(',')
+              .map((img: string) => img.trim())
+              .filter((img: string) => img !== '');
+
+            product.firstImage = images.length
+              ? this.imageUrl.getImageUrl(images[0])
+              : 'images/no-image.png';
+
+          } else {
+            product.firstImage = 'images/no-image.png';
+          }
         });
-  
-        // Process about data
-        this.about = res.about[0];
-        this.about_image = `http://localhost:1000/uploads/${this.about.why_choose_img}`;
-        this.about_points = res.about_points;
-  
-        this.interior = res.interior;
+
+        // About
+
+        this.about = res?.about?.[0] || {};
+        this.about_image = this.about?.why_choose_img
+          ? this.imageUrl.getImageUrl(this.about.why_choose_img)
+          : '';
+
+        this.about_points = res?.about_points || [];
+
+        // Testimonials
+
         this.testimonial = res.testimonial;
-  
-        for (let i = 0; i < this.testimonial.length; i++) {
-          this.customer_image.push(`http://localhost:1000/uploads/` + this.testimonial[i].customer_image);
-  
-        }
-  
-        this.blogs = res.blog;
-        this.team = res.team;
-  
-      })
-    }
+
+        this.testimonial.forEach((item: any) => {
+          item.imageUrl = this.imageUrl.getImageUrl(
+            item.customer_image
+          );
+        });
+
+        // Interior
+
+        this.interior = res?.interior || [];
+
+        // Blogs
+
+        this.blogs = res?.blog || [];
+
+        // Team
+
+        this.team = res?.team || [];
+
+      },
+
+      error: (err) => {
+
+        console.error(err);
+
+        this.toastr.error(
+          err?.error?.message || 'Unable to load services.',
+          'Error',
+          {
+            progressBar: true,
+            closeButton: true
+          }
+        );
+
+      }
+
+    });
+
+  }
 
 }

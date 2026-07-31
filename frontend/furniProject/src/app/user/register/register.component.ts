@@ -43,12 +43,9 @@ export class RegisterComponent {
     private toastr: ToastrService
   ) { }
 
-  // =========================
-  // NAME VALIDATION
-  // =========================
+  // Name Validation
 
   validateName() {
-
     const pattern = /^[A-Za-z ]{3,}$/;
 
     if (!this.formData.user_name) {
@@ -62,9 +59,7 @@ export class RegisterComponent {
     }
   }
 
-  // =========================
-  // MOBILE VALIDATION
-  // =========================
+  // Mobile Number Validation
 
   validateMobile() {
 
@@ -81,9 +76,7 @@ export class RegisterComponent {
     }
   }
 
-  // =========================
-  // EMAIL VALIDATION
-  // =========================
+  // Email Validation
 
   validateEmail() {
 
@@ -106,12 +99,9 @@ export class RegisterComponent {
     }
   }
 
-  // =========================
-  // OTP VALIDATION
-  // =========================
+  // Otp Validation
 
   validateOtp() {
-
     const pattern = /^\d{6}$/;
 
     if (!this.formData.otp) {
@@ -125,9 +115,7 @@ export class RegisterComponent {
     }
   }
 
-  // =========================
-  // PASSWORD VALIDATION
-  // =========================
+  // Password Validation
 
   validatePassword() {
 
@@ -146,9 +134,7 @@ export class RegisterComponent {
     }
   }
 
-  // =========================
-  // CONFIRM PASSWORD
-  // =========================
+  // Confirm Password
 
   validateConfirmPassword() {
 
@@ -168,58 +154,38 @@ export class RegisterComponent {
     }
   }
 
-  // =========================
-  // PASSWORD VISIBILITY
-  // =========================
+  // Password Visibility
 
   togglePasswordVisibility() {
     this.passwordFieldType =
-      this.passwordFieldType === 'password'
-        ? 'text'
-        : 'password';
+    this.passwordFieldType === 'password' ? 'text' : 'password';
   }
 
   toggleConfirmPasswordVisibility() {
     this.confirmPasswordFieldType =
-      this.confirmPasswordFieldType === 'password'
-        ? 'text'
-        : 'password';
+    this.confirmPasswordFieldType === 'password' ? 'text' : 'password';
   }
 
-  // =========================
-  // SEND OTP
-  // =========================
+  // Send Otp
 
   sendOtp() {
 
     this.validateEmail();
 
     if (this.emailError) {
-
-      this.toastr.warning(
-        'Please enter a valid email address',
-        'Validation'
-      );
-
+      this.toastr.warning('Please enter a valid email address','Validation');
       return;
     }
 
     this.loading = true;
     this.otpVerified = false;
 
-    this.userApi.registerSendOtp({
-      email: this.formData.user_email
-    }).subscribe({
-
+    this.userApi.registerSendOtp({ email: this.formData.user_email }).subscribe({
       next: (res: any) => {
-
         this.loading = false;
         this.otpSent = true;
 
-        this.toastr.success(
-          res.message || 'OTP sent successfully',
-          'Success'
-        );
+        this.toastr.success( res.message || 'OTP sent successfully', 'Success');
       },
 
       error: (err: any) => {
@@ -228,18 +194,12 @@ export class RegisterComponent {
         this.otpSent = false;
         this.otpVerified = false;
 
-        this.toastr.error(
-          err?.error?.message || 'Failed to send OTP',
-          'Error'
-        );
+        this.toastr.error( err?.error?.message || 'Failed to send OTP', 'Error');
       }
     });
   }
 
-  // =========================
-  // VERIFY OTP
-  // =========================
-
+  // Verify Otp
   verifyOtp() {
 
     this.validateEmail();
@@ -250,12 +210,7 @@ export class RegisterComponent {
     }
 
     if (!this.otpSent) {
-
-      this.toastr.warning(
-        'Please send OTP first',
-        'Warning'
-      );
-
+      this.toastr.warning('Please send OTP first', 'Warning');
       return;
     }
 
@@ -267,36 +222,24 @@ export class RegisterComponent {
     }).subscribe({
 
       next: (res: any) => {
-
         this.loading = false;
         this.otpVerified = true;
 
-        this.toastr.success(
-          res.message || 'OTP verified successfully',
-          'Success'
-        );
+        this.toastr.success(res.message || 'OTP verified successfully','Success');
       },
 
       error: (err: any) => {
-
         this.loading = false;
         this.otpVerified = false;
 
-        this.toastr.error(
-          err?.error?.message ||
-          'OTP verification failed',
-          'Error'
-        );
+        this.toastr.error(err?.error?.message || 'OTP verification failed', 'Error');
       }
     });
   }
 
-  // =========================
-  // REGISTER
-  // =========================
+  // Register
 
   register() {
-
     this.validateName();
     this.validateMobile();
     this.validateEmail();
@@ -310,22 +253,12 @@ export class RegisterComponent {
       this.passwordError ||
       this.confirmPasswordError
     ) {
-
-      this.toastr.error(
-        'Please enter valid information',
-        'Validation Error'
-      );
-
+      this.toastr.error('Please enter valid information', 'Validation Error');
       return;
     }
 
     if (!this.otpVerified) {
-
-      this.toastr.error(
-        'Please verify OTP first',
-        'Error'
-      );
-
+      this.toastr.error( 'Please verify OTP first', 'Error');
       return;
     }
 
@@ -339,28 +272,15 @@ export class RegisterComponent {
     };
 
     this.userApi.register(registerData).subscribe({
-
       next: (res: any) => {
-
         this.loading = false;
-
-        this.toastr.success(
-          res.message || 'User registered successfully',
-          'Success'
-        );
-
+        this.toastr.success(res.message || 'User registered successfully', 'Success');
         this.router.navigate(['/user/login']);
       },
 
       error: (err: any) => {
-
         this.loading = false;
-
-        this.toastr.error(
-          err?.error?.message ||
-          'Registration failed',
-          'Error'
-        );
+        this.toastr.error( err?.error?.message || 'Registration failed', 'Error');
       }
     });
   }

@@ -21,16 +21,15 @@ export class ContactComponent implements OnInit {
     contact_message: ''
   };
 
-  constructor(private userApi:UserApiService, private toastr: ToastrService) { }
+  constructor(private userApi: UserApiService, private toastr: ToastrService) { }
 
   ngOnInit(): void { }
 
   onSubmit(): void {
-    this.userApi.addContactUsInfo(this.contact).subscribe((res:any)=>{
-      if(res.success)
-      {
-        this.toastr.success('Your message has been sent successfully!', 'Success', {disableTimeOut: false, progressBar: true, closeButton: true });
-        // Reset the form
+    this.userApi.addContactUsInfo(this.contact).subscribe((res: any) => {
+      if (res.success) {
+        this.toastr.success('Your message has been sent successfully!', 'Success', { disableTimeOut: false, progressBar: true, closeButton: true });
+        // Reset form
         this.contact = {
           first_name: '',
           last_name: '',
@@ -39,8 +38,8 @@ export class ContactComponent implements OnInit {
         };
       }
       else {
-        this.toastr.error('Error sending your message. Please try again later.', 'Error', { disableTimeOut: false, progressBar: true, closeButton: true }  );
-        };
+        this.toastr.error('Error sending your message. Please try again later.', 'Error', { disableTimeOut: false, progressBar: true, closeButton: true });
+      };
     })
   }
 

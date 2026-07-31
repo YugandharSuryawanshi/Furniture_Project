@@ -601,7 +601,7 @@ router.post('/verify_payment', authenticateToken, async (req, res) => {
 
         const orderValues = [
             userId, orderDetails.c_country, orderDetails.c_fname, orderDetails.c_lname, orderDetails.c_address, orderDetails.c_area,
-            orderDetails.c_state, orderDetails.c_postal_zip, orderDetails.c_email, orderDetails.c_phone, "online",
+            orderDetails.c_state, orderDetails.c_postal_zip, orderDetails.c_email, orderDetails.c_phone, "Online",
             "Confirmed", null, null, null, null, "Paid", razorpay_payment_id, new Date(),
             total_amount, total_gst, total_discount, final_total
         ];
@@ -647,88 +647,109 @@ router.post('/verify_payment', authenticateToken, async (req, res) => {
 // COD Order save details
 router.post('/place_cod_order', authenticateToken, async (req, res) => {
     try {
-        const { c_country, c_fname, c_lname, c_address, c_area, c_state, c_postal_zip, c_email, c_phone, cartProducts } = req.body;
+
+        const { c_country, c_fname, c_lname, c_address, c_area, c_state, c_postal_zip, c_email, c_phone,
+            cartProducts } = req.body;
+
         const userId = req.user.id;
 
         if (!cartProducts || cartProducts.length === 0) {
-            console.error("Missing order details or empty cart:", req.body);
-            return res.status(400).json({ success: false, message: 'Missing order details or empty cart' });
+            return res.status(400).json({
+                success: false, message: "Cart is empty"
+            });
         }
 
-        // Function to calculate totals for order & products
-        let total_amount = 0, total_gst = 0, total_discount = 0, final_total = 0;
+        // Calculate Totals
 
-        function calculateTotals(price, gst_percentage, discount_percentage) {
-            let gst_amount = (price * gst_percentage) / 100;
-            let discount_amount = (price * discount_percentage) / 100;
-            let final_price = price + gst_amount - discount_amount;
+        let total_amount = 0;
+        let total_gst = 0;
+        let total_discount = 0;
+        let final_total = 0;
 
-            total_amount += price;
-            total_gst += gst_amount;
-            total_discount += discount_amount;
-            final_total += final_price;
+        const orderProducts = [];
 
-            return { gst_amount, discount_amount, final_price };
+        for (const product of cartProducts) {
+
+            const price = Number(product.product_price);
+            const qty = Number(product.qty);
+
+            const gstPercentage = Number(product.gst_percentage);
+            const discountPercentage = Number(product.discount_percentage);
+
+            const productTotal = price * qty;
+
+            const gstAmount = (productTotal * gstPercentage) / 100;
+
+            const discountAmount = (productTotal * discountPercentage) / 100;
+
+            const finalPrice = productTotal + gstAmount - discountAmount;
+
+            total_amount += productTotal;
+            total_gst += gstAmount;
+            total_discount += discountAmount;
+            final_total += finalPrice;
+
+            orderProducts.push({
+                product_id: product.product_id,
+                product_name: product.product_name,
+                product_qty: qty,
+                product_price: price,
+                gst_amount: gstAmount,
+                discount_amount: discountAmount,
+                final_price: finalPrice,
+                product_details: product.product_details
+            });
         }
 
-        // Calculate totals for all products
-        for (let product of cartProducts) {
-            calculateTotals(
-                parseFloat(product.product_price),
-                parseFloat(product.gst_percentage),
-                parseFloat(product.discount_percentage)
-            );
-        }
+        // Insert Order
 
-        // Insert Order Data into order_tbl table
-        const orderSql = `
-            INSERT INTO order_tbl (
-                user_id, country, c_fname, c_lname, c_address, c_area, c_state, c_postal_zip, c_email_address, c_phone,
-                payment_mode, order_date, order_status, order_dispatch_date, order_delivered_date, order_cancel_date,
-                order_reject_date, payment_status, transaction_id, payment_date, total_amount, total_gst, total_discount, final_total
-            ) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, NOW(), ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
-        `;
+        const orderSql = `INSERT INTO order_tbl ( user_id, country, c_fname, c_lname, c_address,
+    c_area, c_state, c_postal_zip, c_email_address, c_phone, payment_mode, total_amount, total_gst,
+    total_discount, final_total, order_date, order_status, order_dispatch_date, order_delivered_date,
+    order_cancel_date, order_reject_date, payment_status, transaction_id, payment_date)
+        VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?,?, ?, ?, ?, ?,NOW(), ?, ?, ?, ?, ?, ?, ?, ?)`;
 
-        const orderValues = [
-            userId, c_country, c_fname, c_lname, c_address, c_area, c_state, c_postal_zip, c_email, c_phone, "cod",
-            "Pending", null, null, null, null, "Pending", null, null,
-            total_amount, total_gst, total_discount, final_total
-        ];
+        const orderValues = [userId, c_country, c_fname, c_lname, c_address, c_area, c_state, c_postal_zip,
+            c_email, c_phone, "COD", total_amount, total_gst, total_discount, final_total, "Pending", null,
+            null, null, null, "Pending", null, null];
 
         const orderResult = await exe(orderSql, orderValues);
-        if (!orderResult || !orderResult.insertId) throw new Error("Order insertion failed.");
-
         const orderId = orderResult.insertId;
 
-        // Insert each product into order_products table
+        // Insert Products
         const productSql = `
-            INSERT INTO order_products (
-                order_id, user_id, product_id, product_name, product_qty, product_price,
-                gst_amount, discount_amount, final_price, product_details
-            ) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
-        `;
+        INSERT INTO order_products(order_id, user_id, product_id, product_name, product_qty, product_price,
+            gst_amount, discount_amount, final_price, product_details) VALUES (?,?,?,?,?,?,?,?,?,?)`;
 
-        for (let product of cartProducts) {
-            let { gst_amount, discount_amount, final_price } = calculateTotals(
-                parseFloat(product.product_price),
-                parseFloat(product.gst_percentage),
-                parseFloat(product.discount_percentage)
-            );
-
-            const productValues = [
-                orderId, userId, product.product_id, product.product_name, product.qty, product.product_price,
-                gst_amount, discount_amount, final_price, product.product_details
-            ];
-
-            await exe(productSql, productValues);
+        for (const item of orderProducts) {
+            await exe(productSql,
+                [ orderId,
+                userId,
+                item.product_id,
+                item.product_name,
+                item.product_qty,
+                item.product_price,
+                item.gst_amount,
+                item.discount_amount,
+                item.final_price,
+                item.product_details
+            ]);
         }
 
-        // Send Success Response
-        res.status(200).json({ success: true, status: 'success', message: 'COD order placed successfully!' });
+        // Success
+        return res.status(200).json({
+            success: true,
+            status: "success",
+            message: "COD Order placed successfully"
+        });
 
-    } catch (error) {
-        console.error('Error placing COD order:', error);
-        res.status(500).json({ success: false, message: 'Internal server error' });
+    }
+    catch (err) {
+        console.error(err);
+        return res.status(500).json({
+            success: false,
+            message: err.message
+        });
     }
 });
 
@@ -1024,7 +1045,7 @@ router.post('/add_to_cart_single', authenticateToken, async (req, res) => {
 
         res.status(200).json({ success: true, message: 'Product added to cart successfully' });
 
-   } catch (error) {
+    } catch (error) {
         console.error('Error adding single product to cart:', error);
         res.status(500).json({ success: false, message: 'Error adding single product to cart' });
     }
@@ -1051,233 +1072,16 @@ router.get('/most_viewed', async (req, res) => {
     }
 });
 
-// Registration Otp Send
-// router.post('/register-send-otp', async (req, res) => {
-//     const { email } = req.body;
-//     try {
-//         // Email Validation
-//         if (!email) {
-//             return res.status(400).json({ status: 'error', message: 'Email is required' });
-//         }
-
-//         // Check Existing User
-//         const existingUser = await exe('SELECT user_id FROM users WHERE user_email = ?', [email]);
-
-//         if (existingUser.length > 0) {
-//             return res.status(400).json({ status: 'error', message: 'Email already registered' });
-//         }
-
-//         // Generate Otp
-//         const otp = Math.floor(100000 + Math.random() * 900000).toString();
-
-//         // OTP Expiry (5 Minutes)
-//         const expiry = new Date(Date.now() + 5 * 60 * 1000);
-
-//         // Save OTP
-//         await exe(`INSERT INTO user_registration_otp (user_email,otp,otp_expiry,is_verified) VALUES (?, ?, ?, 0)
-//             ON DUPLICATE KEY UPDATE otp = VALUES(otp), otp_expiry = VALUES(otp_expiry), is_verified = 0`,
-//             [email, otp, expiry]);
-
-//         // Send OTP Email Using Resend
-//         await sendEmail({
-//             to: email,
-//             subject: 'Registration OTP Verification',
-//             html: `
-//                 <div style="font-family:Arial,sans-serif;padding:20px;">
-//                     <h2>Furniture Store Registration</h2>
-
-//                     <p>Your OTP for registration is:</p>
-
-//                     <h1 style="
-//                         color:#0d6efd;
-//                         letter-spacing:5px;
-//                     ">
-//                         ${otp}
-//                     </h1>
-
-//                     <p>
-//                         This OTP will expire in
-//                         <strong>5 minutes</strong>.
-//                     </p>
-
-//                     <p>
-//                         If you did not request this OTP,
-//                         please ignore this email.
-//                     </p>
-//                 </div>
-//             `
-//         });
-
-//         return res.status(200).json({ status: 'success', message: 'OTP sent successfully' });
-
-//     } catch (err) {
-//         console.error('Registration OTP Error:', err);
-//         return res.status(500).json({ status: 'error', message: err.message || 'Failed to send OTP' });
-//     }
-// });
-
-// router.post('/register-verify-otp', async (req, res) => {
-//     const { email, otp } = req.body;
-//     try {
-//         // Validation
-//         if (!email || !otp) {
-//             return res.status(400).json({ status: 'error', message: 'Email and OTP are required' });
-//         }
-
-//         // Get OTP record
-//         const data = await exe('SELECT * FROM user_registration_otp WHERE user_email = ?', [email]);
-
-//         if (data.length === 0) {
-//             return res.status(400).json({ status: 'error', message: 'OTP not found' });
-//         }
-
-//         const record = data[0];
-
-//         // Check OTP Match
-//         if (String(record.otp) !== String(otp)) {
-//             return res.status(400).json({ status: 'error', message: 'Invalid OTP' });
-//         }
-
-//         // Check Expiry
-//         if (new Date() > new Date(record.otp_expiry)) {
-//             await exe('DELETE FROM user_registration_otp WHERE user_email = ?', [email]);
-//             return res.status(400).json({ status: 'error', message: 'OTP expired' });
-//         }
-
-//         // Mark Verified
-//         await exe(`UPDATE user_registration_otp SET is_verified = 1 WHERE user_email = ?`, [email]);
-//         return res.status(200).json({ status: 'success', message: 'OTP verified successfully' });
-
-//     } catch (err) {
-//         console.error('Register Verify OTP Error:', err);
-//         return res.status(500).json({ status: 'error', message: 'Server Error' });
-//     }
-// });
-
-// router.post('/send-otp', async (req, res) => {
-//     try {
-//         const { email } = req.body;
-
-//         // Email Validation
-//         if (!email) {
-//             return res.status(400).json({ status: 'error', message: 'Email is required' });
-//         }
-
-//         // Check User Exists
-//         const user = await exe('SELECT * FROM users WHERE user_email = ?', [email]);
-
-//         if (user.length === 0) {
-//             return res.status(404).json({ status: 'error', message: 'User not found' });
-//         }
-
-//         // Generate OTP
-//         const otp = Math.floor(100000 + Math.random() * 900000).toString();
-
-//         // Expiry Time (5 Minutes)
-//         const expiry = new Date(Date.now() + 5 * 60 * 1000);
-
-//         // Save OTP
-//         await exe(`UPDATE users SET otp = ?, otp_created_at = NOW(), otp_expiry = ? WHERE user_email = ?`,
-//             [otp, expiry, email]);
-
-//         // Send Email Using resend
-//         await sendEmail({
-//             to: email,
-//             subject: 'Password Reset OTP Verification',
-//             html: `
-//                 <div style="font-family:Arial,sans-serif;padding:20px;">
-//                     <h2>Furniture Store</h2>
-
-//                     <p>Your OTP for password reset is:</p>
-
-//                     <h1 style="
-//                         color:#0d6efd;
-//                         letter-spacing:5px;
-//                     ">
-//                         ${otp}
-//                     </h1>
-
-//                     <p>
-//                         This OTP will expire in
-//                         <strong>5 minutes</strong>.
-//                     </p>
-
-//                     <p>
-//                         If you did not request this OTP,
-//                         please ignore this email.
-//                     </p>
-//                 </div>
-//             `
-//         });
-
-//         return res.status(200).json({ status: 'success', message: 'OTP sent successfully' });
-
-//     } catch (err) {
-//         console.error('Forgot Password OTP Error:', err);
-//         return res.status(500).json({ status: 'error', message: err.message || 'Failed to send OTP' });
-//     }
-// });
-
-// // verify OTP
-// router.post('/verify-otp', async (req, res) => {
-//     try {
-//         const { email, otp } = req.body;
-
-//         // Validation
-//         if (!email || !otp) {
-//             return res.status(400).json({ status: 'error', message: 'Email and OTP are required' });
-//         }
-
-//         // Check User
-//         const userData = await exe('SELECT * FROM users WHERE user_email = ?', [email]);
-
-//         if (userData.length === 0) {
-//             return res.status(404).json({ status: 'error', message: 'User not found' });
-//         }
-
-//         const user = userData[0];
-
-//         // Check OTP Exists
-//         if (!user.otp || !user.otp_expiry) {
-//             return res.status(400).json({ status: 'error', message: 'Please request OTP first' });
-//         }
-
-//         // Check OTP Match
-//         if (String(user.otp) !== String(otp)) {
-//             return res.status(400).json({ status: 'error', message: 'Invalid OTP' });
-//         }
-
-//         // Check Expiry
-//         if (new Date() > new Date(user.otp_expiry)) {
-//             await exe(`UPDATE users
-//                 SET otp = NULL, otp_created_at = NULL, otp_expiry = NULL WHERE user_email = ?`, [email]);
-//             return res.status(400).json({ status: 'error', message: 'OTP expired' });
-//         }
-
-//         // Clear OTP After Successful Verification
-//         await exe(`UPDATE users SET otp = NULL, otp_created_at = NULL, otp_expiry = NULL WHERE user_email = ?`, [email]);
-//         return res.status(200).json({ status: 'success', message: 'OTP verified successfully' });
-//     } catch (err) {
-//         console.error('Verify OTP Error:', err);
-//         return res.status(500).json({ status: 'error', message: err.message || 'Server Error' });
-//     }
-// });
-
-
+// Registration OTP
 router.post('/register-send-otp', async (req, res) => {
     const { email } = req.body;
-
     try {
-
         if (!email) {
             return res.status(400).json({ status: 'error', message: 'Email is required' });
         }
 
         // Check Existing User
-        const existingUser = await exe(
-            'SELECT user_id FROM users WHERE user_email = ?',
-            [email]
-        );
+        const existingUser = await exe('SELECT user_id FROM users WHERE user_email = ?', [email]);
 
         if (existingUser.length > 0) {
             return res.status(400).json({
@@ -1293,34 +1097,17 @@ router.post('/register-send-otp', async (req, res) => {
         const expiry = new Date(Date.now() + 5 * 60 * 1000);
 
         // Save OTP in Registration OTP Table
-        await exe(`
-            INSERT INTO user_registration_otp
-            (
-                user_email,
-                otp,
-                otp_expiry,
-                is_verified
-            )
-            VALUES (?, ?, ?, 0)
-            ON DUPLICATE KEY UPDATE
-                otp = VALUES(otp),
-                otp_expiry = VALUES(otp_expiry),
-                is_verified = 0
-        `, [email, otp, expiry]);
+        await exe(`INSERT INTO user_registration_otp ( user_email, otp, otp_expiry, is_verified) VALUES (?, ?, ?, 0)
+            ON DUPLICATE KEY UPDATE otp = VALUES(otp), otp_expiry = VALUES(otp_expiry), is_verified = 0`,
+            [email, otp, expiry]);
 
         const response = await sendEmail(
             email,
             'Registration OTP Verification',
-            `
-            <div style="font-family:Arial,sans-serif;padding:20px;">
+            `<div style="font-family:Arial,sans-serif;padding:20px;">
                 <h2>Furniture Store Registration</h2>
-
                 <p>Your OTP for registration is:</p>
-
-                <h1 style="color:#0d6efd;letter-spacing:5px;">
-                    ${otp}
-                </h1>
-
+                <h1 style="color:#0d6efd;letter-spacing:5px;">${otp}</h1>
                 <p>
                     This OTP will expire in
                     <strong>5 minutes</strong>.
@@ -1347,9 +1134,7 @@ router.post('/register-send-otp', async (req, res) => {
         });
 
     } catch (err) {
-
         console.error('Registration OTP Error:', err);
-
         return res.status(500).json({
             status: 'error',
             message: err.message || 'Failed to send OTP'
@@ -1357,6 +1142,7 @@ router.post('/register-send-otp', async (req, res) => {
     }
 });
 
+// Verify register otp
 router.post('/register-verify-otp', async (req, res) => {
 
     const { email, otp } = req.body;
@@ -1425,6 +1211,7 @@ router.post('/register-verify-otp', async (req, res) => {
     }
 });
 
+//  Send otp
 router.post('/send-otp', async (req, res) => {
 
     try {
@@ -1516,6 +1303,7 @@ router.post('/send-otp', async (req, res) => {
     }
 });
 
+// Verify otp
 router.post('/verify-otp', async (req, res) => {
 
     try {
@@ -1601,3 +1389,4 @@ router.post('/verify-otp', async (req, res) => {
 });
 
 export { router as userRoute };
+

@@ -71,7 +71,7 @@
                             <div class="carousel-inner">
                                 <div class="carousel-item" *ngFor="let img of obj.product_images; let first = first"
                                     [class.active]="first">
-                                    <img [src]="img" class="product-image d-block w-100" alt="{{ obj.product_name }}">
+                                    <img [src]="img" class="product-image d-block w-100" [alt]="obj.product_name">
                                 </div>
                             </div>
                             <!-- Carousel Controls btns -->
@@ -138,7 +138,7 @@
                                     <div *ngFor="let img of product.product_images; let first = first"
                                         class="carousel-item" [ngClass]="{'active': first}">
                                         <img [src]="img" class="img-fluid product-carousel-image"
-                                            alt="{{ product.product_name }}">
+                                            [alt]="product.product_name">
                                     </div>
                                 </div>
 
@@ -154,7 +154,7 @@
                                 </button>
                             </div>
                             <div class="product-badge1">
-                                <button class="btn btn-sm btn-outline-danger position-absolute end-0 rounded-circle"
+                                <button type="button" class="btn btn-sm btn-outline-danger position-absolute end-0 rounded-circle"
                                     (click)="AddToWishlist(product.product_id)">
                                     <i class="far fa-heart" title="Add to Wishlist"></i>
                                 </button>

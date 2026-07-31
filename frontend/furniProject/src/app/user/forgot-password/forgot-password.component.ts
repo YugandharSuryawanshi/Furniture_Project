@@ -80,34 +80,25 @@ export class ForgotPasswordComponent {
   // Toggle Password
   togglePasswordVisibility() {
     this.passwordFieldType =
-      this.passwordFieldType === 'password'
-        ? 'text'
-        : 'password';
+      this.passwordFieldType === 'password' ? 'text' : 'password';
   }
 
   toggleConfirmPasswordVisibility() {
     this.confirmPasswordFieldType =
-      this.confirmPasswordFieldType === 'password'
-        ? 'text'
-        : 'password';
+      this.confirmPasswordFieldType === 'password' ? 'text' : 'password';
   }
 
-  // STEP 1
-  // SEND OTP
-
+  // Step 1
+  // Send Otp
   sendOtp() {
-
     if (this.emailForm.invalid) {
 
-      this.toastr.error(
-        'Please enter a valid email address',
-        'Validation Error',
+      this.toastr.error('Please enter a valid email address', 'Validation Error',
         {
           progressBar: true,
           closeButton: true
         }
       );
-
       return;
     }
 
@@ -124,9 +115,7 @@ export class ForgotPasswordComponent {
 
         this.loading = false;
 
-        this.toastr.success(
-          res?.message || 'OTP sent successfully',
-          'Success',
+        this.toastr.success(res?.message || 'OTP sent successfully', 'Success',
           {
             progressBar: true,
             closeButton: true
@@ -140,9 +129,7 @@ export class ForgotPasswordComponent {
 
         this.loading = false;
 
-        this.toastr.error(
-          err?.error?.message || 'Failed to send OTP',
-          'Error',
+        this.toastr.error(err?.error?.message || 'Failed to send OTP', 'Error',
           {
             progressBar: true,
             closeButton: true
@@ -152,23 +139,16 @@ export class ForgotPasswordComponent {
     });
   }
 
-  // RESEND OTP
+  // Resend Otp
 
   resendOtp() {
-
     this.loading = true;
 
-    this.userApi.sendOtp({
-      email: this.email
-    }).subscribe({
-
+    this.userApi.sendOtp({ email: this.email }).subscribe({
       next: (res: any) => {
-
         this.loading = false;
 
-        this.toastr.success(
-          res?.message || 'OTP resent successfully',
-          'Success',
+        this.toastr.success(res?.message || 'OTP resent successfully', 'Success',
           {
             progressBar: true,
             closeButton: true
@@ -180,9 +160,7 @@ export class ForgotPasswordComponent {
 
         this.loading = false;
 
-        this.toastr.error(
-          err?.error?.message || 'Failed to resend OTP',
-          'Error',
+        this.toastr.error(err?.error?.message || 'Failed to resend OTP', 'Error',
           {
             progressBar: true,
             closeButton: true
@@ -192,16 +170,14 @@ export class ForgotPasswordComponent {
     });
   }
 
-  // STEP 2
-  // VERIFY OTP
+  // Step 2
+  // Verify Otp
 
   verifyOtp() {
 
     if (this.otpForm.invalid) {
 
-      this.toastr.error(
-        'Please enter a valid 6 digit OTP',
-        'Validation Error',
+      this.toastr.error('Please enter a valid 6 digit OTP', 'Validation Error',
         {
           progressBar: true,
           closeButton: true
@@ -222,9 +198,7 @@ export class ForgotPasswordComponent {
 
         this.loading = false;
 
-        this.toastr.success(
-          res?.message || 'OTP verified successfully',
-          'Success',
+        this.toastr.success(res?.message || 'OTP verified successfully', 'Success',
           {
             progressBar: true,
             closeButton: true
@@ -238,9 +212,7 @@ export class ForgotPasswordComponent {
 
         this.loading = false;
 
-        this.toastr.error(
-          err?.error?.message || 'Invalid OTP',
-          'Error',
+        this.toastr.error(err?.error?.message || 'Invalid OTP', 'Error',
           {
             progressBar: true,
             closeButton: true
@@ -250,16 +222,14 @@ export class ForgotPasswordComponent {
     });
   }
 
-  // STEP 3
-  // RESET PASSWORD
+  // step 3
+  // Reset Password
 
   resetPassword() {
 
     if (this.passwordForm.invalid) {
 
-      this.toastr.error(
-        'Password must contain 8+ characters, 1 uppercase, 1 lowercase and 1 number',
-        'Validation Error',
+      this.toastr.error('Password must contain 8+ characters, 1 uppercase, 1 lowercase and 1 number', 'Validation Error',
         {
           progressBar: true,
           closeButton: true
@@ -269,17 +239,13 @@ export class ForgotPasswordComponent {
       return;
     }
 
-    const password =
-      this.passwordForm.value.password;
+    const password = this.passwordForm.value.password;
 
-    const confirmPassword =
-      this.passwordForm.value.confirmPassword;
+    const confirmPassword = this.passwordForm.value.confirmPassword;
 
     if (password !== confirmPassword) {
 
-      this.toastr.error(
-        'Passwords do not match',
-        'Validation Error',
+      this.toastr.error('Passwords do not match', 'Validation Error',
         {
           progressBar: true,
           closeButton: true
@@ -300,9 +266,7 @@ export class ForgotPasswordComponent {
 
         this.loading = false;
 
-        this.toastr.success(
-          res?.message || 'Password reset successfully',
-          'Success',
+        this.toastr.success(res?.message || 'Password reset successfully', 'Success',
           {
             progressBar: true,
             closeButton: true
@@ -320,9 +284,7 @@ export class ForgotPasswordComponent {
 
         this.loading = false;
 
-        this.toastr.error(
-          err?.error?.message || 'Password reset failed',
-          'Error',
+        this.toastr.error(err?.error?.message || 'Password reset failed', 'Error',
           {
             progressBar: true,
             closeButton: true
@@ -332,7 +294,7 @@ export class ForgotPasswordComponent {
     });
   }
 
-  // RESET FORM
+  // Reset Form.
 
   resetAll() {
 

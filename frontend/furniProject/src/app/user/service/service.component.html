@@ -1,86 +1,106 @@
-<!-- Start Hero Section -->
+<!-- Hero Section -->
 <div class="hero">
     <div class="container">
         <div class="row justify-content-between">
             <div class="col-lg-5">
                 <div class="intro-excerpt">
-                    <h1>Services</h1>
-                    <p class="mb-4">We provide a wide range of furniture services designed to make your home more
-                        comfortable and stylish.
+                    <h1> Our Services</h1>
+                    <p class="mb-4">
+                        We provide a wide range of furniture services designed to make your home more comfortable and
+                        stylish.
                         From customized furniture solutions to expert interior design guidance, our services are focused
-                        on delivering quality, functionality, and customer satisfaction.</p>
+                        on delivering quality, functionality, and customer satisfaction.
+                    </p>
                     <p>
-                        <a routerLink="/user/shop" class="btn btn-danger text-white me-2">Shop Now</a>
-                        <a routerLink="#" class="btn btn-white-outline text-white">Explore</a>
+                        <a routerLink='/user/shop' class="btn btn-danger me-2">Shop Now</a>
+                        <a routerLink="/user/about" class="btn btn-white-outline text-white">Explore</a>
                     </p>
                 </div>
             </div>
             <div class="col-lg-7">
                 <div class="hero-img-wrap">
-                    <img src="images/couch.png" class="img-fluid" alt="Furniture">
+                    <img src="images/couch.png" class="img-fluid">
                 </div>
             </div>
         </div>
     </div>
 </div>
-<!-- End Hero Section -->
 
-<!-- Start Cart Section -->
+<!--  End Hero Section -->
+
+
+<!-- Why Choose Us -->
 <div class="cart-section">
     <div class="container">
-        <h2 class="section-title text-center mb-5">Why Choose Us</h2>
+        <h2 class="section-title text-center mb-5">
+            Why Choose Us
+        </h2>
 
         <div class="row">
             <div class="col-12 col-sm-6 col-lg-3 mb-4" *ngFor="let about_point of about_points">
-
-                <div class="cart-card">
+                <div class="cart-card h-100">
                     <div class="cart-img">
-                        <img [src]="'http://localhost:1000/uploads/' + about_point.why_choose_points_img" alt="Image">
+                        <img [src]="imageUrl.getImageUrl(about_point.why_choose_points_img)"
+                            [alt]="about_point.why_choose_points_name" loading="lazy">
                     </div>
+
                     <div class="cart-content">
-                        <h5>{{about_point.why_choose_points_name}}</h5>
-                        <p>{{about_point.why_choose_points_details}}</p>
+                        <h5>{{ about_point.why_choose_points_name }}</h5>
+                        <p> {{ about_point.why_choose_points_details }} </p>
                     </div>
 
                 </div>
 
             </div>
+
         </div>
+
     </div>
 </div>
-<!-- End Cart Section -->
+<!-- End Why Choose Us -->
 
 
-<!-- Start Popular Product -->
+<!-- Latest Products -->
 <div class="popular-product">
     <div class="container">
-        <h2 class="section-title text-center">Our Latest Products</h2>
+
+        <h2 class="section-title text-center">
+            Our Latest Products
+        </h2>
+
         <div class="row">
             <div class="col-12 col-md-6 col-lg-4 mb-4" *ngFor="let product of products">
-
                 <div class="product-card">
 
-                    <!-- Image -->
+                    <!-- Product Image -->
+
                     <div class="product-img">
-                        <img [src]="product.firstImage" alt="Image">
+                        <img [src]="product.firstImage" [alt]="product.product_name" loading="lazy">
+
                         <div class="overlay">
                             <a [routerLink]="['/user/product_info', product.product_id]" class="view-btn">
                                 View Product
                             </a>
                         </div>
+
                     </div>
 
-                    <!-- Content -->
+                    <!-- Product Content -->
+
                     <div class="product-content">
-                        <h3>{{ product.product_name }}</h3>
+                        <h3> {{ product.product_name }} </h3>
                     </div>
+
                 </div>
+
             </div>
+
         </div>
 
     </div>
 </div>
-<!-- End Popular Product -->
+<!-- End Latest Products -->
+
 
 <!-- Start Testimonial Slider -->
 <div class="container">
@@ -102,8 +122,8 @@
                 <div class="row">
                     <!-- First part: Image Section -->
                     <div class="col-md-4 d-flex justify-content-center align-items-center">
-                        <img [src]="'http://localhost:1000/uploads/' + slide.customer_image" alt="Image"
-                            class="rounded-circle" style="width: 250px; height: 250px;">
+                        <img [src]="slide.imageUrl" alt="Image" class="rounded-circle" style="width:250px;height:250px"
+                            loading="lazy" decoding="async">
                     </div>
 
                     <!-- Second part: Heading Section -->

@@ -41,7 +41,9 @@ export class PrintReceiptComponent {
     this.userApi.getOrderReceipt(this.orderId).subscribe(
       (res: any) => {
         if (res.success) {
-          this.orderDetails = res.order
+          this.orderDetails = res.order;
+          console.log(this.orderDetails);
+          
         }
       },
       (error) => {

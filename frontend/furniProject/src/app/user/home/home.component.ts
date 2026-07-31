@@ -33,14 +33,15 @@ export class HomeComponent {
   @HostListener('window:keypress') onKeyPress() { this.resetTimer(); }
   @HostListener('window:click') onClick() { this.resetTimer(); }
 
+  // Timer Reset
   resetTimer() {
     clearTimeout(this.inactivityTimeout);
     this.inactivityTimeout = setTimeout(() => this.autoLogout(), this.logoutTime);
   }
 
+  // Auto Logout
   autoLogout() {
     this.userApi.userLogout();
-    alert('Logged out Due to Inactivity timeout..! , Login Again!');
     this.toastr.warning('Session Expired', 'You have been logged out', {
       disableTimeOut: false,
       progressBar: true,

@@ -70,5 +70,5 @@ transporter.verify(function (error, success) {
 const PORT = config.server.port;
 
 app.listen(PORT, () => {
-    console.log(`🚀 Server running on port ${PORT}`);
+    console.log(`Server running on port ${PORT}`);
 });

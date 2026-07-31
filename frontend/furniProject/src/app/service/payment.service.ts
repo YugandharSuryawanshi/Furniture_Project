@@ -8,8 +8,8 @@ import { UserApiService } from './user-api.service';
 })
 export class PaymentService {
 
-  // private apiUrl = "http://localhost:1000";
-  private apiUrl = 'https://furniture-backend-ssa5.onrender.com';
+  private apiUrl = "http://localhost:4000";
+  // private apiUrl = 'https://furniture-backend-ssa5.onrender.com';
 
   constructor(private http: HttpClient, private userApi: UserApiService) { }
 

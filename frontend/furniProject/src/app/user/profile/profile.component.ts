@@ -4,6 +4,7 @@ import { FormsModule } from '@angular/forms';
 import { Router, RouterModule } from '@angular/router';
 import { ToastrService } from 'ngx-toastr';
 import { UserApiService } from '../../service/user-api.service';
+import { ImageService } from '../../service/image.service';
 
 @Component({
   selector: 'app-profile',
@@ -14,7 +15,12 @@ import { UserApiService } from '../../service/user-api.service';
 })
 export class ProfileComponent {
 
-  constructor(private userApi: UserApiService, private router: Router, private toastr: ToastrService) { }
+  constructor(
+    private userApi: UserApiService,
+    private router: Router,
+    private toastr: ToastrService,
+    private imageUrl: ImageService
+  ) { }
 
   otpSent = false;
   otpVerified = false;
@@ -48,7 +54,8 @@ export class ProfileComponent {
         this.formData.user_email = this.loggedInUser.user_email;
         this.formData.user_address = this.loggedInUser.user_address;
         if (this.loggedInUser.user_profile) {
-          this.loggedInUserImage = `http://localhost:1000/uploads/${this.loggedInUser.user_profile}`;
+          // this.loggedInUserImage = `http://localhost:1000/uploads/${this.loggedInUser.user_profile}`;
+          this.loggedInUserImage = this.imageUrl.getImageUrl(this.loggedInUser.user_profile);
         }
         else {
           this.loggedInUserImage = 'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTKlIcH0Q1e2QDuzvM94CnN3vdzXrvebSHNeQ&s'; // Placeholder image if user profile is not set
