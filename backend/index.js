@@ -30,10 +30,10 @@ app.use(cors({
 
 // Test API
 app.get("/", (req, res) => {
-    res.send("Backend Running Successfully 🚀");
+    res.send("Backend Running Successfully...");
 });
 
-// DB TEST (using exe - your old system)
+// DB Test API
 app.get("/db-test", async (req, res) => {
     try {
         const result = await exe("SELECT 1 as test");

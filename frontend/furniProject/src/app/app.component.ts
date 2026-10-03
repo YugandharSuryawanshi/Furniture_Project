@@ -2,23 +2,23 @@ import { CommonModule } from '@angular/common';
 import { Component } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import { NavigationEnd, Router, RouterModule, RouterOutlet } from '@angular/router';
-import { AdminFooterComponent } from './admin-footer/admin-footer.component';
 import { AdminNavbarComponent } from './admin-navbar/admin-navbar.component';
 import { UserFooterComponent } from './user-footer/user-footer.component';
 import { UserNavbarComponent } from './user-navbar/user-navbar.component';
+import { LoaderComponent } from './loader/loader.component';
 
 
 @Component({
   selector: 'app-root',
   standalone: true,
-  imports: [RouterOutlet, RouterModule, CommonModule, FormsModule, UserNavbarComponent, UserFooterComponent, AdminNavbarComponent, AdminFooterComponent],
+  imports: [RouterOutlet, RouterModule, CommonModule, FormsModule, UserNavbarComponent, UserFooterComponent, AdminNavbarComponent, LoaderComponent],
   templateUrl: './app.component.html',
   styleUrl: './app.component.css'
 })
 export class AppComponent {
   title = 'Furni Project';
 
-  isAdminRoute: boolean = false;
+  isAdminRoute = false;
 
   constructor(private router: Router) { }
 
@@ -27,7 +27,7 @@ export class AppComponent {
     this.router.events.subscribe(event => {
       if (event instanceof NavigationEnd) {
         // Check if the current route starts with '/admin'
-        this.isAdminRoute = event.url.startsWith('/admin');
+        this.isAdminRoute = event.urlAfterRedirects.startsWith('/admin');
       }
     });
   }

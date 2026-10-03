@@ -37,35 +37,24 @@ export class AdminLoginComponent {
     if (passwordField) {
 
       const type =
-        passwordField.getAttribute('type') === 'password'
-          ? 'text'
-          : 'password';
-
+        passwordField.getAttribute('type') === 'password' ? 'text' : 'password';
       passwordField.setAttribute('type', type);
     }
   }
 
   toggleOtpVisibility() {
 
-    const otpField =
-      document.getElementById('otp');
+    const otpField = document.getElementById('otp');
 
     if (otpField) {
-
       const type =
-        otpField.getAttribute('type') === 'password'
-          ? 'text'
-          : 'password';
-
+        otpField.getAttribute('type') === 'password' ? 'text' : 'password';
       otpField.setAttribute('type', type);
     }
   }
 
   emailValid(): boolean {
-
-    const emailPattern =
-      /^[a-z0-9._%+-]+@[a-z0-9.-]+\.[a-z]{2,4}$/i;
-
+    const emailPattern = /^[a-z0-9._%+-]+@[a-z0-9.-]+\.[a-z]{2,4}$/i;
     return emailPattern.test(this.admin_email);
   }
 
@@ -88,18 +77,13 @@ export class AdminLoginComponent {
     showId: string
   ) {
 
-    const hideEl =
-      document.getElementById(hideId);
+    const hideEl = document.getElementById(hideId);
 
-    const showEl =
-      document.getElementById(showId);
+    const showEl = document.getElementById(showId);
 
     if (hideEl && showEl) {
 
-      hideEl.classList.add(
-        'animate__animated',
-        'animate__fadeOut'
-      );
+      hideEl.classList.add('animate__animated', 'animate__fadeOut');
 
       setTimeout(() => {
 

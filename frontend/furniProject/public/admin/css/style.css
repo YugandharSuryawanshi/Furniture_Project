@@ -383,7 +383,7 @@ button,
 [type=button],
 [type=reset],
 [type=submit] {
-  -webkit-appearance: button;
+  appearance: button;
 }
 button:not(:disabled),
 [type=button]:not(:disabled),
@@ -446,7 +446,7 @@ legend + * {
 
 [type=search] {
   outline-offset: -2px;
-  -webkit-appearance: textfield;
+  appearance: textfield;
 }
 
 *[dir=rtl] [type=tel],
@@ -471,7 +471,7 @@ legend + * {
 
 ::file-selector-button {
   font: inherit;
-  -webkit-appearance: button;
+  appearance: button;
 }
 
 output {
@@ -4224,7 +4224,7 @@ html:not([dir=rtl]) .dropdown-toggle-split::after, html:not([dir=rtl]) .dropup .
 html:not([dir=rtl]) .dropstart .dropdown-toggle-split::before {
   margin-right: 0;
 }
-*[dir=rtl] .dropstart .dropdown-toggle-split::before {
+*[dir=rtl] .dropstart .dropdown-toggle-split::before {  
   margin-left: 0;
 }
 

@@ -40,7 +40,7 @@
                                 </h4>
                             </div>
 
-                            <!-- Multi-step Admin Login -->
+                            <!-- Multi-Step Admin Login -->
                             <div class="login-body" id="email-step">
                                 <form (ngSubmit)="goToPasswordStep()">
                                     <div class="form-group">
@@ -120,14 +120,14 @@
                                     </button>
 
                                     <div class="resend-otp">
-                                        <p>Didn't receive OTP? <a (click)="resendOtp()" style="cursor: pointer;">Resend
-                                                OTP</a></p>
+                                        <p>Didn't receive OTP?
+                                            <a (click)="resendOtp()" style="cursor: pointer;">Resend OTP.</a>
+                                        </p>
                                     </div>
                                 </form>
                             </div>
 
                             <div class="d-flex justify-content-between align-items-center mb-4 m-4">
-                                <!-- <a routerLink="/admin/forgot-password" class="text-decoration-none small ">Forgot password?</a> -->
                                 <a routerLink="/admin/forgot-password" class="forgot-link">
                                     Forgot password?
                                 </a>
@@ -147,9 +147,9 @@
                                 <h3 class="mb-3 animate__animated animate__fadeIn" style="animation-delay: 0.3s;">Login
                                     Successful!
                                 </h3>
-                                <p class="animate__animated animate__fadeIn" style="animation-delay: 0.5s;">You're being
-                                    redirected
-                                    to the admin dashboard...</p>
+                                <p class="animate__animated animate__fadeIn" style="animation-delay: 0.5s;">
+                                    You're being redirected to the admin dashboard...
+                                </p>
                                 <div class="spinner-border text-danger mt-3 animate__animated animate__fadeIn"
                                     style="animation-delay: 0.7s;" role="status">
                                     <span class="visually-hidden">Loading...</span>

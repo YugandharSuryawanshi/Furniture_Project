@@ -189,7 +189,7 @@ export class CheckoutComponent implements OnInit {
         }
       },
       (error) => {
-        console.error(" Error verifying payment:", error);
+        console.error("Error verifying payment:", error);
         this.toastr.error('Something went wrong with payment verification.', 'error', { disableTimeOut: false, progressBar: true, closeButton: true });
       }
     );

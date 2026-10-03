@@ -1,0 +1,37 @@
+.loader-overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+
+    width: 100vw;
+    height: 100vh;
+
+    background: rgba(255, 255, 255, 0.75);
+
+    display: flex;
+    justify-content: center;
+    align-items: center;
+
+    z-index: 999999;
+}
+
+.loader-content {
+    display: flex;
+    flex-direction: column;
+
+    align-items: center;
+    justify-content: center;
+}
+
+.loader-content .spinner-border {
+    width: 3rem;
+    height: 3rem;
+}
+
+.loading-text {
+    margin-top: 12px;
+    margin-bottom: 0;
+
+    font-size: 15px;
+    font-weight: 500;
+}
