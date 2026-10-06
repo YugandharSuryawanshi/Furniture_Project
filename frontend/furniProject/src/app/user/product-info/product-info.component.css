@@ -113,3 +113,239 @@
 .wishlist-btn:hover .wishlist-icon {
     color: red;
 }
+
+
+
+/* ================================= */
+/* Product Info Skeleton Loading */
+/* ================================= */
+
+.skeleton {
+    position: relative;
+    overflow: hidden;
+    background-color: #e9e9e9;
+    border-radius: 6px;
+}
+
+.skeleton::after {
+    content: "";
+    position: absolute;
+    top: 0;
+    left: -150%;
+    width: 150%;
+    height: 100%;
+
+    background: linear-gradient(90deg,
+            transparent,
+            rgba(255, 255, 255, 0.65),
+            transparent);
+
+    animation: product-info-skeleton-loading 1.5s infinite;
+}
+
+
+/* Main Product Image */
+
+.product-info-skeleton-main {
+    width: 100%;
+    height: 450px;
+    border-radius: 10px;
+}
+
+
+/* Thumbnail Skeleton */
+
+.product-info-skeleton-thumbnails {
+    display: flex;
+    gap: 10px;
+    padding: 10px 0;
+}
+
+.product-info-skeleton-thumbnail {
+    width: 60px;
+    height: 60px;
+    flex-shrink: 0;
+}
+
+
+/* Product Title */
+
+.skeleton-product-title {
+    width: 75%;
+    height: 40px;
+    margin-bottom: 25px;
+}
+
+
+/* Product Price */
+
+.skeleton-product-price {
+    width: 35%;
+    height: 25px;
+    margin-bottom: 15px;
+}
+
+
+/* Product MRP */
+
+.skeleton-product-mrp {
+    width: 30%;
+    height: 18px;
+    margin-bottom: 15px;
+}
+
+
+/* Badge */
+
+.skeleton-product-badge {
+    width: 90px;
+    height: 30px;
+    margin-bottom: 15px;
+}
+
+
+/* Product Lines */
+
+.skeleton-product-line {
+    width: 70%;
+    height: 18px;
+    margin-bottom: 12px;
+}
+
+.skeleton-product-line.short {
+    width: 45%;
+}
+
+
+/* Product Description */
+
+.skeleton-product-description {
+    width: 95%;
+    height: 18px;
+    margin-bottom: 12px;
+}
+
+.skeleton-product-description.short {
+    width: 65%;
+}
+
+
+/* Buttons */
+
+.product-info-skeleton-buttons {
+    display: flex;
+    gap: 10px;
+    margin-top: 25px;
+}
+
+.skeleton-button {
+    width: 130px;
+    height: 42px;
+}
+
+.skeleton-small-button {
+    width: 130px;
+    height: 38px;
+    border-radius: 5px;
+}
+
+
+/* Cart / Wishlist Small Loading */
+
+.product-status-skeleton {
+    display: inline-block;
+    margin-top: 15px;
+    margin-bottom: 10px;
+}
+
+
+/* Review Profile */
+
+.skeleton-review-profile {
+    width: 40px;
+    height: 40px;
+    border-radius: 50%;
+    margin-right: 10px;
+}
+
+
+/* Review Name */
+
+.skeleton-review-name {
+    width: 130px;
+    height: 18px;
+}
+
+
+/* Review Stars */
+
+.skeleton-review-stars {
+    width: 100px;
+    height: 18px;
+    margin-bottom: 12px;
+}
+
+
+/* Review Heading */
+
+.skeleton-review-heading {
+    width: 45%;
+    height: 18px;
+    margin-bottom: 10px;
+}
+
+
+/* Review Date */
+
+.skeleton-review-date {
+    width: 35%;
+    height: 15px;
+    margin-bottom: 12px;
+}
+
+
+/* Review Text */
+
+.skeleton-review-text {
+    width: 90%;
+    height: 16px;
+    margin-bottom: 10px;
+}
+
+.skeleton-review-text.short {
+    width: 60%;
+}
+
+
+/* Skeleton Animation */
+
+@keyframes product-info-skeleton-loading {
+
+    0% {
+        left: -150%;
+    }
+
+    100% {
+        left: 150%;
+    }
+
+}
+
+
+/* Mobile */
+
+@media screen and (max-width: 768px) {
+
+    .product-info-skeleton-main {
+        height: 300px;
+    }
+
+    .skeleton-product-title {
+        margin-top: 20px;
+    }
+
+    .product-info-skeleton-buttons {
+        flex-wrap: wrap;
+    }
+
+}

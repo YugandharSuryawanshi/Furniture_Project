@@ -5,12 +5,18 @@ import { ActivatedRoute, Router, RouterModule } from '@angular/router';
 import { ToastrService } from 'ngx-toastr';
 import { UserApiService } from '../../service/user-api.service';
 import { ImageService } from '../../service/image.service';
-import { Subscription } from 'rxjs';
+import { Subscription, finalize } from 'rxjs';
 
 @Component({
   selector: 'app-product-info',
   standalone: true,
-  imports: [CurrencyPipe, CommonModule, FormsModule, RouterModule, ReactiveFormsModule],
+  imports: [
+    CurrencyPipe,
+    CommonModule,
+    FormsModule,
+    RouterModule,
+    ReactiveFormsModule
+  ],
   templateUrl: './product-info.component.html',
   styleUrl: './product-info.component.css'
 })
@@ -43,6 +49,15 @@ export class ProductInfoComponent {
   isWishlistAdded: boolean = false;
   routeSubscription!: Subscription;
 
+  // ==========================================
+  // Separate Loading States
+  // ==========================================
+
+  productLoading: boolean = false;
+  reviewsLoading: boolean = false;
+  cartStatusLoading: boolean = false;
+  wishlistLoading: boolean = false;
+
   constructor(
     private route: ActivatedRoute,
     private userApi: UserApiService,
@@ -61,68 +76,95 @@ export class ProductInfoComponent {
         const id = params['id'];
 
         if (id) {
+
           this.came_product_id = id;
+
           this.fetchProductDetails(id);
           this.getReviews();
           this.getWishlistStatus(id);
+
         }
 
       });
   }
 
   ngOnDestroy(): void {
+
     if (this.routeSubscription) {
       this.routeSubscription.unsubscribe();
     }
+
   }
 
+  // ==========================================
+  // Product Details
+  // ==========================================
+
   fetchProductDetails(id: string) {
-    this.userApi.getProductById(id).subscribe((data: any) => {
-      this.getCartStatus(id);
 
-      this.product = data;
+    this.productLoading = true;
 
-      this.product_details =
-        this.product.product_details.replace(/\.\s*/g, ".<br>");
+    this.userApi.getProductById(id)
+      .pipe(
+        finalize(() => {
+          this.productLoading = false;
+        })
+      )
+      .subscribe((data: any) => {
 
-      this.additional_details =
-        this.product.additional_details.replace(/\.\s*/g, ".<br>");
+        this.getCartStatus(id);
 
-      this.product_price = Math.floor(
-        Number(this.product.product_price)
-      );
+        this.product = data;
 
-      this.discount =
-        (
-          (this.product.duplicate_price -
-            this.product.product_price) /
-          this.product.duplicate_price
-        ) * 100;
+        this.product_details =
+          this.product.product_details.replace(/\.\s*/g, ".<br>");
 
-      this.discount = parseFloat(
-        this.discount.toFixed(2)
-      );
+        this.additional_details =
+          this.product.additional_details.replace(/\.\s*/g, ".<br>");
 
-      if (this.product.product_image) {
-        this.images =
-          this.product.product_image.split(',');
+        this.product_price = Math.floor(
+          Number(this.product.product_price)
+        );
 
-        this.selectedImage = this.images[0];
-      }
+        this.discount =
+          (
+            (this.product.duplicate_price -
+              this.product.product_price) /
+            this.product.duplicate_price
+          ) * 100;
 
-      // Recently Viewed Product Save
-      this.saveRecentlyViewedProduct(this.product);
+        this.discount = parseFloat(
+          this.discount.toFixed(2)
+        );
 
-      // Reload List
-      this.loadRecentlyViewedProducts();
-    });
+        if (this.product.product_image) {
+
+          this.images =
+            this.product.product_image.split(',');
+
+          this.selectedImage = this.images[0];
+
+        }
+
+        // Recently Viewed Product Save
+        this.saveRecentlyViewedProduct(this.product);
+
+        // Reload List
+        this.loadRecentlyViewedProducts();
+
+      });
   }
 
   changeImage(image: string): void {
     this.selectedImage = image;
   }
 
+  // ==========================================
+  // Image Zoom
+  // ==========================================
+
   onMouseMove(event: MouseEvent): void {
+
     if (!this.isDesktop) return;
 
     const container = event.currentTarget as HTMLElement;
@@ -139,30 +181,40 @@ export class ProductInfoComponent {
   }
 
   onMouseEnter(): void {
+
     if (this.isDesktop) {
+
       this.showZoom = true;
 
-      /* 🔥 reset center position */
       this.backgroundPosX = '50%';
       this.backgroundPosY = '50%';
+
     }
   }
 
   onMouseLeave(): void {
+
     this.showZoom = false;
-    //reset when mouse leaving
+
     this.backgroundPosX = '50%';
     this.backgroundPosY = '50%';
+
   }
 
   @HostListener('window:resize')
   checkDeviceType(): void {
+
     this.isDesktop = window.innerWidth > 768;
 
     if (!this.isDesktop) {
       this.showZoom = false;
     }
+
   }
+
+  // ==========================================
+  // Review Form
+  // ==========================================
 
   formData = {
     rating: '',
@@ -175,14 +227,19 @@ export class ProductInfoComponent {
   selectedImages: File[] = [];
 
   getImages(event: Event) {
+
     const fileInput = event.target as HTMLInputElement;
+
     if (fileInput.files) {
       this.selectedImages = Array.from(fileInput.files);
     }
+
   }
 
   saveReview() {
+
     const formData = new FormData();
+
     formData.append('rating', this.formData.rating);
     formData.append('comment', this.formData.comment);
     formData.append('country', this.formData.country);
@@ -190,60 +247,110 @@ export class ProductInfoComponent {
     formData.append('heading', this.formData.heading);
 
     if (this.selectedImages.length > 0) {
+
       this.selectedImages.forEach((image) => {
         formData.append('review_img', image);
       });
+
     }
 
-    if (this.formData.rating && this.formData.comment && this.formData.country) {
+    if (
+      this.formData.rating &&
+      this.formData.comment &&
+      this.formData.country
+    ) {
+
       this.userApi.addReview(formData).subscribe((res: any) => {
+
         if (res.status === 'success') {
+
           this.formData.rating = '';
           this.formData.comment = '';
           this.formData.country = '';
           this.selectedImages = [];
           this.addReview = false;
+
           this.getReviews();
 
-          this.toastr.success('Review Added successfully', 'Success', {
-            disableTimeOut: false,
-            progressBar: true,
-            closeButton: true
-          });
+          this.toastr.success(
+            'Review Added successfully',
+            'Success',
+            {
+              disableTimeOut: false,
+              progressBar: true,
+              closeButton: true
+            }
+          );
+
         } else {
-          this.toastr.error(res.message, 'Error', {
-            disableTimeOut: false,
-            progressBar: true,
-            closeButton: true
-          });
+
+          this.toastr.error(
+            res.message,
+            'Error',
+            {
+              disableTimeOut: false,
+              progressBar: true,
+              closeButton: true
+            }
+          );
+
         }
+
       });
+
     } else {
-      this.toastr.error('Please fill all fields', 'Error', {
-        disableTimeOut: false,
-        progressBar: true,
-        closeButton: true
-      });
+
+      this.toastr.error(
+        'Please fill all fields',
+        'Error',
+        {
+          disableTimeOut: false,
+          progressBar: true,
+          closeButton: true
+        }
+      );
+
     }
   }
+
+  // ==========================================
+  // Reviews
+  // ==========================================
 
   topReviews: any[] = [];
   allReviews: any[] = [];
 
   getReviews() {
-    this.userApi.getReviews(this.came_product_id).subscribe((res: any) => {
-      if (res.status === 'success') {
-        this.topReviews = res.topReviews.map((review: any) => ({
-          ...review,
-          reviewImages: review.review_img ? review.review_img.split(',') : []
-        }));
 
-        this.allReviews = res.allReviews.map((review: any) => ({
-          ...review,
-          reviewImages: review.review_img ? review.review_img.split(',') : []
-        }));
-      }
-    });
+    this.reviewsLoading = true;
+
+    this.userApi.getReviews(this.came_product_id)
+      .pipe(
+        finalize(() => {
+          this.reviewsLoading = false;
+        })
+      )
+      .subscribe((res: any) => {
+
+        if (res.status === 'success') {
+
+          this.topReviews = res.topReviews.map((review: any) => ({
+            ...review,
+            reviewImages: review.review_img
+              ? review.review_img.split(',')
+              : []
+          }));
+
+          this.allReviews = res.allReviews.map((review: any) => ({
+            ...review,
+            reviewImages: review.review_img
+              ? review.review_img.split(',')
+              : []
+          }));
+
+        }
+
+      });
   }
 
   showReviewForm() {
@@ -251,133 +358,257 @@ export class ProductInfoComponent {
   }
 
   showAllReviews() {
-    const isloginCheck = this.userApi.isUserLoggedIn();
+
+    const isloginCheck =
+      this.userApi.isUserLoggedIn();
 
     if (isloginCheck) {
-      this.topReviewsDisplay = !this.topReviewsDisplay;
+
+      this.topReviewsDisplay =
+        !this.topReviewsDisplay;
+
     } else {
-      const userConfirmed = window.confirm("Please login to view all reviews");
+
+      const userConfirmed =
+        window.confirm(
+          "Please login to view all reviews"
+        );
+
       if (userConfirmed) {
         this.router.navigate(['/user/login']);
       }
+
     }
   }
 
+  // ==========================================
   // Cart
+  // ==========================================
+
   gotocart: boolean = false;
+
   addToCart(product_id: any) {
-    const isloginCheck = this.userApi.isUserLoggedIn();
+
+    const isloginCheck =
+      this.userApi.isUserLoggedIn();
 
     if (isloginCheck) {
+
       this.userApi.addToCart(product_id).subscribe((res: any) => {
+
         if (res.isProductAdded === true) {
+
           this.gotocart = true;
+
         } else if (res.status === 'success') {
-          this.toastr.success("Product added to cart successfully", "Success", {
-            disableTimeOut: false,
-            progressBar: true,
-            closeButton: true
-          });
+
+          this.toastr.success(
+            "Product added to cart successfully",
+            "Success",
+            {
+              disableTimeOut: false,
+              progressBar: true,
+              closeButton: true
+            }
+          );
+
           this.gotocart = true;
+
         } else {
-          this.toastr.error(res.message, "Error", {
-            disableTimeOut: false,
-            progressBar: true,
-            closeButton: true
-          });
+
+          this.toastr.error(
+            res.message,
+            "Error",
+            {
+              disableTimeOut: false,
+              progressBar: true,
+              closeButton: true
+            }
+          );
+
         }
+
       });
+
     } else {
-      const userConfirmed = window.confirm("Please login to add product to cart");
+
+      const userConfirmed =
+        window.confirm(
+          "Please login to add product to cart"
+        );
+
       if (userConfirmed) {
         this.router.navigate(['/user/login']);
       }
+
     }
   }
 
   getCartStatus(product_id: any) {
-    this.userApi.getCartStatus(product_id).subscribe((res: any) => {
-      this.gotocart = res.isProductAdded === true;
-    });
+
+    this.cartStatusLoading = true;
+
+    this.userApi.getCartStatus(product_id)
+      .pipe(
+        finalize(() => {
+          this.cartStatusLoading = false;
+        })
+      )
+      .subscribe((res: any) => {
+
+        this.gotocart =
+          res.isProductAdded === true;
+
+      });
   }
 
+  // ==========================================
+  // User Initials
+  // ==========================================
+
   getInitials(name: string): string {
+
     if (!name) return '';
+
     return name
       .trim()
       .split(' ')
-      .map(part => part.charAt(0).toUpperCase())
+      .map(part =>
+        part.charAt(0).toUpperCase()
+      )
       .slice(0, 2)
       .join('');
   }
 
+  // ==========================================
   // Wishlist
+  // ==========================================
+
   addToWishlist(product_id: any) {
-    const isloginCheck = this.userApi.isUserLoggedIn();
+
+    const isloginCheck =
+      this.userApi.isUserLoggedIn();
 
     if (isloginCheck) {
-      this.userApi.addToWishlist(product_id).subscribe((res: any) => {
-        if (res.success) {
-          this.toastr.success(res.message, "Success", {
-            disableTimeOut: false,
-            progressBar: true,
-            closeButton: true
-          });
-          this.isWishlistAdded = true;
-          this.getWishlistStatus(product_id);
-        } else {
-          this.toastr.error(res.message, "Error", {
-            disableTimeOut: false,
-            progressBar: true,
-            closeButton: true
-          });
-        }
-      });
+
+      this.userApi.addToWishlist(product_id)
+        .subscribe((res: any) => {
+
+          if (res.success) {
+
+            this.toastr.success(
+              res.message,
+              "Success",
+              {
+                disableTimeOut: false,
+                progressBar: true,
+                closeButton: true
+              }
+            );
+
+            this.isWishlistAdded = true;
+
+            this.getWishlistStatus(product_id);
+
+          } else {
+
+            this.toastr.error(
+              res.message,
+              "Error",
+              {
+                disableTimeOut: false,
+                progressBar: true,
+                closeButton: true
+              }
+            );
+
+          }
+
+        });
+
     } else {
-      const userConfirmed = window.confirm("Please login to add product to wishlist");
+
+      const userConfirmed =
+        window.confirm(
+          "Please login to add product to wishlist"
+        );
+
       if (userConfirmed) {
         this.router.navigate(['/user/login']);
       }
+
     }
   }
 
   getWishlistStatus(product_id: any) {
-    this.userApi.getWishlistStatus(product_id).subscribe(
-      (res: any) => {
-        if (res.success) {
-          this.isWishlistAdded = res.isInWishlist;
+
+    this.wishlistLoading = true;
+
+    this.userApi.getWishlistStatus(product_id)
+      .pipe(
+        finalize(() => {
+          this.wishlistLoading = false;
+        })
+      )
+      .subscribe(
+        (res: any) => {
+
+          if (res.success) {
+            this.isWishlistAdded =
+              res.isInWishlist;
+          }
+
+        },
+        (error) => {
+
+          console.error("Error:", error);
+
         }
-      },
-      (error) => {
-        console.error("Error:", error);
-      }
-    );
+      );
   }
+
+  // ==========================================
+  // Recently Viewed Products
+  // ==========================================
 
   saveRecentlyViewedProduct(product: any) {
 
     if (!product || !product.product_id) return;
 
-    let recentlyViewed = JSON.parse(
-      localStorage.getItem('recentlyViewedProducts') || '[]'
-    );
+    let recentlyViewed =
+      JSON.parse(
+        localStorage.getItem(
+          'recentlyViewedProducts'
+        ) || '[]'
+      );
 
-    recentlyViewed = recentlyViewed.filter(
-      (item: any) => item.product_id !== product.product_id
-    );
+    recentlyViewed =
+      recentlyViewed.filter(
+        (item: any) =>
+          item.product_id !== product.product_id
+      );
 
     recentlyViewed.unshift({
-      product_id: product.product_id,
-      product_name: product.product_name,
-      product_price: product.product_price,
+
+      product_id:
+        product.product_id,
+
+      product_name:
+        product.product_name,
+
+      product_price:
+        product.product_price,
 
       // Save only first image
-      product_image: product.product_image
-        ? product.product_image.split(',')[0]
-        : ''
+      product_image:
+        product.product_image
+          ? product.product_image.split(',')[0]
+          : ''
+
     });
 
-    recentlyViewed = recentlyViewed.slice(0, 10);
+    recentlyViewed =
+      recentlyViewed.slice(0, 10);
 
     localStorage.setItem(
       'recentlyViewedProducts',
@@ -386,9 +617,13 @@ export class ProductInfoComponent {
   }
 
   loadRecentlyViewedProducts() {
-    this.recentlyViewedProducts = JSON.parse(
-      localStorage.getItem('recentlyViewedProducts') || '[]'
-    );
+
+    this.recentlyViewedProducts =
+      JSON.parse(
+        localStorage.getItem(
+          'recentlyViewedProducts'
+        ) || '[]'
+      );
 
     this.recentlyViewedProducts =
       this.recentlyViewedProducts.filter(
@@ -398,18 +633,26 @@ export class ProductInfoComponent {
   }
 
   viewProduct(productId: any) {
+
     if (productId == this.came_product_id) {
       return;
     }
 
-    this.router.navigateByUrl('/', { skipLocationChange: true }).then(() => {
+    this.router.navigateByUrl(
+      '/',
+      { skipLocationChange: true }
+    ).then(() => {
 
       this.router.navigate(
         ['/user/product-info', productId]
       );
 
-      window.scrollTo({ top: 0, behavior: 'smooth' });
+      window.scrollTo({
+        top: 0,
+        behavior: 'smooth'
+      });
 
     });
   }
+
 }

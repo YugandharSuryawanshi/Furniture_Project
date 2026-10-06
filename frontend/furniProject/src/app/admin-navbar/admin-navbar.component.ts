@@ -108,7 +108,7 @@ toggleBlogDropdown(event: Event): void {
         this.adminDetails = data.admin;
         this.adminName = 'Welcome ' + this.adminDetails.admin_name + '!';
         if (this.adminDetails?.admin_profile != null && this.adminDetails?.admin_profile !== '') {
-          this.adminProfile = `http://localhost:1000/uploads/${this.adminDetails?.admin_profile}`;
+          this.adminProfile = `http://localhost:4000/uploads/${this.adminDetails?.admin_profile}`;
         } else {
           this.adminInitials = this.getInitials(this.adminDetails?.admin_name);
         }

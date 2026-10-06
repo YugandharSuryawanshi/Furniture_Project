@@ -1228,18 +1228,75 @@ router.delete('/delete_team_member/:id', async (req, res) => {
 // Get all Orders
 router.get('/get_orders', async (req, res) => {
     try {
-        const sql = `SELECT
-        o.order_id, o.user_id, o.order_status, o.order_date, o.payment_status, o.payment_mode,
-        o.c_fname, o.c_lname, o.c_address, o.c_state, o.c_postal_zip, o.c_phone, o.transaction_id,
-        o.total_amount, o.total_gst, o.total_discount, o.final_total,
-        GROUP_CONCAT(p.product_name SEPARATOR ', ') AS products,
-        SUM(p.product_qty * p.product_price) AS total_amount,
-        u.user_id, u.user_name, u.user_email, u.user_mobile, u.user_profile
-    FROM order_tbl o
-    JOIN order_products p ON o.order_id = p.order_id
-    JOIN users u ON o.user_id = u.user_id
-    GROUP BY o.order_id
-    ORDER BY o.order_date DESC;`;
+        const sql = `
+            SELECT
+                o.order_id,
+                o.user_id,
+                o.order_status,
+                o.order_date,
+                o.payment_status,
+                o.payment_mode,
+                o.c_fname,
+                o.c_lname,
+                o.c_address,
+                o.c_state,
+                o.c_postal_zip,
+                o.c_phone,
+                o.transaction_id,
+                o.total_amount,
+                o.total_gst,
+                o.total_discount,
+                o.final_total,
+
+                GROUP_CONCAT(
+                    p.product_name
+                    SEPARATOR ', '
+                ) AS products,
+
+                SUM(
+                    p.product_qty * p.product_price
+                ) AS calculated_total_amount,
+
+                u.user_id,
+                u.user_name,
+                u.user_email,
+                u.user_mobile,
+                u.user_profile
+
+            FROM order_tbl o
+
+            JOIN order_products p
+                ON o.order_id = p.order_id
+
+            JOIN users u
+                ON o.user_id = u.user_id
+
+            GROUP BY
+                o.order_id,
+                o.user_id,
+                o.order_status,
+                o.order_date,
+                o.payment_status,
+                o.payment_mode,
+                o.c_fname,
+                o.c_lname,
+                o.c_address,
+                o.c_state,
+                o.c_postal_zip,
+                o.c_phone,
+                o.transaction_id,
+                o.total_amount,
+                o.total_gst,
+                o.total_discount,
+                o.final_total,
+                u.user_id,
+                u.user_name,
+                u.user_email,
+                u.user_mobile,
+                u.user_profile
+
+            ORDER BY o.order_date DESC;
+        `;
 
         const data = await exe(sql);
         if (data.length > 0) {
@@ -1257,19 +1314,77 @@ router.get('/get_orders', async (req, res) => {
 router.get('/get_order_details/:id', async (req, res) => {
     var order_id = req.params.id;
     try {
-        const sql = `SELECT
-        o.order_id, o.user_id, o.order_status, o.order_date, o.payment_status, o.payment_mode,
-        o.c_fname, o.c_lname, o.c_address, o.c_state, o.c_postal_zip, o.c_phone, o.transaction_id,
-        o.total_amount, o.total_gst, o.total_discount, o.final_total,
-        GROUP_CONCAT(p.product_name SEPARATOR ', ') AS products,
-        SUM(p.product_qty * p.product_price) AS total_amount,
-        u.user_id, u.user_name, u.user_email, u.user_mobile, u.user_profile
+        const sql = `
+    SELECT
+        o.order_id,
+        o.user_id,
+        o.order_status,
+        o.order_date,
+        o.payment_status,
+        o.payment_mode,
+        o.c_fname,
+        o.c_lname,
+        o.c_address,
+        o.c_state,
+        o.c_postal_zip,
+        o.c_phone,
+        o.transaction_id,
+        o.total_amount,
+        o.total_gst,
+        o.total_discount,
+        o.final_total,
+
+        GROUP_CONCAT(
+            p.product_name
+            SEPARATOR ', '
+        ) AS products,
+
+        SUM(
+            p.product_qty * p.product_price
+        ) AS calculated_total_amount,
+
+        u.user_id,
+        u.user_name,
+        u.user_email,
+        u.user_mobile,
+        u.user_profile
+
     FROM order_tbl o
-    JOIN order_products p ON o.order_id = p.order_id
-    JOIN users u ON o.user_id = u.user_id
+
+    JOIN order_products p
+        ON o.order_id = p.order_id
+
+    JOIN users u
+        ON o.user_id = u.user_id
+
     WHERE o.order_id = '${order_id}'
-    GROUP BY o.order_id
-    ORDER BY o.order_date DESC;`;
+
+    GROUP BY
+        o.order_id,
+        o.user_id,
+        o.order_status,
+        o.order_date,
+        o.payment_status,
+        o.payment_mode,
+        o.c_fname,
+        o.c_lname,
+        o.c_address,
+        o.c_state,
+        o.c_postal_zip,
+        o.c_phone,
+        o.transaction_id,
+        o.total_amount,
+        o.total_gst,
+        o.total_discount,
+        o.final_total,
+        u.user_id,
+        u.user_name,
+        u.user_email,
+        u.user_mobile,
+        u.user_profile
+
+    ORDER BY o.order_date DESC;
+`;
         const data = await exe(sql);
         if (data.length === 0) {
             return res.status(404).json({ success: false, message: "Order not found" });
@@ -1733,7 +1848,6 @@ router.post('/reset-password', async (req, res) => {
         return res.status(500).json({ status: 'error', message: 'Server error' });
     }
 });
-
 
 
 export { router as adminRoute };

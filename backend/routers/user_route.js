@@ -367,16 +367,11 @@ router.get('/get_reviews/:product_id', async (req, res) => {
         const allReviews = await exe(sql2, [productId]);
 
         // Return Send Response
-        if (topReviews.length > 0) {
-            return res.status(200).json({
-                status: 'success',
-                topReviews: topReviews,
-                allReviews: allReviews
-            });
-        } else {
-            return res.status(404).json({ status: 'failed', message: 'No reviews found for this product' });
-        }
-
+        return res.status(200).json({
+            status: 'success',
+            topReviews: topReviews,
+            allReviews: allReviews
+        });
     } catch (err) {
         console.error("Error in /get_reviews:", err.message);
         return res.status(500).json({ status: 'failed', message: 'Internal Server Error', error: err.message });
@@ -723,17 +718,17 @@ router.post('/place_cod_order', authenticateToken, async (req, res) => {
 
         for (const item of orderProducts) {
             await exe(productSql,
-                [ orderId,
-                userId,
-                item.product_id,
-                item.product_name,
-                item.product_qty,
-                item.product_price,
-                item.gst_amount,
-                item.discount_amount,
-                item.final_price,
-                item.product_details
-            ]);
+                [orderId,
+                    userId,
+                    item.product_id,
+                    item.product_name,
+                    item.product_qty,
+                    item.product_price,
+                    item.gst_amount,
+                    item.discount_amount,
+                    item.final_price,
+                    item.product_details
+                ]);
         }
 
         // Success

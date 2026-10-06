@@ -1,4 +1,5 @@
 import { Injectable } from '@angular/core';
+import { environment } from '../../environments/environment.development';
 
 @Injectable({
   providedIn: 'root'
@@ -6,7 +7,8 @@ import { Injectable } from '@angular/core';
 export class ImageService {
 
   // readonly IMAGE_BASE_URL = 'https://furniture-backend-ssa5.onrender.com/uploads/';
-  IMAGE_BASE_URL = 'http://localhost:4000/uploads/';
+  // IMAGE_BASE_URL = 'http://localhost:4000/uploads/';
+  IMAGE_BASE_URL = `${environment.apiUrl}/uploads/`;
 
   getImageUrl(imageName: string | null | undefined): string {
 

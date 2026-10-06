@@ -46,7 +46,7 @@ export class ProfileComponent implements OnInit {
         this.formData.admin_email = this.loggedInAdmin.admin_email;
         this.formData.admin_mobile = this.loggedInAdmin.admin_mobile;
         if (this.loggedInAdmin.admin_profile) {
-          this.loggedInAdminImage = `http://localhost:1000/uploads/${this.loggedInAdmin.admin_profile}`;
+          this.loggedInAdminImage = `http://localhost:4000/uploads/${this.loggedInAdmin.admin_profile}`;
         }
         else {
           this.loggedInAdminImage = 'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTKlIcH0Q1e2QDuzvM94CnN3vdzXrvebSHNeQ&s'; // Placeholder image if Admin profile is not set

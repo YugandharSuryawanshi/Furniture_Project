@@ -1,3 +1,203 @@
+<!-- ================= HOME SKELETON ================= -->
+
+<div *ngIf="homeLoading" class="home-skeleton">
+
+    <!-- Hero Skeleton -->
+    <section class="home-skeleton-hero">
+        <div class="home-skeleton-container">
+            <div class="skeleton-hero-text">
+                <div class="skeleton-line skeleton-hero-title"></div>
+                <div class="skeleton-line skeleton-hero-title short"></div>
+
+                <div class="skeleton-line skeleton-hero-desc"></div>
+                <div class="skeleton-line skeleton-hero-desc"></div>
+                <div class="skeleton-line skeleton-hero-desc short"></div>
+
+                <div class="skeleton-buttons">
+                    <div class="skeleton-button"></div>
+                    <div class="skeleton-button"></div>
+                </div>
+            </div>
+
+            <div class="skeleton-hero-image"></div>
+        </div>
+    </section>
+
+
+    <!-- Product Skeleton -->
+    <section class="home-skeleton-section">
+        <div class="home-skeleton-title"></div>
+        <div class="home-skeleton-description"></div>
+
+        <div class="home-skeleton-grid product-skeleton-grid">
+
+            <div
+                class="home-skeleton-product"
+                *ngFor="let item of [1,2,3,4]"
+            >
+                <div class="skeleton-product-image"></div>
+                <div class="skeleton-product-title"></div>
+                <div class="skeleton-product-price"></div>
+            </div>
+
+        </div>
+    </section>
+
+
+    <!-- Why Choose Us Skeleton -->
+    <section class="home-skeleton-section">
+
+        <div class="home-skeleton-two-column">
+
+            <div class="skeleton-about-content">
+
+                <div class="home-skeleton-title"></div>
+
+                <div class="home-skeleton-description"></div>
+                <div class="home-skeleton-description"></div>
+
+                <div class="home-skeleton-grid about-skeleton-grid">
+
+                    <div
+                        class="home-skeleton-about-card"
+                        *ngFor="let item of [1,2,3,4]"
+                    >
+                        <div class="skeleton-about-icon"></div>
+                        <div class="skeleton-about-title"></div>
+                        <div class="skeleton-about-text"></div>
+                        <div class="skeleton-about-text short"></div>
+                    </div>
+
+                </div>
+
+            </div>
+
+            <div class="skeleton-about-image"></div>
+
+        </div>
+
+    </section>
+
+
+    <!-- Interior Skeleton -->
+    <section class="home-skeleton-section">
+
+        <div class="home-skeleton-two-column">
+
+            <div class="skeleton-interior-images">
+
+                <div class="skeleton-interior-image large"></div>
+                <div class="skeleton-interior-image small"></div>
+                <div class="skeleton-interior-image small"></div>
+
+            </div>
+
+            <div class="skeleton-interior-content">
+
+                <div class="home-skeleton-title"></div>
+
+                <div class="home-skeleton-description"></div>
+                <div class="home-skeleton-description"></div>
+                <div class="home-skeleton-description short"></div>
+
+                <div class="skeleton-list-item"></div>
+                <div class="skeleton-list-item"></div>
+                <div class="skeleton-list-item"></div>
+                <div class="skeleton-list-item"></div>
+
+                <div class="skeleton-button"></div>
+
+            </div>
+
+        </div>
+
+    </section>
+
+
+    <!-- Popular Products Skeleton -->
+    <section class="home-skeleton-section">
+
+        <div class="home-skeleton-grid popular-skeleton-grid">
+
+            <div
+                class="home-skeleton-popular-card"
+                *ngFor="let item of [1,2,3]"
+            >
+                <div class="skeleton-popular-image"></div>
+
+                <div class="skeleton-popular-content">
+                    <div class="skeleton-popular-title"></div>
+                    <div class="skeleton-popular-text"></div>
+                    <div class="skeleton-popular-text short"></div>
+                    <div class="skeleton-read-button"></div>
+                </div>
+            </div>
+
+        </div>
+
+    </section>
+
+
+    <!-- Testimonial Skeleton -->
+    <section class="home-skeleton-section">
+
+        <div class="home-skeleton-title centered"></div>
+
+        <div class="skeleton-testimonial">
+
+            <div class="skeleton-testimonial-image"></div>
+
+            <div class="skeleton-testimonial-content">
+                <div class="skeleton-testimonial-title"></div>
+                <div class="skeleton-testimonial-subtitle"></div>
+
+                <div class="skeleton-testimonial-text"></div>
+                <div class="skeleton-testimonial-text"></div>
+                <div class="skeleton-testimonial-text short"></div>
+            </div>
+
+        </div>
+
+    </section>
+
+
+    <!-- Blog Skeleton -->
+    <section class="home-skeleton-section">
+
+        <div class="home-skeleton-blog-header">
+
+            <div class="home-skeleton-title"></div>
+
+            <div class="skeleton-blog-button"></div>
+
+        </div>
+
+        <div class="home-skeleton-grid blog-skeleton-grid">
+
+            <div
+                class="home-skeleton-blog-card"
+                *ngFor="let item of [1,2,3]"
+            >
+                <div class="skeleton-blog-image"></div>
+
+                <div class="skeleton-blog-content">
+                    <div class="skeleton-blog-title"></div>
+                    <div class="skeleton-blog-text"></div>
+                    <div class="skeleton-blog-text short"></div>
+                </div>
+            </div>
+
+        </div>
+
+    </section>
+
+</div>
+
+
+<!-- ================= ACTUAL HOME CONTENT ================= -->
+
+<ng-container *ngIf="!homeLoading">
+
 <!-- Start Hero Section Here -->
 <div class="hero">
     <div class="container">
@@ -289,3 +489,5 @@
         </div>
     </div>
 </div>
+
+</ng-container>
