@@ -5,6 +5,7 @@ import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { RouterModule } from '@angular/router';
 import { ImageService } from '../../service/image.service';
+import { finalize } from 'rxjs';
 
 @Component({
   selector: 'app-blog',
@@ -14,6 +15,9 @@ import { ImageService } from '../../service/image.service';
   styleUrl: './blog.component.css'
 })
 export class BlogComponent {
+
+  // Blog Page Skeleton Loading State
+  blogLoading: boolean = false;
 
   constructor(
     private userApi: UserApiService,
@@ -34,47 +38,64 @@ export class BlogComponent {
 
   getHomeData() {
 
-    this.userApi.gethomeData().subscribe((res: any) => {
+    this.blogLoading = true;
 
-      this.products = res.products;
+    this.userApi.gethomeData()
+      .pipe(
+        finalize(() => {
+          this.blogLoading = false;
+        })
+      )
+      .subscribe((res: any) => {
 
-      this.products.forEach((product) => {
+        this.products = res?.products || [];
 
-        const images = product.product_image.split(",");
+        this.products.forEach((product) => {
 
-        const img =
-          images.find((image: string) => image.trim() !== "") || "";
+          const images =
+            product.product_image?.split(",") || [];
 
-        product.firstImage =
-          this.imageService.getImageUrl(img);
+          const img =
+            images.find(
+              (image: string) => image.trim() !== ""
+            ) || "";
+
+          product.firstImage =
+            this.imageService.getImageUrl(img);
+
+        });
+
+
+        this.testimonial =
+          res?.testimonial || [];
+
+        this.testimonial.forEach((item: any) => {
+
+          item.imageUrl =
+            this.imageService.getImageUrl(
+              item.customer_image
+            );
+
+        });
+
+
+        this.blogs =
+          res?.blogs || res?.blog || [];
+
+        this.blogs.forEach((blog: any) => {
+
+          blog.imageUrl =
+            this.imageService.getImageUrl(
+              blog.blog_image
+            );
+
+        });
+
+
+        this.team =
+          res?.team || [];
 
       });
-
-      this.testimonial = res.testimonial;
-
-      this.testimonial.forEach((item: any) => {
-
-        item.imageUrl =
-          this.imageService.getImageUrl(
-            item.customer_image
-          );
-
-      });
-
-      this.blogs = res.blogs || res.blog;
-
-      this.blogs.forEach((blog: any) => {
-
-        blog.imageUrl =
-          this.imageService.getImageUrl(
-            blog.blog_image
-          );
-
-      });
-
-      this.team = res.team;
-
-    });
 
   }
 

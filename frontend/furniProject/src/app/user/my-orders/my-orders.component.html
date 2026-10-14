@@ -1,118 +1,465 @@
-<div class="container mt-4">
-    <h3 class="mb-4">My Orders</h3>
-    <div class="col-md-12 text-center" *ngIf="orders.length == 0">
-        <h3>Your Order History are Empty</h3>
-        <h4>
-            <a routerLink="/user/shop">
-                <button class="btn btn-warning">Order Now</button>
-            </a>
-        </h4>
+<!-- =========================================================
+     MY ORDERS PAGE SKELETON
+     ========================================================= -->
+
+<div class="my-orders-skeleton-page" *ngIf="ordersPageLoading">
+
+    <div class="container mt-4">
+
+        <!-- Page Title Skeleton -->
+
+        <div class="my-orders-skeleton skeleton-orders-title"></div>
+
+
+        <div class="row">
+
+            <!-- Order Card Skeleton 1 -->
+
+            <div class="col-md-4 mb-3 mt-2" *ngFor="let item of [1,2,3,4,5,6]">
+
+                <div class="orders-skeleton-card">
+
+                    <!-- Header -->
+
+                    <div class="my-orders-skeleton skeleton-order-header"></div>
+
+
+                    <!-- Body -->
+
+                    <div class="skeleton-order-body">
+
+                        <div class="my-orders-skeleton skeleton-order-number"></div>
+
+                        <div class="my-orders-skeleton skeleton-order-date"></div>
+
+                        <div class="my-orders-skeleton skeleton-order-price"></div>
+
+                        <div class="my-orders-skeleton skeleton-payment-status"></div>
+
+
+                        <div class="skeleton-order-buttons">
+
+                            <div class="my-orders-skeleton skeleton-order-button"></div>
+
+                            <div class="my-orders-skeleton skeleton-order-button"></div>
+
+                        </div>
+
+                    </div>
+
+                </div>
+
+            </div>
+
+        </div>
+
     </div>
-    <div class="row">
-        <div class="col-md-4 mb-1 mt-2" *ngFor="let order of orders; let i = index;">
-            <div class="card shadow border">
-                <div class="card-header text-dark fw-bold text-center py-2" [ngClass]="{
-                    'delivered': order.order_status === 'Delivered',
-                    'pending': order.order_status === 'Pending',
-                    'confirmed': order.order_status === 'Confirmed',
-                    'dispatched': order.order_status === 'Dispatched',
-                    'cancelled': order.order_status === 'Cancelled'
+
+</div>
+
+
+<!-- =========================================================
+     ACTUAL MY ORDERS PAGE
+     ========================================================= -->
+
+<div class="my-orders-page" *ngIf="!ordersPageLoading">
+
+    <div class="container mt-4">
+
+        <!-- Page Title -->
+
+        <h3 class="mb-4">
+            My Orders
+        </h3>
+
+
+        <!-- =================================================
+             EMPTY ORDERS
+             ================================================= -->
+
+        <div class="col-md-12 text-center" *ngIf="orders.length === 0">
+
+            <h3>
+                Your Order History are Empty
+            </h3>
+
+            <h4>
+
+                <a routerLink="/user/shop">
+
+                    <button class="btn btn-warning">
+                        Order Now
+                    </button>
+
+                </a>
+
+            </h4>
+
+        </div>
+
+
+        <!-- =================================================
+             ORDERS LIST
+             ================================================= -->
+
+        <div class="row">
+
+            <div class="col-md-4 mb-1 mt-2" *ngFor="let order of orders; let i = index">
+
+                <div class="card shadow border">
+
+
+                    <!-- =================================================
+                         ORDER HEADER
+                         ================================================= -->
+
+                    <div class="card-header text-dark fw-bold text-center py-2" [ngClass]="{
+
+                            'delivered':
+                                order.order_status === 'Delivered',
+
+                            'pending':
+                                order.order_status === 'Pending',
+
+                            'confirmed':
+                                order.order_status === 'Confirmed',
+
+                            'dispatched':
+                                order.order_status === 'Dispatched',
+
+                            'cancelled':
+                                order.order_status === 'Cancelled',
+
+                            'rejected':
+                                order.order_status === 'Rejected'
+
                         }">
-                    {{ order.order_status }} Order
-                    <span *ngIf="order.order_status !== 'Delivered'">
-                        <a class="float-end" [routerLink]="['/user/print_receipt/',order.order_id]" style="text-decoration: none;">
-                            <button class="btn btn-danger btn-sm fw-bold">
-                                <i class="fas fa-receipt"></i> Get Receipt
-                            </button>
-                        </a>
-                    </span>
-                </div>
 
-                <div class="card-body">
+                        {{ order.order_status }} Order
 
-                    <div class="p-2">
-                        <strong>#FURNI{{ i + 1 }}</strong>
-                        <span class="float-end">{{ order.order_date | date:'dd/MM/yyyy' }}</span><br>
-                        <strong class="text-success">&#8377; {{ order.final_total | number: '1.2-2' }}/-</strong>
-                        <span class="float-end">Payment: {{ order.payment_status }}</span>
-                    </div>
 
-                    <div class="d-flex justify-content-between mt-3">
-                        <button class="btn btn-danger btn-sm"
-                            (click)="openTrackingModal(order.order_id, order.order_status)">
-                            <i class="fas fa-truck"></i> Track Order
-                        </button>
-                        <span *ngIf="order.order_status !=='Delivered' && order.payment_status !=='Paid'">
-                            <button *ngIf="order.order_status === 'Pending' || order.order_status === 'Confirmed'"
-                            class="btn btn-danger btn-sm" (click)="cancelOrder(order.order_id)">
-                            <i class="fas fa-times"></i> Cancel Order
-                        </button>
-                        </span>
-                        <span *ngIf="order.order_status === 'Delivered'">
-                            <a [routerLink]="['/user/print_receipt/',order.order_id]" style="text-decoration: none;">
-                                <button class="btn btn-danger btn-sm" disabled>Print Receipt</button>
+                        <!-- Receipt -->
+
+                        <span *ngIf="
+                                order.order_status !== 'Delivered'
+                            ">
+
+                            <a class="float-end" [routerLink]="[
+                                    '/user/print_receipt/',
+                                    order.order_id
+                                ]" style="text-decoration: none;">
+
+                                <button class="btn btn-danger btn-sm fw-bold">
+
+                                    <i class="fas fa-receipt"></i>
+
+                                    Get Receipt
+
+                                </button>
+
                             </a>
+
                         </span>
+
                     </div>
+
+
+                    <!-- =================================================
+                         ORDER BODY
+                         ================================================= -->
+
+                    <div class="card-body">
+
+                        <div class="p-2">
+
+
+                            <!-- Order Number -->
+
+                            <strong>
+                                #FURNI{{ i + 1 }}
+                            </strong>
+
+
+                            <!-- Order Date -->
+
+                            <span class="float-end">
+
+                                {{
+                                order.order_date
+                                | date:'dd/MM/yyyy'
+                                }}
+
+                            </span>
+
+
+                            <br>
+
+
+                            <!-- Final Total -->
+
+                            <strong class="text-success">
+
+                                &#8377;
+
+                                {{
+                                order.final_total
+                                | number:'1.2-2'
+                                }}/-
+
+                            </strong>
+
+
+                            <!-- Payment Status -->
+
+                            <span class="float-end">
+
+                                Payment:
+                                {{ order.payment_status }}
+
+                            </span>
+
+                        </div>
+
+
+                        <!-- =================================================
+                             ACTION BUTTONS
+                             ================================================= -->
+
+                        <div class="d-flex justify-content-between mt-3 order-action-buttons">
+
+
+                            <!-- Track Order -->
+
+                            <button class="btn btn-danger btn-sm" (click)="
+                                    openTrackingModal(
+                                        order.order_id,
+                                        order.order_status
+                                    )
+                                " [disabled]="
+                                    trackingLoading &&
+                                    trackingOrderId === order.order_id
+                                ">
+
+                                <span *ngIf="
+                                        trackingLoading &&
+                                        trackingOrderId === order.order_id
+                                    " class="spinner-border spinner-border-sm me-1" role="status"
+                                    aria-hidden="true"></span>
+
+                                <i *ngIf="
+                                        !(
+                                            trackingLoading &&
+                                            trackingOrderId === order.order_id
+                                        )
+                                    " class="fas fa-truck"></i>
+
+                                {{
+                                trackingLoading &&
+                                trackingOrderId === order.order_id
+                                ? 'Loading...'
+                                : 'Track Order'
+                                }}
+
+                            </button>
+
+
+                            <!-- Cancel Order -->
+
+                            <span *ngIf="
+                                    order.order_status !== 'Delivered' &&
+                                    order.payment_status !== 'Paid'
+                                ">
+
+                                <button *ngIf="
+                                        order.order_status === 'Pending' ||
+                                        order.order_status === 'Confirmed'
+                                    " class="btn btn-danger btn-sm" (click)="
+                                        cancelOrder(order.order_id)
+                                    " [disabled]="
+                                        cancellingOrderId === order.order_id
+                                    ">
+
+                                    <span *ngIf="
+                                            cancellingOrderId ===
+                                            order.order_id
+                                        " class="spinner-border spinner-border-sm me-1" role="status"
+                                        aria-hidden="true"></span>
+
+                                    <i *ngIf="
+                                            cancellingOrderId !==
+                                            order.order_id
+                                        " class="fas fa-times"></i>
+
+                                    {{
+                                    cancellingOrderId ===
+                                    order.order_id
+                                    ? 'Cancelling...'
+                                    : 'Cancel Order'
+                                    }}
+
+                                </button>
+
+                            </span>
+
+
+                            <!-- Print Receipt -->
+
+                            <span *ngIf="
+                                    order.order_status === 'Delivered'
+                                ">
+
+                                <a [routerLink]="[
+                                        '/user/print_receipt/',
+                                        order.order_id
+                                    ]" style="text-decoration: none;">
+
+                                    <button class="btn btn-danger btn-sm" type="button">
+
+                                        <i class="fas fa-print me-1"></i>
+
+                                        Print Receipt
+
+                                    </button>
+
+                                </a>
+
+                            </span>
+
+                        </div>
+
+                    </div>
+
                 </div>
+
             </div>
+
         </div>
+
     </div>
+
 </div>
 
-<!-- Order Tracking Model shown -->
-<div class="tracking-modal" *ngIf="showTracking">
-    <div class="tracking-content">
-        <button class="close-btn" (click)="closeTrackingModal()">❌</button>
-        <h4 class="text-center mb-4"> Order Tracking</h4>
 
-        <div class="tracking-steps">
-            <div *ngFor="let step of trackingSteps" class="tracking-step"
-                [class.active]="trackingProgress >= step.progress">
-                <div class="step-icon">
-                    <i [class]="step.icon"></i>
+<!-- =========================================================
+     ORDER TRACKING MODAL
+     ========================================================= -->
+
+<div class="tracking-modal-overlay" *ngIf="showTracking">
+
+    <div class="tracking-modal">
+
+        <div class="tracking-content">
+
+
+            <!-- Close -->
+
+            <button class="close-btn" type="button" (click)="closeTrackingModal()">
+                ❌
+            </button>
+
+
+            <h4 class="text-center mb-4">
+
+                Order Tracking
+
+            </h4>
+
+
+            <!-- =================================================
+                 TRACKING LOADING
+                 ================================================= -->
+
+            <div class="tracking-loading" *ngIf="trackingLoading">
+
+                <div class="spinner-border text-success" role="status">
+
+                    <span class="visually-hidden">
+                        Loading...
+                    </span>
+
                 </div>
-                <p>{{ step.label }}</p>
+
+                <p class="mt-3 mb-0">
+                    Loading order tracking...
+                </p>
+
             </div>
+
+
+            <!-- =================================================
+                 TRACKING CONTENT
+                 ================================================= -->
+
+            <div *ngIf="!trackingLoading">
+
+                <!-- Tracking Steps -->
+
+                <div class="tracking-steps">
+
+                    <div *ngFor="let step of trackingSteps" class="tracking-step" [class.active]="
+                            trackingProgress >= step.progress
+                        ">
+
+                        <div class="step-icon">
+
+                            <i [class]="step.icon"></i>
+
+                        </div>
+
+                        <p>
+                            {{ step.label }}
+                        </p>
+
+                    </div>
+
+                </div>
+
+
+                <!-- Progress Bar -->
+
+                <div class="progress-container">
+
+                    <div class="progress-path"></div>
+
+                    <div class="progress-filled" [style.width]="trackingProgress + '%'"></div>
+
+                    <div class="progress-marker" [style.left]="trackingProgress + '%'">
+
+                        <i class="fas fa-truck-moving"></i>
+
+                    </div>
+
+                </div>
+
+
+                <!-- Current Status -->
+
+                <p class="text-center mt-3 tracking-status">
+
+                    Your Order current Status
+
+                    <b>
+                        {{ trackingStatus }}
+                    </b>
+
+                </p>
+
+            </div>
+
         </div>
 
-        <!-- Progress Bar -->
-        <div class="progress-container">
-            <div class="progress-path"></div>
-            <div class="progress-filled" [style.width]="trackingProgress + '%'"></div>
-            <div class="progress-marker" [style.left]="trackingProgress + '%'">
-                <i class="fas fa-truck-moving"></i>
-            </div>
-        </div>
-
-        <p class="text-center mt-3 tracking-status">Your Order current Status <b>{{ trackingStatus }}</b></p>
-        
     </div>
+
 </div>
 
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-<br><br><br><br><br><br><br><br><br><br>
+<br>
+<br>
+<br>
+<br>
+<br>
+<br>
+<br>
+<br>
+<br>
+<br>

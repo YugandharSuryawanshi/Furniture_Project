@@ -28,3 +28,188 @@
 .payment-card.active .checkmark {
     display: block;
 }
+
+
+
+/* Checkout Skeleton */
+
+.checkout-skeleton-page {
+    width: 100%;
+}
+
+.checkout-skeleton {
+    background: linear-gradient(90deg,
+            #eeeeee 25%,
+            #f7f7f7 50%,
+            #eeeeee 75%);
+
+    background-size: 200% 100%;
+
+    animation: checkoutSkeletonShimmer 1.5s infinite;
+
+    border-radius: 5px;
+}
+
+@keyframes checkoutSkeletonShimmer {
+
+    0% {
+        background-position: 200% 0;
+    }
+
+    100% {
+        background-position: -200% 0;
+    }
+
+}
+
+
+/* Hero Section Skeleton */
+
+.checkout-skeleton-hero {
+    width: 100%;
+    min-height: 250px;
+    background: rgb(141, 64, 64) !important;
+    display: flex;
+    align-items: center;
+}
+
+.checkout-skeleton-hero-content {
+    padding: 50px 0;
+}
+
+.skeleton-hero-title {
+    width: 220px;
+    height: 45px;
+    border-radius: 6px;
+}
+
+
+/* Section Title Skeleton */
+
+.skeleton-section-title {
+    width: 190px;
+    height: 30px;
+    margin-bottom: 25px;
+}
+
+
+/* Box Skeleton */
+
+.checkout-skeleton-box {
+    padding: 25px;
+    border: 1px solid #eeeeee;
+    background: #ffffff;
+}
+
+
+/* Form Skeleton */
+
+.skeleton-label {
+    width: 100px;
+    height: 15px;
+    margin-bottom: 10px;
+}
+
+.skeleton-input {
+    width: 100%;
+    height: 45px;
+    margin-bottom: 25px;
+}
+
+.skeleton-area {
+    margin-top: 10px;
+}
+
+
+/* Table Skeleton */
+
+.skeleton-table-header {
+    width: 100%;
+    height: 25px;
+    margin-bottom: 20px;
+}
+
+.skeleton-table-row {
+    width: 100%;
+    height: 35px;
+    margin-bottom: 12px;
+}
+
+.skeleton-total-row {
+    width: 100%;
+    height: 30px;
+    margin-bottom: 10px;
+}
+
+.skeleton-final-row {
+    width: 100%;
+    height: 40px;
+    margin-bottom: 25px;
+}
+
+
+/* Payment Card Skeleton */
+
+.skeleton-payment-title {
+    width: 180px;
+    height: 20px;
+    margin: 30px 0 20px;
+}
+
+.skeleton-payment-card {
+    width: 100%;
+    height: 105px;
+    margin-bottom: 20px;
+    border-radius: 8px;
+}
+
+
+/* Place Order Button */
+
+.skeleton-place-button {
+    width: 150px;
+    height: 55px;
+    margin-top: 20px;
+    border-radius: 5px;
+}
+
+
+/* Media Queries For Responsive Design */
+
+@media (max-width: 767px) {
+
+    .checkout-skeleton-hero {
+        min-height: 200px;
+    }
+
+    .checkout-skeleton-box {
+        padding: 20px;
+    }
+
+    .skeleton-section-title {
+        margin-top: 20px;
+    }
+
+}
+
+
+@media (max-width: 576px) {
+
+    .checkout-skeleton-hero {
+        min-height: 170px;
+    }
+
+    .skeleton-hero-title {
+        width: 170px;
+        height: 35px;
+    }
+
+    .checkout-skeleton-box {
+        padding: 15px;
+    }
+
+    .skeleton-payment-card {
+        height: 90px;
+    }
+
+}

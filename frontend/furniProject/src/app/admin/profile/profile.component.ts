@@ -1,225 +1,577 @@
+
 import { CommonModule } from '@angular/common';
 import { Component, OnInit } from '@angular/core';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { Router, RouterModule } from '@angular/router';
 import { ToastrService } from 'ngx-toastr';
+import { finalize } from 'rxjs/operators';
+
 import { AdminApiService } from '../../service/admin-api.service';
 
 @Component({
   selector: 'app-profile',
   standalone: true,
-  imports: [RouterModule, CommonModule, FormsModule, ReactiveFormsModule],
+  imports: [
+    RouterModule,
+    CommonModule,
+    FormsModule,
+    ReactiveFormsModule
+  ],
   templateUrl: './profile.component.html',
   styleUrl: './profile.component.css'
 })
 export class ProfileComponent implements OnInit {
 
-  constructor(private adminApi: AdminApiService, private router: Router, private toastr: ToastrService) { }
+  private readonly minimumSkeletonDuration = 700;
+  private profileRequestId = 0;
 
-  formData =
-    {
-      admin_name: '',
-      admin_mobile: '',
-      admin_email: '',
-      new_password: '',
-      confirm_password: '',
-      otp: '',
-      admin_profile: null
-    }
+  private readonly defaultProfileImage =
+    'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTKlIcH0Q1e2QDuzvM94CnN3vdzXrvebSHNeQ&s';
+
+  constructor(
+    private adminApi: AdminApiService,
+    private router: Router,
+    private toastr: ToastrService
+  ) { }
+
+  // Profile loading states
+  profileLoading = true;
+  profileImageLoading = true;
+
+  updatingProfile = false;
+  savingProfileImage = false;
+
+  sendingOtp = false;
+  verifyingOtp = false;
+  changingPassword = false;
+
+  // Profile details
+  loggedInAdmin: any = null;
+  loggedInAdminImage: string | null = null;
+
+  formData = {
+    admin_name: '',
+    admin_mobile: '',
+    admin_email: '',
+    new_password: '',
+    confirm_password: '',
+    otp: '',
+    admin_profile: null as File | null
+  };
+
+  // Profile image
+  selectedImage: File | null = null;
+  selectedImageName: string | null = null;
+
+  // OTP states
   otpSent = false;
   otpVerified = false;
 
-  ngOnInit() {
+  ngOnInit(): void {
     this.getAdminProfile();
   }
 
-  loggedInAdmin: any;
-  loggedInAdminImage: any = null;
-  // Get User Details
-  getAdminProfile() {
-    this.adminApi.getAdminDetails()?.subscribe(
-      (res: any) => {
-        this.loggedInAdmin = res.admin;
+  private hideSkeletonAfterMinimumTime(
+    startedAt: number,
+    callback: () => void
+  ): void {
+    const elapsed = Date.now() - startedAt;
+    const remaining = Math.max(
+      0,
+      this.minimumSkeletonDuration - elapsed
+    );
 
-        this.loggedInAdminImage = this.loggedInAdmin.admin_profile;
-        this.formData.admin_name = this.loggedInAdmin.admin_name;
-        this.formData.admin_email = this.loggedInAdmin.admin_email;
-        this.formData.admin_mobile = this.loggedInAdmin.admin_mobile;
-        if (this.loggedInAdmin.admin_profile) {
-          this.loggedInAdminImage = `http://localhost:4000/uploads/${this.loggedInAdmin.admin_profile}`;
-        }
-        else {
-          this.loggedInAdminImage = 'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTKlIcH0Q1e2QDuzvM94CnN3vdzXrvebSHNeQ&s'; // Placeholder image if Admin profile is not set
+    setTimeout(callback, remaining);
+  }
+
+  // Get Admin Profile
+  getAdminProfile(showSkeleton = true): void {
+    const requestId = ++this.profileRequestId;
+    const startedAt = Date.now();
+
+    if (showSkeleton) {
+      this.profileLoading = true;
+    }
+
+    const request = this.adminApi.getAdminDetails();
+
+    if (!request) {
+      this.profileLoading = false;
+      this.toastr.error(
+        'Unable to load admin profile.',
+        'Error'
+      );
+      return;
+    }
+
+    request
+      .pipe(
+        finalize(() => {
+          if (showSkeleton) {
+            this.hideSkeletonAfterMinimumTime(startedAt, () => {
+              if (requestId === this.profileRequestId) {
+                this.profileLoading = false;
+              }
+            });
+          }
+        })
+      )
+      .subscribe({
+        next: (res: any) => {
+          if (!res?.admin) {
+            this.toastr.error(
+              res?.message || 'Unable to load admin details.',
+              'Error'
+            );
+            return;
+          }
+
+          this.loggedInAdmin = res.admin;
+
+          this.formData.admin_name =
+            this.loggedInAdmin.admin_name || '';
+
+          this.formData.admin_email =
+            this.loggedInAdmin.admin_email || '';
+
+          this.formData.admin_mobile =
+            this.loggedInAdmin.admin_mobile || '';
+
+          this.setProfileImage(this.loggedInAdmin.admin_profile);
+        },
+
+        error: (err: any) => {
+          this.toastr.error(
+            err?.error?.message || 'Failed to load admin profile.',
+            'Error'
+          );
         }
       });
   }
 
-  //Update User Details
-  updateAdmin() {
-    const formData = new FormData();
-    formData.append('admin_name', this.formData.admin_name);
-    formData.append('admin_mobile', this.formData.admin_mobile);
-    formData.append('admin_email', this.formData.admin_email);
+  // Set Profile Image
+  private setProfileImage(profile: string | null | undefined): void {
+    this.profileImageLoading = true;
 
-    this.adminApi.updateAdminDetails(formData).subscribe({
-      next: (res: any) => {
-        if (res.success) {
-          this.toastr.success('Admin details updated successfully!', "Success", { disableTimeOut: false, progressBar: true, closeButton: true });
-          this.getAdminProfile();
-        } else {
-          this.toastr.error('Failed to update admin details: ' + res.message, "Error", { disableTimeOut: false, progressBar: true, closeButton: true });
-        }
-      },
-      error: (err: any) => {
-        this.toastr.error('Server error: ' + err.message, "Error", { disableTimeOut: false, progressBar: true, closeButton: true });
-      }
-    });
-  }
-
-
-  selectedImage: File | null = null;
-  selectedImageName: string | null = null;
-
-  onFileSelect(event: any) {
-    const file = event.target.files[0];
-    if (file) {
-      this.selectedImage = file;
-      this.selectedImageName = file.name;
+    if (profile) {
+      // Keep the existing backend uploads path.
+      this.loggedInAdminImage =
+        `http://localhost:4000/uploads/${profile}`;
+    } else {
+      this.loggedInAdminImage = this.defaultProfileImage;
     }
   }
 
-  // Update profile image
-  UpdateProfile() {
-    if (!this.selectedImage) {
-      this.toastr.error('Please select an image first!', "Error", { disableTimeOut: false, progressBar: true, closeButton: true });
+  // Profile image loaded successfully
+  onProfileImageLoad(): void {
+    this.profileImageLoading = false;
+  }
+
+  // Use default image if profile image cannot load
+  onProfileImageError(): void {
+    if (this.loggedInAdminImage !== this.defaultProfileImage) {
+      this.loggedInAdminImage = this.defaultProfileImage;
+    } else {
+      this.profileImageLoading = false;
+    }
+  }
+
+  // Update Admin Personal Details
+  updateAdmin(): void {
+    if (this.updatingProfile) {
+      return;
+    }
+
+    if (
+      !this.formData.admin_name.trim() ||
+      !this.formData.admin_mobile.trim() ||
+      !this.formData.admin_email.trim()
+    ) {
+      this.toastr.warning(
+        'Please fill in all profile fields.',
+        'Warning'
+      );
       return;
     }
 
     const formData = new FormData();
-    formData.append('admin_profile', this.selectedImage, this.selectedImage.name);
 
-    this.adminApi.updateAdminProfile(formData).subscribe({
-      next: (res: any) => {
-        if (res.success) {
-          this.toastr.success('Profile image updated successfully', "Success", { disableTimeOut: false, progressBar: true, closeButton: true });
+    formData.append('admin_name', this.formData.admin_name.trim());
+    formData.append('admin_mobile', this.formData.admin_mobile.trim());
+    formData.append('admin_email', this.formData.admin_email.trim());
 
-          this.getAdminProfile();
-          // Reset input field
-          const fileInput = document.getElementById('fileInput') as HTMLInputElement;
-          if (fileInput) {
-            fileInput.value = '';
+    this.updatingProfile = true;
+
+    this.adminApi.updateAdminDetails(formData)
+      .pipe(
+        finalize(() => {
+          this.updatingProfile = false;
+        })
+      )
+      .subscribe({
+        next: (res: any) => {
+          if (res?.success) {
+            this.toastr.success(
+              'Admin details updated successfully!',
+              'Success',
+              {
+                progressBar: true,
+                closeButton: true
+              }
+            );
+
+            this.getAdminProfile(false);
+          } else {
+            this.toastr.error(
+              res?.message || 'Failed to update admin details.',
+              'Error'
+            );
           }
+        },
 
-          this.selectedImage = null;
-          this.selectedImageName = null;
-        } else {
-          this.toastr.error('Failed to update profile: ' + res.message, "Error", { disableTimeOut: false, progressBar: true, closeButton: true });
+        error: (err: any) => {
+          this.toastr.error(
+            err?.error?.message ||
+            err?.message ||
+            'Server error while updating profile.',
+            'Error'
+          );
         }
-      },
-      error: (err: any) => {
-        this.toastr.error('Server error: ' + err.message, "Error", { disableTimeOut: false, progressBar: true, closeButton: true });
-      }
-    });
+      });
   }
 
-  //Change Admin Password
-  changePass() {
-    if (this.formData.new_password !== this.formData.confirm_password) {
-      this.toastr.error('New password and Confirm password do not match!', "Error", { disableTimeOut: false, progressBar: true, closeButton: true })
+  // Select Profile Image
+  onFileSelect(event: Event): void {
+    const input = event.target as HTMLInputElement;
+    const file = input.files?.[0];
+
+    if (!file) {
       return;
     }
 
-    if (!this.formData.new_password || !this.formData.confirm_password) {
-      this.toastr.warning('All fields are required!', "Warning", { disableTimeOut: false, progressBar: true, closeButton: true });
+    if (!file.type.startsWith('image/')) {
+      this.toastr.warning(
+        'Please select a valid image file.',
+        'Invalid File'
+      );
+
+      input.value = '';
+      return;
+    }
+
+    this.selectedImage = file;
+    this.selectedImageName = file.name;
+  }
+
+  // Update Profile Image
+  UpdateProfile(): void {
+    if (this.savingProfileImage) {
+      return;
+    }
+
+    if (!this.selectedImage) {
+      this.toastr.warning(
+        'Please select an image first!',
+        'Warning'
+      );
+      return;
+    }
+
+    const formData = new FormData();
+
+    formData.append(
+      'admin_profile',
+      this.selectedImage,
+      this.selectedImage.name
+    );
+
+    this.savingProfileImage = true;
+
+    this.adminApi.updateAdminProfile(formData)
+      .pipe(
+        finalize(() => {
+          this.savingProfileImage = false;
+        })
+      )
+      .subscribe({
+        next: (res: any) => {
+          if (res?.success) {
+            this.toastr.success(
+              'Profile image updated successfully!',
+              'Success',
+              {
+                progressBar: true,
+                closeButton: true
+              }
+            );
+
+            this.selectedImage = null;
+            this.selectedImageName = null;
+
+            const fileInput = document.getElementById(
+              'fileInput'
+            ) as HTMLInputElement | null;
+
+            if (fileInput) {
+              fileInput.value = '';
+            }
+
+            this.getAdminProfile(false);
+          } else {
+            this.toastr.error(
+              res?.message || 'Failed to update profile image.',
+              'Error'
+            );
+          }
+        },
+
+        error: (err: any) => {
+          this.toastr.error(
+            err?.error?.message ||
+            err?.message ||
+            'Server error while uploading profile image.',
+            'Error'
+          );
+        }
+      });
+  }
+
+  // Send OTP
+  sendOtp(): void {
+    if (this.sendingOtp) {
+      return;
+    }
+
+    const email = this.formData.admin_email.trim();
+
+    if (!email) {
+      this.toastr.warning(
+        'Please enter your email!',
+        'Warning'
+      );
+      return;
+    }
+
+    this.sendingOtp = true;
+
+    this.adminApi.sendOtp({ email })
+      .pipe(
+        finalize(() => {
+          this.sendingOtp = false;
+        })
+      )
+      .subscribe({
+        next: (res: any) => {
+          this.toastr.success(
+            res?.message || 'OTP sent to your email.',
+            'Success',
+            {
+              progressBar: true,
+              tapToDismiss: true
+            }
+          );
+
+          this.formData.otp = '';
+          this.formData.new_password = '';
+          this.formData.confirm_password = '';
+
+          this.otpSent = true;
+          this.otpVerified = false;
+        },
+
+        error: (err: any) => {
+          this.toastr.error(
+            err?.error?.message ||
+            err?.message ||
+            'Error sending OTP.',
+            'Error',
+            {
+              progressBar: true,
+              tapToDismiss: true
+            }
+          );
+        }
+      });
+  }
+
+  // Verify OTP
+  verifyOtp(): void {
+    if (this.verifyingOtp) {
+      return;
+    }
+
+    if (!this.formData.otp.trim()) {
+      this.toastr.warning(
+        'Please enter the OTP!',
+        'Warning'
+      );
+      return;
+    }
+
+    this.verifyingOtp = true;
+
+    this.adminApi.verifyOtp({
+      email: this.formData.admin_email.trim(),
+      otp: this.formData.otp.trim()
+    })
+      .pipe(
+        finalize(() => {
+          this.verifyingOtp = false;
+        })
+      )
+      .subscribe({
+        next: (res: any) => {
+          this.toastr.success(
+            res?.message || 'OTP verified successfully.',
+            'Success',
+            {
+              progressBar: true,
+              tapToDismiss: true
+            }
+          );
+
+          this.otpVerified = true;
+        },
+
+        error: (err: any) => {
+          this.toastr.error(
+            err?.error?.message ||
+            err?.message ||
+            'OTP verification failed.',
+            'Error',
+            {
+              progressBar: true,
+              tapToDismiss: true
+            }
+          );
+        }
+      });
+  }
+
+  // Change Admin Password
+  changePass(): void {
+    if (this.changingPassword) {
+      return;
+    }
+
+    if (!this.otpVerified) {
+      this.toastr.warning(
+        'Please verify your OTP first.',
+        'Warning'
+      );
+      return;
+    }
+
+    if (
+      !this.formData.new_password ||
+      !this.formData.confirm_password
+    ) {
+      this.toastr.warning(
+        'Please fill in both password fields.',
+        'Warning'
+      );
+      return;
+    }
+
+    if (this.formData.new_password.length < 6) {
+      this.toastr.warning(
+        'Password must contain at least 6 characters.',
+        'Warning'
+      );
+      return;
+    }
+
+    if (
+      this.formData.new_password !==
+      this.formData.confirm_password
+    ) {
+      this.toastr.error(
+        'New password and confirm password do not match!',
+        'Error'
+      );
       return;
     }
 
     const formData = new FormData();
     formData.append('new_password', this.formData.new_password);
 
-    this.adminApi.updatePassword(formData).subscribe((res: any) => {
-      if (res.success) {
-        this.toastr.success('Your Password Changed Successfully', "Congratulations", { disableTimeOut: false, progressBar: true, closeButton: true });
-        this.formData.new_password = '';
-        this.formData.confirm_password = '';
-        this.otpSent = false;
-        this.otpVerified = false;
-      }
-    },
-      (err: any) => {
-        if (err.status === 404) {
-          this.toastr.error(err.message);
-        } else if (err.status === 400) {
-          this.toastr.error(err.error.message);
-        } else {
-          this.toastr.error('An unexpected error occurred. Please try again later', "Error", { disableTimeOut: false, progressBar: true, closeButton: true });
+    this.changingPassword = true;
+
+    this.adminApi.updatePassword(formData)
+      .pipe(
+        finalize(() => {
+          this.changingPassword = false;
+        })
+      )
+      .subscribe({
+        next: (res: any) => {
+          if (res?.success) {
+            this.toastr.success(
+              'Your password has been changed successfully.',
+              'Congratulations',
+              {
+                progressBar: true,
+                closeButton: true
+              }
+            );
+
+            this.resetOtpFlow();
+          } else {
+            this.toastr.error(
+              res?.message || 'Failed to change password.',
+              'Error'
+            );
+          }
+        },
+
+        error: (err: any) => {
+          this.toastr.error(
+            err?.error?.message ||
+            err?.message ||
+            'An unexpected error occurred. Please try again.',
+            'Error',
+            {
+              progressBar: true,
+              closeButton: true
+            }
+          );
         }
-      }
-    );
+      });
   }
 
-  // Logout User
-  logout() {
-    if (confirm('Are you sure!! You want to logout?')) {
-      this.adminApi.adminLogout();
-      this.toastr.success(
-        'You have been successfully logged out!',
-        'Goodbye 👋',
-        {
-          timeOut: 4000,
-          progressBar: true,
-          progressAnimation: 'decreasing',
-          closeButton: true,
-          enableHtml: true,
-          toastClass: 'ngx-toastr custom-toast',
-          easing: 'ease-in-out',
-          easeTime: 700
-        }
-      );
-      this.router.navigate(['/admin/login']);
-    }
-    else {
-      this.router.navigate(['/admin/profile']);
-    }
+  // Reset OTP and password form
+  resetOtpFlow(): void {
+    this.otpSent = false;
+    this.otpVerified = false;
+
+    this.formData.otp = '';
+    this.formData.new_password = '';
+    this.formData.confirm_password = '';
   }
 
-  //Send otp
-  sendOtp() {
-    if (!this.formData.admin_email) {
-      this.toastr.warning('Please enter your email!');
+  // Admin Logout
+  logout(): void {
+    if (!confirm('Are you sure you want to logout?')) {
       return;
     }
 
-    this.adminApi.sendOtp({ email: this.formData.admin_email }).subscribe(
-      (res: any) => {
-        this.toastr.success(res.message || 'OTP sent to your email', 'Success', { progressBar: true, tapToDismiss: true });
-        this.otpSent = true;
-      },
-      err => {
-        this.toastr.error(err.error.message || 'Error sending OTP', 'Error', { progressBar: true, tapToDismiss: true });
+    this.adminApi.adminLogout();
+
+    this.toastr.success(
+      'You have been successfully logged out!',
+      'Goodbye 👋',
+      {
+        timeOut: 4000,
+        progressBar: true,
+        progressAnimation: 'decreasing',
+        closeButton: true,
+        enableHtml: true,
+        toastClass: 'ngx-toastr custom-toast',
+        easing: 'ease-in-out',
+        easeTime: 700
       }
     );
+
+    this.router.navigate(['/admin/login']);
   }
-
-  // Varify OTP
-  verifyOtp() {
-    if (!this.formData.otp) {
-      this.toastr.warning('Please enter the OTP!', 'Warning', { progressBar: true, tapToDismiss: true });
-      return;
-    }
-
-    this.adminApi.verifyOtp({
-      email: this.formData.admin_email,
-      otp: this.formData.otp
-    }).subscribe(
-      (res: any) => {
-        this.toastr.success(res.message || 'OTP verified successfully', 'Success', { progressBar: true, tapToDismiss: true });
-        this.otpVerified = true;
-      },
-      err => {
-        this.toastr.error(err.error.message || 'OTP verification failed', 'Error', { progressBar: true, tapToDismiss: true });
-      }
-    );
-  }
-
 }

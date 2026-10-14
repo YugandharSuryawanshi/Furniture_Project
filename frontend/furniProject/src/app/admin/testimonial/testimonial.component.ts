@@ -1,6 +1,8 @@
+
 import { CommonModule } from '@angular/common';
-import { Component } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import { FormsModule } from '@angular/forms';
+import { finalize } from 'rxjs';
 import { AdminApiService } from '../../service/admin-api.service';
 import { ToastrService } from 'ngx-toastr';
 
@@ -11,164 +13,522 @@ import { ToastrService } from 'ngx-toastr';
   templateUrl: './testimonial.component.html',
   styleUrl: './testimonial.component.css'
 })
-export class TestimonialComponent {
+export class TestimonialComponent implements OnInit {
 
-  constructor(private adminApi: AdminApiService, private toastr: ToastrService) { }
+  constructor(
+    private adminApi: AdminApiService,
+    private toastr: ToastrService
+  ) { }
 
-  displayAdd: boolean = true;
-  displayList: boolean = false;
-  displayUpdate: boolean = false;
+  displayAdd = true;
+  displayList = false;
+  displayUpdate = false;
 
-  display1() {
+  testimonials: any[] = [];
+
+  selectedImage: File | null = null;
+  HideImage = true;
+
+  // Page-specific loading states
+  loadingTestimonials = false;
+  loadingTestimonialDetails = false;
+  savingTestimonial = false;
+  updatingTestimonial = false;
+  deletingTestimonialId: string | number | null = null;
+
+  private listRequestId = 0;
+  private detailsRequestId = 0;
+
+  readonly basePath = 'http://localhost:4000/uploads/';
+
+  formData: any = this.createEmptyForm();
+
+  ngOnInit(): void {
+    // Preserve the existing initial API request.
+    this.getAllTestimonials();
+  }
+
+  private createEmptyForm(): any {
+    return {
+      customer_id: '',
+      customer_name: '',
+      customer_position: '',
+      customer_massage: '',
+      customer_image: null
+    };
+  }
+
+  private showListSkeletonForMinimumTime(
+    startedAt: number,
+    requestId: number
+  ): void {
+    const remainingTime = Math.max(
+      0,
+      700 - (Date.now() - startedAt)
+    );
+
+    setTimeout(() => {
+      if (requestId === this.listRequestId) {
+        this.loadingTestimonials = false;
+      }
+    }, remainingTime);
+  }
+
+  // ADD TESTIMONIAL VIEW
+  display1(): void {
     this.displayAdd = true;
     this.displayList = false;
     this.displayUpdate = false;
     this.HideImage = false;
-    this.formData.customer_name = '';  //for clear input fields
-    this.formData.customer_position = '';
-    this.formData.customer_massage = '';
 
+    this.formData = this.createEmptyForm();
+    this.selectedImage = null;
   }
-  display2() {
-    this.getAllTestimonials();
+
+  // SHOW TESTIMONIAL LIST
+  display2(): void {
     this.displayAdd = false;
     this.displayList = true;
     this.displayUpdate = false;
-  }
-  display3() {
-    this.displayUpdate = false;
-    this.displayList = true;
-    this.HideImage = false;
-  }
 
-  formData: any = {
-    customer_name: '',
-    customer_position: '',
-    customer_massage: '',
-    customer_image: null,
-  }
-
-  selectedImage: File | null = null;
-  onSelectedImage(event: any) {
-    const file = event.target.files[0];
-    if (file) {
-      this.selectedImage = file;
-    }
-  }
-  saveTestimonial() {
-    const formData = new FormData();
-
-    formData.append('customer_name', this.formData.customer_name);
-    formData.append('customer_position', this.formData.customer_position);
-    formData.append('customer_massage', this.formData.customer_massage);
-
-    if (this.selectedImage) {
-      formData.append('customer_image', this.selectedImage, this.selectedImage.name);
-    }
-
-    //Send Form Data TO Backend
-    this.adminApi.saveTestimonial(formData).subscribe((res: any) => {
-      if (res.success) {
-        this.toastr.success(res.message || 'Testimonial Saved Successfully', 'Success', { progressBar: true, disableTimeOut: false, closeButton: true });
-        this.formData = {
-          customer_name: '',
-          customer_position: '',
-          customer_massage: '',
-          customer_image: null,
-        }
-        this.selectedImage = null;
-        this.getAllTestimonials();
-      }
-      else {
-        this.toastr.success('Error To Save Testimonial Data', 'Error', { progressBar: true, disableTimeOut: false, closeButton: true });
-      }
-    })
-  }
-
-  ngOnInit() {
     this.getAllTestimonials();
   }
-  // Get the testimonial
-  testimonials: any = [];
-  getAllTestimonials() {
-    this.adminApi.getTestimonials().subscribe((res: any) => {
-      if (res.success) {
-        this.testimonials = res.data;
-      }
-      else {
-        this.toastr.success('Error To Get Testimonial' + res.message, 'Error', { progressBar: true, disableTimeOut: false, closeButton: true });
-      }
-    })
+
+  // CANCEL EDIT AND RETURN TO LIST
+  display3(): void {
+    this.displayUpdate = false;
+    this.displayAdd = false;
+    this.displayList = true;
+    this.HideImage = false;
+
+    this.formData = this.createEmptyForm();
+    this.selectedImage = null;
+
+    this.getAllTestimonials();
   }
 
-  // Fetch Testimonial and Set to Form
-  get_This_Product(id: any) {
+  // SELECT IMAGE FOR NEW TESTIMONIAL
+  onSelectedImage(event: Event): void {
+    const input = event.target as HTMLInputElement;
+    const file = input.files?.[0] ?? null;
+
+    if (!file) {
+      return;
+    }
+
+    if (!file.type.startsWith('image/')) {
+      this.toastr.error(
+        'Please select a valid image.',
+        'Invalid File',
+        {
+          progressBar: true,
+          closeButton: true,
+          disableTimeOut: false
+        }
+      );
+
+      input.value = '';
+      return;
+    }
+
+    this.selectedImage = file;
+    this.formData.customer_image = file;
+  }
+
+  // SAVE NEW TESTIMONIAL
+  saveTestimonial(): void {
+    if (this.savingTestimonial) {
+      return;
+    }
+
+    if (
+      !this.formData.customer_name?.trim() ||
+      !this.formData.customer_position?.trim() ||
+      !this.formData.customer_massage?.trim()
+    ) {
+      this.toastr.warning(
+        'Please fill in all testimonial details.',
+        'Required Fields',
+        {
+          progressBar: true,
+          closeButton: true,
+          disableTimeOut: false
+        }
+      );
+      return;
+    }
+
+    if (!this.selectedImage) {
+      this.toastr.warning(
+        'Please select a customer image.',
+        'Image Required',
+        {
+          progressBar: true,
+          closeButton: true,
+          disableTimeOut: false
+        }
+      );
+      return;
+    }
+
+    const payload = new FormData();
+
+    payload.append('customer_name', this.formData.customer_name.trim());
+    payload.append('customer_position', this.formData.customer_position.trim());
+    payload.append('customer_massage', this.formData.customer_massage.trim());
+    payload.append(
+      'customer_image',
+      this.selectedImage,
+      this.selectedImage.name
+    );
+
+    this.savingTestimonial = true;
+
+    this.adminApi.saveTestimonial(payload)
+      .pipe(
+        finalize(() => {
+          this.savingTestimonial = false;
+        })
+      )
+      .subscribe({
+        next: (res: any) => {
+          if (res?.success) {
+            this.toastr.success(
+              res.message || 'Testimonial Saved Successfully',
+              'Success',
+              {
+                progressBar: true,
+                disableTimeOut: false,
+                closeButton: true
+              }
+            );
+
+            this.formData = this.createEmptyForm();
+            this.selectedImage = null;
+
+            this.getAllTestimonials();
+          } else {
+            this.toastr.error(
+              res?.message || 'Unable to save testimonial.',
+              'Error',
+              {
+                progressBar: true,
+                disableTimeOut: false,
+                closeButton: true
+              }
+            );
+          }
+        },
+        error: (error: any) => {
+          console.error('Error saving testimonial:', error);
+
+          this.toastr.error(
+            error?.error?.message || 'Error saving testimonial data.',
+            'Error',
+            {
+              progressBar: true,
+              disableTimeOut: false,
+              closeButton: true
+            }
+          );
+        }
+      });
+  }
+
+  // FETCH ALL TESTIMONIALS
+  getAllTestimonials(): void {
+    const startedAt = Date.now();
+    const requestId = ++this.listRequestId;
+
+    this.loadingTestimonials = true;
+
+    this.adminApi.getTestimonials()
+      .pipe(
+        finalize(() => {
+          this.showListSkeletonForMinimumTime(startedAt, requestId);
+        })
+      )
+      .subscribe({
+        next: (res: any) => {
+          if (res?.success) {
+            this.testimonials = res.data ?? [];
+          } else {
+            this.testimonials = [];
+
+            this.toastr.error(
+              res?.message || 'Unable to fetch testimonials.',
+              'Error',
+              {
+                progressBar: true,
+                disableTimeOut: false,
+                closeButton: true
+              }
+            );
+          }
+        },
+        error: (error: any) => {
+          console.error('Error fetching testimonials:', error);
+          this.testimonials = [];
+
+          this.toastr.error(
+            error?.error?.message || 'Error fetching testimonials.',
+            'Error',
+            {
+              progressBar: true,
+              disableTimeOut: false,
+              closeButton: true
+            }
+          );
+        }
+      });
+  }
+
+  // FETCH A TESTIMONIAL FOR EDITING
+  get_This_Product(id: any): void {
     this.displayAdd = false;
     this.displayList = false;
     this.displayUpdate = true;
     this.HideImage = true;
 
-    this.adminApi.getOneTestimonial(id).subscribe(
-      (res: any) => {
-        if (res.success) {
-          this.formData = { ...res.data }; //Spread Operator is Used Here For Display Info in Testimonial
-        } else {
-          this.toastr.error('Error fetching Testimonial: ' + res.message, 'Error', { progressBar: true, disableTimeOut: false, closeButton: true });
+    this.loadingTestimonialDetails = true;
+    this.selectedImage = null;
+
+    const requestId = ++this.detailsRequestId;
+
+    this.adminApi.getOneTestimonial(id)
+      .pipe(
+        finalize(() => {
+          if (requestId === this.detailsRequestId) {
+            this.loadingTestimonialDetails = false;
+          }
+        })
+      )
+      .subscribe({
+        next: (res: any) => {
+          if (res?.success && res.data) {
+            this.formData = {
+              ...this.createEmptyForm(),
+              ...res.data
+            };
+
+            this.HideImage = true;
+          } else {
+            this.toastr.error(
+              res?.message || 'Unable to fetch testimonial.',
+              'Error',
+              {
+                progressBar: true,
+                disableTimeOut: false,
+                closeButton: true
+              }
+            );
+
+            this.displayUpdate = false;
+            this.displayList = true;
+          }
+        },
+        error: (error: any) => {
+          console.error('Error fetching testimonial details:', error);
+
+          this.toastr.error(
+            error?.error?.message || 'Error fetching testimonial details.',
+            'Error',
+            {
+              progressBar: true,
+              disableTimeOut: false,
+              closeButton: true
+            }
+          );
+
+          this.displayUpdate = false;
+          this.displayList = true;
         }
       });
   }
 
-  // Handle Image Selection for Update
-  HideImage: boolean = true;
-  onSelectedUpdateImage(event: any) {
+  // SELECT REPLACEMENT IMAGE WHILE EDITING
+  onSelectedUpdateImage(event: Event): void {
+    const input = event.target as HTMLInputElement;
+    const file = input.files?.[0] ?? null;
+
+    if (!file) {
+      return;
+    }
+
+    if (!file.type.startsWith('image/')) {
+      this.toastr.error(
+        'Please select a valid image.',
+        'Invalid File',
+        {
+          progressBar: true,
+          closeButton: true,
+          disableTimeOut: false
+        }
+      );
+
+      input.value = '';
+      return;
+    }
+
+    this.selectedImage = file;
     this.HideImage = false;
-    this.selectedImage = event.target.files[0];
   }
 
-  // Save Testimonial
-  updateTestimonial() {
-    const updatedFormData = new FormData();
-    updatedFormData.append('customer_name', this.formData.customer_name);
-    updatedFormData.append('customer_position', this.formData.customer_position);
-    updatedFormData.append('customer_massage', this.formData.customer_massage);
+  // UPDATE EXISTING TESTIMONIAL
+  updateTestimonial(): void {
+    if (this.updatingTestimonial) {
+      return;
+    }
+
+    if (
+      !this.formData.customer_name?.trim() ||
+      !this.formData.customer_position?.trim() ||
+      !this.formData.customer_massage?.trim()
+    ) {
+      this.toastr.warning(
+        'Please fill in all testimonial details.',
+        'Required Fields',
+        {
+          progressBar: true,
+          closeButton: true,
+          disableTimeOut: false
+        }
+      );
+      return;
+    }
+
+    const payload = new FormData();
+
+    payload.append('customer_name', this.formData.customer_name.trim());
+    payload.append('customer_position', this.formData.customer_position.trim());
+    payload.append('customer_massage', this.formData.customer_massage.trim());
+
     if (this.selectedImage) {
-      updatedFormData.append('customer_image', this.selectedImage, this.selectedImage.name);
+      payload.append(
+        'customer_image',
+        this.selectedImage,
+        this.selectedImage.name
+      );
     }
 
-    this.adminApi.updateTestimonial(this.formData.customer_id, updatedFormData).subscribe((res: any) => {
-      if (res.success) {
-        this.toastr.success(res.message || 'Testimonial Updated Successfully', 'Success', { progressBar: true, disableTimeOut: false, closeButton: true });
-        this.getAllTestimonials();
-        this.displayAdd = false;
-        this.displayList = true;
-        this.displayUpdate = false;
-        this.formData = {
-          customer_name: '',
-          customer_position: '',
-          customer_massage: '',
-          customer_image: null,
+    this.updatingTestimonial = true;
+
+    this.adminApi.updateTestimonial(
+      this.formData.customer_id,
+      payload
+    )
+      .pipe(
+        finalize(() => {
+          this.updatingTestimonial = false;
+        })
+      )
+      .subscribe({
+        next: (res: any) => {
+          if (res?.success) {
+            this.toastr.success(
+              res.message || 'Testimonial Updated Successfully',
+              'Success',
+              {
+                progressBar: true,
+                disableTimeOut: false,
+                closeButton: true
+              }
+            );
+
+            this.formData = this.createEmptyForm();
+            this.selectedImage = null;
+
+            this.displayAdd = false;
+            this.displayList = true;
+            this.displayUpdate = false;
+            this.HideImage = false;
+
+            this.getAllTestimonials();
+          } else {
+            this.toastr.error(
+              res?.message || 'Unable to update testimonial.',
+              'Error',
+              {
+                progressBar: true,
+                disableTimeOut: false,
+                closeButton: true
+              }
+            );
+          }
+        },
+        error: (error: any) => {
+          console.error('Error updating testimonial:', error);
+
+          this.toastr.error(
+            error?.error?.message || 'Error updating testimonial data.',
+            'Error',
+            {
+              progressBar: true,
+              disableTimeOut: false,
+              closeButton: true
+            }
+          );
         }
-        this.selectedImage = null;
-      }
-      else {
-        this.toastr.error('Error To Update Testimonial Data', 'Error', { progressBar: true, disableTimeOut: false, closeButton: true });
-      }
-    })
+      });
   }
 
-  // Delete Testimonial
-  deleteProduct(id: any) {
-    if (confirm('Are you sure!! you want to delete this')) {
-      this.adminApi.deleteTestimonial(id).subscribe((res: any) => {
-        if (res.success) {
-          this.toastr.success(res.message || 'Testimonial Deleted Successfully', 'Success', { progressBar: true, disableTimeOut: false, closeButton: true });
-          this.getAllTestimonials();
-        }
-        else {
-          this.toastr.error('Error To Delete Testimonial Data', 'Error', { progressBar: true, disableTimeOut: false, closeButton: true });
-        }
-      })
+  // DELETE TESTIMONIAL
+  deleteProduct(id: any): void {
+    if (!confirm('Are you sure you want to delete this testimonial?')) {
+      return;
     }
-  }
 
+    if (this.deletingTestimonialId !== null) {
+      return;
+    }
+
+    this.deletingTestimonialId = id;
+
+    this.adminApi.deleteTestimonial(id)
+      .pipe(
+        finalize(() => {
+          this.deletingTestimonialId = null;
+        })
+      )
+      .subscribe({
+        next: (res: any) => {
+          if (res?.success) {
+            this.toastr.success(
+              res.message || 'Testimonial Deleted Successfully',
+              'Success',
+              {
+                progressBar: true,
+                disableTimeOut: false,
+                closeButton: true
+              }
+            );
+
+            this.getAllTestimonials();
+          } else {
+            this.toastr.error(
+              res?.message || 'Unable to delete testimonial.',
+              'Error',
+              {
+                progressBar: true,
+                disableTimeOut: false,
+                closeButton: true
+              }
+            );
+          }
+        },
+        error: (error: any) => {
+          console.error('Error deleting testimonial:', error);
+
+          this.toastr.error(
+            error?.error?.message || 'Error deleting testimonial.',
+            'Error',
+            {
+              progressBar: true,
+              disableTimeOut: false,
+              closeButton: true
+            }
+          );
+        }
+      });
+  }
 }

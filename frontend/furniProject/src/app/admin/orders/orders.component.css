@@ -1,3 +1,7 @@
+/* =========================================================
+   EXISTING STATUS COLORS
+   ========================================================= */
+
 .cssClass {
     background: linear-gradient(135deg, #c4b5fd 0%, #8b5cf6 100%);
     color: #4c1d95;
@@ -13,7 +17,20 @@
     color: #000000;
 }
 
-/* Start Cart Css */
+
+/* =========================================================
+   ORDERS PAGE
+   ========================================================= */
+
+.furni-orders-page {
+    min-height: 100vh;
+}
+
+
+/* =========================================================
+   ORDER CARD
+   ========================================================= */
+
 .order-card {
     background: #ffffff;
     border-radius: 15px;
@@ -25,16 +42,37 @@
     transform: translateY(-5px);
 }
 
+
+/* =========================================================
+   STATUS BADGE
+   ========================================================= */
+
 .status-badge {
     padding: 8px 15px;
     border-radius: 10px;
     font-size: 0.9rem;
 }
 
+
+/* =========================================================
+   TABLE
+   ========================================================= */
+
 .order-table thead th {
     background: #f8f9fa;
     border-bottom: 2px solid #dee2e6;
 }
+
+.table th,
+.table td {
+    vertical-align: middle;
+    text-align: center;
+}
+
+
+/* =========================================================
+   ORDER ACTIONS
+   ========================================================= */
 
 .order-actions .btn {
     padding: 5px 12px;
@@ -42,10 +80,20 @@
     border-radius: 8px;
 }
 
+
+/* =========================================================
+   SEARCH
+   ========================================================= */
+
 .search-box {
     max-width: 300px;
     border-radius: 25px;
 }
+
+
+/* =========================================================
+   STATS CARD
+   ========================================================= */
 
 .stats-card {
     background: linear-gradient(45deg, #6c5ce7, #a8a4e6);
@@ -54,9 +102,10 @@
 }
 
 
-/* End Cards css */
+/* =========================================================
+   STATUS BUTTONS
+   ========================================================= */
 
-/* Buttons */
 .status-btn {
     padding: 10px 15px;
     margin-left: 5px;
@@ -75,52 +124,183 @@
     box-shadow: 0px 2px 10px rgba(239, 4, 4, 0.2);
 }
 
-/* Badges */
+
+/* =========================================================
+   BADGES
+   ========================================================= */
+
 .badge {
     padding: 8px 12px;
     font-size: 14px;
     border-radius: 5px;
 }
 
-/* Table */
-.table th,
-.table td {
-    vertical-align: middle;
+
+/* =========================================================
+   NO ORDERS
+   ========================================================= */
+
+.furni-no-orders {
+    padding: 20px;
+}
+
+
+/* =========================================================
+   PAGE SKELETON
+   ========================================================= */
+
+.furni-skeleton {
+    position: relative;
+    overflow: hidden;
+    background: #e9ecef;
+    border-radius: 6px;
+}
+
+.furni-skeleton::after {
+    content: "";
+    position: absolute;
+    top: 0;
+    left: -150px;
+    width: 150px;
+    height: 100%;
+    background: linear-gradient(90deg,
+            transparent,
+            rgba(255, 255, 255, 0.65),
+            transparent);
+    animation: furniSkeletonShimmer 1.4s infinite;
+}
+
+@keyframes furniSkeletonShimmer {
+    100% {
+        left: 100%;
+    }
+}
+
+
+/* =========================================================
+   HEADER SKELETON
+   ========================================================= */
+
+.furni-orders-header-skeleton {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    gap: 20px;
+}
+
+.furni-skeleton-title {
+    width: 240px;
+    height: 35px;
+}
+
+.furni-skeleton-filter {
+    width: 300px;
+    height: 38px;
+}
+
+
+/* =========================================================
+   STATS SKELETON
+   ========================================================= */
+
+.furni-stats-skeleton {
+    background: #ffffff;
+    border-radius: 15px;
+    min-height: 130px;
+    box-shadow: 0 0 20px rgba(0, 0, 0, 0.06);
+}
+
+.furni-skeleton-small {
+    width: 120px;
+    height: 20px;
+    margin-bottom: 20px;
+}
+
+.furni-skeleton-number {
+    width: 100px;
+    height: 32px;
+}
+
+
+/* =========================================================
+   ORDERS HEADING SKELETON
+   ========================================================= */
+
+.furni-orders-heading-skeleton {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    gap: 20px;
+}
+
+.furni-skeleton-section-title {
+    width: 180px;
+    height: 32px;
+}
+
+.furni-skeleton-status-buttons {
+    width: 620px;
+    height: 40px;
+}
+
+
+/* =========================================================
+   TABLE SKELETON
+   ========================================================= */
+
+.furni-orders-skeleton-table {
+    width: 100%;
+}
+
+.furni-orders-skeleton-table th,
+.furni-orders-skeleton-table td {
     text-align: center;
+    vertical-align: middle;
+    border-bottom: 1px solid #eeeeee;
 }
 
-/* Responsive Adjustments */
-@media (max-width: 768px) {
-    .status-btn {
-        width: 100%;
-    }
+.furni-skeleton-th {
+    width: 75px;
+    height: 18px;
+    margin: auto;
+}
 
-    .form-control,
-    .form-select {
-        width: 100%;
-    }
+.furni-skeleton-td {
+    width: 85px;
+    height: 20px;
+    margin: auto;
+}
+
+.furni-orders-skeleton-table tbody tr {
+    height: 75px;
 }
 
 
+/* =========================================================
+   PAGINATION SKELETON
+   ========================================================= */
+
+.furni-pagination-skeleton {
+    display: flex;
+    justify-content: flex-end;
+    margin-top: 20px;
+}
+
+.furni-skeleton-pagination {
+    width: 220px;
+    height: 38px;
+}
 
 
+/* =========================================================
+   MODAL
+   ========================================================= */
 
-
-
-
-
-
-
-
-
-
-
-/* Modal Background */
 .order-modal {
     position: fixed;
-    top: 50%;
-    left: 50%;
-    transform: translate(-50%, -50%);
+    top: 0;
+    left: 0;
+    z-index: 1055;
     background: rgba(0, 0, 0, 0.4);
     width: 100%;
     height: 100%;
@@ -129,12 +309,17 @@
     align-items: center;
 }
 
-/* Modal Content */
+
+/* =========================================================
+   MODAL CONTENT
+   ========================================================= */
+
 .order-modal-content {
     background: rgba(255, 198, 198, 0.9);
-    /* Red with 80% opacity */
     width: 1050px;
     height: 600px;
+    max-width: 95vw;
+    max-height: 90vh;
     padding: 20px;
     border-radius: 10px;
     position: relative;
@@ -143,17 +328,10 @@
 }
 
 
-/* Close Button */
-/* .close-btn {
-    position: absolute;
-    top: 10px;
-    right: 10px;
-    background: transparent;
-    border: none;
-    font-size: 20px;
-    cursor: pointer;
-} */
-/* Close Button */
+/* =========================================================
+   CLOSE BUTTON
+   ========================================================= */
+
 .close-btn {
     position: absolute;
     top: 10px;
@@ -161,22 +339,161 @@
     background: transparent;
     border: none;
     font-size: 15px;
-    /* Increase size for better click area */
     cursor: pointer;
     padding: 1px;
-    /* Optional: Adds a better clickable area */
     line-height: 1;
     display: flex;
     align-items: center;
     justify-content: center;
+    z-index: 2;
 }
 
-/* Optional: Remove focus outline and improve hover effect */
 .close-btn:focus {
     outline: none;
 }
 
 .close-btn:hover {
     color: red;
-    /* Add any hover effect you want */
+}
+
+
+/* =========================================================
+   MODAL SKELETON
+   ========================================================= */
+
+.furni-modal-skeleton {
+    padding: 25px 10px;
+}
+
+.furni-modal-title {
+    width: 55%;
+    height: 32px;
+    margin-bottom: 35px;
+}
+
+.furni-modal-skeleton-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 28px 25px;
+}
+
+.furni-modal-skeleton-item {
+    min-height: 60px;
+}
+
+.furni-modal-label {
+    width: 110px;
+    height: 17px;
+    margin-bottom: 12px;
+}
+
+.furni-modal-value {
+    width: 80%;
+    height: 21px;
+}
+
+.furni-modal-products {
+    width: 70%;
+    height: 25px;
+    margin-top: 35px;
+}
+
+
+/* =========================================================
+   RESPONSIVE
+   ========================================================= */
+
+@media (max-width: 992px) {
+
+    .furni-orders-header {
+        align-items: flex-start !important;
+        gap: 15px;
+        flex-direction: column;
+    }
+
+    .furni-orders-filters {
+        width: 100%;
+    }
+
+    .search-box {
+        max-width: none;
+        width: 100%;
+    }
+
+    .furni-orders-heading-skeleton {
+        align-items: flex-start;
+        flex-direction: column;
+    }
+
+    .furni-skeleton-status-buttons {
+        width: 100%;
+    }
+
+    .furni-modal-skeleton-grid {
+        grid-template-columns: repeat(2, 1fr);
+    }
+
+}
+
+
+@media (max-width: 768px) {
+
+    .status-btn {
+        width: 100%;
+        margin-left: 0;
+    }
+
+    .form-control,
+    .form-select {
+        width: 100%;
+    }
+
+    .furni-orders-filters {
+        flex-direction: column;
+        align-items: stretch !important;
+    }
+
+    .furni-orders-filters .dropdown {
+        width: 100%;
+        margin-right: 0 !important;
+        margin-bottom: 10px;
+    }
+
+    .furni-orders-header-skeleton {
+        flex-direction: column;
+        align-items: stretch;
+    }
+
+    .furni-skeleton-title,
+    .furni-skeleton-filter {
+        width: 100%;
+    }
+
+    .furni-modal-skeleton-grid {
+        grid-template-columns: 1fr;
+    }
+
+    .order-modal-content {
+        width: 95vw;
+        height: 85vh;
+        padding: 15px;
+    }
+
+}
+
+
+@media (max-width: 576px) {
+
+    .order-card {
+        padding: 15px !important;
+    }
+
+    .stats-card {
+        padding: 20px !important;
+    }
+
+    .furni-skeleton-section-title {
+        width: 150px;
+    }
+
 }

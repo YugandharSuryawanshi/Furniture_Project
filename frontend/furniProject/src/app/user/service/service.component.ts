@@ -3,6 +3,7 @@ import { Component, OnInit } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import { RouterModule } from '@angular/router';
 import { ToastrService } from 'ngx-toastr';
+import { finalize } from 'rxjs';
 
 import { UserApiService } from '../../service/user-api.service';
 import { ImageService } from '../../service/image.service';
@@ -19,6 +20,9 @@ import { ImageService } from '../../service/image.service';
   styleUrl: './service.component.css'
 })
 export class ServiceComponent implements OnInit {
+
+  // Service Page Skeleton Loading State
+  serviceLoading: boolean = false;
 
   constructor(
     private userApi: UserApiService,
@@ -57,86 +61,95 @@ export class ServiceComponent implements OnInit {
   // Load Home Data
   getHomeData(): void {
 
-    this.userApi.gethomeData().subscribe({
-      next: (res: any) => {
+    this.serviceLoading = true;
 
-        // Banner
-        this.banner_info = res?.banner_info?.[0] || {};
+    this.userApi.gethomeData()
+      .pipe(
+        finalize(() => {
+          this.serviceLoading = false;
+        })
+      )
+      .subscribe({
+        next: (res: any) => {
 
-        this.banner_image = this.banner_info?.banner_image
-          ? this.imageUrl.getImageUrl(this.banner_info.banner_image)
-          : '';
+          // Banner
+          this.banner_info = res?.banner_info?.[0] || {};
 
-        // Products
+          this.banner_image = this.banner_info?.banner_image
+            ? this.imageUrl.getImageUrl(this.banner_info.banner_image)
+            : '';
 
-        this.products = res?.products || [];
+          // Products
+          this.products = res?.products || [];
 
-        this.products.forEach(product => {
+          this.products.forEach(product => {
 
-          if (product.product_image) {
-            const images = product.product_image
-              .split(',')
-              .map((img: string) => img.trim())
-              .filter((img: string) => img !== '');
+            if (product.product_image) {
 
-            product.firstImage = images.length
-              ? this.imageUrl.getImageUrl(images[0])
-              : 'images/no-image.png';
+              const images = product.product_image
+                .split(',')
+                .map((img: string) => img.trim())
+                .filter((img: string) => img !== '');
 
-          } else {
-            product.firstImage = 'images/no-image.png';
-          }
-        });
+              product.firstImage = images.length
+                ? this.imageUrl.getImageUrl(images[0])
+                : 'images/no-image.png';
 
-        // About
+            } else {
 
-        this.about = res?.about?.[0] || {};
-        this.about_image = this.about?.why_choose_img
-          ? this.imageUrl.getImageUrl(this.about.why_choose_img)
-          : '';
+              product.firstImage = 'images/no-image.png';
 
-        this.about_points = res?.about_points || [];
+            }
 
-        // Testimonials
+          });
 
-        this.testimonial = res.testimonial;
+          // About
+          this.about = res?.about?.[0] || {};
 
-        this.testimonial.forEach((item: any) => {
-          item.imageUrl = this.imageUrl.getImageUrl(
-            item.customer_image
+          this.about_image = this.about?.why_choose_img
+            ? this.imageUrl.getImageUrl(this.about.why_choose_img)
+            : '';
+
+          this.about_points = res?.about_points || [];
+
+          // Testimonials
+          this.testimonial = res?.testimonial || [];
+
+          this.testimonial.forEach((item: any) => {
+
+            item.imageUrl = this.imageUrl.getImageUrl(
+              item.customer_image
+            );
+
+          });
+
+          // Interior
+          this.interior = res?.interior || [];
+
+          // Blogs
+          this.blogs = res?.blog || [];
+
+          // Team
+          this.team = res?.team || [];
+
+        },
+
+        error: (err) => {
+
+          console.error(err);
+
+          this.toastr.error(
+            err?.error?.message || 'Unable to load services.',
+            'Error',
+            {
+              progressBar: true,
+              closeButton: true
+            }
           );
-        });
 
-        // Interior
+        }
 
-        this.interior = res?.interior || [];
-
-        // Blogs
-
-        this.blogs = res?.blog || [];
-
-        // Team
-
-        this.team = res?.team || [];
-
-      },
-
-      error: (err) => {
-
-        console.error(err);
-
-        this.toastr.error(
-          err?.error?.message || 'Unable to load services.',
-          'Error',
-          {
-            progressBar: true,
-            closeButton: true
-          }
-        );
-
-      }
-
-    });
+      });
 
   }
 

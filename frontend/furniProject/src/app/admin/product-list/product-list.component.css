@@ -1,16 +1,324 @@
-.btn-hover {
-    transition: transform 0.2s ease-in-out, box-shadow 0.2s ease-in-out;
+/* =========================================================
+   PRODUCT LIST PAGE
+   ========================================================= */
+
+.product-list-page {
+    width: 100%;
 }
 
-.btn-hover:hover {
+.product-list-page h2 {
+    color: #212529;
+}
+
+
+/* =========================================================
+   SEARCH
+   ========================================================= */
+
+.product-search-form {
+    min-width: 320px;
+}
+
+.product-search-form .form-control {
+    height: 38px;
+    border-radius: 6px;
+}
+
+.product-search-form .btn {
+    height: 38px;
+    min-width: 44px;
+}
+
+
+/* =========================================================
+   PRODUCT TABLE
+   ========================================================= */
+
+.product-table-wrapper {
+    background: #ffffff;
+    border-radius: 12px;
+    box-shadow: 0 4px 18px rgba(0, 0, 0, 0.07);
+    overflow-x: auto;
+}
+
+.product-table {
+    margin-bottom: 0;
+    min-width: 900px;
+}
+
+.product-table thead th {
+    background: #f8f9fa;
+    color: #343a40;
+    font-weight: 600;
+    padding: 15px;
+    white-space: nowrap;
+    border-bottom: 1px solid #dee2e6;
+}
+
+.product-table tbody td {
+    padding: 15px;
+    vertical-align: middle;
+}
+
+.product-row {
+    transition: background-color 0.2s ease;
+}
+
+.product-row:hover {
+    background-color: #fafafa;
+}
+
+.product-type-text {
+    font-weight: 500;
+    color: #495057;
+}
+
+.product-name-cell {
+    max-width: 260px;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+
+.product-name-cell strong {
+    color: #212529;
+}
+
+.product-color-swatch {
+    display: inline-block;
+    width: 25px;
+    height: 25px;
+    border-radius: 50%;
+    border: 1px solid #adb5bd;
+    flex-shrink: 0;
+}
+
+
+/* =========================================================
+   ACTION BUTTONS
+   ========================================================= */
+
+.product-action-btn {
+    width: 36px;
+    height: 36px;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    transition: all 0.2s ease;
+}
+
+.product-action-btn:hover:not(:disabled) {
     transform: translateY(-2px);
-    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
 }
 
-.table-striped tbody tr:nth-of-type(odd) {
-    background-color: rgba(0, 0, 0, 0.05);
+.product-action-btn:disabled {
+    cursor: not-allowed;
+    opacity: 0.7;
 }
 
-.table {
-    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+
+/* =========================================================
+   EMPTY STATE
+   ========================================================= */
+
+.product-empty-state {
+    min-height: 300px;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+}
+
+.product-empty-state h4 {
+    margin-bottom: 8px;
+    color: #343a40;
+}
+
+
+/* =========================================================
+   UPDATE PRODUCT CARD
+   ========================================================= */
+
+.product-update-card {
+    background: #ffffff;
+    border-radius: 12px;
+    padding: 30px;
+    box-shadow: 0 4px 18px rgba(0, 0, 0, 0.07);
+}
+
+.product-update-card .form-label {
+    color: #343a40;
+}
+
+.product-update-card .form-control,
+.product-update-card .form-select {
+    min-height: 42px;
+}
+
+.product-update-card textarea {
+    resize: vertical;
+}
+
+
+/* =========================================================
+   IMAGE PREVIEW
+   ========================================================= */
+
+.product-existing-image {
+    width: 130px;
+    height: 130px;
+    border: 1px solid #dee2e6;
+    border-radius: 10px;
+    padding: 5px;
+    background: #ffffff;
+    overflow: hidden;
+}
+
+.product-existing-image img {
+    width: 100%;
+    height: 100%;
+    object-fit: contain;
+    border-radius: 7px;
+}
+
+
+/* =========================================================
+   SKELETON
+   ========================================================= */
+
+.product-list-skeleton {
+    position: relative;
+    overflow: hidden;
+    background: #e9ecef;
+    border-radius: 5px;
+}
+
+.product-list-skeleton::after {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: -150%;
+    width: 150%;
+    height: 100%;
+    background: linear-gradient(90deg,
+            transparent,
+            rgba(255, 255, 255, 0.65),
+            transparent);
+    animation: productSkeletonLoading 1.4s infinite;
+}
+
+.skeleton-text {
+    width: 100px;
+    height: 18px;
+}
+
+.skeleton-product-name {
+    width: 180px;
+    height: 18px;
+}
+
+.skeleton-color {
+    width: 25px;
+    height: 25px;
+    border-radius: 50%;
+}
+
+.skeleton-action {
+    width: 36px;
+    height: 36px;
+    border-radius: 5px;
+}
+
+.skeleton-form-label {
+    width: 110px;
+    height: 18px;
+}
+
+.skeleton-form-input {
+    width: 100%;
+    height: 42px;
+}
+
+@keyframes productSkeletonLoading {
+    100% {
+        transform: translateX(100%);
+    }
+}
+
+
+/* =========================================================
+   RESPONSIVE
+   ========================================================= */
+
+@media (max-width: 992px) {
+
+    .product-search-form {
+        min-width: 280px;
+    }
+
+    .product-update-card {
+        padding: 25px;
+    }
+}
+
+
+@media (max-width: 768px) {
+
+    .product-search-form {
+        width: 100%;
+        min-width: 100%;
+    }
+
+    .product-search-form .form-control {
+        flex: 1;
+    }
+
+    .product-update-card {
+        padding: 20px;
+    }
+
+    .product-existing-image {
+        width: 110px;
+        height: 110px;
+    }
+}
+
+
+@media (max-width: 576px) {
+
+    .product-list-page {
+        padding-left: 10px;
+        padding-right: 10px;
+    }
+
+    .product-update-card {
+        padding: 15px;
+    }
+
+    .product-existing-image {
+        width: 90px;
+        height: 90px;
+    }
+
+    .product-action-btn {
+        width: 34px;
+        height: 34px;
+    }
+}
+
+
+/* =========================================================
+   REDUCED MOTION
+   ========================================================= */
+
+@media (prefers-reduced-motion: reduce) {
+
+    .product-list-skeleton::after {
+        animation: none;
+    }
+
+    .product-row,
+    .product-action-btn {
+        transition: none;
+    }
+
 }

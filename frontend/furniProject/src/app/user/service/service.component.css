@@ -348,3 +348,422 @@
         font-size: 26px;
     }
 }
+
+/* =========================================================
+   SERVICE PAGE SKELETON LOADING
+   ========================================================= */
+
+.service-skeleton-page {
+    width: 100%;
+    overflow: hidden;
+}
+
+
+/* =========================================================
+   COMMON SKELETON
+   ========================================================= */
+
+.service-skeleton-page .skeleton {
+    position: relative;
+    overflow: hidden;
+    background: #e9e9e9;
+    border-radius: 6px;
+}
+
+.service-skeleton-page .skeleton::after {
+    content: "";
+    position: absolute;
+    top: 0;
+    left: -150%;
+    width: 150%;
+    height: 100%;
+
+    background: linear-gradient(
+        90deg,
+        transparent,
+        rgba(255, 255, 255, 0.65),
+        transparent
+    );
+
+    animation: serviceSkeletonShimmer 1.5s infinite;
+}
+
+@keyframes serviceSkeletonShimmer {
+
+    100% {
+        left: 150%;
+    }
+
+}
+
+
+/* =========================================================
+   HERO SKELETON
+   ========================================================= */
+
+.service-skeleton-hero {
+    min-height: 420px;
+    padding: 80px 8%;
+
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+
+    gap: 50px;
+
+    background: #f4f4f4;
+}
+
+.service-skeleton-hero-content {
+    width: 45%;
+}
+
+.skeleton-service-hero-title {
+    width: 65%;
+    height: 55px;
+
+    margin-bottom: 28px;
+}
+
+.skeleton-service-hero-text {
+    width: 100%;
+    height: 17px;
+
+    margin-bottom: 12px;
+}
+
+.skeleton-service-hero-text-short {
+    width: 75%;
+}
+
+.service-skeleton-buttons {
+    display: flex;
+    gap: 12px;
+
+    margin-top: 30px;
+}
+
+.skeleton-service-button {
+    width: 120px;
+    height: 45px;
+
+    border-radius: 6px;
+}
+
+.skeleton-service-hero-image {
+    width: 45%;
+    height: 300px;
+
+    border-radius: 12px;
+}
+
+
+/* =========================================================
+   WHY CHOOSE US SKELETON
+   ========================================================= */
+
+.service-skeleton-why {
+    padding: 80px 6%;
+}
+
+.skeleton-service-section-title {
+    width: 220px;
+    height: 38px;
+
+    margin: 0 auto 55px;
+}
+
+.service-skeleton-feature-grid {
+    display: grid;
+
+    grid-template-columns: repeat(4, 1fr);
+
+    gap: 30px;
+}
+
+.service-skeleton-feature-card {
+    width: 100%;
+
+    padding: 25px;
+
+    border-radius: 15px;
+
+    background: #f7f7f7;
+}
+
+.skeleton-service-feature-image {
+    width: 90px;
+    height: 90px;
+
+    margin: 0 auto 25px;
+
+    border-radius: 50%;
+}
+
+.skeleton-service-feature-title {
+    width: 70%;
+    height: 20px;
+
+    margin: 0 auto 18px;
+}
+
+.skeleton-service-feature-text {
+    width: 95%;
+    height: 14px;
+
+    margin: 0 auto 9px;
+}
+
+.skeleton-service-feature-text-short {
+    width: 65%;
+}
+
+
+/* =========================================================
+   LATEST PRODUCTS SKELETON
+   ========================================================= */
+
+.service-skeleton-products {
+    padding: 80px 6%;
+}
+
+.skeleton-service-product-title {
+    width: 280px;
+    height: 38px;
+
+    margin: 0 auto 55px;
+}
+
+.service-skeleton-product-grid {
+    display: grid;
+
+    grid-template-columns: repeat(3, 1fr);
+
+    gap: 30px;
+}
+
+.service-skeleton-product-card {
+    overflow: hidden;
+
+    border-radius: 15px;
+
+    background: #f7f7f7;
+}
+
+.skeleton-service-product-image {
+    width: 100%;
+    height: 250px;
+
+    border-radius: 0;
+}
+
+.skeleton-service-product-name {
+    width: 65%;
+    height: 22px;
+
+    margin: 22px auto;
+}
+
+
+/* =========================================================
+   TESTIMONIAL SKELETON
+   ========================================================= */
+
+.service-skeleton-testimonial {
+    max-width: 1100px;
+
+    margin: 0 auto;
+
+    padding: 70px 30px 100px;
+}
+
+.skeleton-service-testimonial-title {
+    width: 220px;
+    height: 38px;
+
+    margin: 0 auto 60px;
+}
+
+.service-skeleton-testimonial-content {
+    display: flex;
+
+    align-items: center;
+    justify-content: center;
+
+    gap: 70px;
+}
+
+.skeleton-service-testimonial-image {
+    width: 250px;
+    height: 250px;
+
+    flex-shrink: 0;
+
+    border-radius: 50%;
+}
+
+.service-skeleton-testimonial-text {
+    width: 55%;
+}
+
+.skeleton-service-testimonial-name {
+    width: 45%;
+    height: 25px;
+
+    margin: 0 auto 18px;
+}
+
+.skeleton-service-testimonial-position {
+    width: 35%;
+    height: 20px;
+
+    margin: 0 auto 25px;
+}
+
+.skeleton-service-testimonial-message {
+    width: 95%;
+    height: 16px;
+
+    margin: 0 auto 10px;
+}
+
+.skeleton-service-testimonial-message-short {
+    width: 70%;
+}
+
+
+/* =========================================================
+   TABLET
+   ========================================================= */
+
+@media (max-width: 991px) {
+
+    .service-skeleton-hero {
+        padding: 60px 5%;
+    }
+
+    .service-skeleton-feature-grid {
+        grid-template-columns: repeat(2, 1fr);
+    }
+
+    .service-skeleton-product-grid {
+        grid-template-columns: repeat(2, 1fr);
+    }
+
+    .service-skeleton-testimonial-content {
+        gap: 40px;
+    }
+
+}
+
+
+/* =========================================================
+   MOBILE
+   ========================================================= */
+
+@media (max-width: 768px) {
+
+    .service-skeleton-hero {
+        min-height: auto;
+
+        padding: 60px 25px;
+
+        flex-direction: column;
+
+        align-items: stretch;
+
+        gap: 40px;
+    }
+
+    .service-skeleton-hero-content {
+        width: 100%;
+    }
+
+    .skeleton-service-hero-title {
+        width: 70%;
+    }
+
+    .skeleton-service-hero-image {
+        width: 100%;
+        height: 260px;
+    }
+
+
+    .service-skeleton-why {
+        padding: 60px 25px;
+    }
+
+
+    .service-skeleton-products {
+        padding: 60px 25px;
+    }
+
+
+    .service-skeleton-testimonial {
+        padding: 60px 25px 90px;
+    }
+
+    .service-skeleton-testimonial-content {
+        flex-direction: column;
+
+        gap: 35px;
+    }
+
+    .service-skeleton-testimonial-text {
+        width: 100%;
+    }
+
+}
+
+
+/* =========================================================
+   SMALL MOBILE
+   ========================================================= */
+
+@media (max-width: 576px) {
+
+    .service-skeleton-hero {
+        padding: 45px 20px;
+    }
+
+    .skeleton-service-hero-title {
+        height: 42px;
+    }
+
+    .skeleton-service-hero-image {
+        height: 220px;
+    }
+
+
+    .service-skeleton-why {
+        padding-left: 20px;
+        padding-right: 20px;
+    }
+
+    .service-skeleton-feature-grid {
+        grid-template-columns: 1fr 1fr;
+
+        gap: 20px;
+    }
+
+    .service-skeleton-feature-card {
+        padding: 18px;
+    }
+
+
+    .service-skeleton-products {
+        padding-left: 20px;
+        padding-right: 20px;
+    }
+
+    .service-skeleton-product-grid {
+        grid-template-columns: 1fr;
+    }
+
+
+    .skeleton-service-testimonial-image {
+        width: 200px;
+        height: 200px;
+    }
+
+}

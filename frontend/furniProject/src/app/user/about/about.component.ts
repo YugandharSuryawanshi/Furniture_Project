@@ -5,6 +5,7 @@ import { FormsModule } from '@angular/forms';
 import { CommonModule } from '@angular/common';
 import { RouterModule } from '@angular/router';
 import { ImageService } from '../../service/image.service';
+import { finalize } from 'rxjs';
 
 @Component({
   selector: 'app-about',
@@ -14,6 +15,9 @@ import { ImageService } from '../../service/image.service';
   styleUrl: './about.component.css'
 })
 export class AboutComponent {
+
+  // About Page Skeleton Loading State
+  aboutLoading: boolean = false;
 
   constructor(
     private userApi: UserApiService,
@@ -45,58 +49,75 @@ export class AboutComponent {
 
   getHomeData() {
 
-    this.userApi.gethomeData().subscribe((res: any) => {
+    this.aboutLoading = true;
 
-      this.banner_info = res.banner_info[0];
+    this.userApi.gethomeData()
+      .pipe(
+        finalize(() => {
+          this.aboutLoading = false;
+        })
+      )
+      .subscribe((res: any) => {
 
-      this.banner_image = this.imageService.getImageUrl(
-        this.banner_info.banner_image
-      );
+        this.banner_info = res.banner_info[0];
 
-      this.products = res.products;
-
-      this.products.forEach((product) => {
-        const images = product.product_image.split(",");
-        const img = images.find(
-          (image: string) => image.trim() !== ""
-        ) || "";
-
-        product.firstImage = this.imageService.getImageUrl(img);
-      });
-
-      this.about = res.about[0];
-
-      this.about_image = this.imageService.getImageUrl(this.about.why_choose_img);
-
-      this.about_points = res.about_points;
-
-      this.about_points.forEach((point: any) => {
-        point.imageUrl = this.imageService.getImageUrl(point.why_choose_points_img);
-      });
-
-      this.interior = res.interior;
-
-      this.testimonial = res.testimonial;
-
-      this.testimonial.forEach((item: any) => {
-        item.imageUrl = this.imageService.getImageUrl(item.customer_image);
-      });
-
-      this.blogs = res.blog;
-
-      this.team = res.team;
-
-      this.team.forEach((member: any) => {
-        member.imageUrl = this.imageService.getImageUrl(
-          member.member_image
+        this.banner_image = this.imageService.getImageUrl(
+          this.banner_info.banner_image
         );
-      });
 
-    });
+        this.products = res.products;
+
+        this.products.forEach((product) => {
+          const images = product.product_image?.split(",") || [];
+
+          const img = images.find(
+            (image: string) => image.trim() !== ""
+          ) || "";
+
+          product.firstImage = this.imageService.getImageUrl(img);
+        });
+
+        this.about = res.about[0];
+
+        this.about_image = this.imageService.getImageUrl(
+          this.about.why_choose_img
+        );
+
+        this.about_points = res.about_points;
+
+        this.about_points.forEach((point: any) => {
+          point.imageUrl = this.imageService.getImageUrl(
+            point.why_choose_points_img
+          );
+        });
+
+        this.interior = res.interior;
+
+        this.testimonial = res.testimonial;
+
+        this.testimonial.forEach((item: any) => {
+          item.imageUrl = this.imageService.getImageUrl(
+            item.customer_image
+          );
+        });
+
+        this.blogs = res.blog;
+
+        this.team = res.team;
+
+        this.team.forEach((member: any) => {
+          member.imageUrl = this.imageService.getImageUrl(
+            member.member_image
+          );
+        });
+
+      });
   }
 
   showmsg() {
-    this.toastr.warning('This feature we will Add Soon..', 'Wait',
+    this.toastr.warning(
+      'This feature we will Add Soon..',
+      'Wait',
       {
         disableTimeOut: false,
         progressBar: true,

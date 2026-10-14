@@ -1,58 +1,101 @@
-<div class="col-md-12">
-    <div class="row">
+<!-- PAGE HEADER -->
+<div class="col-md-12 testimonial-page">
+
+    <div class="row align-items-center testimonial-header">
         <div class="col-md-4"></div>
+
         <div class="col-md-4 text-center">
-            <h2>Testimonials</h2>
+            <h2 class="testimonial-page-title">Testimonials</h2>
         </div>
-        <div class="col-md-4 text-center">
-            <button class="btn btn-danger mr-2" (click)="display1()">Add Testimonial</button>
-            <button class="btn btn-danger ml-2" (click)="display2()">Show List</button>
+
+        <div class="col-md-4 text-center testimonial-header-actions">
+            <button type="button" class="btn btn-danger testimonial-nav-button" (click)="display1()">
+                <i class="fa fa-plus me-1"></i>
+                Add Testimonial
+            </button>
+
+            <button type="button" class="btn btn-danger testimonial-nav-button" (click)="display2()">
+                <i class="fa fa-list me-1"></i>
+                Show List
+            </button>
         </div>
     </div>
-</div>
 
-<div class="col-md-12 bg-light" *ngIf="displayAdd">
-    <div>
-        <div>
-            <form (ngSubmit)="saveTestimonial()" enctype="multipart/form-data">
-                <div class="row">
-                    <div class="col-md-12 mt-3 mb-2 text-center"></div>
-                    <div class="col-md-6 mb-3 text-center">
-                        Enter Customer Name
-                        <input type="text" name="customer_name" [(ngModel)]="formData.customer_name" id=""
-                            class="form-control">
-                    </div>
-                    <div class="col-md-6 mb-3 text-center">
-                        Enter Customer Position
-                        <input type="text" name="customer_position" [(ngModel)]="formData.customer_position" id=""
-                            class="form-control">
-                    </div>
-                    <div class="col-md-4 mb-2 text-center">
-                        Select Customer Image
-                        <input type="file" name="customer_image" (change)="onSelectedImage($event)"
-                            class="form-control">
-                    </div>
-                    <div class="col-md-8 mb-2 text-center">
-                        Enter Customer Message
-                        <textarea name="customer_massage" [(ngModel)]="formData.customer_massage" cols="30" rows="2"
-                            class="form-control"></textarea>
-                    </div>
-                    <div class="col-md-12 mt-3 mb-3 text-center">
-                        <button class="btn btn-danger text-white">Save</button>
+    <!-- ADD TESTIMONIAL FORM -->
+    <div class="col-md-12 bg-light testimonial-form-card" *ngIf="displayAdd">
+
+        <div class="testimonial-section-heading">
+            <h4>Add New Testimonial</h4>
+            <p>Enter the customer's information and feedback.</p>
+        </div>
+
+        <form (ngSubmit)="saveTestimonial()" #addTestimonialForm="ngForm" enctype="multipart/form-data">
+            <div class="row">
+
+                <div class="col-md-6 mb-3">
+                    <label for="addCustomerName">Customer Name</label>
+                    <input id="addCustomerName" type="text" name="customer_name" [(ngModel)]="formData.customer_name"
+                        class="form-control" placeholder="Enter customer name" required />
+                </div>
+
+                <div class="col-md-6 mb-3">
+                    <label for="addCustomerPosition">Customer Position</label>
+                    <input id="addCustomerPosition" type="text" name="customer_position"
+                        [(ngModel)]="formData.customer_position" class="form-control"
+                        placeholder="Enter customer position" required />
+                </div>
+
+                <div class="col-md-4 mb-3">
+                    <label for="addCustomerImage">Customer Image</label>
+                    <input id="addCustomerImage" type="file" name="customer_image" accept="image/*"
+                        (change)="onSelectedImage($event)" class="form-control" required />
+
+                    <small class="text-muted">
+                        Select an image for the testimonial.
+                    </small>
+
+                    <div class="testimonial-selected-file" *ngIf="selectedImage">
+                        <i class="fa fa-image me-1"></i>
+                        {{ selectedImage.name }}
                     </div>
                 </div>
-            </form>
-        </div>
-    </div>
-</div>
 
-<div class="container-fluid bg-white p-4" *ngIf="displayList">
-    <div class="row">
-        <div class="col-md-12 text-center mb-3">
+                <div class="col-md-8 mb-3">
+                    <label for="addCustomerMessage">Customer Message</label>
+                    <textarea id="addCustomerMessage" name="customer_massage" [(ngModel)]="formData.customer_massage"
+                        rows="4" class="form-control" placeholder="Enter customer feedback" required></textarea>
+                </div>
+
+                <div class="col-md-12 mt-2 mb-3 text-center">
+                    <button type="submit" class="btn btn-danger testimonial-submit-button"
+                        [disabled]="savingTestimonial || addTestimonialForm.invalid || !selectedImage">
+                        <span *ngIf="savingTestimonial" class="spinner-border spinner-border-sm me-2"
+                            aria-hidden="true"></span>
+
+                        <i *ngIf="!savingTestimonial" class="fa fa-save me-1"></i>
+                        {{ savingTestimonial ? 'Saving...' : 'Save Testimonial' }}
+                    </button>
+                </div>
+
+            </div>
+        </form>
+    </div>
+
+    <!-- TESTIMONIAL LIST -->
+    <div class="container-fluid bg-white p-4 testimonial-list-card" *ngIf="displayList">
+        <div class="testimonial-section-heading">
+            <h4>All Testimonials</h4>
+            <p>Manage customer reviews and feedback.</p>
         </div>
-        <div class="col-md-12">
-            <div class="table-responsive">
-                <table class="table table-bordered table-striped table-hover align-middle text-center">
+
+        <div class="table-responsive testimonial-table-container">
+
+            <!-- LIST SKELETON -->
+            <div *ngIf="loadingTestimonials" class="testimonial-skeleton-wrapper" role="status"
+                aria-label="Loading testimonials">
+                <span class="visually-hidden">Loading testimonials...</span>
+
+                <table class="table table-bordered testimonial-skeleton-table">
                     <thead class="table-dark">
                         <tr>
                             <th>Sr. No.</th>
@@ -63,88 +106,207 @@
                             <th>Action</th>
                         </tr>
                     </thead>
+
                     <tbody>
-                        <tr *ngFor="let testimonial of testimonials; let i = index">
-                            <td>{{ i + 1 }}</td>
-                            <td>{{ testimonial.customer_name }}</td>
-                            <td>{{ testimonial.customer_position }}</td>
+                        <tr *ngFor="let row of [1,2,3,4,5,6]">
                             <td>
-                                <img [src]="'http://localhost:1000/uploads/' + testimonial.customer_image"
-                                    alt="Customer Image" class="img-thumbnail"
-                                    style="max-width: 100px; max-height: 100px;" />
+                                <span class="testimonial-skeleton-line short"></span>
                             </td>
+
                             <td>
-                                <textarea class="form-control" readonly rows="3" style="resize: none;">
-                                    {{ testimonial.customer_massage }}
-                                </textarea>
+                                <span class="testimonial-skeleton-line medium"></span>
                             </td>
+
                             <td>
-                                <button (click)="get_This_Product(testimonial.customer_id)"
-                                    class="btn btn-warning btn-sm m-1" title="Edit">
-                                    <i class="fa fa-pencil text-white"></i>
-                                </button>
-                                <button (click)="deleteProduct(testimonial.customer_id)"
-                                    class="btn btn-danger btn-sm m-1" title="Delete">
-                                    <i class="fa fa-trash text-white"></i>
-                                </button>
+                                <span class="testimonial-skeleton-line medium"></span>
+                            </td>
+
+                            <td>
+                                <span class="testimonial-skeleton-image"></span>
+                            </td>
+
+                            <td>
+                                <span class="testimonial-skeleton-line long"></span>
+                                <span class="testimonial-skeleton-line medium mt-2"></span>
+                            </td>
+
+                            <td>
+                                <div class="testimonial-skeleton-actions">
+                                    <span class="testimonial-skeleton-button"></span>
+                                    <span class="testimonial-skeleton-button"></span>
+                                </div>
                             </td>
                         </tr>
                     </tbody>
                 </table>
             </div>
+
+            <!-- ACTUAL TESTIMONIAL TABLE -->
+            <table *ngIf="!loadingTestimonials"
+                class="table table-bordered table-striped table-hover align-middle text-center testimonial-table">
+                <thead class="table-dark">
+                    <tr>
+                        <th>Sr. No.</th>
+                        <th>Customer Name</th>
+                        <th>Customer Position</th>
+                        <th>Customer Image</th>
+                        <th>Customer Message</th>
+                        <th>Action</th>
+                    </tr>
+                </thead>
+
+                <tbody>
+                    <tr *ngFor="let testimonial of testimonials; let i = index" class="testimonial-table-row">
+                        <td>{{ i + 1 }}</td>
+
+                        <td>{{ testimonial.customer_name }}</td>
+
+                        <td>{{ testimonial.customer_position }}</td>
+
+                        <td>
+                            <img [src]="basePath + testimonial.customer_image" alt="Customer Image"
+                                class="img-thumbnail testimonial-customer-image" loading="lazy" />
+                        </td>
+
+                        <td>
+                            <textarea class="form-control testimonial-message-field" readonly rows="3"
+                                [value]="testimonial.customer_massage"
+                                aria-label="Customer testimonial message"></textarea>
+                        </td>
+
+                        <td>
+                            <button type="button" (click)="get_This_Product(testimonial.customer_id)"
+                                class="btn btn-warning btn-sm m-1 testimonial-action-button" title="Edit testimonial"
+                                aria-label="Edit testimonial" [disabled]="deletingTestimonialId !== null">
+                                <i class="fa fa-pencil text-white"></i>
+                            </button>
+
+                            <button type="button" (click)="deleteProduct(testimonial.customer_id)"
+                                class="btn btn-danger btn-sm m-1 testimonial-action-button" title="Delete testimonial"
+                                aria-label="Delete testimonial" [disabled]="deletingTestimonialId !== null">
+                                <span *ngIf="deletingTestimonialId === testimonial.customer_id"
+                                    class="spinner-border spinner-border-sm" aria-hidden="true"></span>
+
+                                <i *ngIf="deletingTestimonialId !== testimonial.customer_id"
+                                    class="fa fa-trash text-white"></i>
+                            </button>
+                        </td>
+                    </tr>
+
+                    <!-- EMPTY LIST -->
+                    <tr *ngIf="testimonials.length === 0">
+                        <td colspan="6" class="testimonial-empty-state">
+                            <i class="fa fa-comments-o"></i>
+                            <p>No testimonials found.</p>
+                            <small>Add a testimonial to see it here.</small>
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
+
         </div>
     </div>
-</div>
 
-<div class="col-md-12" style="background-color: rgb(247, 216, 221);" *ngIf="displayUpdate">
-    <div>
-        <div>
-            <div class="col-md-12 mt-3 mb-3 text-center">
-                <div class="row">
-                    <div class="col-md-10"></div>
-                    <div class="col-md-2">
-                        <button class="btn btn-danger ms-2" (click)="display3()">
-                            Cancel
-                        </button>
-                    </div>
+    <!-- UPDATE TESTIMONIAL FORM -->
+    <div class="col-md-12 testimonial-update-card" *ngIf="displayUpdate">
+        <div class="testimonial-update-header">
+            <div>
+                <h4>Update Testimonial</h4>
+                <p>Modify customer details and feedback.</p>
+            </div>
+
+            <button type="button" class="btn btn-danger" (click)="display3()" [disabled]="updatingTestimonial">
+                <i class="fa fa-times me-1"></i>
+                Cancel
+            </button>
+        </div>
+
+        <!-- EDIT FORM SKELETON -->
+        <div *ngIf="loadingTestimonialDetails" class="testimonial-edit-skeleton" role="status"
+            aria-label="Loading testimonial details">
+            <span class="visually-hidden">Loading testimonial details...</span>
+
+            <div class="row">
+                <div class="col-md-6 mb-4" *ngFor="let field of [1,2]">
+                    <span class="testimonial-edit-skeleton-label"></span>
+                    <span class="testimonial-edit-skeleton-input"></span>
+                </div>
+
+                <div class="col-md-4 mb-4">
+                    <span class="testimonial-edit-skeleton-label"></span>
+                    <span class="testimonial-edit-skeleton-input"></span>
+                    <span class="testimonial-edit-skeleton-image"></span>
+                </div>
+
+                <div class="col-md-8 mb-4">
+                    <span class="testimonial-edit-skeleton-label"></span>
+                    <span class="testimonial-edit-skeleton-textarea"></span>
                 </div>
             </div>
-            <form (ngSubmit)="updateTestimonial()" enctype="multipart/form-data">
-                <div class="row">
-                    <input type="text" name="customer_id" [(ngModel)]="formData.customer_id" style="display: none;">
-                    <div class="col-md-6 mb-3 text-center">
-                        Enter Customer Name
-                        <input type="text" name="customer_name" [(ngModel)]="formData.customer_name"
-                            class="form-control" required />
-                    </div>
-                    <div class="col-md-6 mb-3 text-center">
-                        Enter Customer Position
-                        <input type="text" name="customer_position" [(ngModel)]="formData.customer_position"
-                            class="form-control" required />
-                    </div>
-                    <div class="col-md-4 mb-2 text-center">
-                        Select Customer Image
-                        <input type="file" name="customer_image" (change)="onSelectedUpdateImage($event)"
-                            class="form-control" />
+        </div>
 
-                    </div>
-                    <div class="col-md-8 mb-2 text-center">
-                        Enter Customer Message
-                        <textarea name="customer_massage" [(ngModel)]="formData.customer_massage" cols="30" rows="2"
-                            class="form-control" required></textarea>
-                    </div>
-                    <div class="col-md-12 mt-3 mb-3 text-center">
-                        <button class="btn btn-warning">Save</button>
+        <!-- EDIT FORM -->
+        <form *ngIf="!loadingTestimonialDetails" (ngSubmit)="updateTestimonial()" #updateTestimonialForm="ngForm"
+            enctype="multipart/form-data">
+            <div class="row">
+
+                <input type="hidden" name="customer_id" [(ngModel)]="formData.customer_id" />
+
+                <div class="col-md-6 mb-3">
+                    <label for="editCustomerName">Customer Name</label>
+                    <input id="editCustomerName" type="text" name="customer_name" [(ngModel)]="formData.customer_name"
+                        class="form-control" required />
+                </div>
+
+                <div class="col-md-6 mb-3">
+                    <label for="editCustomerPosition">Customer Position</label>
+                    <input id="editCustomerPosition" type="text" name="customer_position"
+                        [(ngModel)]="formData.customer_position" class="form-control" required />
+                </div>
+
+                <div class="col-md-4 mb-3">
+                    <label for="editCustomerImage">Replace Customer Image</label>
+                    <input id="editCustomerImage" type="file" name="customer_image" accept="image/*"
+                        (change)="onSelectedUpdateImage($event)" class="form-control" />
+
+                    <small class="text-muted">
+                        Leave empty to keep the existing image.
+                    </small>
+
+                    <div class="testimonial-selected-file" *ngIf="selectedImage">
+                        <i class="fa fa-image me-1"></i>
+                        {{ selectedImage.name }}
                     </div>
                 </div>
-            </form>
-        </div>
+
+                <div class="col-md-8 mb-3">
+                    <label for="editCustomerMessage">Customer Message</label>
+                    <textarea id="editCustomerMessage" name="customer_massage" [(ngModel)]="formData.customer_massage"
+                        rows="4" class="form-control" required></textarea>
+                </div>
+
+                <!-- EXISTING IMAGE -->
+                <div class="col-md-12 mb-3" *ngIf="HideImage && formData.customer_image">
+                    <label>Current Image</label>
+                    <div>
+                        <img [src]="basePath + formData.customer_image" alt="Current customer image"
+                            class="img-thumbnail testimonial-current-image" />
+                    </div>
+                </div>
+
+                <div class="col-md-12 mt-3 mb-3 text-center">
+                    <button type="submit" class="btn btn-warning testimonial-submit-button"
+                        [disabled]="updatingTestimonial || updateTestimonialForm.invalid">
+                        <span *ngIf="updatingTestimonial" class="spinner-border spinner-border-sm me-2"
+                            aria-hidden="true"></span>
+
+                        <i *ngIf="!updatingTestimonial" class="fa fa-save me-1"></i>
+                        {{ updatingTestimonial ? 'Updating...' : 'Update Testimonial' }}
+                    </button>
+                </div>
+
+            </div>
+        </form>
     </div>
-</div>
-<div *ngIf="HideImage">
-    <div *ngIf="formData.customer_image">
-        <small>Current Image:</small>
-        <img [src]="'http://localhost:1000/uploads/' + formData.customer_image" alt="Current Image"
-            class="img-thumbnail mt-2" style="max-width: 200px; max-height:200px;" />
-    </div>
+
 </div>

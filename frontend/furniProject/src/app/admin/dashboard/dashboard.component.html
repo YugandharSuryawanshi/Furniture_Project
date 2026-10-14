@@ -1,291 +1,807 @@
-<div class="container-fluid bg-white p-4" *ngIf="userList">
+<!-- =========================================================
+     DASHBOARD SKELETON
+========================================================= -->
+
+<div class="dashboard-skeleton-page" *ngIf="dashboardLoading">
+
+    <div class="dashboard-skeleton-header">
+
+        <div class="skeleton skeleton-title"></div>
+
+        <div class="skeleton skeleton-subtitle"></div>
+
+        <div class="skeleton skeleton-line"></div>
+
+    </div>
+
+    <div class="dashboard-skeleton-grid">
+
+        <div class="dashboard-skeleton-card" *ngFor="let item of [1,2,3,4,5,6,7,8,9,10,11]">
+
+            <div class="skeleton skeleton-icon"></div>
+
+            <div class="skeleton skeleton-card-title"></div>
+
+            <div class="skeleton skeleton-card-text"></div>
+
+            <div class="skeleton skeleton-card-count"></div>
+
+            <div class="skeleton skeleton-button"></div>
+
+        </div>
+
+    </div>
+
+</div>
+
+
+<!-- =========================================================
+     USER LIST
+========================================================= -->
+
+<div class="container-fluid bg-white p-4" *ngIf="userList && !dashboardLoading">
+
     <div class="row">
+
         <div class="col-md-12 text-center mb-3">
+
             <h3 class="d-inline-block fw-bold">
                 All Users List
             </h3>
-            <button class="float-end mr-3 mt-1 btn btn-warning fw-bold" (click)="showPoster()"><i
-                    class="fa fa-long-arrow-right" aria-hidden="true"></i> Back</button>
+
+            <button class="float-end mr-3 mt-1 btn btn-warning fw-bold" (click)="showPoster()">
+
+                <i class="fa fa-long-arrow-right" aria-hidden="true">
+                </i>
+
+                Back
+
+            </button>
+
         </div>
+
+
         <div class="col-md-12">
+
             <div class="table-responsive">
+
                 <table class="table table-bordered table-striped table-hover align-middle text-center">
+
                     <thead class="table-dark">
+
                         <tr>
+
                             <th>Sr.No.</th>
+
                             <th>User Name</th>
+
                             <th>User Mobile</th>
+
                             <th>User Email</th>
+
                             <th>Action</th>
+
                         </tr>
+
                     </thead>
+
+
                     <tbody>
-                        <tr *ngFor="let user of users; let i = index ">
-                            <td>{{ i + 1 }}</td>
-                            <td>{{ user.user_name }}</td>
-                            <td>{{ user.user_mobile }}</td>
-                            <td>{{ user.user_email }}</td>
+
+                        <tr *ngFor="let user of users; let i = index">
+
                             <td>
-                                <a (click)="get_This_User(user.user_id)">
-                                    <button class="btn btn-warning btn-sm m-1">
-                                        <i class="fa fa-pencil text-white "></i>
-                                    </button>
-                                </a>
-                                <a (click)="delete_This_User(user.user_id)">
-                                    <button class="btn btn-danger btn-sm m-1">
-                                        <i class="fa fa-trash text-white "></i>
-                                    </button>
-                                </a>
+                                {{ i + 1 }}
                             </td>
+
+                            <td>
+                                {{ user.user_name }}
+                            </td>
+
+                            <td>
+                                {{ user.user_mobile }}
+                            </td>
+
+                            <td>
+                                {{ user.user_email }}
+                            </td>
+
+                            <td>
+
+                                <button class="btn btn-warning btn-sm m-1" type="button"
+                                    (click)="get_This_User(user.user_id)">
+
+                                    <i class="fa fa-pencil text-white">
+                                    </i>
+
+                                </button>
+
+
+                                <button class="btn btn-danger btn-sm m-1" type="button"
+                                    [disabled]="deletingUserId === user.user_id"
+                                    (click)="delete_This_User(user.user_id)">
+
+                                    <ng-container *ngIf="deletingUserId !== user.user_id">
+
+                                        <i class="fa fa-trash text-white">
+                                        </i>
+
+                                    </ng-container>
+
+                                    <ng-container *ngIf="deletingUserId === user.user_id">
+
+                                        <span class="spinner-border spinner-border-sm text-white" role="status">
+                                        </span>
+
+                                    </ng-container>
+
+                                </button>
+
+                            </td>
+
                         </tr>
+
+
+                        <tr *ngIf="users.length === 0">
+
+                            <td colspan="5" class="text-center py-4">
+
+                                No users found.
+
+                            </td>
+
+                        </tr>
+
                     </tbody>
+
                 </table>
+
             </div>
+
         </div>
+
     </div>
+
 </div>
 
-<!-- Edit User Star Here -->
 
+<!-- =========================================================
+     EDIT USER
+========================================================= -->
 
-<div class="bg-light py-5" *ngIf="updates">
+<div class="bg-light py-5" *ngIf="updates && !dashboardLoading">
+
     <div class="container">
-        <!-- Title Row -->
+
         <div class="row justify-content-between align-items-center mb-4">
+
             <div class="col-md-8">
-                <h1 class="text-center text-primary">Update User</h1>
+
+                <h1 class="text-center text-primary">
+                    Update User
+                </h1>
+
             </div>
+
             <div class="col-md-4 text-end">
-                <button class="btn btn-warning" (click)="showUserList()">Cancel</button>
+
+                <button class="btn btn-warning" type="button" (click)="showUserList()">
+
+                    Cancel
+
+                </button>
+
             </div>
+
         </div>
 
-        <!-- Form Card -->
+
         <div class="row justify-content-center">
+
             <div class="col-lg-8 col-md-10">
+
                 <div class="card shadow border-0">
+
                     <div class="card-body">
+
                         <form (ngSubmit)="updateUser()">
-                            <!--User Name and Mobile No -->
+
+                            <!-- User Name + Mobile -->
+
                             <div class="row mb-3">
+
                                 <div class="col-md-6">
-                                    <label for="user_name" class="form-label">User Name:</label>
+
+                                    <label for="user_name" class="form-label">
+
+                                        User Name:
+
+                                    </label>
+
                                     <input type="text" id="user_name" class="form-control"
                                         [(ngModel)]="formData.user_name" name="user_name" placeholder="Enter user name"
                                         required />
+
                                 </div>
+
+
                                 <div class="col-md-6">
-                                    <label for="user_mobile" class="form-label">Mobile No:</label>
+
+                                    <label for="user_mobile" class="form-label">
+
+                                        Mobile No:
+
+                                    </label>
+
                                     <input type="tel" id="user_mobile" class="form-control"
                                         [(ngModel)]="formData.user_mobile" name="user_mobile"
                                         placeholder="Enter mobile number" required />
+
                                 </div>
+
                             </div>
 
-                            <!--User Email and Password -->
+
+                            <!-- Email + Password -->
+
                             <div class="row mb-3">
+
                                 <div class="col-md-6">
-                                    <label for="user_email" class="form-label">User Email:</label>
+
+                                    <label for="user_email" class="form-label">
+
+                                        User Email:
+
+                                    </label>
+
                                     <input type="email" id="user_email" class="form-control"
                                         [(ngModel)]="formData.user_email" name="user_email"
                                         placeholder="Enter user email" required />
+
                                 </div>
+
+
                                 <div class="col-md-6">
-                                    <label for="admin_password" class="form-label">Enter New Password:</label>
-                                    <input type="password" id="admin_password" class="form-control"
-                                        [(ngModel)]="formData.user_password" name="admin_password"
+
+                                    <label for="user_password" class="form-label">
+
+                                        Enter New Password:
+
+                                    </label>
+
+                                    <input type="password" id="user_password" class="form-control"
+                                        [(ngModel)]="formData.user_password" name="user_password"
                                         placeholder="Enter password" required />
+
                                 </div>
+
                             </div>
 
-                            <!--Confirm Password -->
+
+                            <!-- Confirm Password -->
+
                             <div class="row mb-3">
+
                                 <div class="col-md-12">
-                                    <label for="confirm_password" class="form-label">Confirm Password:</label>
+
+                                    <label for="confirm_password" class="form-label">
+
+                                        Confirm Password:
+
+                                    </label>
+
                                     <input type="password" id="confirm_password" class="form-control"
                                         [(ngModel)]="formData.confirm_password" name="confirm_password"
                                         placeholder="Confirm password" required />
+
                                 </div>
+
                             </div>
 
-                            <span class="text-danger">{{ wrongPass }}</span>
 
-                            <!-- Submit Button -->
-                            <div class="d-grid">
-                                <button type="submit" class="btn btn-primary">Update User</button>
+                            <span class="text-danger">
+                                {{ wrongPass }}
+                            </span>
+
+
+                            <!-- Submit -->
+
+                            <div class="d-grid mt-3">
+
+                                <button type="submit" class="btn btn-primary" [disabled]="updatingUser">
+
+                                    <ng-container *ngIf="!updatingUser">
+
+                                        Update User
+
+                                    </ng-container>
+
+
+                                    <ng-container *ngIf="updatingUser">
+
+                                        <span class="spinner-border spinner-border-sm me-2" role="status">
+                                        </span>
+
+                                        Updating...
+
+                                    </ng-container>
+
+                                </button>
+
                             </div>
+
                         </form>
+
                     </div>
+
                 </div>
+
             </div>
+
         </div>
+
     </div>
+
 </div>
 
 
+<!-- =========================================================
+     MAIN DASHBOARD
+========================================================= -->
+
+<div class="dashboard-page container-fluid d-flex flex-column justify-content-center align-items-center bg-light pt-3"
+    *ngIf="poster && !dashboardLoading">
 
 
+    <!-- Welcome Section -->
+
+    <div class="text-center animate__animated animate__fadeInDown dashboard-welcome">
+
+        <h1 class="display-4 text-danger" *ngIf="!adminName">
+
+            Welcome to the Dashboard
+
+        </h1>
 
 
+        <h1 class="display-4 text-danger" *ngIf="adminName">
 
-<!DOCTYPE html>
-<html lang="en">
+            {{ adminName }}
 
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Admin Panel</title>
-    <link href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet">
-    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css" rel="stylesheet">
-</head>
+        </h1>
 
-<body>
-    <div class="container-fluid d-flex flex-column justify-content-center align-items-center bg-light pt-3"
-        *ngIf="poster">
-        <!-- Welcome Section -->
-        <div class="text-center animate__animated animate__fadeInDown">
-            <h1 class="display-4 text-danger" *ngIf="!adminName">Welcome to the Dashboard</h1>
-            <h1 class="display-4 text-danger" *ngIf="adminName">{{adminName}}</h1>
-            <p class="lead text-secondary mt-3">
-                Manage your application efficiently. Access details, view information, and configure settings from here.
-            </p>
-            <hr class=" bg-danger" style="width: 80%; margin: auto;" />
-        </div>
 
-        <div class="row mt-5 animate__animated animate__fadeInUp">
-            <div class="col-md-4 text-center mb-3">
-                <div class="card shadow-sm border-0">
-                    <div class="card-body">
-                        <i class="fas fa-shopping-cart fa-3x text-warning mb-3"></i>
-                        <h5 class="card-title">Manage Orders</h5>
-                        <p class="card-text text-secondary">Response or remove Orders from the system.</p>
-                        <h6>Total Orders : {{order_count}}</h6>
-                        <br>
-                        <a routerLink="/admin/orders" class="btn btn-warning">Go to Orders</a>
-                    </div>
-                </div>
-            </div>
-            <div class="col-md-4 text-center mb-3">
-                <div class="card shadow-sm border-0">
-                    <div class="card-body">
-                        <i class="fas fa-users fa-3x text-primary mb-3"></i>
-                        <h5 class="card-title">Manage Users</h5>
-                        <p class="card-text text-secondary">Add, update or remove users from the system.</p>
-                        <h6>Total User : {{user_count}} </h6>
-                        <br>
-                        <a (click)="showUserList()"><button class="btn btn-primary">Go to Users</button></a>
-                    </div>
-                </div>
-            </div>
-            <div class="col-md-4 text-center mb-3">
-                <div class="card shadow-sm border-0">
-                    <div class="card-body">
-                        <i class="fas fa-box-open fa-3x text-success mb-3"></i>
-                        <h5 class="card-title">Manage Products</h5>
-                        <p class="card-text text-secondary">Add, update or delete products easily from the system.</p>
-                        <h6>Total Products : {{product_count}}</h6>
-                        <br>
-                        <a routerLink="/admin/product_list" class="btn btn-success">Go to Products</a>
-                    </div>
-                </div>
-            </div>
-            <div class="col-md-4 text-center mb-3">
-                <div class="card shadow-sm border-0">
-                    <div class="card-body">
-                        <i class="fas fa-tags fa-3x text-info mb-3"></i>
-                        <h5 class="card-title">Manage Product Types</h5>
-                        <p class="card-text text-secondary">Add, update or delete product types easily from the system.
-                        </p>
-                        <h6>Total Products : {{product_type_count}}</h6>
-                        <br>
-                        <a routerLink="/admin/product_type" class="btn btn-info">Go to Product Types</a>
-                    </div>
-                </div>
-            </div>
-            <div class="col-md-4 text-center mb-3">
-                <div class="card shadow-sm border-0">
-                    <div class="card-body">
-                        <i class="fas fa-comments fa-3x text-danger mb-3"></i>
-                        <h5 class="card-title">Manage Reviews</h5>
-                        <p class="card-text text-secondary">approve, update or delete Reviews easily from the system.
-                        </p>
-                        <h6>Total Reviews : {{ reviews_count }}</h6>
-                        <br>
-                        <a routerLink="/admin/manage-review" class="btn btn-danger">Go to Reviews</a>
-                    </div>
-                </div>
-            </div>
-            <div class="col-md-4 text-center mb-3">
-                <div class="card shadow-sm border-0">
-                    <div class="card-body">
-                        <i class="fas fa-quote-left fa-3x text-warning mb-3"></i>
-                        <h5 class="card-title">Manage Testimonials</h5>
-                        <p class="card-text text-secondary">View, approve or delete customer testimonials.</p>
-                        <h6>Total Testimonials: {{testimonial_count}}</h6>
-                        <br>
-                        <a routerLink="/admin/testimonials" class="btn btn-warning">Go to Testimonials</a>
-                    </div>
-                </div>
-            </div>
-            <div class="col-md-4 text-center mb-3">
-                <div class="card shadow-sm border-0">
-                    <div class="card-body">
-                        <i class="fas fa-newspaper fa-3x text-danger mb-3"></i>
-                        <h5 class="card-title">Manage Blog</h5>
-                        <p class="card-text text-secondary">Write, update or delete blogs easily from the system.</p>
-                        <h6>Total Blogs: {{blog_count}}</h6>
-                        <br>
-                        <a routerLink="/admin/blog_list" class="btn btn-danger">Go to Blogs</a>
-                    </div>
-                </div>
-            </div>
-            <div class="col-md-4 text-center mb-3">
-                <div class="card shadow-sm border-0">
-                    <div class="card-body">
-                        <i class="fas fa-bell fa-3x text-warning mb-3"></i>
-                        <h5 class="card-title">Manage Subscribers</h5>
-                        <p class="card-text text-secondary">Send Alert msg for new product from the system.</p>
-                        <h6>Total Orders : {{subscriber_count}}</h6>
-                        <br>
-                        <a routerLink="/admin/subscriber" class="btn btn-warning">Go to Subscribers</a>
-                    </div>
-                </div>
-            </div>
-            <div class="col-md-4 text-center mb-3">
-                <div class="card shadow-sm border-0">
-                    <div class="card-body">
-                        <i class="fas fa-people-group fa-3x text-info mb-3"></i>
-                        <h5 class="card-title">Manage Our Team</h5>
-                        <p class="card-text text-secondary">Manage Team Members.</p>
-                        <h6>Total Member : {{team_count}}</h6>
-                        <br>
-                        <a routerLink="/admin/our_team" class="btn btn-info">Go to Team </a>
-                    </div>
-                </div>
-            </div>
-            <div class="col-md-4 text-center mb-3">
-                <div class="card shadow-sm border-0">
-                    <div class="card-body">
-                        <i class="fas fa-heart fa-3x mb-3" style="color: red;"></i>
-                        <h5 class="card-title">Manage Wishlist</h5>
-                        <p class="card-text text-secondary">Manage users' wishlist items</p>
-                        <h6>Total Wishlist : {{wishlist_count}}</h6>
-                        <br>
-                        <a routerLink="/admin/manage-wishlist" class="btn btn-warning">Go to Wishlist </a>
-                    </div>
-                </div>
-            </div>
-            <div class="col-md-4 text-center mb-3">
-                <div class="card shadow-sm border-0">
-                    <div class="card-body">
-                        <i class="fas fa-cogs fa-3x text-dark mb-3"></i>
-                        <h5 class="card-title">Settings</h5>
-                        <p class="card-text text-secondary">Customize your application settings.</p>
-                        <a routerLink="/admin/setting" class="btn btn-dark">Go to Settings</a>
-                    </div>
-                </div>
-            </div>
-        </div>
+        <p class="lead text-secondary mt-3">
+
+            Manage your application efficiently.
+            Access details, view information,
+            and configure settings from here.
+
+        </p>
+
+
+        <hr class="bg-danger dashboard-divider" />
+
     </div>
-</body>
-</html>
+
+
+    <!-- Dashboard Cards -->
+
+    <div class="row mt-5 animate__animated animate__fadeInUp dashboard-card-grid">
+
+
+        <!-- Orders -->
+
+        <div class="col-md-4 text-center mb-3">
+
+            <div class="card shadow-sm border-0">
+
+                <div class="card-body">
+
+                    <i class="fas fa-shopping-cart fa-3x text-warning mb-3">
+                    </i>
+
+                    <h5 class="card-title">
+                        Manage Orders
+                    </h5>
+
+                    <p class="card-text text-secondary">
+                        Respond or remove Orders from the system.
+                    </p>
+
+                    <h6>
+                        Total Orders : {{ order_count }}
+                    </h6>
+
+                    <br>
+
+                    <a routerLink="/admin/orders" class="btn btn-warning">
+
+                        Go to Orders
+
+                    </a>
+
+                </div>
+
+            </div>
+
+        </div>
+
+
+        <!-- Users -->
+
+        <div class="col-md-4 text-center mb-3">
+
+            <div class="card shadow-sm border-0">
+
+                <div class="card-body">
+
+                    <i class="fas fa-users fa-3x text-primary mb-3">
+                    </i>
+
+                    <h5 class="card-title">
+                        Manage Users
+                    </h5>
+
+                    <p class="card-text text-secondary">
+                        Add, update or remove users from the system.
+                    </p>
+
+                    <h6>
+                        Total Users : {{ user_count }}
+                    </h6>
+
+                    <br>
+
+                    <button type="button" class="btn btn-primary" (click)="showUserList()">
+
+                        Go to Users
+
+                    </button>
+
+                </div>
+
+            </div>
+
+        </div>
+
+
+        <!-- Products -->
+
+        <div class="col-md-4 text-center mb-3">
+
+            <div class="card shadow-sm border-0">
+
+                <div class="card-body">
+
+                    <i class="fas fa-box-open fa-3x text-success mb-3">
+                    </i>
+
+                    <h5 class="card-title">
+                        Manage Products
+                    </h5>
+
+                    <p class="card-text text-secondary">
+                        Add, update or delete products easily from the system.
+                    </p>
+
+                    <h6>
+                        Total Products : {{ product_count }}
+                    </h6>
+
+                    <br>
+
+                    <a routerLink="/admin/product_list" class="btn btn-success">
+
+                        Go to Products
+
+                    </a>
+
+                </div>
+
+            </div>
+
+        </div>
+
+
+        <!-- Product Types -->
+
+        <div class="col-md-4 text-center mb-3">
+
+            <div class="card shadow-sm border-0">
+
+                <div class="card-body">
+
+                    <i class="fas fa-tags fa-3x text-info mb-3">
+                    </i>
+
+                    <h5 class="card-title">
+                        Manage Product Types
+                    </h5>
+
+                    <p class="card-text text-secondary">
+                        Add, update or delete product types easily from the system.
+                    </p>
+
+                    <h6>
+                        Total Product Types : {{ product_type_count }}
+                    </h6>
+
+                    <br>
+
+                    <a routerLink="/admin/product_type" class="btn btn-info">
+
+                        Go to Product Types
+
+                    </a>
+
+                </div>
+
+            </div>
+
+        </div>
+
+
+        <!-- Reviews -->
+
+        <div class="col-md-4 text-center mb-3">
+
+            <div class="card shadow-sm border-0">
+
+                <div class="card-body">
+
+                    <i class="fas fa-comments fa-3x text-danger mb-3">
+                    </i>
+
+                    <h5 class="card-title">
+                        Manage Reviews
+                    </h5>
+
+                    <p class="card-text text-secondary">
+                        Approve, update or delete reviews easily from the system.
+                    </p>
+
+                    <h6>
+                        Total Reviews : {{ reviews_count }}
+                    </h6>
+
+                    <br>
+
+                    <a routerLink="/admin/manage-review" class="btn btn-danger">
+
+                        Go to Reviews
+
+                    </a>
+
+                </div>
+
+            </div>
+
+        </div>
+
+
+        <!-- Testimonials -->
+
+        <div class="col-md-4 text-center mb-3">
+
+            <div class="card shadow-sm border-0">
+
+                <div class="card-body">
+
+                    <i class="fas fa-quote-left fa-3x text-warning mb-3">
+                    </i>
+
+                    <h5 class="card-title">
+                        Manage Testimonials
+                    </h5>
+
+                    <p class="card-text text-secondary">
+                        View, approve or delete customer testimonials.
+                    </p>
+
+                    <h6>
+                        Total Testimonials : {{ testimonial_count }}
+                    </h6>
+
+                    <br>
+
+                    <a routerLink="/admin/testimonials" class="btn btn-warning">
+
+                        Go to Testimonials
+
+                    </a>
+
+                </div>
+
+            </div>
+
+        </div>
+
+
+        <!-- Blogs -->
+
+        <div class="col-md-4 text-center mb-3">
+
+            <div class="card shadow-sm border-0">
+
+                <div class="card-body">
+
+                    <i class="fas fa-newspaper fa-3x text-danger mb-3">
+                    </i>
+
+                    <h5 class="card-title">
+                        Manage Blog
+                    </h5>
+
+                    <p class="card-text text-secondary">
+                        Write, update or delete blogs easily from the system.
+                    </p>
+
+                    <h6>
+                        Total Blogs : {{ blog_count }}
+                    </h6>
+
+                    <br>
+
+                    <a routerLink="/admin/blog_list" class="btn btn-danger">
+
+                        Go to Blogs
+
+                    </a>
+
+                </div>
+
+            </div>
+
+        </div>
+
+
+        <!-- Subscribers -->
+
+        <div class="col-md-4 text-center mb-3">
+
+            <div class="card shadow-sm border-0">
+
+                <div class="card-body">
+
+                    <i class="fas fa-bell fa-3x text-warning mb-3">
+                    </i>
+
+                    <h5 class="card-title">
+                        Manage Subscribers
+                    </h5>
+
+                    <p class="card-text text-secondary">
+                        Send alert messages for new products from the system.
+                    </p>
+
+                    <h6>
+                        Total Subscribers : {{ subscriber_count }}
+                    </h6>
+
+                    <br>
+
+                    <a routerLink="/admin/subscriber" class="btn btn-warning">
+
+                        Go to Subscribers
+
+                    </a>
+
+                </div>
+
+            </div>
+
+        </div>
+
+
+        <!-- Team -->
+
+        <div class="col-md-4 text-center mb-3">
+
+            <div class="card shadow-sm border-0">
+
+                <div class="card-body">
+
+                    <i class="fas fa-people-group fa-3x text-info mb-3">
+                    </i>
+
+                    <h5 class="card-title">
+                        Manage Our Team
+                    </h5>
+
+                    <p class="card-text text-secondary">
+                        Manage Team Members.
+                    </p>
+
+                    <h6>
+                        Total Members : {{ team_count }}
+                    </h6>
+
+                    <br>
+
+                    <a routerLink="/admin/our_team" class="btn btn-info">
+
+                        Go to Team
+
+                    </a>
+
+                </div>
+
+            </div>
+
+        </div>
+
+
+        <!-- Wishlist -->
+
+        <div class="col-md-4 text-center mb-3">
+
+            <div class="card shadow-sm border-0">
+
+                <div class="card-body">
+
+                    <i class="fas fa-heart fa-3x mb-3" style="color: red;">
+                    </i>
+
+                    <h5 class="card-title">
+                        Manage Wishlist
+                    </h5>
+
+                    <p class="card-text text-secondary">
+                        Manage users' wishlist items.
+                    </p>
+
+                    <h6>
+                        Total Wishlist : {{ wishlist_count }}
+                    </h6>
+
+                    <br>
+
+                    <a routerLink="/admin/manage-wishlist" class="btn btn-warning">
+
+                        Go to Wishlist
+
+                    </a>
+
+                </div>
+
+            </div>
+
+        </div>
+
+
+        <!-- Settings -->
+
+        <div class="col-md-4 text-center mb-3">
+
+            <div class="card shadow-sm border-0">
+
+                <div class="card-body">
+
+                    <i class="fas fa-cogs fa-3x text-dark mb-3">
+                    </i>
+
+                    <h5 class="card-title">
+                        Settings
+                    </h5>
+
+                    <p class="card-text text-secondary">
+                        Customize your application settings.
+                    </p>
+
+                    <a routerLink="/admin/setting" class="btn btn-dark">
+
+                        Go to Settings
+
+                    </a>
+
+                </div>
+
+            </div>
+
+        </div>
+
+
+    </div>
+
+</div>

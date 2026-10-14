@@ -1,191 +1,529 @@
-<body *ngIf="!userApi.isUserLoggedIn()">
+<!-- =========================================================
+     CART PAGE LOADING SKELETON
+     ========================================================= -->
+
+<div class="cart-skeleton-page" *ngIf="cartLoading">
+
     <div class="container py-5">
+
+        <!-- CART TABLE SKELETON -->
+
+        <div class="cart-skeleton-table">
+
+            <!-- HEADER -->
+
+            <div class="cart-skeleton-header">
+
+                <div class="cart-skeleton skeleton-header-image"></div>
+
+                <div class="cart-skeleton skeleton-header-product"></div>
+
+                <div class="cart-skeleton skeleton-header-price"></div>
+
+                <div class="cart-skeleton skeleton-header-quantity"></div>
+
+                <div class="cart-skeleton skeleton-header-total"></div>
+
+                <div class="cart-skeleton skeleton-header-remove"></div>
+
+            </div>
+
+
+            <!-- PRODUCT ROWS -->
+
+            <div class="cart-skeleton-row" *ngFor="let item of [1, 2, 3]">
+
+                <div class="cart-skeleton skeleton-product-image"></div>
+
+                <div class="cart-skeleton skeleton-product-name"></div>
+
+                <div class="cart-skeleton skeleton-product-price"></div>
+
+                <div class="cart-skeleton skeleton-product-quantity"></div>
+
+                <div class="cart-skeleton skeleton-product-total"></div>
+
+                <div class="cart-skeleton skeleton-product-remove"></div>
+
+            </div>
+
+        </div>
+
+
+        <!-- CART FOOTER SKELETON -->
+
+        <div class="cart-skeleton-footer">
+
+            <div class="cart-skeleton skeleton-continue-button"></div>
+
+            <div class="cart-skeleton-total-box">
+
+                <div class="cart-skeleton skeleton-total-title"></div>
+
+                <div class="cart-skeleton skeleton-total-price"></div>
+
+                <div class="cart-skeleton skeleton-checkout-button"></div>
+
+            </div>
+
+        </div>
+
+    </div>
+
+</div>
+
+
+<!-- =========================================================
+     LOGGED-OUT EMPTY CART
+     ========================================================= -->
+
+<body *ngIf="!cartLoading && !userApi.isUserLoggedIn()">
+
+    <div class="container py-5">
+
         <div class="row justify-content-center">
+
             <div class="col-lg-10">
+
                 <div class="empty-cart-container animate__animated animate__fadeInUp">
+
                     <div class="row g-0">
+
                         <!-- Image Section -->
+
                         <div class="col-md-5 d-flex align-items-center justify-content-center p-4 p-lg-5">
+
                             <div
                                 class="col-md-12 position-relative text-center mb-4 mb-md-0 animate__animated animate__zoomIn">
+
                                 <img src="/images/kettle-desaturated._CB424694257_.svg" alt="Empty Cart"
                                     class="img-fluid cart-image floating">
+
                                 <div class="position-absolute top-50 start-50 translate-middle bg-warning opacity-10 rounded-circle"
-                                    style="width: 200px; height: 200px; z-index: -1;"></div>
+                                    style="width: 200px; height: 200px; z-index: -1;">
+                                </div>
+
                             </div>
+
                         </div>
+
 
                         <!-- Content Section -->
+
                         <div class="col-md-7 p-4 p-lg-5 position-relative">
+
                             <div class="animate__animated animate__fadeIn animate__delay-1s">
+
                                 <span
-                                    class="badge bg-warning bg-opacity-10 text-dark mb-3 animate__animated animate__fadeIn">Oops!
+                                    class="badge bg-warning bg-opacity-10 text-dark mb-3 animate__animated animate__fadeIn">
+
+                                    Oops!
                                     YOUR
-                                    CART IS EMPTY</span>
-                                <h2 class="fw-bold mb-3">Missing your <span class="highlight-text">favorite
-                                        items?</span></h2>
-                                <p class="text-muted mb-4">Start exploring our furniture collection and add amazing
-                                    products to
-                                    your cart</p>
+                                    CART IS EMPTY
+
+                                </span>
+
+
+                                <h2 class="fw-bold mb-3">
+
+                                    Missing your
+                                    <span class="highlight-text">
+                                        favorite items?
+                                    </span>
+
+                                </h2>
+
+
+                                <p class="text-muted mb-4">
+
+                                    Start exploring our furniture collection and add amazing
+                                    products to your cart
+
+                                </p>
+
 
                                 <div class="d-flex flex-wrap gap-3 mb-4">
+
                                     <button class="btn btn-danger pulse" routerLink="/user/shop">
-                                        <i class="fas fa-shopping-cart me-2"></i> Start Shopping
+
+                                        <i class="fas fa-shopping-cart me-2"></i>
+                                        Start Shopping
+
                                     </button>
+
+
                                     <button class="btn btn-danger" routerLink="/">
-                                        <i class="fas fa-bolt me-2"></i> Today's Deals
+
+                                        <i class="fas fa-bolt me-2"></i>
+                                        Today's Deals
+
                                     </button>
+
                                 </div>
 
-                                <!-- Login Section (always visible) -->
+
+                                <!-- Login Section -->
+
                                 <div class="login-section p-3 rounded mb-4">
+
                                     <div class="d-flex align-items-center mb-2">
+
                                         <div class="bg-warning bg-opacity-10 p-2 rounded-circle me-3">
+
                                             <i class="fas fa-user text-warning"></i>
+
                                         </div>
+
+
                                         <div>
-                                            <h6 class="mb-1">Sign in for better experience</h6>
-                                            <small class="text-muted">Access your saved cart and checkout faster</small>
+
+                                            <h6 class="mb-1">
+                                                Sign in for better experience
+                                            </h6>
+
+                                            <small class="text-muted">
+                                                Access your saved cart and checkout faster
+                                            </small>
+
                                         </div>
+
                                     </div>
+
 
                                     <div class="d-flex flex-wrap gap-2">
+
                                         <button class="btn btn-outline-danger" routerLink="/user/login">
-                                            <i class="fas fa-sign-in-alt me-2"></i> Login
+
+                                            <i class="fas fa-sign-in-alt me-2"></i>
+                                            Login
+
                                         </button>
+
+
                                         <button class="btn btn-danger" routerLink="/user/register">
-                                            <i class="fas fa-user-plus me-2"></i> Register
+
+                                            <i class="fas fa-user-plus me-2"></i>
+                                            Register
+
                                         </button>
+
                                     </div>
+
                                 </div>
+
                             </div>
+
                         </div>
+
                     </div>
+
                 </div>
+
             </div>
+
         </div>
+
     </div>
+
 </body>
 
 
+<!-- =========================================================
+     LOGGED-IN CART
+     ========================================================= -->
 
-<div *ngIf="userApi.isUserLoggedIn()" class="untree_co-section before-footer-section">
+<div *ngIf="!cartLoading && userApi.isUserLoggedIn()" class="untree_co-section before-footer-section">
+
     <div class="container">
+
         <div class="row mb-5">
+
             <form class="col-md-12">
+
                 <div class="site-blocks-table">
+
                     <table class="table">
+
                         <thead class="bg-light">
+
                             <tr>
-                                <th class="product-thumbnail">Image</th>
-                                <th class="product-name">Product</th>
-                                <th class="product-price">Price</th>
-                                <th class="product-quantity">Quantity</th>
-                                <th class="product-total">Total</th>
-                                <th class="product-remove">Remove</th>
+
+                                <th class="product-thumbnail">
+                                    Image
+                                </th>
+
+                                <th class="product-name">
+                                    Product
+                                </th>
+
+                                <th class="product-price">
+                                    Price
+                                </th>
+
+                                <th class="product-quantity">
+                                    Quantity
+                                </th>
+
+                                <th class="product-total">
+                                    Total
+                                </th>
+
+                                <th class="product-remove">
+                                    Remove
+                                </th>
+
                             </tr>
+
                         </thead>
+
+
+                        <!-- EMPTY CART -->
+
                         <tr *ngIf="products.length === 0">
+
                             <td colspan="6" class="text-center">
-                                <h3>No Product Available In Your Cart !!!</h3>
+
+                                <h3>
+                                    No Product Available In Your Cart !!!
+                                </h3>
+
+                                <a routerLink="/user/shop" class="btn btn-danger mt-3">
+
+                                    Continue Shopping
+
+                                </a>
+
                             </td>
+
                         </tr>
 
-                        <tbody *ngIf="products.length !=0">
+
+                        <!-- PRODUCTS -->
+
+                        <tbody *ngIf="products.length != 0">
+
                             <tr *ngFor="let product of products">
+
+
+                                <!-- IMAGE -->
+
                                 <td class="product-thumbnail">
-                                    <img
-  [src]="product.firstImage"
-  loading="lazy"
-  decoding="async"
-  alt="Product Image"
-  class="img-fluid">
+
+                                    <img [src]="product.firstImage" loading="lazy" decoding="async" alt="Product Image"
+                                        class="img-fluid">
+
                                 </td>
+
+
+                                <!-- PRODUCT NAME -->
+
                                 <td class="product-name" style="width: 35%;">
-                                    <h2 class="h5 text-black">{{ product.product_name }}</h2>
+
+                                    <h2 class="h5 text-black">
+
+                                        {{ product.product_name }}
+
+                                    </h2>
+
                                 </td>
+
+
+                                <!-- PRICE -->
+
                                 <td>
-                                    ₹ {{ product.product_price | number:'1.2-2' }}
+
+                                    ₹
+                                    {{ product.product_price | number:'1.2-2' }}
+
                                 </td>
+
+
+                                <!-- QUANTITY -->
+
                                 <td class="text-center align-middle">
+
                                     <div class="d-flex justify-content-center align-items-center">
+
                                         <div class="input-group mb-3 d-flex quantity-container"
                                             style="max-width: 120px;">
+
                                             <div class="input-group-prepend">
+
                                                 <button class="btn btn-outline-dark"
                                                     style="color: black; font-size: 25px;" type="button"
                                                     (click)="decreaseQty(product.user_cart_id)">
+
                                                     &minus;
+
                                                 </button>
+
                                             </div>
+
+
                                             <input type="text"
                                                 class="form-control text-center quantity-amount bg-white text-dark"
                                                 [value]="product.qty" readonly>
+
+
                                             <div class="input-group-append">
+
                                                 <button class="btn btn-outline-dark"
                                                     style="color: black; font-size: 25px;" type="button"
                                                     (click)="increaseQty(product.user_cart_id)">
+
                                                     &plus;
+
                                                 </button>
+
                                             </div>
+
                                         </div>
+
                                     </div>
+
                                 </td>
+
+
+                                <!-- TOTAL -->
+
                                 <td>
-                                    ₹ {{ (product.product_price * product.qty) | number:'1.2-2' }}
+
+                                    ₹
+                                    {{
+                                    (product.product_price * product.qty)
+                                    | number:'1.2-2'
+                                    }}
+
                                 </td>
+
+
+                                <!-- REMOVE -->
+
                                 <td>
+
                                     <button class="btn btn-black btn-sm" (click)="removeProduct(product.user_cart_id)">
-                                        <i class="fa fa-remove" style="font-size:24px"></i>
+
+                                        <i class="fa fa-remove" style="font-size:24px">
+                                        </i>
+
                                     </button>
+
                                 </td>
+
                             </tr>
+
                         </tbody>
+
                     </table>
+
                 </div>
+
             </form>
+
         </div>
 
-        <!-- Cart Footer -->
+
+        <!-- CART FOOTER -->
 
         <div class="row">
+
             <div class="col-md-6">
+
                 <div class="row mb-5">
+
                     <div class="col-md-6">
+
                         <a routerLink="/user/shop">
-                            <button class="btn btn-danger btn-block">Continue Shopping</button>
+
+                            <button class="btn btn-danger btn-block">
+
+                                Continue Shopping
+
+                            </button>
+
                         </a>
+
                     </div>
+
                 </div>
+
             </div>
-            <div class="col-md-6 pl-5" *ngIf="products.length !=0">
+
+
+            <!-- CART TOTAL -->
+
+            <div class="col-md-6 pl-5" *ngIf="products.length != 0">
+
                 <div class="row justify-content-end">
+
                     <div class="col-md-7">
-                        <div class="row">
-                            <div class="col-md-12 text-right border-bottom mb-5">
-                                <h3 class="text-black h4 text-uppercase" style="font-weight: bold;">Cart Totals</h3>
-                            </div>
-                        </div>
-                        <div class="row mb-3">
-                            <div class="col-md-6">
-                                <span class="text-black">Total : </span>
-                            </div>
-                            <div class="col-md-6 text-right">
-                                <strong class="text-black">₹ {{ totalPrice | number:'1.2-2' }}</strong>
-                            </div>
-                        </div>
 
                         <div class="row">
-                            <div class="col-md-12">
-                                <a routerLink="/user/checkout">
-                                    <button class="btn btn-danger btn-lg py-3 btn-block">Proceed To Checkout (item
-                                        {{products.length}})</button>
-                                </a>
+
+                            <div class="col-md-12 text-right border-bottom mb-5">
+
+                                <h3 class="text-black h4 text-uppercase" style="font-weight: bold;">
+
+                                    Cart Totals
+
+                                </h3>
+
                             </div>
+
                         </div>
+
+
+                        <div class="row mb-3">
+
+                            <div class="col-md-6">
+
+                                <span class="text-black">
+                                    Total :
+                                </span>
+
+                            </div>
+
+                            <div class="col-md-6 text-right">
+
+                                <strong class="text-black">
+
+                                    ₹
+                                    {{ totalPrice | number:'1.2-2' }}
+
+                                </strong>
+
+                            </div>
+
+                        </div>
+
+
+                        <div class="row">
+
+                            <div class="col-md-12">
+
+                                <a routerLink="/user/checkout">
+
+                                    <button class="btn btn-danger btn-lg py-3 btn-block">
+
+                                        Proceed To Checkout
+                                        (item {{ products.length }})
+
+                                    </button>
+
+                                </a>
+
+                            </div>
+
+                        </div>
+
                     </div>
+
                 </div>
+
             </div>
+
         </div>
+
     </div>
+
 </div>

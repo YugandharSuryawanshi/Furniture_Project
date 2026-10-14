@@ -1,216 +1,553 @@
-<body class="bg-light">
+<!-- =========================================================
+     PROFILE PAGE SKELETON
+     ========================================================= -->
+
+<div class="profile-skeleton-page" *ngIf="profileLoading">
+
     <div class="container">
-        <div class="card shadow p-4">
-            <form #userForm="ngForm" (submit)="updateUser()" enctype="multipart/form-data">
-                <div class="col-md-12">
-                    <div class="row">
-                        <!-- Profile Image Section -->
-                        <div class="col-md-4 text-center p-3 bg-light shadow rounded">
-                            <div class="col-md-12">
-                                <div class="profile-img" style="height: 250px; width: 300px;">
-                                    <img *ngIf="!loggedInUserImage"
-                                        src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTKlIcH0Q1e2QDuzvM94CnN3vdzXrvebSHNeQ&s"
-                                        alt="User Profile" />
-                                    <img [src]="loggedInUserImage" alt="User Profile" />
-                                    <div class="file btn btn-lg btn-primary">
-                                        Select Pic
-                                        <input type="file" class="form-control" name="user_profile"
-                                            (change)="onFileSelect($event)">
-                                    </div>
-                                </div>
-                                <br>
-                                <button class="btn btn-danger" (click)="UpdateProfile()">
-                                    <i class="bi bi-check-circle"></i> Save Profile
-                                </button>
-                            </div>
-                        </div>
 
-                        <!-- Personal Information Section -->
-                        <div class="col-md-8 text-center float-end bg-light">
-                            <div class="card widget-card border-light shadow-sm">
-                                <div class="card-body p-4">
-                                    <ul class="nav nav-tabs" id="profileTab" role="tablist">
-                                        <li class="nav-item" role="presentation">
-                                            <button class="bg-danger nav-link text-white ml-1 mt-1 active"
-                                                id="overview-tab" data-bs-toggle="tab"
-                                                data-bs-target="#overview-tab-pane" type="button" role="tab"
-                                                aria-controls="overview-tab-pane" aria-selected="true">
-                                                <i class="fas fa-edit text-white"></i> Overview
-                                            </button>
-                                        </li>
-                                        <li class="nav-item" role="presentation">
-                                            <button class="bg-danger text-white nav-link ml-1 mt-1" id="password-tab"
-                                                data-bs-toggle="tab" data-bs-target="#password-tab-pane" type="button"
-                                                role="tab" aria-controls="password-tab-pane" aria-selected="false">
-                                                <i class=" fas fa-key"></i> Password
-                                            </button>
-                                        </li>
-                                        <li class="nav-item" role="presentation">
-                                            <button routerLink="/user/orders"
-                                                class="bg-danger text-white nav-link ml-1 mt-1" type="button">
-                                                <i class="fas fa-shopping-cart"></i> My Orders
-                                            </button>
-                                        </li>
-                                        <li class="nav-item" role="presentation">
-                                            <button routerLink="/user/wishlist"
-                                                class="bg-danger text-white nav-link ml-1 mt-1" type="button">
-                                                <i class="fas fa-heart" style="color: rgb(255, 255, 255);"></i>
-                                                My Wishlist
-                                            </button>
-                                        </li>
-                                        <li class="nav-item" role="presentation">
-                                            <button class="text-white bg-danger nav-link ml-1 mt-1" type="button"
-                                                role="tab" (click)="logout()">
-                                                <i class="fas fa-sign-out-alt"></i> LogOut
-                                            </button>
-                                        </li>
-                                    </ul>
+        <div class="profile-skeleton-card">
 
-                                    <!-- Profile Section Start -->
-                                    <div class="tab-content pt-4" id="profileTabContent">
-                                        <div class="tab-pane fade show active" id="overview-tab-pane" role="tabpanel"
-                                            aria-labelledby="overview-tab" tabindex="0">
-                                            <form (submit)="updateUser()">
-                                                <div class="row g-0">
-                                                    <div
-                                                        class="col-5 col-md-3 bg-light border-bottom border-white border-3">
-                                                        <div class="p-2 pt-4"> Name : </div>
-                                                    </div>
-                                                    <div
-                                                        class="col-7 col-md-9 bg-light border-start border-bottom border-white border-3">
-                                                        <div class="p-2">
-                                                            <input type="text" id="user_name" name="user_name"
-                                                                [(ngModel)]="formData.user_name" class="form-control"
-                                                                required />
-                                                        </div>
-                                                    </div>
+            <div class="row">
 
+                <!-- PROFILE IMAGE SKELETON -->
 
-                                                    <div
-                                                        class="col-5 col-md-3 bg-light border-bottom border-white border-3">
-                                                        <div class="p-2 pt-3">Mobile Number :</div>
-                                                    </div>
-                                                    <div
-                                                        class="col-7 col-md-9 bg-light border-start border-bottom border-white border-3">
-                                                        <div class="p-2">
-                                                            <input type="text" id="user_mobile" name="user_mobile"
-                                                                [(ngModel)]="formData.user_mobile" class="form-control"
-                                                                required />
-                                                        </div>
-                                                    </div>
+                <div class="col-md-4">
 
+                    <div class="profile-skeleton-image-section">
 
-                                                    <div
-                                                        class="col-5 col-md-3 bg-light border-bottom border-white border-3">
-                                                        <div class="p-2 pt-3">Email ID : </div>
-                                                    </div>
-                                                    <div
-                                                        class="col-7 col-md-9 bg-light border-start border-bottom border-white border-3">
-                                                        <div class="p-2">
-                                                            <input type="email" id="user_email" name="user_email"
-                                                                [(ngModel)]="formData.user_email" class="form-control"
-                                                                required />
-                                                        </div>
-                                                    </div>
+                        <div class="profile-skeleton profile-skeleton-image"></div>
 
+                        <div class="profile-skeleton profile-skeleton-button"></div>
 
-                                                    <div
-                                                        class="col-5 col-md-3 bg-light border-bottom border-white border-3">
-                                                        <div class="p-2 pt-3">Address : </div>
-                                                    </div>
-                                                    <div
-                                                        class="col-7 col-md-9 bg-light border-start border-bottom border-white border-3">
-                                                        <div class="p-2">
-                                                            <input type="text" id="user_address" name="user_address"
-                                                                [(ngModel)]="formData.user_address" class="form-control"
-                                                                required />
-                                                        </div>
-                                                    </div>
-
-                                                    <div class="col-md-12 ">
-                                                        <button type="submit" class="btn btn-danger"> Update </button>
-                                                    </div>
-                                                </div>
-                                            </form>
-                                        </div>
-
-                                        <!-- Password Section Start Here -->
-                                        <div class="tab-pane fade" id="password-tab-pane" role="tabpanel"
-                                            aria-labelledby="password-tab" tabindex="0">
-
-                                            <form (ngSubmit)="changePass()" #resetForm="ngForm">
-                                                <h4 class="text-danger" *ngIf="!otpVerified">First Varify email then you
-                                                    can change password</h4>
-                                                <!-- Email + Send OTP -->
-                                                <div class="col-md-12 row">
-                                                    <div class="col-md-4">
-                                                        <label for="email" class="mt-3 form-label">Email</label>
-                                                    </div>
-                                                    <div class="col-md-8">
-                                                        <input type="email" name="user_email"
-                                                            [(ngModel)]="formData.user_email" class="form-control"
-                                                            required>
-                                                        <button type="button" (click)="sendOtp()"
-                                                            class="btn btn-danger mt-2">Get OTP</button>
-                                                    </div>
-                                                </div>
-
-                                                <!-- OTP Field + Verify OTP -->
-                                                <div *ngIf="otpSent" class="col-md-12 row">
-                                                    <div class="col-md-4">
-                                                        <label for="otp" class="mt-3 form-label">OTP</label>
-                                                    </div>
-                                                    <div class="col-md-8">
-                                                        <input type="text" name="otp" [(ngModel)]="formData.otp"
-                                                            class="form-control" required>
-                                                        <button type="button" (click)="verifyOtp()"
-                                                            class="btn btn-danger mt-2">Verify OTP</button>
-                                                    </div>
-                                                </div>
-
-                                                <!-- Password Change Fields -->
-                                                <div class="row gy-3 gy-xxl-4">
-
-                                                    <div class="col-md-12 row" *ngIf="otpVerified">
-                                                        <div class="col-md-4">
-                                                            <label for="new_password" class="mt-3 form-label">New
-                                                                Password</label>
-                                                        </div>
-                                                        <div class="col-md-8">
-                                                            <input type="password" class="form-control"
-                                                                id="new_password" name="new_password"
-                                                                [(ngModel)]="formData.new_password">
-                                                        </div>
-                                                    </div>
-
-                                                    <div class="col-md-12 row" *ngIf="otpVerified">
-                                                        <div class="col-md-4">
-                                                            <label for="confirm_password"
-                                                                class="mt-3 form-label">Confirm Password</label>
-                                                        </div>
-                                                        <div class="col-md-8">
-                                                            <input type="password" class="form-control"
-                                                                id="confirm_password" name="confirm_password"
-                                                                [(ngModel)]="formData.confirm_password">
-                                                        </div>
-                                                    </div>
-                                                </div>
-
-                                                <!-- Reset Password Submit -->
-                                                <div class="col-md-12" *ngIf="otpVerified">
-                                                    <button type="submit" class="btn btn-danger mt-3">Reset Password</button>
-                                                </div>
-
-                                            </form>
-                                        </div>
-
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
                     </div>
+
                 </div>
-            </form>
+
+
+                <!-- PROFILE DETAILS SKELETON -->
+
+                <div class="col-md-8">
+
+                    <div class="profile-skeleton-details">
+
+                        <!-- TABS -->
+
+                        <div class="profile-skeleton-tabs">
+
+                            <div class="profile-skeleton profile-skeleton-tab" *ngFor="let tab of [1, 2, 3, 4, 5]">
+                            </div>
+
+                        </div>
+
+
+                        <!-- TITLE -->
+
+                        <div class="profile-skeleton profile-skeleton-title"></div>
+
+
+                        <!-- INFORMATION ROWS -->
+
+                        <div class="profile-skeleton-info-row" *ngFor="let row of [1, 2, 3, 4]">
+
+                            <div class="profile-skeleton profile-skeleton-label"></div>
+
+                            <div class="profile-skeleton profile-skeleton-input"></div>
+
+                        </div>
+
+
+                        <!-- UPDATE BUTTON -->
+
+                        <div class="profile-skeleton profile-skeleton-update"></div>
+
+                    </div>
+
+                </div>
+
+            </div>
+
         </div>
+
     </div>
-</body>
+
+</div>
+
+
+<!-- =========================================================
+     ACTUAL PROFILE PAGE
+     ========================================================= -->
+
+<ng-container *ngIf="!profileLoading">
+
+    <body class="bg-light">
+
+        <div class="container">
+
+            <div class="card shadow p-4">
+
+                <form #userForm="ngForm" (submit)="updateUser()" enctype="multipart/form-data">
+
+                    <div class="col-md-12">
+
+                        <div class="row">
+
+
+                            <!-- =================================
+                                 PROFILE IMAGE SECTION
+                                 ================================= -->
+
+                            <div class="col-md-4 text-center p-3 bg-light shadow rounded">
+
+                                <div class="col-md-12">
+
+                                    <div class="profile-img" style="height: 250px; width: 300px;">
+
+                                        <img *ngIf="!loggedInUserImage"
+                                            src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTKlIcH0Q1e2QDuzvM94CnN3vdzXrvebSHNeQ&s"
+                                            alt="User Profile" />
+
+                                        <img [src]="loggedInUserImage" alt="User Profile" />
+
+                                        <div class="file btn btn-lg btn-primary">
+
+                                            Select Pic
+
+                                            <input type="file" class="form-control" name="user_profile"
+                                                (change)="onFileSelect($event)">
+
+                                        </div>
+
+                                    </div>
+
+                                    <br>
+
+                                    <button class="btn btn-danger" (click)="UpdateProfile()">
+
+                                        <i class="bi bi-check-circle"></i>
+                                        Save Profile
+
+                                    </button>
+
+                                </div>
+
+                            </div>
+
+
+                            <!-- =================================
+                                 PERSONAL INFORMATION SECTION
+                                 ================================= -->
+
+                            <div class="col-md-8 text-center float-end bg-light">
+
+                                <div class="card widget-card border-light shadow-sm">
+
+                                    <div class="card-body p-4">
+
+
+                                        <!-- TABS -->
+
+                                        <ul class="nav nav-tabs" id="profileTab" role="tablist">
+
+
+                                            <!-- OVERVIEW -->
+
+                                            <li class="nav-item" role="presentation">
+
+                                                <button class="bg-danger nav-link text-white ml-1 mt-1 active"
+                                                    id="overview-tab" data-bs-toggle="tab"
+                                                    data-bs-target="#overview-tab-pane" type="button" role="tab"
+                                                    aria-controls="overview-tab-pane" aria-selected="true">
+
+                                                    <i class="fas fa-edit text-white"></i>
+                                                    Overview
+
+                                                </button>
+
+                                            </li>
+
+
+                                            <!-- PASSWORD -->
+
+                                            <li class="nav-item" role="presentation">
+
+                                                <button class="bg-danger text-white nav-link ml-1 mt-1"
+                                                    id="password-tab" data-bs-toggle="tab"
+                                                    data-bs-target="#password-tab-pane" type="button" role="tab"
+                                                    aria-controls="password-tab-pane" aria-selected="false">
+
+                                                    <i class="fas fa-key"></i>
+                                                    Password
+
+                                                </button>
+
+                                            </li>
+
+
+                                            <!-- ORDERS -->
+
+                                            <li class="nav-item" role="presentation">
+
+                                                <button routerLink="/user/orders"
+                                                    class="bg-danger text-white nav-link ml-1 mt-1" type="button">
+
+                                                    <i class="fas fa-shopping-cart"></i>
+                                                    My Orders
+
+                                                </button>
+
+                                            </li>
+
+
+                                            <!-- WISHLIST -->
+
+                                            <li class="nav-item" role="presentation">
+
+                                                <button routerLink="/user/wishlist"
+                                                    class="bg-danger text-white nav-link ml-1 mt-1" type="button">
+
+                                                    <i class="fas fa-heart" style="color: rgb(255, 255, 255);">
+                                                    </i>
+
+                                                    My Wishlist
+
+                                                </button>
+
+                                            </li>
+
+
+                                            <!-- LOGOUT -->
+
+                                            <li class="nav-item" role="presentation">
+
+                                                <button class="text-white bg-danger nav-link ml-1 mt-1" type="button"
+                                                    role="tab" (click)="logout()">
+
+                                                    <i class="fas fa-sign-out-alt"></i>
+                                                    LogOut
+
+                                                </button>
+
+                                            </li>
+
+                                        </ul>
+
+
+                                        <!-- =================================
+                                             PROFILE TAB CONTENT
+                                             ================================= -->
+
+                                        <div class="tab-content pt-4" id="profileTabContent">
+
+
+                                            <!-- =================================
+                                                 OVERVIEW TAB
+                                                 ================================= -->
+
+                                            <div class="tab-pane fade show active" id="overview-tab-pane"
+                                                role="tabpanel" aria-labelledby="overview-tab" tabindex="0">
+
+                                                <form (submit)="updateUser()">
+
+                                                    <div class="row g-0">
+
+
+                                                        <!-- NAME -->
+
+                                                        <div
+                                                            class="col-5 col-md-3 bg-light border-bottom border-white border-3">
+
+                                                            <div class="p-2 pt-4">
+                                                                Name :
+                                                            </div>
+
+                                                        </div>
+
+                                                        <div
+                                                            class="col-7 col-md-9 bg-light border-start border-bottom border-white border-3">
+
+                                                            <div class="p-2">
+
+                                                                <input type="text" id="user_name" name="user_name"
+                                                                    [(ngModel)]="formData.user_name"
+                                                                    class="form-control" required />
+
+                                                            </div>
+
+                                                        </div>
+
+
+                                                        <!-- MOBILE -->
+
+                                                        <div
+                                                            class="col-5 col-md-3 bg-light border-bottom border-white border-3">
+
+                                                            <div class="p-2 pt-3">
+                                                                Mobile Number :
+                                                            </div>
+
+                                                        </div>
+
+                                                        <div
+                                                            class="col-7 col-md-9 bg-light border-start border-bottom border-white border-3">
+
+                                                            <div class="p-2">
+
+                                                                <input type="text" id="user_mobile" name="user_mobile"
+                                                                    [(ngModel)]="formData.user_mobile"
+                                                                    class="form-control" required />
+
+                                                            </div>
+
+                                                        </div>
+
+
+                                                        <!-- EMAIL -->
+
+                                                        <div
+                                                            class="col-5 col-md-3 bg-light border-bottom border-white border-3">
+
+                                                            <div class="p-2 pt-3">
+                                                                Email ID :
+                                                            </div>
+
+                                                        </div>
+
+                                                        <div
+                                                            class="col-7 col-md-9 bg-light border-start border-bottom border-white border-3">
+
+                                                            <div class="p-2">
+
+                                                                <input type="email" id="user_email" name="user_email"
+                                                                    [(ngModel)]="formData.user_email"
+                                                                    class="form-control" required />
+
+                                                            </div>
+
+                                                        </div>
+
+
+                                                        <!-- ADDRESS -->
+
+                                                        <div
+                                                            class="col-5 col-md-3 bg-light border-bottom border-white border-3">
+
+                                                            <div class="p-2 pt-3">
+                                                                Address :
+                                                            </div>
+
+                                                        </div>
+
+                                                        <div
+                                                            class="col-7 col-md-9 bg-light border-start border-bottom border-white border-3">
+
+                                                            <div class="p-2">
+
+                                                                <input type="text" id="user_address" name="user_address"
+                                                                    [(ngModel)]="formData.user_address"
+                                                                    class="form-control" required />
+
+                                                            </div>
+
+                                                        </div>
+
+
+                                                        <!-- UPDATE -->
+
+                                                        <div class="col-md-12">
+
+                                                            <button type="submit" class="btn btn-danger">
+
+                                                                Update
+
+                                                            </button>
+
+                                                        </div>
+
+                                                    </div>
+
+                                                </form>
+
+                                            </div>
+
+
+                                            <!-- =================================
+                                                 PASSWORD TAB
+                                                 ================================= -->
+
+                                            <div class="tab-pane fade" id="password-tab-pane" role="tabpanel"
+                                                aria-labelledby="password-tab" tabindex="0">
+
+
+                                                <form (ngSubmit)="changePass()" #resetForm="ngForm">
+
+
+                                                    <h4 class="text-danger" *ngIf="!otpVerified">
+
+                                                        First Varify email then you
+                                                        can change password
+
+                                                    </h4>
+
+
+                                                    <!-- EMAIL + OTP -->
+
+                                                    <div class="col-md-12 row">
+
+                                                        <div class="col-md-4">
+
+                                                            <label for="email" class="mt-3 form-label">
+
+                                                                Email
+
+                                                            </label>
+
+                                                        </div>
+
+
+                                                        <div class="col-md-8">
+
+                                                            <input type="email" name="user_email"
+                                                                [(ngModel)]="formData.user_email" class="form-control"
+                                                                required>
+
+                                                            <button type="button" (click)="sendOtp()"
+                                                                class="btn btn-danger mt-2">
+
+                                                                Get OTP
+
+                                                            </button>
+
+                                                        </div>
+
+                                                    </div>
+
+
+                                                    <!-- OTP -->
+
+                                                    <div *ngIf="otpSent" class="col-md-12 row">
+
+                                                        <div class="col-md-4">
+
+                                                            <label for="otp" class="mt-3 form-label">
+
+                                                                OTP
+
+                                                            </label>
+
+                                                        </div>
+
+
+                                                        <div class="col-md-8">
+
+                                                            <input type="text" name="otp" [(ngModel)]="formData.otp"
+                                                                class="form-control" required>
+
+                                                            <button type="button" (click)="verifyOtp()"
+                                                                class="btn btn-danger mt-2">
+
+                                                                Verify OTP
+
+                                                            </button>
+
+                                                        </div>
+
+                                                    </div>
+
+
+                                                    <!-- PASSWORD FIELDS -->
+
+                                                    <div class="row gy-3 gy-xxl-4">
+
+
+                                                        <!-- NEW PASSWORD -->
+
+                                                        <div class="col-md-12 row" *ngIf="otpVerified">
+
+                                                            <div class="col-md-4">
+
+                                                                <label for="new_password" class="mt-3 form-label">
+
+                                                                    New Password
+
+                                                                </label>
+
+                                                            </div>
+
+
+                                                            <div class="col-md-8">
+
+                                                                <input type="password" class="form-control"
+                                                                    id="new_password" name="new_password"
+                                                                    [(ngModel)]="formData.new_password">
+
+                                                            </div>
+
+                                                        </div>
+
+
+                                                        <!-- CONFIRM PASSWORD -->
+
+                                                        <div class="col-md-12 row" *ngIf="otpVerified">
+
+                                                            <div class="col-md-4">
+
+                                                                <label for="confirm_password" class="mt-3 form-label">
+
+                                                                    Confirm Password
+
+                                                                </label>
+
+                                                            </div>
+
+
+                                                            <div class="col-md-8">
+
+                                                                <input type="password" class="form-control"
+                                                                    id="confirm_password" name="confirm_password"
+                                                                    [(ngModel)]="formData.confirm_password">
+
+                                                            </div>
+
+                                                        </div>
+
+                                                    </div>
+
+
+                                                    <!-- RESET PASSWORD -->
+
+                                                    <div class="col-md-12" *ngIf="otpVerified">
+
+                                                        <button type="submit" class="btn btn-danger mt-3">
+
+                                                            Reset Password
+
+                                                        </button>
+
+                                                    </div>
+
+                                                </form>
+
+                                            </div>
+
+                                        </div>
+
+                                    </div>
+
+                                </div>
+
+                            </div>
+
+                        </div>
+
+                    </div>
+
+                </form>
+
+            </div>
+
+        </div>
+
+    </body>
+
+</ng-container>

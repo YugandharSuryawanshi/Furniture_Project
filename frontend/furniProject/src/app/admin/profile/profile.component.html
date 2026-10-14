@@ -1,288 +1,393 @@
-<body class="bg-light">
-    <div class="container">
-        <div class="card shadow p-4 animate__animated animate__fadeIn">
-            <form #userForm="ngForm" (submit)="updateAdmin()" enctype="multipart/form-data">
-                <div class="col-md-12">
-                    <div class="row">
-                        <!-- Profile Image Section -->
-                        <div
-                            class="col-md-4 text-center p-3 bg-light shadow rounded animate__animated animate__fadeInLeft">
-                            <div class="col-md-12">
-                                <form (submit)="UpdateProfile(); $event.preventDefault()">
-                                    <div class="profile-img" style="height: 250px; width: 300px;">
-                                        <img *ngIf="!loggedInAdminImage"
-                                            src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTKlIcH0Q1e2QDuzvM94CnN3vdzXrvebSHNeQ&s"
-                                            alt="User Profile" class="img-fluid shadow-sm" />
-                                        <img [src]="loggedInAdminImage" alt="User Profile"
-                                            class="img-fluid shadow-sm" />
+<div class="profile-page bg-light">
+    <div class="container py-4">
 
-                                        <div
-                                            class="file btn btn-lg btn-primary animate__animated animate__pulse animate__infinite animate__slower">
-                                            <i class="fas fa-camera me-2"></i> Select Photo
-                                            <input type="file" class="form-control" id="fileInput" name="user_profile"
-                                                (change)="onFileSelect($event)">
-                                        </div>
-                                    </div>
+        <!-- Main Profile Skeleton -->
+        <ng-container *ngIf="profileLoading; else profileContent">
+            <div class="card profile-card shadow-sm p-4">
+                <div class="row g-4">
 
-                                    <!-- Display selected file name -->
-                                    <div *ngIf="selectedImageName" class="mt-2 text-success">
-                                        <strong>Selected File:</strong> {{ selectedImageName }}
-                                    </div>
-                                    <br>
-                                    <button type="submit"
-                                        class="btn btn-danger text-white animate__animated animate__pulse animate__infinite animate__slow">
-                                        <i class="bi bi-check-circle me-2"></i> Save Profile
-                                    </button>
-                                </form>
+                    <div class="col-md-4">
+                        <div class="profile-skeleton-panel text-center p-3 rounded">
+                            <div class="skeleton skeleton-profile-image mx-auto"></div>
+                            <div class="skeleton skeleton-button mx-auto mt-4"></div>
+                            <div class="skeleton skeleton-line mx-auto mt-3"></div>
+                        </div>
+                    </div>
 
-                            </div>
+                    <div class="col-md-8">
+                        <div class="skeleton skeleton-heading mb-4"></div>
+
+                        <div class="d-flex gap-2 mb-4">
+                            <div class="skeleton skeleton-tab"></div>
+                            <div class="skeleton skeleton-tab"></div>
+                            <div class="skeleton skeleton-tab"></div>
                         </div>
 
-                        <!-- Personal Information Section -->
-                        <div class="col-md-8 text-center float-end bg-light animate__animated animate__fadeInRight">
-                            <div class="card widget-card border-light shadow-sm">
-                                <div class="card-body p-4">
-                                    <ul class="nav nav-tabs" id="profileTab" role="tablist">
-                                        <li class="nav-item" role="presentation">
-                                            <button class="bg-danger nav-link text-white ml-1 mt-1 active"
-                                                id="overview-tab" data-bs-toggle="tab"
-                                                data-bs-target="#overview-tab-pane" type="button" role="tab"
-                                                aria-controls="overview-tab-pane" aria-selected="true">
-                                                <i class="fas fa-user-circle me-2"></i> Overview
-                                            </button>
-                                        </li>
-                                        <li class="nav-item" role="presentation">
-                                            <button class="bg-danger text-white nav-link ml-1 mt-1" id="password-tab"
-                                                data-bs-toggle="tab" data-bs-target="#password-tab-pane" type="button"
-                                                role="tab" aria-controls="password-tab-pane" aria-selected="false">
-                                                <i class="fas fa-key me-2"></i> Password
-                                            </button>
-                                        </li>
-                                        <li class="nav-item" role="presentation">
-                                            <button class="text-dark bg-danger text-white nav-link ml-1 mt-1"
-                                                type="button" role="tab" (click)="logout()">
-                                                <i class="fas fa-sign-out-alt me-2"></i> Logout
-                                            </button>
-                                        </li>
-                                    </ul>
+                        <div class="profile-skeleton-details">
+                            <div class="skeleton skeleton-line mb-4"></div>
+                            <div class="skeleton skeleton-input mb-4"></div>
+                            <div class="skeleton skeleton-line mb-4"></div>
+                            <div class="skeleton skeleton-input mb-4"></div>
+                            <div class="skeleton skeleton-line mb-4"></div>
+                            <div class="skeleton skeleton-input mb-4"></div>
+                            <div class="skeleton skeleton-button mt-4"></div>
+                        </div>
+                    </div>
 
-                                    <!-- Profile Section Start -->
-                                    <div class="tab-content pt-4" id="profileTabContent">
-                                        <div class="tab-pane fade show active" id="overview-tab-pane" role="tabpanel"
-                                            aria-labelledby="overview-tab" tabindex="0">
-                                            <form (submit)="updateAdmin()">
-                                                <div class="row g-0">
-                                                    <div
-                                                        class="col-5 col-md-3 bg-light border-bottom border-white border-3">
-                                                        <div class="p-2 pt-4"> <i class="fas fa-user me-2"></i>Name :
-                                                        </div>
-                                                    </div>
-                                                    <div
-                                                        class="col-7 col-md-9 bg-light border-start border-bottom border-white border-3">
-                                                        <div class="p-2">
-                                                            <input type="text" id="admin_name" name="admin_name"
-                                                                [(ngModel)]="formData.admin_name" class="form-control"
-                                                                required />
-                                                        </div>
-                                                    </div>
+                </div>
+            </div>
+        </ng-container>
 
-                                                    <div
-                                                        class="col-5 col-md-3 bg-light border-bottom border-white border-3">
-                                                        <div class="p-2 pt-3"><i class="fas fa-phone me-2"></i>Mobile :
-                                                        </div>
-                                                    </div>
-                                                    <div
-                                                        class="col-7 col-md-9 bg-light border-start border-bottom border-white border-3">
-                                                        <div class="p-2">
-                                                            <input type="text" id="admin_mobile" name="admin_mobile"
-                                                                [(ngModel)]="formData.admin_mobile" class="form-control"
-                                                                required />
-                                                        </div>
-                                                    </div>
+        <!-- Actual Profile Content -->
+        <ng-template #profileContent>
+            <div class="card profile-card shadow-sm p-3 p-md-4 animate__animated animate__fadeIn">
 
-                                                    <div
-                                                        class="col-5 col-md-3 bg-light border-bottom border-white border-3">
-                                                        <div class="p-2 pt-3"><i class="fas fa-envelope me-2"></i>Email
-                                                            : </div>
-                                                    </div>
-                                                    <div
-                                                        class="col-7 col-md-9 bg-light border-start border-bottom border-white border-3">
-                                                        <div class="p-2">
-                                                            <input type="email" id="admin_email" name="admin_email"
-                                                                [(ngModel)]="formData.admin_email" class="form-control"
-                                                                required />
-                                                        </div>
-                                                    </div>
+                <div class="row g-4">
 
-                                                    <div class="col-md-12 mt-4">
-                                                        <button type="submit"
-                                                            class="btn btn-danger text-white px-4 py-2">
-                                                            <i class="fas fa-save me-2"></i> Update Profile
-                                                        </button>
-                                                    </div>
-                                                </div>
-                                            </form>
-                                        </div>
+                    <!-- Profile Image Section -->
+                    <div class="col-lg-4 col-md-5">
+                        <div class="profile-image-panel text-center p-3 p-md-4 rounded h-100">
 
-                                        <!-- Password Section -->
-                                        <div class="tab-pane fade" id="password-tab-pane" role="tabpanel"
-                                            aria-labelledby="password-tab" tabindex="0">
-                                            <form (ngSubmit)="changePass()">
-                                                <!-- Email & Send OTP Btn -->
-                                                <div class="col-md-12 row" *ngIf="!otpSent">
-                                                    <div class="col-md-4">
-                                                        <label for="email" class="mt-3 form-label">Email</label>
-                                                    </div>
-                                                    <div class="col-md-8">
-                                                        <input type="email" name="user_email"
-                                                            [(ngModel)]="formData.admin_email" class="form-control"
-                                                            required>
-                                                        <button type="button" (click)="sendOtp()"
-                                                            class="btn btn-danger text-white mt-2">
-                                                            <i class="fas fa-paper-plane me-2"></i>Get OTP</button>
-                                                    </div>
-                                                </div>
+                            <div class="profile-image-wrapper mx-auto">
 
-                                                <!-- OTP Field & Verify OTP Btn -->
-                                                <div *ngIf="otpSent && !otpVerified" class="col-md-12 row">
-                                                    <div class="col-md-4">
-                                                        <label for="otp" class="mt-3 form-label">OTP</label>
-                                                    </div>
-                                                    <div class="col-md-8">
-                                                        <input type="text" name="otp" [(ngModel)]="formData.otp"
-                                                            class="form-control" required>
-                                                        <button type="button" (click)="verifyOtp()"
-                                                            class="btn btn-danger text-white mt-2">
-                                                            <i class="fas fa-check-circle me-2"></i>Verify OTP</button>
-                                                    </div>
-                                                </div>
+                                <!-- Image Skeleton -->
+                                <div *ngIf="profileImageLoading"
+                                    class="skeleton skeleton-profile-image profile-image-loader">
+                                </div>
 
-                                                <div class="row gy-3 gy-xxl-4" *ngIf="otpVerified">
-                                                    <div class="col-md-12 row">
-                                                        <div class="col-md-4">
-                                                            <label for="new_password" class="mt-3 form-label">
-                                                                <i class="fas fa-key me-2"></i>New Password
-                                                            </label>
-                                                        </div>
-                                                        <div class="col-md-8">
-                                                            <input type="password" class="form-control"
-                                                                id="new_password" name="new_password"
-                                                                [(ngModel)]="formData.new_password">
-                                                        </div>
-                                                    </div>
-                                                    <div class="col-md-12 row">
-                                                        <div class="col-md-4">
-                                                            <label for="confirm_password" class="mt-3 form-label">
-                                                                <i class="fas fa-check-circle me-2"></i>Confirm Password
-                                                            </label>
-                                                        </div>
-                                                        <div class="col-md-8">
-                                                            <input type="password" class="form-control"
-                                                                id="confirm_password" name="confirm_password"
-                                                                [(ngModel)]="formData.confirm_password">
-                                                        </div>
-                                                    </div>
-                                                    <div class="col-md-12 mt-4">
-                                                        <button type="submit"
-                                                            class="btn btn-danger text-white px-4 py-2">
-                                                            <i class="fas fa-lock me-2"></i> Reset Password
-                                                        </button>
-                                                    </div>
-                                                </div>
-                                            </form>
+                                <!-- Profile Image -->
+                                <img *ngIf="loggedInAdminImage" [src]="loggedInAdminImage" alt="Admin Profile"
+                                    class="profile-image" [class.image-loading]="profileImageLoading"
+                                    (load)="onProfileImageLoad()" (error)="onProfileImageError()" />
 
-                                        </div>
+                                <label for="fileInput" class="profile-image-upload"
+                                    [class.disabled]="savingProfileImage">
 
+                                    <i class="fas fa-camera me-2"></i>
+                                    {{ savingProfileImage ? 'Uploading...' : 'Change Photo' }}
+
+                                    <input type="file" id="fileInput" name="user_profile" accept="image/*"
+                                        (change)="onFileSelect($event)" [disabled]="savingProfileImage" />
+                                </label>
+
+                            </div>
+
+                            <div *ngIf="selectedImageName" class="selected-file-name mt-3">
+                                <i class="fas fa-file-image me-1"></i>
+                                <strong>Selected:</strong>
+                                <span>{{ selectedImageName }}</span>
+                            </div>
+
+                            <button type="button" class="btn btn-danger profile-action-btn mt-4"
+                                (click)="UpdateProfile()" [disabled]="savingProfileImage || !selectedImage">
+
+                                <span *ngIf="savingProfileImage" class="spinner-border spinner-border-sm me-2"
+                                    aria-hidden="true">
+                                </span>
+
+                                <i *ngIf="!savingProfileImage" class="bi bi-check-circle me-2"></i>
+
+                                {{ savingProfileImage ? 'Saving Photo...' : 'Save Profile Photo' }}
+                            </button>
+
+                            <p class="profile-image-hint mt-3 mb-0">
+                                <i class="fas fa-info-circle me-1"></i>
+                                Choose an image file for your profile.
+                            </p>
+
+                        </div>
+                    </div>
+
+                    <!-- Personal Information and Password Section -->
+                    <div class="col-lg-8 col-md-7">
+
+                        <div class="card profile-details-card border-0 shadow-sm h-100">
+                            <div class="card-body p-3 p-md-4">
+
+                                <div class="profile-heading mb-4">
+                                    <div>
+                                        <h4 class="mb-1">Admin Profile</h4>
+                                        <p class="mb-0">Manage your account information and security.</p>
                                     </div>
+                                    <span class="profile-status">
+                                        <i class="fas fa-shield-alt me-1"></i>
+                                        Administrator
+                                    </span>
+                                </div>
+
+                                <!-- Navigation Tabs -->
+                                <ul class="nav nav-tabs profile-tabs" id="profileTab" role="tablist">
+
+                                    <li class="nav-item" role="presentation">
+                                        <button class="nav-link active" id="overview-tab" data-bs-toggle="tab"
+                                            data-bs-target="#overview-tab-pane" type="button" role="tab"
+                                            aria-controls="overview-tab-pane" aria-selected="true">
+
+                                            <i class="fas fa-user-circle me-2"></i>
+                                            Overview
+                                        </button>
+                                    </li>
+
+                                    <li class="nav-item" role="presentation">
+                                        <button class="nav-link" id="password-tab" data-bs-toggle="tab"
+                                            data-bs-target="#password-tab-pane" type="button" role="tab"
+                                            aria-controls="password-tab-pane" aria-selected="false">
+
+                                            <i class="fas fa-key me-2"></i>
+                                            Password
+                                        </button>
+                                    </li>
+
+                                    <li class="nav-item ms-md-auto" role="presentation">
+                                        <button class="nav-link logout-tab" type="button" (click)="logout()">
+
+                                            <i class="fas fa-sign-out-alt me-2"></i>
+                                            Logout
+                                        </button>
+                                    </li>
+
+                                </ul>
+
+                                <div class="tab-content pt-4" id="profileTabContent">
+
+                                    <!-- Overview Tab -->
+                                    <div class="tab-pane fade show active" id="overview-tab-pane" role="tabpanel"
+                                        aria-labelledby="overview-tab" tabindex="0">
+
+                                        <form #profileForm="ngForm" (ngSubmit)="updateAdmin()" novalidate>
+
+                                            <div class="profile-section-heading mb-3">
+                                                <h5>Personal Information</h5>
+                                                <p>Keep your contact details up to date.</p>
+                                            </div>
+
+                                            <div class="row g-3">
+
+                                                <div class="col-12">
+                                                    <label for="admin_name" class="form-label">
+                                                        <i class="fas fa-user me-2"></i>Full Name
+                                                    </label>
+
+                                                    <input type="text" id="admin_name" name="admin_name"
+                                                        [(ngModel)]="formData.admin_name" #adminName="ngModel"
+                                                        class="form-control" placeholder="Enter your full name" required
+                                                        [disabled]="updatingProfile" />
+
+                                                    <small class="text-danger"
+                                                        *ngIf="adminName.invalid && adminName.touched">
+                                                        Please enter your name.
+                                                    </small>
+                                                </div>
+
+                                                <div class="col-12">
+                                                    <label for="admin_mobile" class="form-label">
+                                                        <i class="fas fa-phone me-2"></i>Mobile Number
+                                                    </label>
+
+                                                    <input type="tel" id="admin_mobile" name="admin_mobile"
+                                                        [(ngModel)]="formData.admin_mobile" #adminMobile="ngModel"
+                                                        class="form-control" placeholder="Enter your mobile number"
+                                                        required [disabled]="updatingProfile" />
+
+                                                    <small class="text-danger"
+                                                        *ngIf="adminMobile.invalid && adminMobile.touched">
+                                                        Please enter your mobile number.
+                                                    </small>
+                                                </div>
+
+                                                <div class="col-12">
+                                                    <label for="admin_email" class="form-label">
+                                                        <i class="fas fa-envelope me-2"></i>Email Address
+                                                    </label>
+
+                                                    <input type="email" id="admin_email" name="admin_email"
+                                                        [(ngModel)]="formData.admin_email" #adminEmail="ngModel"
+                                                        class="form-control" placeholder="Enter your email address"
+                                                        required email [disabled]="updatingProfile" />
+
+                                                    <small class="text-danger"
+                                                        *ngIf="adminEmail.invalid && adminEmail.touched">
+                                                        Please enter a valid email address.
+                                                    </small>
+                                                </div>
+
+                                                <div class="col-12 mt-4">
+                                                    <button type="submit" class="btn btn-danger profile-action-btn"
+                                                        [disabled]="profileForm.invalid || updatingProfile">
+
+                                                        <span *ngIf="updatingProfile"
+                                                            class="spinner-border spinner-border-sm me-2"
+                                                            aria-hidden="true">
+                                                        </span>
+
+                                                        <i *ngIf="!updatingProfile" class="fas fa-save me-2">
+                                                        </i>
+
+                                                        {{ updatingProfile ? 'Updating...' : 'Update Profile' }}
+                                                    </button>
+                                                </div>
+
+                                            </div>
+                                        </form>
+                                    </div>
+
+                                    <!-- Password Tab -->
+                                    <div class="tab-pane fade" id="password-tab-pane" role="tabpanel"
+                                        aria-labelledby="password-tab" tabindex="0">
+
+                                        <div class="profile-section-heading mb-4">
+                                            <h5>Change Password</h5>
+                                            <p>Verify your email with an OTP before setting a new password.</p>
+                                        </div>
+
+                                        <form #passwordForm="ngForm" (ngSubmit)="changePass()" novalidate>
+
+                                            <!-- Email and Send OTP -->
+                                            <div class="row g-3" *ngIf="!otpSent">
+
+                                                <div class="col-12">
+                                                    <label for="otp_email" class="form-label">
+                                                        <i class="fas fa-envelope me-2"></i>Email Address
+                                                    </label>
+
+                                                    <input type="email" id="otp_email" name="otp_email"
+                                                        [(ngModel)]="formData.admin_email" #otpEmail="ngModel"
+                                                        class="form-control" placeholder="Enter your registered email"
+                                                        required email [disabled]="sendingOtp" />
+
+                                                    <small class="text-danger"
+                                                        *ngIf="otpEmail.invalid && otpEmail.touched">
+                                                        Please enter a valid email address.
+                                                    </small>
+                                                </div>
+
+                                                <div class="col-12">
+                                                    <button type="button" class="btn btn-danger profile-action-btn"
+                                                        (click)="sendOtp()" [disabled]="otpEmail.invalid || sendingOtp">
+
+                                                        <span *ngIf="sendingOtp"
+                                                            class="spinner-border spinner-border-sm me-2"
+                                                            aria-hidden="true">
+                                                        </span>
+
+                                                        <i *ngIf="!sendingOtp" class="fas fa-paper-plane me-2"></i>
+
+                                                        {{ sendingOtp ? 'Sending OTP...' : 'Get OTP' }}
+                                                    </button>
+                                                </div>
+
+                                            </div>
+
+                                            <!-- OTP Verification -->
+                                            <div class="row g-3" *ngIf="otpSent && !otpVerified">
+
+                                                <div class="col-12">
+                                                    <label for="otp" class="form-label">
+                                                        <i class="fas fa-shield-alt me-2"></i>Enter OTP
+                                                    </label>
+
+                                                    <input type="text" id="otp" name="otp" [(ngModel)]="formData.otp"
+                                                        #otpInput="ngModel" class="form-control"
+                                                        placeholder="Enter the OTP sent to your email" required
+                                                        autocomplete="one-time-code" [disabled]="verifyingOtp" />
+                                                </div>
+
+                                                <div class="col-12 d-flex flex-wrap gap-2">
+                                                    <button type="button" class="btn btn-danger profile-action-btn"
+                                                        (click)="verifyOtp()"
+                                                        [disabled]="!formData.otp || verifyingOtp">
+
+                                                        <span *ngIf="verifyingOtp"
+                                                            class="spinner-border spinner-border-sm me-2"
+                                                            aria-hidden="true">
+                                                        </span>
+
+                                                        <i *ngIf="!verifyingOtp" class="fas fa-check-circle me-2"></i>
+
+                                                        {{ verifyingOtp ? 'Verifying...' : 'Verify OTP' }}
+                                                    </button>
+
+                                                    <button type="button" class="btn btn-outline-secondary"
+                                                        (click)="resetOtpFlow()" [disabled]="verifyingOtp">
+                                                        Change Email
+                                                    </button>
+                                                </div>
+
+                                            </div>
+
+                                            <!-- New Password Fields -->
+                                            <div class="row g-3" *ngIf="otpVerified">
+
+                                                <div class="col-12">
+                                                    <div class="verified-notice">
+                                                        <i class="fas fa-check-circle me-2"></i>
+                                                        Email OTP verified successfully.
+                                                    </div>
+                                                </div>
+
+                                                <div class="col-12">
+                                                    <label for="new_password" class="form-label">
+                                                        <i class="fas fa-key me-2"></i>New Password
+                                                    </label>
+
+                                                    <input type="password" id="new_password" name="new_password"
+                                                        [(ngModel)]="formData.new_password" #newPassword="ngModel"
+                                                        class="form-control" placeholder="Enter new password" required
+                                                        minlength="6" autocomplete="new-password"
+                                                        [disabled]="changingPassword" />
+
+                                                    <small class="text-danger"
+                                                        *ngIf="newPassword.invalid && newPassword.touched">
+                                                        Password must contain at least 6 characters.
+                                                    </small>
+                                                </div>
+
+                                                <div class="col-12">
+                                                    <label for="confirm_password" class="form-label">
+                                                        <i class="fas fa-check-circle me-2"></i>Confirm Password
+                                                    </label>
+
+                                                    <input type="password" id="confirm_password" name="confirm_password"
+                                                        [(ngModel)]="formData.confirm_password"
+                                                        #confirmPassword="ngModel" class="form-control"
+                                                        placeholder="Confirm your new password" required minlength="6"
+                                                        autocomplete="new-password" [disabled]="changingPassword" />
+                                                </div>
+
+                                                <div class="col-12 mt-4 d-flex flex-wrap gap-2">
+                                                    <button type="submit" class="btn btn-danger profile-action-btn"
+                                                        [disabled]="passwordForm.invalid || changingPassword">
+
+                                                        <span *ngIf="changingPassword"
+                                                            class="spinner-border spinner-border-sm me-2"
+                                                            aria-hidden="true">
+                                                        </span>
+
+                                                        <i *ngIf="!changingPassword" class="fas fa-lock me-2"></i>
+
+                                                        {{ changingPassword ? 'Resetting Password...' : 'Reset Password'
+                                                        }}
+                                                    </button>
+
+                                                    <button type="button" class="btn btn-outline-secondary"
+                                                        (click)="resetOtpFlow()" [disabled]="changingPassword">
+                                                        Cancel
+                                                    </button>
+                                                </div>
+
+                                            </div>
+
+                                        </form>
+                                    </div>
+
                                 </div>
                             </div>
                         </div>
+
                     </div>
-                </div>
-            </form>
-
-        </div>
-    </div>
-</body>
-
-
-
-
-
-
-
-
-
-
-
-<!-- <div class="container mt-5">
-    <div class="col-md-12 ">
-        <form #adminForm="ngForm" (ngSubmit)="updateProfile()" enctype="multipart/form-data">
-            <div class="row"> -->
-<!-- Profile Image Section -->
-<!-- <div class="col-md-4 text-center">
-                    <div class="profile-img">
-                        <ng-container *ngIf="adminDetails?.admin_profile; else initialsTemplate">
-                            <img [src]="'http://localhost:1000/uploads/' + adminDetails?.admin_profile"
-                                alt="User Profile" class="img-fluid rounded-circle border"
-                                style="height: 250px; width: 250px;">
-                        </ng-container>
-                        <ng-template #initialsTemplate>
-                            <div class="img-fluid rounded-circle border d-flex justify-content-center align-items-center"
-                                style="height: 250px; width: 250px;">
-                                <h1 style="font-size: 100px; letter-spacing: 10px;">{{
-                                    getInitials(adminDetails?.admin_name) }}</h1>
-                            </div>
-                        </ng-template>
-                        <div class="file btn btn-primary mt-2">
-                            Change Photo
-                            <input type="file" id="admin_profile" (change)="onFileChange($event)" name="admin_profile"
-                                class="form-control" />
-                        </div>
-                    </div>
-                </div> -->
-<!-- User Info Section -->
-<!-- <div class="col-md-6">
-                    <div class="profile-head">
-                        <div class="form-group mb-3">
-                            <label for="admin_name">Name:</label>
-                            <input type="text" id="admin_name" name="admin_name" class="form-control"
-                                [(ngModel)]="adminProfile.admin_name" #admin_name="ngModel" />
-                        </div>
-                        <div class="form-group mb-3">
-                            <label for="admin_mobile">Mobile Number:</label>
-                            <input type="text" id="admin_mobile" name="admin_mobile" class="form-control"
-                                [(ngModel)]="adminProfile.admin_mobile" #admin_mobile="ngModel" />
-                        </div>
-                        <div class="form-group mb-3">
-                            <label for="admin_email">Email:</label>
-                            <input type="email" id="admin_email" name="admin_email" class="form-control"
-                                [(ngModel)]="adminProfile.admin_email" #admin_email="ngModel" />
-                        </div>
-                        <div class="form-group mb-3" id="hideDiv" *ngIf="isDivVisible">
-                            <label for="old_password">Old Password:</label>
-                            <input type="password" id="old_password" name="old_password" class="form-control"
-                                [(ngModel)]="adminProfile.old_password" #old_password="ngModel" required />
-                        </div>
-                        <div class="form-group mb-3" id="hideDiv" *ngIf="isDivVisible">
-                            <label for="new_password">New Password:</label>
-                            <input type="password" id="new_password" name="new_password" class="form-control"
-                                [(ngModel)]="adminProfile.new_password" #new_password="ngModel" required />
-                        </div>
-                    </div>
-                </div> -->
-<!-- Action Buttons -->
-<!-- <div class="col-md-2 text-center d-flex flex-column justify-content-center">
-                    <button type="button" class="btn btn-success mb-2" (click)="updateShow_hide()"
-                        *ngIf="isBtnVisible"><i class="fas fa-edit"></i> Update Profile</button>
-                    <button type="submit" class="btn btn-success mb-2" *ngIf="isDivVisible"><i class="fas fa-edit"></i>
-                        Update Profile</button>
-                    <button type="button" class="btn btn-danger mb-2" (click)="logout()"><i
-                            class="fas fa-sign-out-alt"></i> LogOut</button>
-                    <button type="button" class="btn btn-danger mb-2" (click)="deleteAccount()"><i
-                            class="fas fa-trash-alt"></i> Delete A/c</button>
                 </div>
             </div>
-        </form>
+        </ng-template>
+
     </div>
-</div> -->
+</div>

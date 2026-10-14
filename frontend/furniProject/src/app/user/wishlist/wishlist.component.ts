@@ -3,6 +3,7 @@ import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { RouterModule } from '@angular/router';
 import { ToastrService } from 'ngx-toastr';
+import { finalize } from 'rxjs';
 
 import { UserApiService } from '../../service/user-api.service';
 import { ImageService } from '../../service/image.service';
@@ -34,6 +35,13 @@ export class WishlistComponent implements OnInit {
 
   isProcessing: boolean = false;
 
+  // Wishlist page loading
+  wishlistPageLoading: boolean = false;
+
+  // Used only for the first page load
+  private isInitialLoad: boolean = true;
+  private initialRequestsCompleted: number = 0;
+
   wishlistUrl: string = window.location.href;
 
   constructor(
@@ -43,66 +51,119 @@ export class WishlistComponent implements OnInit {
   ) { }
 
   ngOnInit(): void {
+
+    // Start skeleton loading only for initial page load
+    this.wishlistPageLoading = true;
+
     this.loadWishlist();
     this.getProducts();
   }
 
-  // Load Wishlist
-  loadWishlist(): void {
-    this.userApi.getWishlist().subscribe({
+  // =========================================================
+  // Initial Loading Check
+  // =========================================================
 
-      next: (response: any) => {
+  private checkInitialLoadingComplete(): void {
 
-        if (response?.success) {
+    this.initialRequestsCompleted++;
 
-          this.wishlist = response.data.map((item: any) => {
+    if (this.initialRequestsCompleted >= 2) {
 
-            const images = item.product_image ? item.product_image.split(',')
-              .map((img: string) => this.imageUrl.getImageUrl(img.trim()))
-              : ['images/no-image.png'];
+      // Keep skeleton visible for a short time
+      // so that it is actually visible to the user.
+      setTimeout(() => {
 
-            return {
-              ...item,
-              product_images: images
-            };
+        this.wishlistPageLoading = false;
+        this.isInitialLoad = false;
 
-          });
+      }, 700);
 
-          this.count = this.wishlist.length;
-
-          this.calculateTotals();
-
-        } else {
-          this.toastr.error('Failed to load wishlist', 'Error',
-            {
-              progressBar: true,
-              closeButton: true
-            }
-          );
-
-        }
-
-      },
-      error: (err) => {
-        console.error(err);
-        this.toastr.error(err?.error?.message || 'Unable to load wishlist', 'Error',
-          {
-            progressBar: true,
-            closeButton: true
-          }
-        );
-
-      }
-
-    });
+    }
 
   }
 
+  // =========================================================
+  // Load Wishlist
+  // =========================================================
+
+  loadWishlist(): void {
+
+    this.userApi.getWishlist()
+      .pipe(
+
+        finalize(() => {
+
+          // Only count the API call during initial page loading.
+          // Remove/add/move operations should not show page skeleton.
+          if (this.isInitialLoad) {
+            this.checkInitialLoadingComplete();
+          }
+
+        })
+
+      )
+      .subscribe({
+
+        next: (response: any) => {
+
+          if (response?.success) {
+
+            this.wishlist = (response.data || []).map((item: any) => {
+
+              const images = item.product_image
+                ? item.product_image
+                  .split(',')
+                  .map((img: string) =>
+                    this.imageUrl.getImageUrl(img.trim())
+                  )
+                : ['images/no-image.png'];
+
+              return {
+                ...item,
+                product_images: images
+              };
+
+            });
+
+            this.count = this.wishlist.length;
+
+            this.calculateTotals();
+
+          } else {
+
+            this.wishlist = [];
+            this.count = 0;
+
+            this.calculateTotals();
+
+          }
+
+        },
+
+        error: (err: any) => {
+
+          console.error('Wishlist loading error:', err);
+
+          this.wishlist = [];
+          this.count = 0;
+
+          this.calculateTotals();
+
+        }
+
+      });
+
+  }
+
+  // =========================================================
   // Calculate Totals
+  // =========================================================
+
   calculateTotals(): void {
 
     this.totalAmount = this.wishlist.reduce(
-      (sum, item) => sum + Number(item.product_price || 0),
+      (sum, item) =>
+        sum + Number(item.product_price || 0),
       0
     );
 
@@ -121,7 +182,10 @@ export class WishlistComponent implements OnInit {
 
   }
 
+  // =========================================================
   // Animated Counter
+  // =========================================================
+
   animateCount(type: string): void {
 
     let start = 0;
@@ -131,7 +195,10 @@ export class WishlistComponent implements OnInit {
         ? this.totalAmount
         : this.savedAmount;
 
-    const step = Math.max(1, Math.ceil(end / 50));
+    const step = Math.max(
+      1,
+      Math.ceil(end / 50)
+    );
 
     const interval = setInterval(() => {
 
@@ -144,9 +211,13 @@ export class WishlistComponent implements OnInit {
       }
 
       if (type === 'total') {
+
         this.animatedTotal = start;
+
       } else {
+
         this.animatedSaved = start;
+
       }
 
       start += step;
@@ -155,12 +226,17 @@ export class WishlistComponent implements OnInit {
 
   }
 
+  // =========================================================
   // Move All To Cart
+  // =========================================================
+
   moveAllToCart(): void {
 
     if (this.wishlist.length === 0) {
 
-      this.toastr.warning('Your wishlist is empty.', 'Warning',
+      this.toastr.warning(
+        'Your wishlist is empty.',
+        'Warning',
         {
           progressBar: true,
           closeButton: true
@@ -168,6 +244,7 @@ export class WishlistComponent implements OnInit {
       );
 
       return;
+
     }
 
     this.isProcessing = true;
@@ -176,16 +253,23 @@ export class WishlistComponent implements OnInit {
 
       next: (res: any) => {
 
-        this.toastr.success(res.message, 'Success');
+        this.toastr.success(
+          res.message,
+          'Success'
+        );
 
         this.loadWishlist();
 
         this.isProcessing = false;
+
       },
 
-      error: (err) => {
+      error: (err: any) => {
 
-        console.error(err);
+        console.error(
+          'Move all to cart error:',
+          err
+        );
 
         this.isProcessing = false;
 
@@ -204,20 +288,35 @@ export class WishlistComponent implements OnInit {
 
   }
 
+  // =========================================================
   // Share Wishlist
+  // =========================================================
 
   shareViaGmail(): void {
 
-    const subject = encodeURIComponent('Check out my wishlist!');
+    const subject = encodeURIComponent(
+      'Check out my wishlist!'
+    );
 
     const body = encodeURIComponent(
       `Hey,
-      Take a look at my wishlist:
-      ${this.wishlistUrl} Best Regards`);
-    window.open(`https://mail.google.com/mail/?view=cm&fs=1&to=&su=${subject}&body=${body}`, '_blank');
+Take a look at my wishlist:
+${this.wishlistUrl}
+
+Best Regards`
+    );
+
+    window.open(
+      `https://mail.google.com/mail/?view=cm&fs=1&to=&su=${subject}&body=${body}`,
+      '_blank'
+    );
+
   }
 
+  // =========================================================
   // Remove Wishlist Item
+  // =========================================================
+
   removeFromWishlist(productId: number): void {
 
     this.userApi.removeFromWishlist(productId).subscribe({
@@ -226,7 +325,9 @@ export class WishlistComponent implements OnInit {
 
         if (response?.success) {
 
-          this.toastr.success('Removed from wishlist', 'Success',
+          this.toastr.success(
+            'Removed from wishlist',
+            'Success',
             {
               progressBar: true,
               closeButton: true
@@ -236,6 +337,7 @@ export class WishlistComponent implements OnInit {
           this.loadWishlist();
 
         } else {
+
           this.toastr.error(
             'Error removing item',
             'Error'
@@ -245,91 +347,16 @@ export class WishlistComponent implements OnInit {
 
       },
 
-      error: (err) => {
-        console.error(err);
-        this.toastr.error(err?.error?.message || 'Something went wrong', 'Error');
-      }
+      error: (err: any) => {
 
-    });
-
-  }
-
-  // Add Single Product To Cart
-  addToCart(product_id: number): void {
-
-    this.userApi.addToCartFromWishlist(product_id).subscribe({
-      next: (res: any) => {
-
-        if (res?.success) {
-          this.toastr.success('Product added to cart', 'Success',
-            {
-              progressBar: true,
-              closeButton: true
-            }
-          );
-
-          this.loadWishlist();
-        } else {
-          this.toastr.error('Failed to add product to cart', 'Error');
-        }
-
-      },
-      error: (err) => {
-        console.error(err);
-        this.toastr.error(err?.error?.message || 'Something went wrong', 'Error');
-      }
-
-    });
-
-  }
-
-  // Most Viewed Products
-  getProducts(): void {
-    this.userApi.getMostViewedProducts(6).subscribe({
-      next: (res: any) => {
-
-        if (res?.success) {
-
-          this.latestProducts = res.data.map((item: any) => {
-
-            let images: string[] = [];
-
-            if (item.product_image) {
-
-              images = item.product_image
-                .split(',')
-                .map((img: string) =>
-                  this.imageUrl.getImageUrl(img.trim())
-                );
-
-            }
-
-            return {
-              ...item,
-              product_images: images.length
-                ? images
-                : ['images/no-image.png']
-            };
-
-          });
-
-        } else {
-
-          this.toastr.error(
-            'Failed to load products',
-            'Error'
-          );
-
-        }
-
-      },
-
-      error: (err) => {
-
-        console.error(err);
+        console.error(
+          'Remove wishlist error:',
+          err
+        );
 
         this.toastr.error(
-          err?.error?.message || 'Unable to load products',
+          err?.error?.message ||
+          'Something went wrong',
           'Error'
         );
 
@@ -339,28 +366,192 @@ export class WishlistComponent implements OnInit {
 
   }
 
-  // Add To Wishlist
-  AddToWishlist(product_id: number): void {
-    this.userApi.addToWishlist(product_id).subscribe({
+  // =========================================================
+  // Add Single Product To Cart
+  // =========================================================
+
+  addToCart(product_id: number): void {
+
+    this.userApi.addToCartFromWishlist(product_id).subscribe({
+
       next: (res: any) => {
 
         if (res?.success) {
-          this.loadWishlist();
-          this.toastr.success('Product added to wishlist', 'Success',
+
+          this.toastr.success(
+            'Product added to cart',
+            'Success',
             {
               progressBar: true,
               closeButton: true
             }
           );
+
+          this.loadWishlist();
+
         } else {
-          this.toastr.error('Failed to add product to wishlist', 'Error');
+
+          this.toastr.error(
+            'Failed to add product to cart',
+            'Error'
+          );
+
         }
 
       },
 
-      error: (err) => {
-        console.error(err);
-        this.toastr.error(err?.error?.message || 'Something went wrong', 'Error');
+      error: (err: any) => {
+
+        console.error(
+          'Add to cart error:',
+          err
+        );
+
+        this.toastr.error(
+          err?.error?.message ||
+          'Something went wrong',
+          'Error'
+        );
+
+      }
+
+    });
+
+  }
+
+  // =========================================================
+  // Mostly Viewed Products
+  // =========================================================
+
+  getProducts(): void {
+
+    this.userApi.getMostViewedProducts(6)
+      .pipe(
+
+        finalize(() => {
+
+          // Only count this request during initial page loading.
+          if (this.isInitialLoad) {
+            this.checkInitialLoadingComplete();
+          }
+
+        })
+
+      )
+      .subscribe({
+
+        next: (res: any) => {
+
+          if (res?.success) {
+
+            this.latestProducts = (res.data || []).map(
+              (item: any) => {
+
+                let images: string[] = [];
+
+                if (item.product_image) {
+
+                  images = item.product_image
+                    .split(',')
+                    .map((img: string) =>
+                      this.imageUrl.getImageUrl(
+                        img.trim()
+                      )
+                    );
+
+                }
+
+                return {
+                  ...item,
+                  product_images: images.length
+                    ? images
+                    : ['images/no-image.png']
+                };
+
+              }
+            );
+
+          } else {
+
+            this.latestProducts = [];
+
+            this.toastr.error(
+              'Failed to load products',
+              'Error'
+            );
+
+          }
+
+        },
+
+        error: (err: any) => {
+
+          console.error(
+            'Mostly viewed products error:',
+            err
+          );
+
+          this.latestProducts = [];
+
+          this.toastr.error(
+            err?.error?.message ||
+            'Unable to load products',
+            'Error'
+          );
+
+        }
+
+      });
+
+  }
+
+  // =========================================================
+  // Add To Wishlist
+  // =========================================================
+
+  AddToWishlist(product_id: number): void {
+
+    this.userApi.addToWishlist(product_id).subscribe({
+
+      next: (res: any) => {
+
+        if (res?.success) {
+
+          this.loadWishlist();
+
+          this.toastr.success(
+            'Product added to wishlist',
+            'Success',
+            {
+              progressBar: true,
+              closeButton: true
+            }
+          );
+
+        } else {
+
+          this.toastr.error(
+            'Failed to add product to wishlist',
+            'Error'
+          );
+
+        }
+
+      },
+
+      error: (err: any) => {
+
+        console.error(
+          'Add to wishlist error:',
+          err
+        );
+
+        this.toastr.error(
+          err?.error?.message ||
+          'Something went wrong',
+          'Error'
+        );
+
       }
 
     });

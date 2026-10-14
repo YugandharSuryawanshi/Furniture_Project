@@ -174,6 +174,17 @@ export const errorInterceptor: HttpInterceptorFn = (req, next) => {
 
       if (error.status === 404) {
 
+        /*
+         * Empty cart is a valid state.
+         * Do not show global 404 toastr for cart API.
+         */
+        const isCartRequest =
+          req.url.toLowerCase().includes('cart');
+
+        if (isCartRequest) {
+          return throwError(() => error);
+        }
+
         toastr.error(
           'The requested resource was not found.',
           'Not Found'

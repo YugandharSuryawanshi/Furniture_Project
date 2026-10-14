@@ -31,6 +31,7 @@
     text-align: center;
     background-color: #ff1414;
 }
+
 .carousel-control-prev:hover,
 .carousel-control-next:hover {
     background-color: #600000;
@@ -65,9 +66,10 @@
         width: 40px;
     }
 
-    .carousel-indicators{
+    .carousel-indicators {
         bottom: -40px;
     }
+
     .carousel-indicators button {
         height: 6px;
     }
@@ -101,7 +103,439 @@
         right: 0px;
     }
 
-    .carousel-indicators{
+    .carousel-indicators {
         bottom: -40px;
     }
+}
+
+
+
+/* =========================================================
+   ABOUT PAGE SKELETON LOADING
+   ========================================================= */
+
+.about-skeleton-page {
+    width: 100%;
+    overflow: hidden;
+}
+
+
+/* Common Skeleton */
+
+.about-skeleton-page .skeleton {
+    position: relative;
+    overflow: hidden;
+    background: #e9e9e9;
+    border-radius: 6px;
+}
+
+.about-skeleton-page .skeleton::after {
+    content: "";
+    position: absolute;
+    top: 0;
+    left: -150%;
+    width: 150%;
+    height: 100%;
+    background: linear-gradient(90deg,
+            transparent,
+            rgba(255, 255, 255, 0.65),
+            transparent);
+    animation: aboutSkeletonShimmer 1.5s infinite;
+}
+
+@keyframes aboutSkeletonShimmer {
+    100% {
+        left: 150%;
+    }
+}
+
+
+/* =========================================================
+   HERO SKELETON
+   ========================================================= */
+
+.about-skeleton-hero {
+    min-height: 420px;
+    padding: 80px 8%;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    gap: 50px;
+    background: #f4f4f4;
+}
+
+.about-skeleton-hero-content {
+    width: 45%;
+}
+
+.skeleton-hero-title {
+    width: 55%;
+    height: 55px;
+    margin-bottom: 25px;
+}
+
+.skeleton-hero-text {
+    width: 100%;
+    height: 18px;
+    margin-bottom: 12px;
+}
+
+.skeleton-hero-text-small {
+    width: 75%;
+}
+
+.about-skeleton-buttons {
+    display: flex;
+    gap: 12px;
+    margin-top: 30px;
+}
+
+.skeleton-button {
+    width: 120px;
+    height: 45px;
+    border-radius: 6px;
+}
+
+.skeleton-hero-image {
+    width: 45%;
+    height: 300px;
+    border-radius: 12px;
+}
+
+
+/* =========================================================
+   WHY CHOOSE US SKELETON
+   ========================================================= */
+
+.about-skeleton-why {
+    padding-top: 80px !important;
+    padding-bottom: 80px !important;
+}
+
+.about-skeleton-why-content {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    gap: 60px;
+}
+
+.about-skeleton-why-left {
+    width: 55%;
+}
+
+.skeleton-section-title {
+    width: 260px;
+    height: 38px;
+    margin-bottom: 25px;
+}
+
+.skeleton-paragraph {
+    width: 95%;
+    height: 17px;
+    margin-bottom: 12px;
+}
+
+.skeleton-paragraph-short {
+    width: 70%;
+}
+
+.about-skeleton-features {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 35px 25px;
+    margin-top: 45px;
+}
+
+.about-skeleton-feature-icon {
+    width: 55px;
+    height: 55px;
+    border-radius: 50%;
+    margin-bottom: 18px;
+}
+
+.skeleton-feature-title {
+    width: 70%;
+    height: 22px;
+    margin-bottom: 15px;
+}
+
+.skeleton-feature-text {
+    width: 95%;
+    height: 14px;
+    margin-bottom: 9px;
+}
+
+.skeleton-feature-text-short {
+    width: 65%;
+}
+
+.skeleton-why-image {
+    width: 40%;
+    height: 430px;
+    border-radius: 12px;
+}
+
+
+/* =========================================================
+   TEAM SKELETON
+   ========================================================= */
+
+.about-skeleton-team {
+    padding: 80px 6%;
+}
+
+.skeleton-team-title {
+    width: 180px;
+    height: 38px;
+    margin: 0 auto 55px;
+}
+
+.about-skeleton-team-grid {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 30px;
+}
+
+.about-skeleton-team-card {
+    width: 100%;
+}
+
+.skeleton-team-image {
+    width: 100%;
+    height: 400px;
+    margin-bottom: 25px;
+    border-radius: 8px;
+}
+
+.skeleton-team-name {
+    width: 70%;
+    height: 23px;
+    margin-bottom: 12px;
+}
+
+.skeleton-team-position {
+    width: 50%;
+    height: 16px;
+    margin-bottom: 22px;
+}
+
+.skeleton-team-text {
+    width: 95%;
+    height: 14px;
+    margin-bottom: 9px;
+}
+
+.skeleton-team-text-short {
+    width: 65%;
+}
+
+
+/* =========================================================
+   TESTIMONIAL SKELETON
+   ========================================================= */
+
+.about-skeleton-testimonial {
+    max-width: 1100px;
+    margin: 0 auto;
+    padding: 70px 30px 100px;
+}
+
+.skeleton-testimonial-title {
+    width: 220px;
+    height: 38px;
+    margin: 0 auto 60px;
+}
+
+.about-skeleton-testimonial-content {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 70px;
+}
+
+.skeleton-testimonial-image {
+    width: 250px;
+    height: 250px;
+    border-radius: 50%;
+    flex-shrink: 0;
+}
+
+.about-skeleton-testimonial-text {
+    width: 55%;
+}
+
+.skeleton-testimonial-name {
+    width: 45%;
+    height: 25px;
+    margin: 0 auto 18px;
+}
+
+.skeleton-testimonial-position {
+    width: 35%;
+    height: 20px;
+    margin: 0 auto 25px;
+}
+
+.skeleton-testimonial-message {
+    width: 95%;
+    height: 16px;
+    margin: 0 auto 10px;
+}
+
+.skeleton-testimonial-message-short {
+    width: 70%;
+}
+
+
+/* =========================================================
+   RESPONSIVE - TABLET
+   ========================================================= */
+
+@media (max-width: 991px) {
+
+    .about-skeleton-hero {
+        padding: 60px 5%;
+    }
+
+    .about-skeleton-why-content {
+        gap: 40px;
+    }
+
+    .about-skeleton-team-grid {
+        grid-template-columns: repeat(2, 1fr);
+        gap: 40px 25px;
+    }
+
+    .skeleton-team-image {
+        height: 350px;
+    }
+
+    .about-skeleton-testimonial-content {
+        gap: 40px;
+    }
+
+}
+
+
+/* =========================================================
+   RESPONSIVE - MOBILE
+   ========================================================= */
+
+@media (max-width: 768px) {
+
+    .about-skeleton-hero {
+        min-height: auto;
+        padding: 60px 25px;
+        flex-direction: column;
+        align-items: stretch;
+        gap: 40px;
+    }
+
+    .about-skeleton-hero-content {
+        width: 100%;
+    }
+
+    .skeleton-hero-title {
+        width: 70%;
+    }
+
+    .skeleton-hero-image {
+        width: 100%;
+        height: 260px;
+    }
+
+
+    .about-skeleton-why {
+        padding-left: 25px !important;
+        padding-right: 25px !important;
+    }
+
+    .about-skeleton-why-content {
+        flex-direction: column;
+        align-items: stretch;
+    }
+
+    .about-skeleton-why-left {
+        width: 100%;
+    }
+
+    .skeleton-why-image {
+        width: 100%;
+        height: 320px;
+    }
+
+    .about-skeleton-features {
+        gap: 30px 15px;
+    }
+
+
+    .about-skeleton-team {
+        padding: 60px 25px;
+    }
+
+    .about-skeleton-team-grid {
+        grid-template-columns: 1fr 1fr;
+    }
+
+    .skeleton-team-image {
+        height: 300px;
+    }
+
+
+    .about-skeleton-testimonial {
+        padding: 60px 25px 90px;
+    }
+
+    .about-skeleton-testimonial-content {
+        flex-direction: column;
+        gap: 35px;
+    }
+
+    .about-skeleton-testimonial-text {
+        width: 100%;
+    }
+
+}
+
+
+/* =========================================================
+   RESPONSIVE - SMALL MOBILE
+   ========================================================= */
+
+@media (max-width: 576px) {
+
+    .about-skeleton-hero {
+        padding: 45px 20px;
+    }
+
+    .skeleton-hero-title {
+        height: 42px;
+    }
+
+    .skeleton-hero-image {
+        height: 220px;
+    }
+
+    .about-skeleton-features {
+        grid-template-columns: 1fr 1fr;
+    }
+
+    .about-skeleton-team {
+        padding-left: 20px;
+        padding-right: 20px;
+    }
+
+    .about-skeleton-team-grid {
+        grid-template-columns: 1fr;
+    }
+
+    .skeleton-team-image {
+        height: 350px;
+    }
+
+    .skeleton-testimonial-image {
+        width: 200px;
+        height: 200px;
+    }
+
 }

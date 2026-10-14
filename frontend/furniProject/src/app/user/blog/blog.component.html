@@ -1,65 +1,230 @@
-<!-- Start Hero Section -->
-<div class="hero">
-    <div class="container">
-        <div class="row justify-content-between">
-            <div class="col-lg-5">
-                <div class="intro-excerpt">
-                    <h1>Blog</h1>
-                    <p class="mb-4">Welcome to the Our Furniture Blog, where creativity meets functionality. Our blog
-                        is thoughtfully curated to bring you the latest insights in furniture design, interior styling,
-                        and modern living trends. From expert tips on selecting the right furniture to practical advice
-                        on maximizing space and comfort, we aim to make your home both stylish and functional. Whether
-                        you are exploring new décor ideas or looking for guidance before your next purchase, our
-                        articles are crafted to help you make informed decisions with confidence. Discover inspiring
-                        stories, design innovations, and timeless concepts that transform everyday spaces into
-                        extraordinary experiences.</p>
-                    <p>
-                        <a routerLink="/user/shop" class="btn btn-danger text-white me-2">Shop Now</a>
-                        <a routerLink="#" class="btn btn-white-outline text-white">Explore</a>
-                    </p>
-                </div>
+<!-- =========================================================
+     BLOG PAGE SKELETON
+     ========================================================= -->
+
+<div *ngIf="blogLoading" class="blog-skeleton-page">
+
+    <!-- Hero Skeleton -->
+    <section class="blog-skeleton-hero">
+
+        <div class="blog-skeleton-hero-content">
+
+            <div class="skeleton skeleton-blog-hero-title"></div>
+
+            <div class="skeleton skeleton-blog-hero-text"></div>
+            <div class="skeleton skeleton-blog-hero-text"></div>
+            <div class="skeleton skeleton-blog-hero-text"></div>
+            <div class="skeleton skeleton-blog-hero-text skeleton-blog-hero-text-short"></div>
+
+            <div class="blog-skeleton-buttons">
+
+                <div class="skeleton skeleton-blog-button"></div>
+
+                <div class="skeleton skeleton-blog-button"></div>
+
             </div>
-            <div class="col-lg-7 col-md-7 col-sm-7">
-                <div class="hero-img-wrap">
-                    <img src="images/couch.png" class="img-fluid" alt="Furniture">
-                </div>
-            </div>
+
         </div>
-    </div>
+
+
+        <div class="skeleton skeleton-blog-hero-image"></div>
+
+    </section>
+
+
+    <!-- Recent Blogs Skeleton -->
+    <section class="blog-skeleton-section">
+
+        <div class="blog-skeleton-heading">
+
+            <div class="skeleton skeleton-blog-section-title"></div>
+
+            <div class="skeleton skeleton-blog-view-button"></div>
+
+        </div>
+
+
+        <div class="blog-skeleton-grid">
+
+            <div class="blog-skeleton-card" *ngFor="let item of [1,2,3]">
+
+                <div class="skeleton skeleton-blog-card-image"></div>
+
+                <div class="blog-skeleton-card-content">
+
+                    <div class="skeleton skeleton-blog-card-title"></div>
+
+                    <div class="skeleton skeleton-blog-card-meta"></div>
+                    <div class="skeleton skeleton-blog-card-meta skeleton-blog-card-meta-short"></div>
+
+                </div>
+
+            </div>
+
+        </div>
+
+    </section>
+
+
+    <!-- Testimonials Skeleton -->
+    <section class="blog-skeleton-testimonial">
+
+        <div class="skeleton skeleton-blog-testimonial-title"></div>
+
+
+        <div class="blog-skeleton-testimonial-content">
+
+            <div class="skeleton skeleton-blog-testimonial-image"></div>
+
+
+            <div class="blog-skeleton-testimonial-text">
+
+                <div class="skeleton skeleton-blog-testimonial-name"></div>
+
+                <div class="skeleton skeleton-blog-testimonial-position"></div>
+
+                <div class="skeleton skeleton-blog-testimonial-message"></div>
+                <div class="skeleton skeleton-blog-testimonial-message skeleton-blog-testimonial-message-short"></div>
+
+            </div>
+
+        </div>
+
+    </section>
+
 </div>
-<!-- End Hero Section -->
 
-<!-- Start Blog Section -->
-<div class="blog-section">
-    <div class="container">
 
-        <!-- Header -->
-        <div class="row mb-5 align-items-center">
-            <div class="col-md-12 row">
-                <h2 class="section-title col-md-2">Recent Blogs</h2>
-                <a routerLink="/user/blog" class="view-all-btn col-md-2 col-sm-2 col-lg-2 text-center h-25">View All
-                    Posts</a>
-            </div>
-        </div>
+<!-- =========================================================
+     ACTUAL BLOG PAGE
+     ========================================================= -->
 
-        <!-- Blog Cards -->
-        <div class="row">
-            <div class="col-12 col-sm-6 col-lg-4 mb-4" *ngFor="let blog of blogs">
+<ng-container *ngIf="!blogLoading">
 
-                <div class="blog-card">
+    <!-- Start Hero Section -->
+    <div class="hero">
 
-                    <!-- Image -->
-                    <div class="blog-img">
-                        <img [src]="blog.imageUrl" loading="lazy" alt="Blog Image">
+        <div class="container">
+
+            <div class="row justify-content-between">
+
+                <div class="col-lg-5">
+
+                    <div class="intro-excerpt">
+
+                        <h1>
+                            Blog
+                        </h1>
+
+                        <p class="mb-4">
+                            Welcome to the Our Furniture Blog, where creativity meets functionality. Our blog
+                            is thoughtfully curated to bring you the latest insights in furniture design, interior
+                            styling,
+                            and modern living trends. From expert tips on selecting the right furniture to practical
+                            advice
+                            on maximizing space and comfort, we aim to make your home both stylish and functional.
+                            Whether
+                            you are exploring new décor ideas or looking for guidance before your next purchase, our
+                            articles are crafted to help you make informed decisions with confidence. Discover inspiring
+                            stories, design innovations, and timeless concepts that transform everyday spaces into
+                            extraordinary experiences.
+                        </p>
+
+                        <p>
+
+                            <a routerLink="/user/shop" class="btn btn-danger text-white me-2">
+                                Shop Now
+                            </a>
+
+                            <a routerLink="#" class="btn btn-white-outline text-white">
+                                Explore
+                            </a>
+
+                        </p>
+
                     </div>
 
-                    <!-- Content -->
-                    <div class="blog-content">
-                        <h3>{{blog.blog_title}}</h3>
+                </div>
 
-                        <div class="meta">
-                            <span>By {{blog.blog_post_by}}</span>
-                            <span>{{blog.blog_post_date}} • {{blog.blog_post_time}}</span>
+
+                <div class="col-lg-7 col-md-7 col-sm-7">
+
+                    <div class="hero-img-wrap">
+
+                        <img src="images/couch.png" class="img-fluid" alt="Furniture">
+
+                    </div>
+
+                </div>
+
+            </div>
+
+        </div>
+
+    </div>
+    <!-- End Hero Section -->
+
+
+    <!-- Start Blog Section -->
+    <div class="blog-section">
+
+        <div class="container">
+
+            <!-- Header -->
+            <div class="row mb-5 align-items-center">
+
+                <div class="col-md-12 row">
+
+                    <h2 class="section-title col-md-2">
+                        Recent Blogs
+                    </h2>
+
+                    <a routerLink="/user/blog" class="view-all-btn col-md-2 col-sm-2 col-lg-2 text-center h-25">
+
+                        View All Posts
+
+                    </a>
+
+                </div>
+
+            </div>
+
+
+            <!-- Blog Cards -->
+            <div class="row">
+
+                <div class="col-12 col-sm-6 col-lg-4 mb-4" *ngFor="let blog of blogs">
+
+                    <div class="blog-card">
+
+                        <!-- Image -->
+                        <div class="blog-img">
+
+                            <img [src]="blog.imageUrl" loading="lazy" alt="Blog Image">
+
+                        </div>
+
+
+                        <!-- Content -->
+                        <div class="blog-content">
+
+                            <h3>
+                                {{blog.blog_title}}
+                            </h3>
+
+
+                            <div class="meta">
+
+                                <span>
+                                    By {{blog.blog_post_by}}
+                                </span>
+
+                                <span>
+                                    {{blog.blog_post_date}} • {{blog.blog_post_time}}
+                                </span>
+
+                            </div>
+
                         </div>
 
                     </div>
@@ -67,57 +232,108 @@
                 </div>
 
             </div>
-        </div>
-    </div>
-</div>
 
-<!-- Start Testimonial Slider -->
-<div class="container">
-    <div class="col-lg-7 mx-auto text-center mb-2">
-        <h2 class="section-title">Testimonials</h2>
+        </div>
+
     </div>
-    <div id="carouselExample" class="carousel slide" data-bs-ride="carousel">
-        <!-- Indicators/Dots -->
-        <div class="carousel-indicators">
-            <button *ngFor="let slide of testimonial; let i = index" type="button" class="carousel-button"
-                data-bs-target="#carouselExample" [attr.data-bs-slide-to]="i" [class.active]="i === 0"
-                [attr.aria-label]="'Slide ' + (i + 1)">
+    <!-- End Blog Section -->
+
+
+    <!-- Start Testimonial Slider -->
+    <div class="container">
+
+        <div class="col-lg-7 mx-auto text-center mb-2">
+
+            <h2 class="section-title">
+                Testimonials
+            </h2>
+
+        </div>
+
+
+        <div id="carouselExample" class="carousel slide" data-bs-ride="carousel">
+
+            <!-- Indicators/Dots -->
+            <div class="carousel-indicators">
+
+                <button *ngFor="let slide of testimonial; let i = index" type="button" class="carousel-button"
+                    data-bs-target="#carouselExample" [attr.data-bs-slide-to]="i" [class.active]="i === 0"
+                    [attr.aria-label]="'Slide ' + (i + 1)">
+                </button>
+
+            </div>
+
+
+            <!-- Carousel Items -->
+            <div class="carousel-inner">
+
+                <div *ngFor="let slide of testimonial; let i = index" class="carousel-item" [class.active]="i === 0">
+
+                    <div class="row">
+
+                        <!-- First part: Image Section -->
+                        <div class="col-md-4 d-flex justify-content-center align-items-center">
+
+                            <img [src]="slide.imageUrl" loading="lazy" alt="Image" class="rounded-circle"
+                                style="width: 250px; height: 250px;">
+
+                        </div>
+
+
+                        <!-- Second part: Heading Section -->
+                        <div class="col-md-8 d-flex justify-content-center align-items-center">
+
+                            <div class="col-md-12">
+
+                                <h3 class="text-center text-dark">
+                                    {{ slide.customer_name }}
+                                </h3>
+
+                                <h3 class="text-center">
+                                    {{ slide.customer_position }}
+                                </h3>
+
+                                <p class="text-center">
+                                    {{ slide.customer_massage }}
+                                </p>
+
+                            </div>
+
+                        </div>
+
+                    </div>
+
+                </div>
+
+            </div>
+
+
+            <!-- Carousel Controls -->
+            <button class="carousel-control-prev" type="button" data-bs-target="#carouselExample" data-bs-slide="prev">
+
+                <span class="carousel-control-prev-icon" aria-hidden="true">
+                </span>
+
+                <span class="visually-hidden"></span>
+
             </button>
+
+
+            <button class="carousel-control-next" type="button" data-bs-target="#carouselExample" data-bs-slide="next">
+
+                <span class="carousel-control-next-icon" aria-hidden="true">
+                </span>
+
+                <span class="visually-hidden"></span>
+
+            </button>
+
         </div>
 
-        <!-- Carousel Items -->
-        <div class="carousel-inner">
-            <div *ngFor="let slide of testimonial; let i = index" class="carousel-item" [class.active]="i === 0">
-                <div class="row">
-                    <!-- First part: Image Section -->
-                    <div class="col-md-4 d-flex justify-content-center align-items-center">
-                        <img [src]="slide.imageUrl" loading="lazy" alt="Image" class="rounded-circle"
-                            style="width: 250px; height: 250px;">
-                    </div>
-
-                    <!-- Second part: Heading Section -->
-                    <div class="col-md-8 d-flex justify-content-center align-items-center">
-                        <div class="col-md-12">
-                            <h3 class="text-center text-dark">{{ slide.customer_name }}</h3>
-                            <h3 class="text-center">{{ slide.customer_position }}</h3>
-                            <p class="text-center">{{ slide.customer_massage }}</p>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </div>
-
-        <!-- Carousel Controls -->
-        <button class="carousel-control-prev" type="button" data-bs-target="#carouselExample" data-bs-slide="prev">
-            <span class="carousel-control-prev-icon" aria-hidden="true"></span>
-            <span class="visually-hidden"></span>
-        </button>
-        <button class="carousel-control-next" type="button" data-bs-target="#carouselExample" data-bs-slide="next">
-            <span class="carousel-control-next-icon" aria-hidden="true"></span>
-            <span class="visually-hidden"></span>
-        </button>
     </div>
-</div>
-<!-- End Testimonial Slider -->
+    <!-- End Testimonial Slider -->
 
-<br><br><br>
+
+    <br><br><br>
+
+</ng-container>

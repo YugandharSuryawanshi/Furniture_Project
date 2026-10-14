@@ -24,7 +24,7 @@
                             </td>
                             <td>{{ data.blog_post_by_position }}</td>
                             <td>
-                                <img [src]="'http://localhost:1000/uploads/' + data.blog_image"
+                                <img [src]="'http://localhost:4000/uploads/' + data.blog_image"
                                     alt="Customer Image" class="img-thumbnail"
                                     style="max-width: 100%; max-height: 100px;" />
                             </td>
@@ -88,9 +88,4 @@
         </form>
     </div>
 </div>
-    <img *ngIf="!showList"
-    [src]="'http://localhost:1000/uploads/' + blogImg" alt="Customer Image" class="img-thumbnail" style="height: 300px; width: 300px;"/>
-
-
-
-
+    <img *ngIf="!showList" [src]="'http://localhost:4000/uploads/' + blogImg" alt="Customer Image" class="img-thumbnail" style="height: 300px; width: 300px;"/>
